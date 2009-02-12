@@ -1,0 +1,16 @@
+game:
+  compose:
+    - wrapped_screen
+    - input_manager
+resource_manager:
+sound_manager:
+  compose:
+    - resource_manager
+    - config_manager
+input_manager:
+wrapped_screen:
+  compose:
+    - config_manager
+config_manager:
+  compose:
+    - resource_manager

@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+Signal.trap("INT") { puts; exit }
+
+require File.dirname(__FILE__) + '/../lib/gamebox/version'
+if %w(--version -v).include? ARGV.first
+  puts "Gamebox #{Gamebox::VERSION::STRING}"
+  exit(0)
+end
+
+app_path = ARGV.first
+
+require File.dirname(__FILE__) + '/../lib/gamebox/gamebox_generator'
+
+require 'gamebox_generator/scripts/generate'
+Gamebox::Generator::Base.use_application_sources!
+Gamebox::Generator::Scripts::Generate.new.run(ARGV, :generator => 'app')
