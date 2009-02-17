@@ -2,6 +2,7 @@ game:
   compose:
     - wrapped_screen
     - input_manager
+    - sound_manager
 resource_manager:
 sound_manager:
   compose:

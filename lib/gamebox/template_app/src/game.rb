@@ -1,8 +1,9 @@
 class Game
 
-  constructor :wrapped_screen, :input_manager
+  constructor :wrapped_screen, :input_manager, :sound_manager
 
   def setup()
+    @sound_manager.play :current_rider
   end
 
   def update(time)

@@ -17,13 +17,12 @@ class ResourceManager
     cached_img
   end
 
-  def load_music(name)
+  def load_music(full_name)
     begin
-      full_name = File.expand_path(DATA_PATH + "sound/" + name)
       sound = Rubygame::Music.load(full_name)
       return sound
     rescue Rubygame::SDLError => ex
-      puts "Cannot load sound " + full_name + " : " + ex
+      puts "Cannot load music " + full_name + " : " + ex
       exit
     end
   end
