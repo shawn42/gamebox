@@ -12,6 +12,9 @@ require 'constructor'
 require 'diy'
 
 class GameboxApp
+  def self.run(argv,env)
+    GameboxApp.new.start argv, env
+  end
 
   def initialize()
     @context = DIY::Context.from_file(APP_ROOT + '/config/objects.yml')
@@ -31,7 +34,7 @@ class GameboxApp
     Rubygame.quit
   end
 
-  def run()
+  def start(argv,env)
     setup
 
     main_loop
@@ -40,17 +43,6 @@ class GameboxApp
   end
 end
 
-console = false
-
-if ARGV[0] == 'console'
-  console = true
-end
-
 if $0 == __FILE__
-  app = GameboxApp.new
-  if console
-    require 'drb'
-    DRb.start_service("druby://:7777", app)
-  end
-  app.run
+  GameboxApp.run ARGV, ENV
 end
