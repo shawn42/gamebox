@@ -1,9 +1,0 @@
-Description:
-    The 'gamebox' command creates a new Gamebox application with a default
-    directory structure and configuration at the path you specify.
-
-Example:
-    gamebox ~/Code/Ruby/weblog
-
-    This generates a skeletal Gamebox installation in ~/Code/Ruby/weblog.
-    See the README in the newly created application to get going.

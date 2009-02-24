@@ -147,8 +147,7 @@ CRATE_BOOT_H
       create_crate_boot_h
       compile_options = %w[ CFLAGS XCFLAGS CPPFLAGS ].collect { |c| compile_params[c] }.join(' ')
       sdl_cflags = `sdl-config --cflags`
-      compile_options += " #{sdl_cflags.strip}"
-      cmd = "#{compile_params['CC']} #{compile_options} -I#{Crate.ruby.pkg_dir} -o crate_boot.o -c crate_boot.c"
+      cmd = "#{compile_params['CC']} #{compile_options} #{sdl_cflags.strip} -I#{Crate.ruby.pkg_dir} -o crate_boot.o -c crate_boot.c"
       logger.debug cmd
       sh cmd
       ::CLEAN << "crate_boot.o"
@@ -165,7 +164,8 @@ CRATE_BOOT_H
         dot_o = [ File.join( project_root, "crate_boot.o" )]
 #        dot_o = [ "ext/extinit.o", File.join( project_root, "crate_boot.o" )]
         libs = compile_params['LIBS']
-        cmd = "#{compile_params['CC']} #{link_options} #{dot_o.join(' ')} #{libs} #{dot_a.join(' ')} -o #{File.join( dist_dir, name) }"
+        sdl_libs = `sdl-config --libs`
+        cmd = "#{compile_params['CC']} #{link_options} #{dot_o.join(' ')} #{libs} #{sdl_libs.strip} #{dot_a.join(' ')} -o #{File.join( dist_dir, name) }"
         p cmd
         logger.debug cmd
         sh cmd

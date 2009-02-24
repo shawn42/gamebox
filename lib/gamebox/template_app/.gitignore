@@ -1,4 +1,6 @@
 build
 dist
+fakeroot
 *.o
-crate.h
+*.swp
+crate_boot.h
