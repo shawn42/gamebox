@@ -1,9 +1,80 @@
-# Add your own tasks in files placed in lib/tasks ending in .rake,
-# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
+#
+# Top level Rakefile for building a custom static ruby based application
+#
+libdir = File.dirname(__FILE__)+"/lib"
+$: << libdir
+require 'crate'
+require 'crate_override'
 
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+#
+# The name of your project.  This will be the name of the final executable in
+# the dist directory.
+#
+PROJ_NAME = "mycrateapp"
 
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+Crate::Project.new( PROJ_NAME ) do |crate|
+
+  # This is the configuration used to launch your program.
+  #
+  #   main_file  -> the file to 'require'
+  #   main_class -> the Class in the main_file to instantiate
+  #   run_method -> the instance method in main_class to invoke
+  #
+  #The new main of your program will essentially do:
+  #
+  #  require 'application'
+  #  app = App.new
+  #  app.run( ARGV, ENV )
+  #
+  crate.main_file  = "application"
+  crate.main_class = "GameboxApp"
+  crate.run_method = "run"
+
+
+  # The list of extra files to include as packed into the app.db file
+  # This default one one will make sure to get any top level .rb files
+  # in the crate application directory.
+  #
+  crate.packing_lists << Crate::PackingList.new( Dir.glob("src/*.rb") )
+
+
+  # The extensions to compile into your project.  Remove the ones you do not
+  # want or leave them commented out with a #
+  #
+  crate.extensions = %w[
+      #Win32API
+      bigdecimal
+      #curses
+      #dbm
+      digest
+      digest/md5
+      #digest/rmd160
+      digest/sha1
+      #digest/sha2
+      #dl
+      enumerator
+      etc
+      fcntl
+      #gdbm
+      #iconv
+      io/wait
+      nkf
+      #pty
+      openssl
+      #racc/cparse
+      #readline
+      #sdbm
+      socket
+      stringio
+      strscan
+      syck
+      #syslog
+      #tcltklib
+      thread
+      #tk
+      #win32ole
+      zlib
+  ]
+
+end
 

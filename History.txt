@@ -1,0 +1,4 @@
+=== 0.0.1 / 2009-02-23
+
+* Gamebox lives!
+  * got game generation working in ruby 1.8

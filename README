@@ -1,0 +1,15 @@
+planned features:
+  - skeleton app generation
+  - keyboard input
+  - window displaying
+  - optional GUI via rubygoo
+  - sound manager
+  - resource manager w/ caching
+  - static deployment bundles (crate)
+    - ruby
+    - SDL
+    - rubygame
+possible features:
+  - network manager
+  - physics integration
+  - game objects?
