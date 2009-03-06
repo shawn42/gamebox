@@ -147,7 +147,9 @@ CRATE_BOOT_H
       create_crate_boot_h
       compile_options = %w[ CFLAGS XCFLAGS CPPFLAGS ].collect { |c| compile_params[c] }.join(' ')
       sdl_cflags = `sdl-config --cflags`
+
       cmd = "#{compile_params['CC']} #{compile_options} #{sdl_cflags.strip} -I#{Crate.ruby.pkg_dir} -o crate_boot.o -c crate_boot.c"
+
       logger.debug cmd
       sh cmd
       ::CLEAN << "crate_boot.o"
@@ -179,15 +181,22 @@ CRATE_BOOT_H
       lib_db = File.join( dist_dir, "lib.db" )
       app_db = File.join( dist_dir, "app.db" )
       directory dist_dir
-      packer_cmd = "amalgalite-pack"
+#      packer_cmd = "amalgalite-pack --verbose "
+      packer_cmd = "amalgalite-pack "
 
       task :pack_ruby => dist_dir do
         prefix = File.join( ::Crate.ruby.pkg_dir, "lib" )
-        
+
         logger.info "Packing ruby standard lib into #{lib_db}"
         cmd = "#{packer_cmd} --drop-table --db #{lib_db} --compress --strip-prefix #{prefix} #{prefix}" 
         logger.debug cmd
         sh "#{cmd} > /dev/null"
+
+#        packer_cmd = "amalgalite-pack --verbose"
+#        rg_core = prefix + "/rubygame_core.bundle"
+#        cmd = "#{packer_cmd} --merge --db #{lib_db} --strip-prefix #{prefix} #{rg_core}"
+#        sh "#{cmd} > /dev/null"
+#        packer_cmd = "amalgalite-pack "
       end
 
       task :pack_ruby_ext => dist_dir do

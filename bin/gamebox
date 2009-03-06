@@ -17,7 +17,7 @@ SOURCE_DIR = File.expand_path(File.dirname(__FILE__) + "/../lib/gamebox")
 Dir.mkdir(TARGET_DIR)
 
 # Generate the directory structure for the new application
-# Gems does not pull in empty directories so app_skeleton only
+# Gems does not pull in empty directories so template_app only
 # contains populated directories
 Dir.mkdir(TARGET_DIR + "/config")
 Dir.mkdir(TARGET_DIR + "/data")
@@ -33,6 +33,11 @@ Dir.mkdir(TARGET_DIR + "/test")
 Dir.chdir(SOURCE_DIR + "/template_app")
 Dir.glob("**/*").each do |file|
   puts "#{file} => #{TARGET_DIR + "/" + file}"
-  File.copy(file, TARGET_DIR + "/" + file) unless File.directory?(file)
+  if File.directory?(file)
+    target_dir = TARGET_DIR + "/" + file
+    Dir.mkdir(target_dir) unless File.exists? target_dir
+  else
+    File.copy(file, TARGET_DIR + "/" + file) 
+  end
 end
 

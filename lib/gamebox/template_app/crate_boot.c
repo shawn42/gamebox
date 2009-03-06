@@ -173,6 +173,12 @@ int main( int argc, char** argv )
   /* initialize all extensions */
   Init_ext();
 
+  /* Force setup of amalgamite */
+  Init_stringio();
+  Init_zlib();
+  Init_syck();
+  Init_amalgalite3();
+
   /* load up the amalgalite libs */
   am_bootstrap_lift( cARB, Qnil );
  

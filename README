@@ -5,6 +5,8 @@ planned features:
   - optional GUI via rubygoo
   - sound manager
   - resource manager w/ caching
+  - levels
+    - load from levels.yml w/ names of the levels to load?
   - static deployment bundles (crate)
     - ruby
     - SDL
@@ -13,3 +15,4 @@ possible features:
   - network manager
   - physics integration
   - game objects?
+  - highscore upload system
