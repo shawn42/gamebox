@@ -16,3 +16,4 @@ possible features:
   - physics integration
   - game objects?
   - highscore upload system
+  - AI?

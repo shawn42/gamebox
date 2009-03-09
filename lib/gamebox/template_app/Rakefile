@@ -26,7 +26,7 @@ Crate::Project.new( PROJ_NAME ) do |crate|
   #  app = App.new
   #  app.run( ARGV, ENV )
   #
-  crate.main_file  = "application"
+  crate.main_file  = "app"
   crate.main_class = "GameboxApp"
   crate.run_method = "run"
 
@@ -35,7 +35,7 @@ Crate::Project.new( PROJ_NAME ) do |crate|
   # This default one one will make sure to get any top level .rb files
   # in the crate application directory.
   #
-  crate.packing_lists << Crate::PackingList.new( Dir.glob("src/*.rb") )
+  crate.packing_lists << Crate::PackingList.new( Dir.glob("*.rb") )
 
 
   # The extensions to compile into your project.  Remove the ones you do not

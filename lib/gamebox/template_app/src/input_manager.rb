@@ -22,8 +22,8 @@ class InputManager
   def main_loop(game)
     catch(:rubygame_quit) do
       loop do
+        # add magic hooks
         @queue.each do |event|
-          fire :event_received, event
           case event
           when KeyDownEvent
             case event.key
@@ -32,8 +32,6 @@ class InputManager
             when K_ESCAPE
               throw :rubygame_quit
             end
-          when KeyUpEvent
-            fire :key_up, event
           when QuitEvent
             throw :rubygame_quit
           end
