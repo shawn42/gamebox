@@ -2,6 +2,7 @@ require 'inflector'
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them.
 class Actor
+  extend Publisher
   attr_accessor :behaviors
 
   def initialize
