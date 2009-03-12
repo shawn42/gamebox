@@ -1,10 +1,15 @@
 # Levels represent on level of game play.  Some games will likely have only one
 # level. Level is responsible for loading its background, props, and directors.
+require 'inflector'
 class Level
 
   attr_accessor :directors
-  def initialize()
+  def initialize
     @directors = []
+    setup
+  end
+
+  def setup
   end
 
   def update(time)
@@ -18,5 +23,4 @@ class Level
       dir.draw target
     end
   end
-
 end

@@ -13,7 +13,11 @@ class ActorFactory
     end
     model_klass_name = Inflector.camelize actor
     model_klass = Object.const_get model_klass_name
-    model = model_klass.new
+
+    # This seems like a hack, how _should_ he get the level?
+    model = model_klass.new @mode_manager.current_mode.level
+
+
     view_klass = Object.const_get model_klass_name+"View"
     view_klass.new @mode_manager.current_mode, model if view_klass
     return model

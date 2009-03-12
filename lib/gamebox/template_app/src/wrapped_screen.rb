@@ -1,7 +1,7 @@
 class WrappedScreen
   constructor :config_manager
   attr_accessor :screen
-  def setup()
+  def setup
     w,h = @config_manager[:screen_resolution]
     flags = []
     flags << HWSURFACE

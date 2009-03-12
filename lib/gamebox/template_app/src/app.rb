@@ -16,21 +16,21 @@ class GameboxApp
     GameboxApp.new.start argv, env
   end
 
-  def initialize()
+  def initialize
     @context = DIY::Context.from_file(APP_ROOT + '/config/objects.yml')
   end
   
-  def setup()
+  def setup
     Rubygame.init
     @game = @context[:game]
   end
   
-  def main_loop()
+  def main_loop
     @input_manager = @context[:input_manager]
     @input_manager.main_loop @game
   end
 
-  def shutdown()
+  def shutdown
     Rubygame.quit
   end
 

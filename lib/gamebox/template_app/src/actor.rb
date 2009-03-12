@@ -5,13 +5,23 @@ class Actor
   extend Publisher
   attr_accessor :behaviors
 
-  def initialize
+  # all Actors exist somewhere
+  attr_accessor :x, :y, :level
+
+  def initialize(level)
+    @x = 0
+    @y = 0
+    @level = level
     @behaviors = {}
     # add our classes behaviors
     class_behaviors = self.class.behaviors.dup
     for behavior in class_behaviors
       is behavior
     end
+    setup
+  end
+
+  def setup
   end
 
   def is?(behavior_sym)
@@ -59,7 +69,6 @@ class Actor
       for a in args
         @behaviors << a
       end
-      p @behaviors
       @behaviors
     end
   end

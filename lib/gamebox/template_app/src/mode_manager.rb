@@ -2,7 +2,7 @@
 class ModeManager
 
 #  constructor :intro_mode
-  def initialize()
+  def initialize
     @modes = {}
   end
 
@@ -30,7 +30,7 @@ class ModeManager
   end
 
   def update(time)
-    @modes[@mode].update unless @modes[@mode].nil?
+    @modes[@mode].update time unless @modes[@mode].nil?
   end
 
   def draw(target)

@@ -17,6 +17,4 @@ class Director
       act.draw target
     end
   end
-
-
 end

@@ -4,11 +4,11 @@ class ConfigManager
   constructor :resource_manager
   GAME_SETTINGS_FILE = "game"
 
-  def setup()
+  def setup
     @settings = @resource_manager.load_config(GAME_SETTINGS_FILE)
   end
 
-  def save()
+  def save
     @resource_manager.save_settings(GAME_SETTINGS_FILE, @settings)
   end
 

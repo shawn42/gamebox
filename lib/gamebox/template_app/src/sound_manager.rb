@@ -1,7 +1,7 @@
 class SoundManager
 
   constructor :resource_manager, :config_manager
-  def setup()
+  def setup
     # Not in the pygame version - for Rubygame, we need to 
     # explicitly open the audio device.
     # Args are:

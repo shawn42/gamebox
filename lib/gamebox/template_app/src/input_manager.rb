@@ -1,8 +1,9 @@
+require 'publisher'
 class InputManager
   extend Publisher
   can_fire :key_up, :event_received
   
-  def initialize()
+  def initialize
     @queue = EventQueue.new
     @queue.ignore = [
       ActiveEvent,
@@ -35,6 +36,8 @@ class InputManager
           when QuitEvent
             throw :rubygame_quit
           end
+          fire :event_received, event
+
         end
 
         game.update @clock.tick
