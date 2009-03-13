@@ -21,8 +21,9 @@ end
 class Wall < Actor
   has_behaviors :physical => {:shape => :poly, 
     :fixed => true,
-    :mass => 10000,
-    :verts => [[5,700],[5,-700],[15,-700],[15,700]]}
+    :mass => 100,
+    :verts => [[-25,-250],[-25,250],[25,1],[25,-1]]}
+#    :verts => [[5,700],[5,-700],[15,-700],[15,700]]}
 end
 
 class WallView < ShipView
@@ -131,6 +132,13 @@ class Game
     dir.actors << ship
 
     wall = factory.build :wall
+#    wall.shape.body.p = vec2(40,200)
+#    level.space.rehash_static
+#    level.unregister_physical_object wall
+#    wall.shape.body.p = vec2(40,200)
+#    level.register_physical_object wall, true
+#    level.space.rehash_static
+
     dir = Director.new
     level.directors << dir
     dir.actors << wall

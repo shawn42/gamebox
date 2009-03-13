@@ -32,7 +32,11 @@ class Physical < Behavior
     # dropping it into the physical space?
 
     if @actor.level.respond_to? :register_physical_object
-      @actor.level.register_physical_object physical_obj
+      if @opts[:fixed]
+        @actor.level.register_physical_object physical_obj, true
+      else
+        @actor.level.register_physical_object physical_obj
+      end
     else
       raise "physical actor in a non-physical level!"
     end
@@ -61,6 +65,11 @@ class Physical < Behavior
     @actor.class.class_eval do
       define_method :shape do 
         physical_obj.shape
+      end
+    end
+    @actor.class.class_eval do
+      define_method :body do 
+        physical_obj.body
       end
     end
   end

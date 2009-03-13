@@ -6,11 +6,13 @@ require 'physics'
 class PhysicalLevel < Level
   #  GRAVITY = 0.01
   DAMPING = 0.8
+  STEP = 10
+  attr_accessor :space
 
   def initialize
     @directors = []
     @space = Space.new
-    @space.iterations = 4
+    @space.iterations = 7
     @space.damping = DAMPING
     # TODO make gravity configurable/optional
     #    @space.gravity = vec2(0,GRAVITY)
@@ -18,15 +20,28 @@ class PhysicalLevel < Level
   end
 
   def update(time)
-    @space.step time
+    num_steps = time/STEP
+    num_steps.times do 
+      @space.step STEP
+    end
+    
     for dir in @directors
       dir.update time
     end
   end
 
-  def register_physical_object(obj)
+  def register_physical_object(obj,static=false)
     @space.add_body(obj.body)
-    @space.add_shape(obj.shape)
+    if static
+      @space.add_static_shape(obj.shape)
+#      @space.rehash_static
+    else
+      @space.add_shape(obj.shape)
+    end
   end
 
+  def unregister_physical_object(obj)
+    @space.remove_body(obj.body)
+    @space.remove_shape(obj.shape)
+  end
 end
