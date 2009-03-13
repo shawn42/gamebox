@@ -18,12 +18,29 @@ class ShipView < ActorView
   end
 end
 
-class Wall < Actor
+class LeftWall < Actor
   has_behaviors :physical => {:shape => :poly, 
     :fixed => true,
     :mass => 100,
-    :verts => [[-25,-250],[-25,250],[25,1],[25,-1]]}
-#    :verts => [[5,700],[5,-700],[15,-700],[15,700]]}
+    :verts => [[0,0],[0,800],[1,800],[1,0]]}
+end
+class TopWall < Actor
+  has_behaviors :physical => {:shape => :poly, 
+    :fixed => true,
+    :mass => 100,
+    :verts => [[0,0],[0,1],[1024,1],[1024,0]]}
+end
+class BottomWall < Actor
+  has_behaviors :physical => {:shape => :poly, 
+    :fixed => true,
+    :mass => 100,
+    :verts => [[0,0],[0,1],[1024,1],[1024,0]]}
+end
+class RightWall < Actor
+  has_behaviors :physical => {:shape => :poly, 
+    :fixed => true,
+    :mass => 100,
+    :verts => [[0,0],[0,800],[1,800],[1,0]]}
 end
 
 class WallView < ShipView
@@ -35,6 +52,10 @@ class WallView < ShipView
     target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [250,150,150,255] 
   end
 end
+class RightWallView < WallView;end
+class TopWallView < WallView;end
+class LeftWallView < WallView;end
+class BottomWallView < WallView;end
 
 class Ship < Actor
   has_behaviors :physical => {:shape => :circle, 
@@ -77,23 +98,23 @@ end
 class AsteroidLevel < PhysicalLevel
   def setup
     # TODO get this from screen of config
-    @width = 500
-    @height = 500
-    @space.add_collision_func(:ship, :wall) do |ship, wall|
-
-      # move ship across map
-      if wall.body.p.x < 1
-        ship.body.p = vec2(@width,ship.body.p.y)
-      end
-      if wall.body.p.x > @width
-        ship.body.p = vec2(0,ship.body.p.y)
-      end
-      if wall.body.p.y < 1
-        ship.body.p = vec2(ship.body.p.x, @height)
-      end
-      if wall.body.p.y > @height
-        ship.body.p = vec2(ship.body.p.x, 0)
-      end
+    @width = 1024
+    @height = 800
+    @space.add_collision_func(:ship, :left_wall) do |ship, wall|
+      bb = ship.bb
+      ship.body.p = vec2(@width-bb.r-bb.l,ship.body.p.y)
+    end
+    @space.add_collision_func(:ship, :right_wall) do |ship, wall|
+      bb = ship.bb
+      ship.body.p = vec2(bb.r-bb.l,ship.body.p.y)
+    end
+    @space.add_collision_func(:ship, :top_wall) do |ship, wall|
+      bb = ship.bb
+      ship.body.p = vec2(ship.body.p.x,@height-bb.b-bb.t)
+    end
+    @space.add_collision_func(:ship, :bottom_wall) do |ship, wall|
+      bb = ship.bb
+      ship.body.p = vec2(ship.body.p.x,bb.t-bb.b)
     end
   end
 end
@@ -127,26 +148,26 @@ class Game
     factory = ActorFactory.new @mode_manager
 
     ship = factory.build :ship
+    ship.warp vec2(300,300)
+
     dir = ShipDirector.new
     level.directors << dir
     dir.actors << ship
 
-    wall = factory.build :wall
-#    wall.shape.body.p = vec2(40,200)
-#    level.space.rehash_static
-#    level.unregister_physical_object wall
-#    wall.shape.body.p = vec2(40,200)
-#    level.register_physical_object wall, true
-#    level.space.rehash_static
+    left_wall = factory.build :left_wall
+    top_wall = factory.build :top_wall
+    right_wall = factory.build :right_wall
+    bottom_wall = factory.build :bottom_wall
 
-    dir = Director.new
-    level.directors << dir
-    dir.actors << wall
+    right_wall.warp vec2(1023,0)
+    bottom_wall.warp vec2(0,799)
 
     @input_manager.when :event_received do |event|
       case event
       when KeyDownEvent
         case event.key
+        when K_SPACE
+          ship.warp vec2(300,300)
         when K_LEFT
           ship.moving_left = true
         when K_RIGHT

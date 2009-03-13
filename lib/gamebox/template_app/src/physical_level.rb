@@ -34,14 +34,18 @@ class PhysicalLevel < Level
     @space.add_body(obj.body)
     if static
       @space.add_static_shape(obj.shape)
-#      @space.rehash_static
     else
       @space.add_shape(obj.shape)
     end
   end
 
-  def unregister_physical_object(obj)
+  def unregister_physical_object(obj,static=false)
     @space.remove_body(obj.body)
-    @space.remove_shape(obj.shape)
+    if static
+      @space.remove_static_shape(obj.shape)
+    else
+      @space.remove_shape(obj.shape)
+    end
   end
+
 end
