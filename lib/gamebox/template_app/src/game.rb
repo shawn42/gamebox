@@ -6,7 +6,6 @@ require 'actor_view'
 require 'actor_factory'
 
 
-
 class ShipView < ActorView
   def setup
     # TODO subscribe for all events here
@@ -14,19 +13,32 @@ class ShipView < ActorView
   def draw(target)
     x = @actor.x
     y = @actor.y
-#    p "#{x},#{y}"
-    target.draw_box_s [x,y], [x+20,y+20], [150,150,150,255] 
+    bb = @actor.shape.bb
+    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [50,250,150,255] 
   end
 end
+
 class Wall < Actor
-  has_behaviors :physical
-  # TODO pull out shape info?
+  has_behaviors :physical => {:shape => :poly, 
+    :fixed => true,
+    :mass => 10000,
+    :verts => [[5,700],[5,-700],[15,-700],[15,700]]}
 end
+
 class WallView < ShipView
+  def draw(target)
+    x = @actor.x
+    y = @actor.y
+
+    bb = @actor.shape.bb
+    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [250,150,150,255] 
+  end
 end
 
 class Ship < Actor
-  has_behaviors :physical
+  has_behaviors :physical => {:shape => :circle, 
+    :mass => 40,
+    :radius => 10}
   attr_accessor :moving_forward, :moving_back,
     :moving_left, :moving_right
   def setup
@@ -64,9 +76,10 @@ end
 class AsteroidLevel < PhysicalLevel
   def setup
     # TODO get this from screen of config
-    @width = 1000
-    @height = 800
+    @width = 500
+    @height = 500
     @space.add_collision_func(:ship, :wall) do |ship, wall|
+
       # move ship across map
       if wall.body.p.x < 1
         ship.body.p = vec2(@width,ship.body.p.y)

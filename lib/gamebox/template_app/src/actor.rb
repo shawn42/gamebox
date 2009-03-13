@@ -28,14 +28,16 @@ class Actor
     @behaviors[behavior_sym]
   end
 
-  def is(behavior_sym)
+  def is(behavior_def)
+    behavior_sym = behavior_def.is_a?(Hash) ? behavior_def.keys.first : behavior_def
+    behavior_opts = behavior_def.is_a?(Hash) ? behavior_def.values.first : []
     begin
       require behavior_sym.to_s;
     rescue LoadError
       # maybe its included somewhere else
     end
     klass = Object.const_get Inflector.camelize(behavior_sym)
-    @behaviors[behavior_sym] = klass.new self
+    @behaviors[behavior_sym] = klass.new self, behavior_opts
   end
 
   def is_no_longer(behavior_sym)
