@@ -7,9 +7,6 @@ require 'actor_factory'
 
 
 class ShipView < ActorView
-  def setup
-    # TODO subscribe for all events here
-  end
   def draw(target)
     x = @actor.x
     y = @actor.y
@@ -67,8 +64,8 @@ class Ship < Actor
     @turn_speed = 0.003
 
     i = @input_manager
-    i.reg KeyDownEvent, K_SPACE do
-      warp vec2(rand(400)-100,rand(400)-100)
+    i.reg KeyDownEvent, K_RCTRL, K_LCTRL do
+      warp vec2(rand(400)+100,rand(400)+100)
     end
     i.reg KeyDownEvent, K_LEFT do
       @moving_left = true

@@ -70,11 +70,13 @@ class InputManager
 #      end
 #    end
 #  end
-  def register_hook(event_class, event_id, &block)
+  def register_hook(event_class, *event_ids, &block)
     return unless block_given?
     @hooks[event_class] ||= {}
-    @hooks[event_class][event_id] ||= []
-    @hooks[event_class][event_id] << block
+    for event_id in event_ids
+      @hooks[event_class][event_id] ||= []
+      @hooks[event_class][event_id] << block
+    end
   end
   alias reg register_hook
 end
