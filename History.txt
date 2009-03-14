@@ -2,3 +2,10 @@
 
 * Gamebox lives!
   * got game generation working in ruby 1.8
+  * initial objects built
+    * Actor/ActorViews (game objects)
+    * Director manages actors
+    * Level manages directors, backgrounds, level goals
+    * Mode manages level loading and order
+    * Behavior system for adding behaviors to actors (ie physical to put an actor into a physical space)
+    * Lots more to come!
