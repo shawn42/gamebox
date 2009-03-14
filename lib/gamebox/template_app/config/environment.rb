@@ -1,5 +1,6 @@
 ADDITIONAL_LOAD_PATHS = []
 ADDITIONAL_LOAD_PATHS.concat %w(
+  ..
   src 
   lib
   config 

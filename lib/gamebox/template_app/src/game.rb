@@ -24,18 +24,21 @@ class LeftWall < Actor
     :mass => 100,
     :verts => [[0,0],[0,800],[1,800],[1,0]]}
 end
+
 class TopWall < Actor
   has_behaviors :physical => {:shape => :poly, 
     :fixed => true,
     :mass => 100,
     :verts => [[0,0],[0,1],[1024,1],[1024,0]]}
 end
+
 class BottomWall < Actor
   has_behaviors :physical => {:shape => :poly, 
     :fixed => true,
     :mass => 100,
     :verts => [[0,0],[0,1],[1024,1],[1024,0]]}
 end
+
 class RightWall < Actor
   has_behaviors :physical => {:shape => :poly, 
     :fixed => true,
@@ -43,7 +46,7 @@ class RightWall < Actor
     :verts => [[0,0],[0,800],[1,800],[1,0]]}
 end
 
-class WallView < ShipView
+class WallView < ActorView
   def draw(target)
     x = @actor.x
     y = @actor.y
@@ -52,10 +55,6 @@ class WallView < ShipView
     target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [250,150,150,255] 
   end
 end
-class RightWallView < WallView;end
-class TopWallView < WallView;end
-class LeftWallView < WallView;end
-class BottomWallView < WallView;end
 
 class Ship < Actor
   has_behaviors :physical => {:shape => :circle, 
@@ -66,6 +65,35 @@ class Ship < Actor
   def setup
     @speed = 0.7
     @turn_speed = 0.003
+
+    i = @input_manager
+    i.reg KeyDownEvent, K_SPACE do
+      warp vec2(rand(400)-100,rand(400)-100)
+    end
+    i.reg KeyDownEvent, K_LEFT do
+      @moving_left = true
+    end
+    i.reg KeyDownEvent, K_RIGHT do
+      @moving_right = true
+    end
+    i.reg KeyDownEvent, K_UP do
+      @moving_forward = true
+    end
+    i.reg KeyDownEvent, K_DOWN do
+      @moving_back = true
+    end
+    i.reg KeyUpEvent, K_LEFT do
+      @moving_left = false
+    end
+    i.reg KeyUpEvent, K_RIGHT do
+      @moving_right = false
+    end
+    i.reg KeyUpEvent, K_UP do
+      @moving_forward = false
+    end
+    i.reg KeyUpEvent, K_DOWN do
+      @moving_back = false
+    end
   end
 
   def moving_forward?;@moving_forward;end
@@ -95,6 +123,15 @@ class Ship < Actor
   end
 end
 
+class ShipDirector < Director
+  def update(time)
+    # TODO teleport to other side of map?
+    for act in @actors
+      act.update time
+    end
+  end
+end
+
 class AsteroidLevel < PhysicalLevel
   def setup
     # TODO get this from screen of config
@@ -119,19 +156,11 @@ class AsteroidLevel < PhysicalLevel
   end
 end
 
-class ShipDirector < Director
-  def update(time)
-    # TODO teleport to other side of map?
-    for act in @actors
-      act.update time
-    end
-  end
-end
-
 
 class Game
 
-  constructor :wrapped_screen, :input_manager, :sound_manager, :mode_manager
+  constructor :wrapped_screen, :input_manager, :sound_manager,
+    :mode_manager, :actor_factory
 
   def setup
     @sound_manager.play :current_rider
@@ -145,51 +174,25 @@ class Game
     level = AsteroidLevel.new
     mode.level = level
     @mode_manager.add_mode :demo, mode
-    factory = ActorFactory.new @mode_manager
 
-    ship = factory.build :ship
+    ship = @actor_factory.build :ship
     ship.warp vec2(300,300)
 
     dir = ShipDirector.new
     level.directors << dir
     dir.actors << ship
 
-    left_wall = factory.build :left_wall
-    top_wall = factory.build :top_wall
-    right_wall = factory.build :right_wall
-    bottom_wall = factory.build :bottom_wall
+    left_wall = @actor_factory.build :left_wall, 
+      :view => WallView
+    top_wall = @actor_factory.build :top_wall, 
+      :view => WallView
+    right_wall = @actor_factory.build :right_wall, 
+      :view => WallView
+    bottom_wall = @actor_factory.build :bottom_wall, 
+      :view => WallView
 
     right_wall.warp vec2(1023,0)
     bottom_wall.warp vec2(0,799)
-
-    @input_manager.when :event_received do |event|
-      case event
-      when KeyDownEvent
-        case event.key
-        when K_SPACE
-          ship.warp vec2(300,300)
-        when K_LEFT
-          ship.moving_left = true
-        when K_RIGHT
-          ship.moving_right = true
-        when K_UP
-          ship.moving_forward = true
-        when K_DOWN
-          ship.moving_back = true
-        end
-      when KeyUpEvent
-        case event.key
-        when K_LEFT
-          ship.moving_left = false
-        when K_RIGHT
-          ship.moving_right = false
-        when K_UP
-          ship.moving_forward = false
-        when K_DOWN
-          ship.moving_back = false
-        end
-      end  
-    end
 
     @mode_manager.change_mode_to :demo
   end

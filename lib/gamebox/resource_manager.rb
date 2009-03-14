@@ -38,9 +38,10 @@ class ResourceManager
     end
   end
 
+  # TODO make this path include that app name?
   def load_config(name)
     conf = YAML::load_file(CONFIG_PATH + name + ".yml")
-    user_file = "#{ENV['HOME']}/.cold_season/#{name}.yml"
+    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
     if File.exist? user_file
       user_conf = YAML::load_file user_file
       conf = conf.merge user_conf
@@ -49,9 +50,9 @@ class ResourceManager
   end
 
   def save_settings(name, settings)
-    user_cold_season_dir = "#{ENV['HOME']}/.cold_season"
-    FileUtils.mkdir_p user_cold_season_dir
-    user_file = "#{ENV['HOME']}/.cold_season/#{name}.yml"
+    user_gamebox_dir = "#{ENV['HOME']}/.gamebox"
+    FileUtils.mkdir_p user_gamebox_dir
+    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
     File.open user_file, "w" do |f|
       f.write settings.to_yaml
     end

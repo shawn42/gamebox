@@ -4,6 +4,7 @@ game:
     - input_manager
     - sound_manager
     - mode_manager
+    - actor_factory
 resource_manager:
 mode_manager:
 sound_manager:
@@ -14,6 +15,10 @@ input_manager:
 wrapped_screen:
   compose:
     - config_manager
+actor_factory:
+  compose:
+    - mode_manager
+    - input_manager
 config_manager:
   compose:
     - resource_manager

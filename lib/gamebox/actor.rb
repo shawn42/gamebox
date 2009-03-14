@@ -6,12 +6,14 @@ class Actor
   attr_accessor :behaviors
 
   # all Actors exist somewhere
-  attr_accessor :x, :y, :level
+  attr_accessor :x, :y, :level, :input_manager
 
-  def initialize(level)
+  def initialize(level, input_manager)
     @x = 0
     @y = 0
     @level = level
+    @input_manager = input_manager
+
     @behaviors = {}
     # add our classes behaviors
     class_behaviors = self.class.behaviors.dup
