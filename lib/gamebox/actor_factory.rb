@@ -1,7 +1,9 @@
 class ActorFactory
-  constructor :mode_manager, :input_manager
+  constructor :input_manager
 
-  def build(actor, opts={})
+  attr_accessor :mode_manager
+
+  def build(actor, level, opts={})
     begin
       require actor.to_s
       require actor.to_s+"_view"
@@ -12,8 +14,7 @@ class ActorFactory
     model_klass = Object.const_get model_klass_name
 
     # This seems like a hack, how _should_ he get the level?
-    model = model_klass.new @mode_manager.current_mode.level, @input_manager
-
+    model = model_klass.new level, @input_manager
 
     view_klass = opts[:view]
     if view_klass

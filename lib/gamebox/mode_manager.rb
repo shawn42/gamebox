@@ -1,20 +1,25 @@
-#require 'publisher'
+require 'inflector'
 class ModeManager
 
-#  constructor :intro_mode
-  def initialize
+  constructor :resource_manager, :actor_factory
+  def setup
     @modes = {}
+    @actor_factory.mode_manager = self
+    modes = @resource_manager.load_config('mode_level_config')[:modes]
+    for mode, levels in modes
+      mode_klass_name = Inflector.camelize mode.to_s+"Mode"
+      begin
+        require mode.to_s+"_mode"
+      rescue LoadError
+        # hope it's defined somewhere else
+      end
+      mode_klass = ObjectSpace.const_get mode_klass_name
+      add_mode mode, mode_klass.new(@actor_factory, levels)
+    end
   end
 
   def add_mode(mode_sym, mode_instance)
     @modes[mode_sym] = mode_instance
-    for e in mode_instance.events
-      mode_instance.when e do
-        #blah
-        p e
-      end
-    end
-
     @mode = mode_sym unless @mode
     mode_instance
   end

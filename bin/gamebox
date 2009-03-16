@@ -8,7 +8,13 @@ if %w(--version -v).include? ARGV.first
   exit(0)
 end
 
-require 'ftools'
+begin
+  require 'ftools'
+  fklass = File
+rescue LoadError
+  require 'fileutils'
+  fklass = FileUtils
+end
 
 PROJECT_NAME = ARGV[0]
 TARGET_DIR = File.expand_path(Dir.pwd + "/" + PROJECT_NAME)
@@ -37,7 +43,7 @@ Dir.glob("**/*").each do |file|
     target_dir = TARGET_DIR + "/" + file
     Dir.mkdir(target_dir) unless File.exists? target_dir
   else
-    File.copy(file, TARGET_DIR + "/" + file) 
+    fklass.copy(file, TARGET_DIR + "/" + file) 
   end
 end
 

@@ -9,7 +9,8 @@ class PhysicalLevel < Level
   STEP = 10
   attr_accessor :space
 
-  def initialize
+  def initialize(actor_factory)
+    @actor_factory = actor_factory
     @directors = []
     @space = Space.new
     @space.iterations = 7

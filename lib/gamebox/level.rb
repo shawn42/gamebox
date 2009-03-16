@@ -4,7 +4,8 @@ require 'inflector'
 class Level
 
   attr_accessor :directors
-  def initialize
+  def initialize(actor_factory)
+    @actor_factory = actor_factory
     @directors = []
     setup
   end

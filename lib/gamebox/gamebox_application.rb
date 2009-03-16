@@ -10,6 +10,7 @@ require "environment"
 require 'publisher'
 require 'constructor'
 require 'diy'
+require 'actor_factory'
 
 class GameboxApp
   def self.run(argv,env)
