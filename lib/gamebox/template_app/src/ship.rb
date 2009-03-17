@@ -1,5 +1,6 @@
 require 'actor'
 require 'actor_view'
+require 'publisher'
 
 class ShipView < ActorView
   def draw(target)
@@ -12,6 +13,9 @@ end
 
 
 class Ship < Actor
+
+  can_fire :shoot
+
   has_behaviors :physical => {:shape => :circle, 
     :mass => 40,
     :radius => 10}
@@ -22,6 +26,9 @@ class Ship < Actor
     @turn_speed = 0.003
 
     i = @input_manager
+    i.reg KeyDownEvent, K_SPACE do
+      shoot
+    end
     i.reg KeyDownEvent, K_RCTRL, K_LCTRL do
       warp vec2(rand(400)+100,rand(400)+100)
     end
@@ -60,6 +67,10 @@ class Ship < Actor
     move_back time if moving_back?
     move_left time if moving_left?
     move_right time if moving_right?
+  end
+
+  def shoot
+    fire :shoot
   end
 
   def move_right(time)

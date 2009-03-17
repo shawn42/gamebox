@@ -27,6 +27,7 @@ lib/gamebox/template_app/Rakefile
 lib/gamebox/template_app/config/boot.rb
 lib/gamebox/template_app/config/environment.rb
 lib/gamebox/template_app/config/game.yml
+lib/gamebox/template_app/config/mode_level_config.yml
 lib/gamebox/template_app/config/objects.yml
 lib/gamebox/template_app/crate_boot.c
 lib/gamebox/template_app/crate_boot.h
@@ -52,6 +53,13 @@ lib/gamebox/template_app/recipes/rubygame/rubygame.rake
 lib/gamebox/template_app/recipes/rubygems/rubygems.rake
 lib/gamebox/template_app/recipes/zlib/zlib.rake
 lib/gamebox/template_app/src/app.rb
+lib/gamebox/template_app/src/bullet.rb
+lib/gamebox/template_app/src/demo_level.rb
+lib/gamebox/template_app/src/demo_mode.rb
 lib/gamebox/template_app/src/game.rb
+lib/gamebox/template_app/src/rock.rb
+lib/gamebox/template_app/src/ship.rb
+lib/gamebox/template_app/src/ship_director.rb
+lib/gamebox/template_app/src/walls.rb
 lib/gamebox/version.rb
 lib/gamebox/wrapped_screen.rb

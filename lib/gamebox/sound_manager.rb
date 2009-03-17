@@ -29,8 +29,8 @@ class SoundManager
       files = Dir.glob "#{MUSIC_PATH}**"
       for f in files
         name = File.basename(f)
-        sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
         begin
+          sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
           @music[sym] = @resource_manager.load_music(f)
         rescue;end
       end if files
@@ -39,8 +39,8 @@ class SoundManager
       files = Dir.glob "#{SOUND_PATH}**"
       for f in files
         name = File.basename(f)
-        sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
         begin
+          sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
           @sounds[sym] = @resource_manager.load_music(f)
         rescue;end
       end if files

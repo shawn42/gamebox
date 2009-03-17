@@ -35,7 +35,6 @@ class Mode
   end
 
   def draw(target)
-    target.fill [255,255,255,255]
     @level.draw target
     for d in @drawables.values
       d.draw target

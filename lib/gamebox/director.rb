@@ -4,17 +4,23 @@ class Director
 
   def initialize
     @actors = []
+    setup
+  end
+
+  def setup
+  end
+
+  def add_actor(actor)
+    @actors << actor
+    actor_added actor
+  end
+
+  def actor_added(actor)
   end
 
   def update(time)
     for act in @actors
       act.update time
-    end
-  end
-
-  def draw(target)
-    for act in @actors
-      act.draw target
     end
   end
 end

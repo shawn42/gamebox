@@ -42,28 +42,33 @@ class Physical < Behavior
     end
 
     # write code here to keep physics and x,y of actor in sync
-    @actor.class.class_eval do
-      define_method :x do 
-        physical_obj.body.p.x
-      end
-      define_method :y do 
-        physical_obj.body.p.y
-      end
-      define_method :x= do |new_x|
-        raise "I am physical, you should apply forces"
-      end
-      define_method :y= do |new_y|
-        raise "I am physical, you should apply forces"
-      end
-      define_method :shape do 
-        physical_obj.shape
-      end
-      define_method :body do 
-        physical_obj.body
-      end
-      define_method :warp do |new_p|
-        physical_obj.body.p = new_p
-        @level.space.rehash_static if physical_obj.opts[:fixed]
+    @actor.instance_eval do
+      (class << self; self; end).class_eval do
+        define_method :foo do 
+          puts "foo"
+        end
+        define_method :x do 
+          physical_obj.body.p.x
+        end
+        define_method :y do 
+          physical_obj.body.p.y
+        end
+        define_method :x= do |new_x|
+          raise "I am physical, you should apply forces"
+        end
+        define_method :y= do |new_y|
+          raise "I am physical, you should apply forces"
+        end
+        define_method :shape do 
+          physical_obj.shape
+        end
+        define_method :body do 
+          physical_obj.body
+        end
+        define_method :warp do |new_p|
+          physical_obj.body.p = new_p
+          @level.space.rehash_static if physical_obj.opts[:fixed]
+        end
       end
     end
   end
