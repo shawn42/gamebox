@@ -30,7 +30,7 @@ class Bullet < Actor
     if @power <= 0
       fire :kill_me
     end
-    @behaviors[:physical].body.apply_impulse(@dir*time*@speed, ZeroVec2) if @behaviors[:physical].body.v.length < 400
+    physical.body.apply_impulse(@dir*time*@speed, ZeroVec2) if physical.body.v.length < 400
   end
 
 end

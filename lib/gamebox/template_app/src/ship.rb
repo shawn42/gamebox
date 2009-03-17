@@ -21,6 +21,7 @@ class Ship < Actor
     :radius => 10}
   attr_accessor :moving_forward, :moving_back,
     :moving_left, :moving_right
+
   def setup
     @speed = 0.7
     @turn_speed = 0.003
@@ -74,17 +75,17 @@ class Ship < Actor
   end
 
   def move_right(time)
-    @behaviors[:physical].body.a += time*@turn_speed
-    @behaviors[:physical].body.w += time*@turn_speed/5.0 if @behaviors[:physical].body.w > 2.5
+    physical.body.a += time*@turn_speed
+    physical.body.w += time*@turn_speed/5.0 if physical.body.w > 2.5
   end
   def move_left(time)
-    @behaviors[:physical].body.a -= time*@turn_speed
-    @behaviors[:physical].body.w -= time*@turn_speed/5.0 if @behaviors[:physical].body.w > 2.5
+    physical.body.a -= time*@turn_speed
+    physical.body.w -= time*@turn_speed/5.0 if physical.body.w > 2.5
   end
   def move_back(time)
-    @behaviors[:physical].body.apply_impulse(-@behaviors[:physical].body.rot*time*@speed, ZeroVec2) if @behaviors[:physical].body.v.length < 400
+    physical.body.apply_impulse(-physical.body.rot*time*@speed, ZeroVec2) if physical.body.v.length < 400
   end
   def move_forward(time)
-    @behaviors[:physical].body.apply_impulse(@behaviors[:physical].body.rot*time*@speed, ZeroVec2) if @behaviors[:physical].body.v.length < 400
+    physical.body.apply_impulse(physical.body.rot*time*@speed, ZeroVec2) if physical.body.v.length < 400
   end
 end

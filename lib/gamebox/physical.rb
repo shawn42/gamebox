@@ -69,6 +69,9 @@ class Physical < Behavior
           physical_obj.body.p = new_p
           @level.space.rehash_static if physical_obj.opts[:fixed]
         end
+        define_method :physical do 
+          physical_obj
+        end
       end
     end
   end
