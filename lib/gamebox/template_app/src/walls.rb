@@ -28,13 +28,3 @@ class RightWall < Actor
     :mass => 100,
     :verts => [[0,0],[0,800],[1,800],[1,0]]}
 end
-
-class WallView < ActorView
-  def draw(target)
-    x = @actor.x
-    y = @actor.y
-
-    bb = @actor.shape.bb
-    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [250,150,150,255] 
-  end
-end

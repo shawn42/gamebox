@@ -32,14 +32,10 @@ class DemoLevel < PhysicalLevel
       @rock_dir.add_actor rock
     end
 
-    left_wall = @actor_factory.build :left_wall, self,
-      :view => WallView
-    top_wall = @actor_factory.build :top_wall, self,
-      :view => WallView
-    right_wall = @actor_factory.build :right_wall, self,
-      :view => WallView
-    bottom_wall = @actor_factory.build :bottom_wall, self,
-      :view => WallView
+    left_wall = @actor_factory.build :left_wall, self
+    top_wall = @actor_factory.build :top_wall, self
+    right_wall = @actor_factory.build :right_wall, self
+    bottom_wall = @actor_factory.build :bottom_wall, self
 
     right_wall.warp vec2(1023,0)
     bottom_wall.warp vec2(0,799)

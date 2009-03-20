@@ -20,8 +20,12 @@ class ActorFactory
     if view_klass
       view_klass.new @mode_manager.current_mode, model if view_klass
     else
-      view_klass = Object.const_get model_klass_name+"View"
-      view_klass.new @mode_manager.current_mode, model if view_klass
+      begin
+        view_klass = Object.const_get model_klass_name+"View"
+        view_klass.new @mode_manager.current_mode, model if view_klass
+      rescue Exception => ex
+        # if the view class doesn't exist, don't create it
+      end
     end
     return model
   end
