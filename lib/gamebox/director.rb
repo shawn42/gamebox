@@ -4,6 +4,7 @@ class Director
 
   def initialize
     @actors = []
+    @dead_actors = []
     setup
   end
 
@@ -19,8 +20,7 @@ class Director
   end
 
   def remove_actor(actor)
-    @actors.delete actor
-    actor_removed actor
+    @dead_actors << actor
   end
 
   def actor_removed(actor)
@@ -30,6 +30,10 @@ class Director
   end
 
   def update(time)
+    for act in @dead_actors
+      @actors.delete act
+      actor_removed act
+    end
     for act in @actors
       act.update time
     end

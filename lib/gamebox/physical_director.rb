@@ -2,9 +2,11 @@ require 'director'
 
 class PhysicalDirector < Director
   def remove_physical_obj(shape)
-    obj_to_kill = @actors.select{|a|a.shape==shape}.first
-    obj_to_kill.remove_self
-    @actors.delete obj_to_kill
-    obj_to_kill.level.unregister_physical_object obj_to_kill
+    act = @actors.select{|a|a.shape==shape}.first
+    act.remove_self
+  end
+
+  def actor_removed(act)
+    act.level.unregister_physical_object act if act.is? :physical
   end
 end
