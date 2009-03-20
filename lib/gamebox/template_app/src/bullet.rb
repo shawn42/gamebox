@@ -5,14 +5,24 @@ class BulletView < ActorView
   def draw(target)
     x = @actor.x
     y = @actor.y
+
     bb = @actor.shape.bb
     target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [5,25,205,155] 
+
+    img = @actor.image
+    deg = @actor.deg.floor % 360
+    img = img.rotozoom(deg,1,true)
+
+    w,h = *img.size
+    x = x-w/2
+    y = y-h/2
+    img.blit target.screen, [x,y]
   end
 end
 
 
 class Bullet < Actor
-  has_behaviors :physical => {:shape => :circle, 
+  has_behaviors :animated, :physical => {:shape => :circle, 
     :mass => 90,
     :radius => 3}
 

@@ -26,12 +26,14 @@ class Rock < Actor
   def setup
     @behaviors[:physical].body.a -= rand(10)
     @speed = (rand(2)+1)/4.0
-    @turn_speed = rand(2)*0.004
+#    @turn_speed = rand(2)*0.004
+    @turn_speed = rand(2)*0.00004
     @dir = vec2(rand,rand)
   end
 
   def update(time)
-    physical.body.a += time*@turn_speed
+    physical.body.w += time*@turn_speed
+#    p physical.body.a
     physical.body.apply_impulse(@dir*time*@speed, ZeroVec2) if physical.body.v.length < 400
   end
 

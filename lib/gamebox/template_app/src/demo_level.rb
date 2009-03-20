@@ -13,6 +13,8 @@ class DemoLevel < PhysicalLevel
     @ship_dir.when :create_bullet do |ship|
       bullet = @actor_factory.build :bullet, self
       bullet.warp vec2(ship.x,ship.y)
+      # TODO how to get the bullet pointed where it should go?
+#      bullet.body.rot = ship.body.rot
       bullet.dir = vec2(ship.body.rot.x,ship.body.rot.y)
       @ship_dir.add_actor bullet
     end
