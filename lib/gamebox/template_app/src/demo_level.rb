@@ -1,4 +1,5 @@
 require 'physical_level'
+require 'physical_director'
 require 'ship_director'
 
 class DemoLevel < PhysicalLevel
@@ -7,29 +8,26 @@ class DemoLevel < PhysicalLevel
     ship = @actor_factory.build :ship, self
     ship.warp vec2(300,300)
 
-    ship_dir = ShipDirector.new
+    @ship_dir = ShipDirector.new
 
-    ship_dir.when :create_bullet do |ship|
+    @ship_dir.when :create_bullet do |ship|
       bullet = @actor_factory.build :bullet, self
-      bullet.when :kill_me do
-        ship_dir.kill_actor bullet
-      end
       bullet.warp vec2(ship.x,ship.y)
       bullet.dir = vec2(ship.body.rot.x,ship.body.rot.y)
-      ship_dir.add_actor bullet
+      @ship_dir.add_actor bullet
     end
 
-    @directors << ship_dir
-    ship_dir.add_actor ship
+    @ship_dir.add_actor ship
+    @rock_dir = PhysicalDirector.new
 
-    rock_dir = Director.new
-    @directors << rock_dir
+    @directors << @rock_dir
+    @directors << @ship_dir
 
     10.times do
       rock = @actor_factory.build :rock, self
       x,y = rand(400)+200,rand(300)+200
       rock.warp vec2(x,y)
-      rock_dir.add_actor rock
+      @rock_dir.add_actor rock
     end
 
     left_wall = @actor_factory.build :left_wall, self,
@@ -85,17 +83,30 @@ class DemoLevel < PhysicalLevel
 
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
-      p "SHIP ASPLODE!!"
+#      fire :ship_death
+#      @rock_dir.remove_physical_obj rock
+#      @ship_dir.remove_physical_obj ship
+      puts "SHIP ASPLODE!!"
+#      exit
     end
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
       @score += 10
+      @ship_dir.remove_physical_obj bullet
+      @rock_dir.remove_physical_obj rock
       p "SCORE: #{@score}"
     end
 
+    @stars = []
+    20.times do 
+      @stars << vec2(rand(@width),rand(@height))
+    end
   end
 
   def draw(target)
-    target.fill [255,255,255,255]
+    target.fill [25,25,25,255]
+    for star in @stars
+      target.draw_circle_s([star.x,star.y],1,[255,255,255,255])
+    end
   end
 end
 

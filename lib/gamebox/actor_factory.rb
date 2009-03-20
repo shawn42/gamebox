@@ -14,7 +14,7 @@ class ActorFactory
     model_klass = Object.const_get model_klass_name
 
     # This seems like a hack, how _should_ he get the level?
-    model = model_klass.new level, @input_manager
+    model = model_klass.new level, @input_manager, level.resource_manager
 
     view_klass = opts[:view]
     if view_klass

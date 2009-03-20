@@ -1,4 +1,5 @@
 require 'inflector'
+require 'mode'
 class ModeManager
 
   constructor :resource_manager, :actor_factory
@@ -7,14 +8,17 @@ class ModeManager
     @actor_factory.mode_manager = self
     modes = @resource_manager.load_config('mode_level_config')[:modes]
     for mode, levels in modes
-      mode_klass_name = Inflector.camelize mode.to_s+"Mode"
+      mode_klass_name = "Mode"
+      unless mode == :default
+        mode_klass_name = Inflector.camelize mode.to_s+"Mode"
+      end
       begin
         require mode.to_s+"_mode"
       rescue LoadError
         # hope it's defined somewhere else
       end
       mode_klass = ObjectSpace.const_get mode_klass_name
-      add_mode mode, mode_klass.new(@actor_factory, levels)
+      add_mode mode, mode_klass.new(@actor_factory, @resource_manager, levels)
     end
   end
 

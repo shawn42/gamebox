@@ -5,12 +5,14 @@ require 'level'
 require 'physics'
 class PhysicalLevel < Level
   #  GRAVITY = 0.01
-  DAMPING = 0.8
+#  DAMPING = 0.8
+  DAMPING = 0.994
   STEP = 10
   attr_accessor :space
 
-  def initialize(actor_factory)
+  def initialize(actor_factory,resource_manager)
     @actor_factory = actor_factory
+    @resource_manager = resource_manager
     @directors = []
     @space = Space.new
     @space.iterations = 7

@@ -5,24 +5,34 @@ class RockView < ActorView
   def draw(target)
     x = @actor.x
     y = @actor.y
-    bb = @actor.shape.bb
-    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [5,25,15,255] 
+
+    img = @actor.image
+    deg = @actor.deg.floor % 360
+    img = img.rotozoom(deg,1,true)
+
+    w,h = *img.size
+    x = x-w/2
+    y = y-h/2
+    img.blit target.screen, [x,y]
   end
 end
 
 
 class Rock < Actor
-  has_behaviors :physical => {:shape => :circle, 
-    :mass => 40,
-    :radius => 10}
+  has_behaviors :animated, :physical => {:shape => :circle, 
+    :mass => 200,
+    :radius => 20}
 
   def setup
     @behaviors[:physical].body.a -= rand(10)
-    @speed = rand(2)+1
+    @speed = (rand(2)+1)/4.0
+    @turn_speed = rand(2)*0.004
+    @dir = vec2(rand,rand)
   end
 
   def update(time)
-    @behaviors[:physical].body.apply_impulse(@behaviors[:physical].body.rot*time*@speed, ZeroVec2) if @behaviors[:physical].body.v.length < 400
+    physical.body.a += time*@turn_speed
+    physical.body.apply_impulse(@dir*time*@speed, ZeroVec2) if physical.body.v.length < 400
   end
 
 end

@@ -6,18 +6,17 @@ class BulletView < ActorView
     x = @actor.x
     y = @actor.y
     bb = @actor.shape.bb
-    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [5,25,15,255] 
+    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [5,25,205,155] 
   end
 end
 
 
 class Bullet < Actor
   has_behaviors :physical => {:shape => :circle, 
-    :mass => 10,
-    :radius => 5}
+    :mass => 90,
+    :radius => 3}
 
   attr_accessor :dir
-  can_fire :kill_me
 
   def setup
     @speed = 1
@@ -28,7 +27,7 @@ class Bullet < Actor
   def update(time)
     @power -= time
     if @power <= 0
-      fire :kill_me
+      remove_self
     end
     physical.body.apply_impulse(@dir*time*@speed, ZeroVec2) if physical.body.v.length < 400
   end

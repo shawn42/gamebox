@@ -1,19 +1,12 @@
 planned features:
-  - skeleton app generation
-  - keyboard input
-  - window displaying
   - optional GUI via rubygoo
-  - sound manager
-  - resource manager w/ caching
-  - levels
-    - load from levels.yml w/ names of the levels to load?
+  - add animation behavior
+  - add while key down K_UP callback?
   - static deployment bundles (crate)
     - ruby
     - SDL
     - rubygame
 possible features:
   - network manager
-  - physics integration
-  - game objects?
   - highscore upload system
   - AI?

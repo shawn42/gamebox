@@ -3,8 +3,9 @@ require 'inflector'
 # single player mode).
 class Mode
   attr_accessor :level, :drawables
-  def initialize(actor_factory, levels)
+  def initialize(actor_factory, resource_manager, levels)
     @actor_factory = actor_factory
+    @resource_manager = resource_manager
     @drawables = {}
     @levels = levels
     setup
@@ -27,7 +28,7 @@ class Mode
       # maybe we have included it elsewhere
     end
     level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
-    level = level_klass.new @actor_factory
+    level = level_klass.new @actor_factory, @resource_manager
   end
 
   def update(time)

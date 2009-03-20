@@ -3,6 +3,9 @@ class ActorView
   def initialize(mode,actor)
     @mode = mode
     @actor = actor
+    actor.when :remove_me do
+      @mode.unregister_drawable self
+    end
     @mode.register_drawable self
     @visible = true
 

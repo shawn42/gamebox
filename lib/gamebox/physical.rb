@@ -1,5 +1,6 @@
 require 'behavior'
 require 'inflector'
+require 'publisher'
 class Physical < Behavior
   attr_accessor :shape, :body, :opts
 
@@ -44,9 +45,6 @@ class Physical < Behavior
     # write code here to keep physics and x,y of actor in sync
     @actor.instance_eval do
       (class << self; self; end).class_eval do
-        define_method :foo do 
-          puts "foo"
-        end
         define_method :x do 
           physical_obj.body.p.x
         end
@@ -64,6 +62,9 @@ class Physical < Behavior
         end
         define_method :body do 
           physical_obj.body
+        end
+        define_method :deg do 
+          -(physical_obj.body.a * 180.0 / Math::PI + 90)
         end
         define_method :warp do |new_p|
           physical_obj.body.p = new_p

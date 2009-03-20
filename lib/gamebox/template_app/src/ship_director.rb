@@ -1,10 +1,9 @@
-require 'director'
+require 'physical_director'
 require 'publisher'
-class ShipDirector < Director
+class ShipDirector < PhysicalDirector
   extend Publisher
 
   def setup
-    @dead_actors = []
   end
 
   can_fire :create_bullet
@@ -17,14 +16,7 @@ class ShipDirector < Director
     end
   end
 
-  def kill_actor(actor)
-    @dead_actors << actor
-  end
-
-  # TODO put actor death into parent class
   def update(time)
-    @actors -= @dead_actors
-    @dead_actors = []
     for dir in @actors
       dir.update time
     end

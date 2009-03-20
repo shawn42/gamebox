@@ -3,9 +3,10 @@
 require 'inflector'
 class Level
 
-  attr_accessor :directors
-  def initialize(actor_factory)
+  attr_accessor :directors, :resource_manager
+  def initialize(actor_factory,resource_manager)
     @actor_factory = actor_factory
+    @resource_manager = resource_manager
     @directors = []
     setup
   end

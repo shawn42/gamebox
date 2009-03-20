@@ -11,7 +11,7 @@ class ResourceManager
   def load_image(file_name)
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
-      cached_img = Rubygame::Surface.load(File.expand_path(DATA_PATH + "gfx/" + file_name))
+      cached_img = Rubygame::Surface.load(File.expand_path(DATA_PATH + "graphics/" + file_name))
       @loaded_images[file_name] = cached_img
     end
     cached_img
