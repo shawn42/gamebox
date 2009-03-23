@@ -1,4 +1,9 @@
 --- 
 :modes: 
   :default: 
-  - :demo
+  - :demo:
+     :rocks: 1
+  - :demo:
+     :rocks: 2
+  - :demo:
+     :rocks: 3

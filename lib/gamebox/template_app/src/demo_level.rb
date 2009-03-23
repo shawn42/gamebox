@@ -13,8 +13,7 @@ class DemoLevel < PhysicalLevel
     @ship_dir.when :create_bullet do |ship|
       bullet = @actor_factory.build :bullet, self
       bullet.warp vec2(ship.x,ship.y)
-      # TODO how to get the bullet pointed where it should go?
-#      bullet.body.rot = ship.body.rot
+      bullet.body.a += ship.body.a
       bullet.dir = vec2(ship.body.rot.x,ship.body.rot.y)
       @ship_dir.add_actor bullet
     end
@@ -25,7 +24,7 @@ class DemoLevel < PhysicalLevel
     @directors << @rock_dir
     @directors << @ship_dir
 
-    10.times do
+    @opts[:rocks].times do
       rock = @actor_factory.build :rock, self
       x,y = rand(400)+200,rand(300)+200
       rock.warp vec2(x,y)
@@ -81,11 +80,8 @@ class DemoLevel < PhysicalLevel
 
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
-#      fire :ship_death
-#      @rock_dir.remove_physical_obj rock
-#      @ship_dir.remove_physical_obj ship
       puts "SHIP ASPLODE!!"
-#      exit
+      fire :restart_level
     end
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
       @score += 10
@@ -98,6 +94,14 @@ class DemoLevel < PhysicalLevel
     20.times do 
       @stars << vec2(rand(@width),rand(@height))
     end
+  end
+
+  def update(time)
+    update_physics time
+    for dir in @directors
+      dir.update time
+    end
+    fire :next_level if @rock_dir.empty?
   end
 
   def draw(target)

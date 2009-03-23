@@ -1,12 +1,13 @@
 planned features:
-  - optional GUI via rubygoo
-  - add animation behavior
+  - add ScoreView
+  - add multi-mode
   - add while key down K_UP callback?
   - static deployment bundles (crate)
     - ruby
     - SDL
     - rubygame
 possible features:
+  - optional GUI via rubygoo
   - network manager
   - highscore upload system
   - AI?

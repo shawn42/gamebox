@@ -3,9 +3,6 @@ require 'publisher'
 class ShipDirector < PhysicalDirector
   extend Publisher
 
-  def setup
-  end
-
   can_fire :create_bullet
   def actor_added(actor)
     if actor.is_a? Ship

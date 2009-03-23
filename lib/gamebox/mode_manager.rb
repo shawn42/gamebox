@@ -18,8 +18,25 @@ class ModeManager
         # hope it's defined somewhere else
       end
       mode_klass = ObjectSpace.const_get mode_klass_name
-      add_mode mode, mode_klass.new(@actor_factory, @resource_manager, levels)
+      mode_instance = mode_klass.new(@actor_factory, @resource_manager, levels)
+      mode_instance.when :next_mode do
+        next_mode
+      end
+      mode_instance.when :prev_mode do
+        prev_mode
+      end
+      add_mode mode, mode_instance
     end
+  end
+
+  def next_mode
+    p "FINISH next mode"
+    exit
+  end
+
+  def prev_mode
+    p "FINISH prev mode"
+    exit
   end
 
   def add_mode(mode_sym, mode_instance)

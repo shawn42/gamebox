@@ -29,6 +29,10 @@ class Director
   def actor_added(actor)
   end
 
+  def empty?
+    @actors.empty?
+  end
+
   def update(time)
     for act in @dead_actors
       @actors.delete act

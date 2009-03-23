@@ -10,9 +10,10 @@ class PhysicalLevel < Level
   STEP = 10
   attr_accessor :space
 
-  def initialize(actor_factory,resource_manager)
+  def initialize(actor_factory,resource_manager,opts={})
     @actor_factory = actor_factory
     @resource_manager = resource_manager
+    @opts = opts
     @directors = []
     @space = Space.new
     @space.iterations = 7
@@ -22,12 +23,15 @@ class PhysicalLevel < Level
     setup
   end
 
-  def update(time)
+  def update_physics(time)
     num_steps = time/STEP
     num_steps.times do 
       @space.step STEP
     end
-    
+  end
+
+  def update(time)
+    update_physics time
     for dir in @directors
       dir.update time
     end
