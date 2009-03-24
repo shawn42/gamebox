@@ -2,8 +2,8 @@
 :modes: 
   :default: 
   - :demo:
-     :rocks: 1
+     :rocks: 4
   - :demo:
-     :rocks: 2
+     :rocks: 8
   - :demo:
-     :rocks: 3
+     :rocks: 16

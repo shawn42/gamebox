@@ -9,6 +9,7 @@ lib/gamebox.rb
 lib/gamebox/actor.rb
 lib/gamebox/actor_factory.rb
 lib/gamebox/actor_view.rb
+lib/gamebox/animated.rb
 lib/gamebox/behavior.rb
 lib/gamebox/config_manager.rb
 lib/gamebox/director.rb
@@ -18,8 +19,10 @@ lib/gamebox/level.rb
 lib/gamebox/mode.rb
 lib/gamebox/mode_manager.rb
 lib/gamebox/physical.rb
+lib/gamebox/physical_director.rb
 lib/gamebox/physical_level.rb
 lib/gamebox/physics.rb
+lib/gamebox/publisher_ext.rb
 lib/gamebox/resource_manager.rb
 lib/gamebox/sound_manager.rb
 lib/gamebox/template_app/README
@@ -31,7 +34,15 @@ lib/gamebox/template_app/config/mode_level_config.yml
 lib/gamebox/template_app/config/objects.yml
 lib/gamebox/template_app/crate_boot.c
 lib/gamebox/template_app/crate_boot.h
+lib/gamebox/template_app/data/fonts/Asimov.ttf
+lib/gamebox/template_app/data/fonts/FONTS_GO_HERE
 lib/gamebox/template_app/data/graphics/GRAPHICS_GO_HERE
+lib/gamebox/template_app/data/graphics/bullet/idle/1.png
+lib/gamebox/template_app/data/graphics/rock/idle/1.png
+lib/gamebox/template_app/data/graphics/ship/.DS_Store
+lib/gamebox/template_app/data/graphics/ship/idle/1.png
+lib/gamebox/template_app/data/graphics/ship/thrust/1.png
+lib/gamebox/template_app/data/graphics/ship/thrust/2.png
 lib/gamebox/template_app/data/music/MUSIC_GOES_HERE
 lib/gamebox/template_app/data/music/current_rider.ogg
 lib/gamebox/template_app/data/sounds/SOUND_FX_GO_HERE
@@ -55,9 +66,9 @@ lib/gamebox/template_app/recipes/zlib/zlib.rake
 lib/gamebox/template_app/src/app.rb
 lib/gamebox/template_app/src/bullet.rb
 lib/gamebox/template_app/src/demo_level.rb
-lib/gamebox/template_app/src/demo_mode.rb
 lib/gamebox/template_app/src/game.rb
 lib/gamebox/template_app/src/rock.rb
+lib/gamebox/template_app/src/score.rb
 lib/gamebox/template_app/src/ship.rb
 lib/gamebox/template_app/src/ship_director.rb
 lib/gamebox/template_app/src/walls.rb
