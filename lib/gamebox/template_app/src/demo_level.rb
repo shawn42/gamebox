@@ -4,11 +4,11 @@ require 'ship_director'
 
 class DemoLevel < PhysicalLevel
   def setup
-    @score = 0
     @ship = @actor_factory.build :ship, self
     @ship.warp vec2(300,300)
 
     @ship_dir = ShipDirector.new
+    @score_dir = Director.new
 
     @ship_dir.when :create_bullet do |ship|
       bullet = @actor_factory.build :bullet, self
@@ -23,6 +23,12 @@ class DemoLevel < PhysicalLevel
 
     @directors << @rock_dir
     @directors << @ship_dir
+    @directors << @score_dir
+
+    @score = @actor_factory.build :score, self
+    @score.x = 10
+    @score.y = 10
+    @score_dir.add_actor @score
 
     @opts[:rocks].times do
       rock = @actor_factory.build :rock, self
@@ -86,11 +92,11 @@ class DemoLevel < PhysicalLevel
       end
       @ship_dir.remove_physical_obj ship
     end
+
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
       @score += 10
       @ship_dir.remove_physical_obj bullet
       @rock_dir.remove_physical_obj rock
-      p "SCORE: #{@score}"
     end
 
     @stars = []

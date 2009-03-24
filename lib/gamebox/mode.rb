@@ -5,7 +5,7 @@ class Mode
   extend Publisher
   can_fire_anything
 
-  attr_accessor :level, :drawables
+  attr_accessor :level, :drawables, :resource_manager
   def initialize(actor_factory, resource_manager, levels)
     @actor_factory = actor_factory
     @resource_manager = resource_manager

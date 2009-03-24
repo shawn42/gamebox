@@ -1,5 +1,5 @@
 class ActorView
-  attr_accessor :actor, :mode, :visible
+  attr_accessor :actor, :mode
   def initialize(mode,actor)
     @mode = mode
     @actor = actor
@@ -7,7 +7,6 @@ class ActorView
       @mode.unregister_drawable self
     end
     @mode.register_drawable self
-    @visible = true
 
     setup
   end

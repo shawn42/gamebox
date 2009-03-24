@@ -5,7 +5,7 @@ require "fileutils"
 class ResourceManager
   def initialize
     @loaded_images = {}
-    @loaded_svgs = {}
+    @loaded_fonts = {}
   end
 
   def load_image(file_name)
@@ -23,7 +23,6 @@ class ResourceManager
       return sound
     rescue Rubygame::SDLError => ex
       puts "Cannot load music " + full_name + " : " + ex
-      exit
     end
   end
 
@@ -34,8 +33,27 @@ class ResourceManager
       return sound
     rescue Rubygame::SDLError => ex
       puts "Cannot load sound " + full_name + " : " + ex
-      exit
     end
+  end
+
+  # loads TTF fonts from the fonts dir and caches them for later
+  def load_font(name, size)
+    @loaded_fonts[name] ||= {}
+    return @loaded_fonts[name][size] if @loaded_fonts[name][size]
+    begin
+      unless @ttf_loaded
+        TTF.setup
+        @ttf_loaded = true
+      end
+      
+      full_name = File.expand_path(DATA_PATH + "fonts/" + name)
+      font = TTF.new(full_name, size)
+      @loaded_fonts[name][size] = font
+      return font
+    rescue Exception => ex
+      puts "Cannot load font " + full_name + " : " + ex
+    end
+    return nil
   end
 
   # TODO make this path include that app name?
