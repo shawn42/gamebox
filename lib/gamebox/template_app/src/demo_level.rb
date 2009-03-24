@@ -5,8 +5,8 @@ require 'ship_director'
 class DemoLevel < PhysicalLevel
   def setup
     @score = 0
-    ship = @actor_factory.build :ship, self
-    ship.warp vec2(300,300)
+    @ship = @actor_factory.build :ship, self
+    @ship.warp vec2(300,300)
 
     @ship_dir = ShipDirector.new
 
@@ -18,7 +18,7 @@ class DemoLevel < PhysicalLevel
       @ship_dir.add_actor bullet
     end
 
-    @ship_dir.add_actor ship
+    @ship_dir.add_actor @ship
     @rock_dir = PhysicalDirector.new
 
     @directors << @rock_dir
@@ -81,7 +81,10 @@ class DemoLevel < PhysicalLevel
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
       puts "SHIP ASPLODE!!"
-      fire :restart_level
+      @ship_dir.find_physical_obj(ship).when :remove_me do
+        fire :restart_level
+      end
+      @ship_dir.remove_physical_obj ship
     end
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
       @score += 10
@@ -101,7 +104,12 @@ class DemoLevel < PhysicalLevel
     for dir in @directors
       dir.update time
     end
-    fire :next_level if @rock_dir.empty?
+    if @rock_dir.empty?
+      @ship.when :remove_me do
+        fire :next_level
+      end
+      @ship.remove_self
+    end
   end
 
   def draw(target)

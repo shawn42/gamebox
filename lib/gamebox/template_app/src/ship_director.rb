@@ -14,8 +14,8 @@ class ShipDirector < PhysicalDirector
   end
 
   def update(time)
-    for dir in @actors
-      dir.update time
+    for act in @actors
+      act.update time if act.alive?
     end
   end
 end

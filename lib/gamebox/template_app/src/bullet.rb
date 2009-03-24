@@ -3,6 +3,10 @@ require 'actor_view'
 
 class BulletView < ActorView
   def draw(target)
+#    caller.each do |c|
+#      p c
+#    end
+
     x = @actor.x
     y = @actor.y
 

@@ -8,6 +8,8 @@ include Rubygame
 require "environment"
 
 require 'publisher'
+require 'publisher_ext'
+require 'inflector'
 require 'constructor'
 require 'diy'
 require 'actor_factory'

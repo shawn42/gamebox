@@ -56,20 +56,6 @@ class InputManager
     end
   end
 
-#  def register_hooks(new_hooks)
-#    for hook_def in new_hooks
-#      register_hook hook_def
-#    end
-#  end
-#  def register_hook(hook_def)
-#    for event_type, val in hook_def
-#      @hooks[event_type] ||= {}
-#      for identifier, callback in val
-#        @hooks[event_type][identifier] ||= []
-#        @hooks[event_type][identifier] << callback
-#      end
-#    end
-#  end
   def register_hook(event_class, *event_ids, &block)
     return unless block_given?
     @hooks[event_class] ||= {}
@@ -77,6 +63,23 @@ class InputManager
       @hooks[event_class][event_id] ||= []
       @hooks[event_class][event_id] << block
     end
+    listener = eval("self", block.binding) 
+    listener.when :remove_me do
+      unregister_hook event_class, *event_ids, &block
+    end
   end
   alias reg register_hook
+
+  def unregister_hook(event_class, *event_ids, &block)
+    @hooks[event_class] ||= {}
+    for event_id in event_ids
+      @hooks[event_class][event_id] ||= []
+      @hooks[event_class][event_id].delete block
+    end
+  end
+  alias unreg unregister_hook
+
+  def clear_hooks
+    @hooks = {}
+  end
 end

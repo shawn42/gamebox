@@ -38,8 +38,9 @@ class Director
       @actors.delete act
       actor_removed act
     end
+    @dead_actors = []
     for act in @actors
-      act.update time
+      act.update time if act.alive?
     end
   end
 end

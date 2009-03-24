@@ -85,7 +85,7 @@ class Mode
   end
 
   def unregister_drawable(drawable)
-    @drawables.delete drawable
+    @drawables.delete drawable.object_id
   end
 
   def clear_drawables
@@ -93,7 +93,7 @@ class Mode
   end
 
   def register_drawable(drawable)
-    @drawables[drawable] = drawable
+    @drawables[drawable.object_id] = drawable
   end
 end
 

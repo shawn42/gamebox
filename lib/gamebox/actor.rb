@@ -1,5 +1,3 @@
-require 'inflector'
-require 'publisher'
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them.
 class Actor
@@ -7,7 +5,7 @@ class Actor
   attr_accessor :behaviors
 
   # all Actors exist somewhere
-  attr_accessor :x, :y, :level, :input_manager, :resource_manager
+  attr_accessor :x, :y, :level, :input_manager, :resource_manager, :alive
 
   can_fire_anything
 
@@ -17,6 +15,7 @@ class Actor
     @level = level
     @input_manager = input_manager
     @resource_manager = resource_manager
+    @alive = true
 
     @behaviors = {}
     # add our classes behaviors
@@ -30,8 +29,14 @@ class Actor
   def setup
   end
 
+  def alive?
+    @alive
+  end
+
   def remove_self
+    @alive = false
     fire :remove_me
+    @input_manager.unsubscribe_all self
   end
 
   def is?(behavior_sym)
