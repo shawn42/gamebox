@@ -1,29 +1,8 @@
 require 'actor'
-require 'actor_view'
+require 'animated_actor_view'
 
-class BulletView < ActorView
-  def draw(target)
-#    caller.each do |c|
-#      p c
-#    end
-
-    x = @actor.x
-    y = @actor.y
-
-    bb = @actor.shape.bb
-    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [5,25,205,155] 
-
-    img = @actor.image
-    deg = @actor.deg.floor % 360
-    img = img.rotozoom(deg,1,true)
-
-    w,h = *img.size
-    x = x-w/2
-    y = y-h/2
-    img.blit target.screen, [x,y]
-  end
+class BulletView < AnimatedActorView
 end
-
 
 class Bullet < Actor
   has_behaviors :animated, :physical => {:shape => :circle, 
@@ -34,8 +13,8 @@ class Bullet < Actor
 
   def setup
     @speed = 1
-    # bullets live for 1 second
-    @power = 1000
+    # bullets live for 1/2 second
+    @power = 500
   end
 
   def update(time)

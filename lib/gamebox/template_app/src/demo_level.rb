@@ -8,6 +8,7 @@ class DemoLevel < PhysicalLevel
     @ship.warp vec2(300,300)
 
     @ship_dir = ShipDirector.new
+    @rock_dir = PhysicalDirector.new
     @score_dir = Director.new
 
     @ship_dir.when :create_bullet do |ship|
@@ -19,7 +20,6 @@ class DemoLevel < PhysicalLevel
     end
 
     @ship_dir.add_actor @ship
-    @rock_dir = PhysicalDirector.new
 
     @directors << @rock_dir
     @directors << @ship_dir
@@ -50,43 +50,34 @@ class DemoLevel < PhysicalLevel
     @height = 800
     # setup ship torusness
     @space.add_collision_func(:ship, :left_wall) do |ship, wall|
-      bb = ship.bb
-      ship.body.p = vec2(@width-bb.r-bb.l,ship.body.p.y)
+      ship.body.p = vec2(@width-ship.bb.r-ship.bb.l,ship.body.p.y)
     end
     @space.add_collision_func(:ship, :right_wall) do |ship, wall|
-      bb = ship.bb
-      ship.body.p = vec2(bb.r-bb.l,ship.body.p.y)
+      ship.body.p = vec2(ship.bb.r-ship.bb.l,ship.body.p.y)
     end
     @space.add_collision_func(:ship, :top_wall) do |ship, wall|
-      bb = ship.bb
-      ship.body.p = vec2(ship.body.p.x,@height-bb.b-bb.t)
+      ship.body.p = vec2(ship.body.p.x,@height-ship.bb.b-ship.bb.t)
     end
     @space.add_collision_func(:ship, :bottom_wall) do |ship, wall|
-      bb = ship.bb
-      ship.body.p = vec2(ship.body.p.x,bb.t-bb.b)
+      ship.body.p = vec2(ship.body.p.x,ship.bb.t-ship.bb.b)
     end
 
     # setup rock torusness
     @space.add_collision_func(:rock, :left_wall) do |rock, wall|
-      bb = rock.bb
-      rock.body.p = vec2(@width-bb.r-bb.l,rock.body.p.y)
+      rock.body.p = vec2(@width-rock.bb.r-rock.bb.l,rock.body.p.y)
     end
     @space.add_collision_func(:rock, :right_wall) do |rock, wall|
-      bb = rock.bb
-      rock.body.p = vec2(bb.r-bb.l,rock.body.p.y)
+      rock.body.p = vec2(rock.bb.r-rock.bb.l,rock.body.p.y)
     end
     @space.add_collision_func(:rock, :top_wall) do |rock, wall|
-      bb = rock.bb
-      rock.body.p = vec2(rock.body.p.x,@height-bb.b-bb.t)
+      rock.body.p = vec2(rock.body.p.x,@height-rock.bb.b-rock.bb.t)
     end
     @space.add_collision_func(:rock, :bottom_wall) do |rock, wall|
-      bb = rock.bb
-      rock.body.p = vec2(rock.body.p.x,bb.t-bb.b)
+      rock.body.p = vec2(rock.body.p.x,rock.bb.t-rock.bb.b)
     end
 
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
-      puts "SHIP ASPLODE!!"
       @ship_dir.find_physical_obj(ship).when :remove_me do
         fire :restart_level
       end
@@ -100,9 +91,7 @@ class DemoLevel < PhysicalLevel
     end
 
     @stars = []
-    20.times do 
-      @stars << vec2(rand(@width),rand(@height))
-    end
+    20.times { @stars << vec2(rand(@width),rand(@height)) }
   end
 
   def update(time)

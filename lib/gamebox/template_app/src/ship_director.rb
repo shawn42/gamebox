@@ -12,10 +12,4 @@ class ShipDirector < PhysicalDirector
       end
     end
   end
-
-  def update(time)
-    for act in @actors
-      act.update time if act.alive?
-    end
-  end
 end

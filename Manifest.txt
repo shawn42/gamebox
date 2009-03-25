@@ -10,6 +10,7 @@ lib/gamebox/actor.rb
 lib/gamebox/actor_factory.rb
 lib/gamebox/actor_view.rb
 lib/gamebox/animated.rb
+lib/gamebox/animated_actor_view.rb
 lib/gamebox/behavior.rb
 lib/gamebox/config_manager.rb
 lib/gamebox/director.rb
