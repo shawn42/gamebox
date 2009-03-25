@@ -25,6 +25,7 @@ lib/gamebox/physical_level.rb
 lib/gamebox/physics.rb
 lib/gamebox/publisher_ext.rb
 lib/gamebox/resource_manager.rb
+lib/gamebox/score.rb
 lib/gamebox/sound_manager.rb
 lib/gamebox/template_app/README
 lib/gamebox/template_app/Rakefile
@@ -69,7 +70,6 @@ lib/gamebox/template_app/src/bullet.rb
 lib/gamebox/template_app/src/demo_level.rb
 lib/gamebox/template_app/src/game.rb
 lib/gamebox/template_app/src/rock.rb
-lib/gamebox/template_app/src/score.rb
 lib/gamebox/template_app/src/ship.rb
 lib/gamebox/template_app/src/ship_director.rb
 lib/gamebox/template_app/src/walls.rb
