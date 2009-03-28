@@ -74,7 +74,14 @@ class InputManager
     @hooks[event_class] ||= {}
     for event_id in event_ids
       @hooks[event_class][event_id] ||= []
-      @hooks[event_class][event_id].delete block
+      if block_given?
+        @hooks[event_class][event_id].delete block
+      else
+#        for blocks in @hooks[event_class][event_id]
+#          listener = eval("self", block.binding) 
+#          @hooks[event_class][event_id].delete block if listener == id
+#        end
+      end
     end
   end
   alias unreg unregister_hook

@@ -7,6 +7,7 @@ game:
 resource_manager:
 mode_manager:
   compose:
+    - input_manager
     - resource_manager
     - actor_factory
 sound_manager:

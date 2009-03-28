@@ -2,41 +2,54 @@ require 'inflector'
 require 'mode'
 class ModeManager
 
-  constructor :resource_manager, :actor_factory
+  constructor :resource_manager, :actor_factory, :input_manager
   def setup
     @modes = {}
     @actor_factory.mode_manager = self
     modes = @resource_manager.load_config('mode_level_config')[:modes]
-    for mode, levels in modes
-      mode_klass_name = "Mode"
-      unless mode == :default
-        mode_klass_name = Inflector.camelize mode.to_s+"Mode"
+
+    @mode_names = []
+    for mode_hash in modes
+      for mode, levels in mode_hash
+        @mode_names << mode
+        mode_klass_name = "Mode"
+        unless mode == :default
+          mode_klass_name = Inflector.camelize mode.to_s+"Mode"
+        end
+        begin
+          require mode.to_s+"_mode"
+        rescue LoadError
+          # hope it's defined somewhere else
+        end
+        mode_klass = ObjectSpace.const_get mode_klass_name
+        mode_instance = mode_klass.new(@input_manager, @actor_factory, @resource_manager, levels)
+        mode_instance.when :next_mode do
+          next_mode
+        end
+        mode_instance.when :prev_mode do
+          prev_mode
+        end
+        add_mode mode, mode_instance
       end
-      begin
-        require mode.to_s+"_mode"
-      rescue LoadError
-        # hope it's defined somewhere else
-      end
-      mode_klass = ObjectSpace.const_get mode_klass_name
-      mode_instance = mode_klass.new(@actor_factory, @resource_manager, levels)
-      mode_instance.when :next_mode do
-        next_mode
-      end
-      mode_instance.when :prev_mode do
-        prev_mode
-      end
-      add_mode mode, mode_instance
     end
   end
 
   def next_mode
-    p "FINISH next mode"
-    exit
+    index = @mode_names.index @mode
+    if index == @mode_names.size-1
+      puts "last mode, exiting"
+      exit
+    end
+    change_mode_to @mode_names[index+1]
   end
 
   def prev_mode
-    p "FINISH prev mode"
-    exit
+    index = @mode_names.index @mode
+    if index == 0
+      puts "first mode, exiting"
+      exit
+    end
+    change_mode_to @mode_names[index-1]
   end
 
   def add_mode(mode_sym, mode_instance)

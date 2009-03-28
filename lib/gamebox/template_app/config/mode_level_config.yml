@@ -1,9 +1,10 @@
---- 
 :modes: 
-  :default: 
-  - :demo:
-     :rocks: 4
-  - :demo:
-     :rocks: 8
-  - :demo:
-     :rocks: 16
+  - :intro: 
+  - :default: 
+    - :demo:
+       :rocks: 1
+    - :demo:
+       :rocks: 2
+    - :demo:
+       :rocks: 3
+  - :credits: 

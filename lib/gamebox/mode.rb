@@ -6,7 +6,8 @@ class Mode
   can_fire_anything
 
   attr_accessor :level, :drawables, :resource_manager
-  def initialize(actor_factory, resource_manager, levels)
+  def initialize(input_manager, actor_factory, resource_manager, levels)
+    @input_manager = input_manager
     @actor_factory = actor_factory
     @resource_manager = resource_manager
     @drawables = {}
