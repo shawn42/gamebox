@@ -55,6 +55,7 @@ class Ship < Actor
     move_forward time if moving_forward?
     move_left time if moving_left?
     move_right time if moving_right?
+    super time
   end
 
   def shoot

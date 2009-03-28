@@ -1,11 +1,28 @@
 #!/usr/bin/env ruby
 $: << "#{File.dirname(__FILE__)}/../config"
 require "fileutils"
+require 'inflector'
 
 class ResourceManager
   def initialize
     @loaded_images = {}
     @loaded_fonts = {}
+  end
+
+  def load_animation_set(actor, action)
+    # use pngs only for now
+    actor_dir = Inflector.underscore(actor.class)
+    gfx_path = DATA_PATH+"graphics/"
+    frames = Dir.glob("#{gfx_path}#{actor_dir}/#{action}/*.png")
+    action_imgs = []
+
+    frames = frames.sort_by {|f| File.basename(f).to_i }
+    
+    for frame in frames
+      rel_path = frame.slice(gfx_path.size,frame.size)
+      action_imgs << load_image(rel_path)
+    end
+    action_imgs
   end
 
   def load_image(file_name)

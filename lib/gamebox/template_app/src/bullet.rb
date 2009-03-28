@@ -23,6 +23,7 @@ class Bullet < Actor
       remove_self
     end
     physical.body.apply_impulse(@dir*time*@speed, ZeroVec2) if physical.body.v.length < 400
+    super time
   end
 
 end

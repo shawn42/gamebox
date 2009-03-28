@@ -1,11 +1,11 @@
+require 'publisher'
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them.
 class Actor
   extend Publisher
-  attr_accessor :behaviors
 
-  # all Actors exist somewhere
-  attr_accessor :x, :y, :level, :input_manager, :resource_manager, :alive
+  attr_accessor :behaviors, :x, :y, :level, :input_manager,
+    :resource_manager, :alive
 
   can_fire_anything
 
@@ -40,7 +40,7 @@ class Actor
   end
 
   def is?(behavior_sym)
-    @behaviors[behavior_sym]
+    !@behaviors[behavior_sym].nil?
   end
 
   def is(behavior_def)
@@ -67,6 +67,8 @@ class Actor
 
   # to be defined in child class
   def update(time)
+    # TODO maybe use a callback list for child classes
+    update_behaviors time
   end
 
   # to be defined in child class

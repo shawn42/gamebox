@@ -15,7 +15,7 @@ Hoe.new('gamebox', Gamebox::VERSION) do |p|
   p.remote_rdoc_dir = '' # Release to root
   p.extra_deps << ['constructor']
   p.extra_deps << ['publisher']
-  p.extra_deps << ['rspec']
+  p.extra_deps << ['bacon']
 end
 
 STATS_DIRECTORIES = [
@@ -28,20 +28,10 @@ task :stats do
   CodeStatistics.new(*STATS_DIRECTORIES).to_s
 end
 
-begin
-  require 'rake'
-  require 'spec/rake/spectask'
-
-  desc "Run all specs"
-  Spec::Rake::SpecTask.new('specs') do |t|
-      t.spec_files = FileList['test/*_spec.rb']
-  end
-
-rescue LoadError
-  task :spec do 
-    puts "ERROR: RSpec is not installed?"
-  end
+desc "Run all the strips of bacon"
+task :bacon do
+#  sh "bacon -Ilib:test --automatic --quiet"
+  sh "bacon -Ilib:test --automatic "
 end
-
 
 # vim: syntax=Ruby
