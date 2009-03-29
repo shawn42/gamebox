@@ -1,6 +1,7 @@
 require 'physical_level'
 require 'physical_director'
 require 'ship_director'
+require 'walls'
 
 class DemoLevel < PhysicalLevel
   def setup
@@ -13,7 +14,7 @@ class DemoLevel < PhysicalLevel
 
     @ship_dir.when :create_bullet do |ship|
       bullet = @actor_factory.build :bullet, self
-      bullet.warp vec2(ship.x,ship.y)
+      bullet.warp vec2(ship.x,ship.y)+vec2(ship.body.rot.x,ship.body.rot.y).normalize*20
       bullet.body.a += ship.body.a
       bullet.dir = vec2(ship.body.rot.x,ship.body.rot.y)
       @ship_dir.add_actor bullet
