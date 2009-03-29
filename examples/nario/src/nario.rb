@@ -26,7 +26,7 @@ class Nario < Actor
 
   def setup
     mass = self.body.mass
-    @speed = mass * 0.002
+    @speed = mass * 0.02
     @jump_speed = -300*@speed
     @max_speed = 100
     @facing_dir = :right

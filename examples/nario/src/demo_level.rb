@@ -3,7 +3,9 @@ require 'physical_director'
 class DemoLevel < PhysicalLevel
   def setup
     # TODO fix this to be configurable cleanly
-    @space.gravity = vec2(0,0.001)
+    @space.gravity = vec2(0,0.02)
+    @space.iterations = 3
+    @space.damping = 0.7
 
     @ground = @actor_factory.build :ground, self
     @ground.warp vec2(0,600)
