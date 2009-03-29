@@ -1,6 +1,6 @@
 planned features:
-  - add ScoreView
-  - add multi-mode
+  - make physics params avail for PhysicalLevel
+    - set different gravity, etc
   - add while key down K_UP callback?
   - static deployment bundles (crate)
     - ruby
