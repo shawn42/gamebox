@@ -1,0 +1,30 @@
+== Welcome to Gamebox
+Blurb here
+
+== Description of Contents
+
+src
+  Holds all the code that's specific to this particular application.
+
+config
+  Configuration files for the Gamebox environment and other dependencies.
+
+doc
+  This directory is where your application documentation will be stored when generated
+  using <tt>rake doc:app</tt>
+
+lib
+  Application specific libraries. Basically, any kind of custom code that doesn't
+  belong under controllers, models, or helpers. This directory is in the load path.
+
+script
+  Helper scripts for automation and generation.
+
+test
+  Unit and functional tests along with fixtures. When using the script/generate scripts, template
+  test files will be generated for you and placed in this directory.
+
+vendor
+  External libraries that the application depends on. Also includes the plugins subdirectory.
+  If the app has frozen rails, those gems also go here, under vendor/rails/.
+  This directory is in the load path.

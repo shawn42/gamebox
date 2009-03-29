@@ -4,9 +4,9 @@ class Game
     :mode_manager
 
   def setup
-#    @sound_manager.play :current_rider
+    @sound_manager.play :current_rider
 
-    @mode_manager.change_mode_to :default
+    @mode_manager.change_mode_to :intro
   end
 
   def update(time)
