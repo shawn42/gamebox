@@ -50,7 +50,7 @@ class Animated < Behavior
   end
 
   def next_frame()
-    @frame_num = @frame_num % @images[@action].size
+    @frame_num = (@frame_num + 1) % @images[@action].size
   end
 
   # load all the images for this action
