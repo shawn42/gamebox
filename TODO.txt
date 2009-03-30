@@ -1,4 +1,6 @@
 planned features:
+  - add render depth (Z ordering)
+  - add physical SVG level that supports loading from svg file
   - make physics params avail for PhysicalLevel
     - set different gravity, etc
   - add while key down K_UP callback?
