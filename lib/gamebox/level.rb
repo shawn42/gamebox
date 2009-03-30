@@ -6,9 +6,11 @@ class Level
   extend Publisher
 
   can_fire_anything
-  attr_accessor :directors, :resource_manager, :opts
-  def initialize(actor_factory,resource_manager,opts={})
+  attr_accessor :directors, :resource_manager, :sound_manager,
+    :opts 
+  def initialize(actor_factory, resource_manager, sound_manager,opts={}) 
     @actor_factory = actor_factory
+    @sound_manager = sound_manager
     @resource_manager = resource_manager
     @opts = opts
     @directors = []

@@ -9,6 +9,7 @@ mode_manager:
   compose:
     - input_manager
     - resource_manager
+    - sound_manager
     - actor_factory
 sound_manager:
   compose:

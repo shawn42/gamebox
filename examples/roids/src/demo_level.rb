@@ -5,6 +5,8 @@ require 'walls'
 
 class DemoLevel < PhysicalLevel
   def setup
+    @sound_manager.play :current_rider
+
     @ship = @actor_factory.build :ship, self
     @ship.warp vec2(300,300)
 
@@ -17,6 +19,7 @@ class DemoLevel < PhysicalLevel
       bullet.warp vec2(ship.x,ship.y)+vec2(ship.body.rot.x,ship.body.rot.y).normalize*20
       bullet.body.a += ship.body.a
       bullet.dir = vec2(ship.body.rot.x,ship.body.rot.y)
+      @sound_manager.play_sound :laser
       @ship_dir.add_actor bullet
     end
 

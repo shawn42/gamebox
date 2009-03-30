@@ -5,11 +5,12 @@ class Mode
   extend Publisher
   can_fire_anything
 
-  attr_accessor :level, :drawables, :resource_manager
-  def initialize(input_manager, actor_factory, resource_manager, levels)
+  attr_accessor :level, :drawables, :resource_manager, :sound_manager
+  def initialize(input_manager, actor_factory, resource_manager, sound_manager, levels)
     @input_manager = input_manager
     @actor_factory = actor_factory
     @resource_manager = resource_manager
+    @sound_manager = sound_manager
     @drawables = {}
     @levels = levels
     setup
@@ -52,7 +53,7 @@ class Mode
       # maybe we have included it elsewhere
     end
     level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
-    level = level_klass.new @actor_factory, @resource_manager, level_def[level_sym]
+    level = level_klass.new @actor_factory, @resource_manager, @sound_manager, level_def[level_sym]
     level.when :restart_level do
       restart_level
     end

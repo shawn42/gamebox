@@ -2,7 +2,9 @@ require 'inflector'
 require 'mode'
 class ModeManager
 
-  constructor :resource_manager, :actor_factory, :input_manager
+  constructor :resource_manager, :actor_factory, :input_manager,
+    :sound_manager
+
   def setup
     @modes = {}
     @actor_factory.mode_manager = self
@@ -22,7 +24,7 @@ class ModeManager
           # hope it's defined somewhere else
         end
         mode_klass = ObjectSpace.const_get mode_klass_name
-        mode_instance = mode_klass.new(@input_manager, @actor_factory, @resource_manager, levels)
+        mode_instance = mode_klass.new(@input_manager, @actor_factory, @resource_manager, @sound_manager, levels)
         mode_instance.when :next_mode do
           next_mode
         end

@@ -10,9 +10,10 @@ class PhysicalLevel < Level
   STEP = 10
   attr_accessor :space
 
-  def initialize(actor_factory,resource_manager,opts={})
+  def initialize(actor_factory,resource_manager,sound_manager,opts={})
     @actor_factory = actor_factory
     @resource_manager = resource_manager
+    @sound_manager = sound_manager
     @opts = opts
     @directors = []
     @space = Space.new

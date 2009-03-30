@@ -43,9 +43,8 @@ class ResourceManager
     end
   end
 
-  def load_sound(name)
+  def load_sound(full_name)
     begin
-      full_name = File.expand_path(DATA_PATH + "sound/" + name)
       sound = Rubygame::Sound.load(full_name)
       return sound
     rescue Rubygame::SDLError => ex
