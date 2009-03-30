@@ -83,12 +83,14 @@ class DemoLevel < PhysicalLevel
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
       @ship_dir.find_physical_obj(ship).when :remove_me do
+        @sound_manager.play_sound :implosion
         fire :prev_level
       end
       @ship_dir.remove_physical_obj ship
     end
 
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
+      @sound_manager.play_sound :implosion
       @score += 10
       @ship_dir.remove_physical_obj bullet
       @rock_dir.remove_physical_obj rock
