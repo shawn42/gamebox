@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 $: << "#{File.dirname(__FILE__)}/../config"
 
+require 'rubygems'
 require 'environment'
 require 'gamebox'
 
