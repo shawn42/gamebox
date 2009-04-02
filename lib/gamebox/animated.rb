@@ -6,6 +6,7 @@ require 'behavior'
 class Animated < Behavior
   FRAME_UPDATE_TIME = 60
 
+  attr_accessor :frame_time, :frame_num, :animating
   def setup
     @images = {}
     @frame_time = 0
@@ -41,11 +42,10 @@ class Animated < Behavior
 
   def update(time)
     return unless @animating
+    @frame_time += time
     if @frame_time > FRAME_UPDATE_TIME
       next_frame
-      @frame_time = 0
-    else
-      @frame_time += time
+      @frame_time = @frame_time-FRAME_UPDATE_TIME
     end
   end
 
