@@ -5,7 +5,8 @@ require 'walls'
 
 class DemoLevel < PhysicalLevel
   def setup
-    @sound_manager.play :current_rider
+#    @sound_manager.play :current_rider
+    @sound_manager.play :roids
 
     @ship = @actor_factory.build :ship, self
     @ship.warp vec2(300,300)
