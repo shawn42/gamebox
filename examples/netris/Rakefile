@@ -1,0 +1,98 @@
+#
+# Top level Rakefile for building a custom static ruby based application
+#
+libdir = File.dirname(__FILE__)+"/lib"
+$: << libdir
+confdir = File.dirname(__FILE__)+"/config"
+$: << confdir
+
+require 'environment'
+STATS_DIRECTORIES = [
+  %w(Source            src/), 
+  %w(Config            config/), 
+  %w(Maps              maps/), 
+  %w(Unit\ tests       specs/),
+  %w(Libraries         lib/),
+].collect { |name, dir| [ name, "#{APP_ROOT}/#{dir}" ] }.select { |name, dir| File.directory?(dir) }
+
+desc "Report code statistics (KLOCs, etc) from the application"
+task :stats do
+  require 'code_statistics'
+  CodeStatistics.new(*STATS_DIRECTORIES).to_s
+end
+
+require 'crate'
+require 'crate_override'
+
+#
+# The name of your project.  This will be the name of the final executable in
+# the dist directory.
+#
+PROJ_NAME = "mycrateapp"
+
+Crate::Project.new( PROJ_NAME ) do |crate|
+
+  # This is the configuration used to launch your program.
+  #
+  #   main_file  -> the file to 'require'
+  #   main_class -> the Class in the main_file to instantiate
+  #   run_method -> the instance method in main_class to invoke
+  #
+  #The new main of your program will essentially do:
+  #
+  #  require 'application'
+  #  app = App.new
+  #  app.run( ARGV, ENV )
+  #
+  crate.main_file  = "app"
+  crate.main_class = "GameboxApp"
+  crate.run_method = "run"
+
+
+  # The list of extra files to include as packed into the app.db file
+  # This default one one will make sure to get any top level .rb files
+  # in the crate application directory.
+  #
+  crate.packing_lists << Crate::PackingList.new( Dir.glob("*.rb") )
+
+
+  # The extensions to compile into your project.  Remove the ones you do not
+  # want or leave them commented out with a #
+  #
+  crate.extensions = %w[
+      #Win32API
+      bigdecimal
+      #curses
+      #dbm
+      digest
+      digest/md5
+      #digest/rmd160
+      digest/sha1
+      #digest/sha2
+      #dl
+      enumerator
+      etc
+      fcntl
+      #gdbm
+      #iconv
+      io/wait
+      nkf
+      #pty
+      openssl
+      #racc/cparse
+      #readline
+      #sdbm
+      socket
+      stringio
+      strscan
+      syck
+      #syslog
+      #tcltklib
+      thread
+      #tk
+      #win32ole
+      zlib
+  ]
+
+end
+
