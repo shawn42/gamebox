@@ -7,17 +7,13 @@ class DemoLevel < PhysicalLevel
     @space.iterations = 3
     @space.damping = 0.7
 
-    @ground = @actor_factory.build :ground, self
+    @ground = create_actor :ground
     @ground.warp vec2(0,600)
     @ground.shape.e = 0.0004
     @ground.shape.u = 0.0004
 
-    @nario = @actor_factory.build :nario, self
+    @nario = create_actor :nario
     @nario.warp vec2(300,500)
-
-    @nario_dir = PhysicalDirector.new
-    @nario_dir.add_actor @nario
-    @directors << @nario_dir
 
     @stars = []
     20.times { @stars << vec2(rand(@width),rand(@height)) }

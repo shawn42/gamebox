@@ -2,7 +2,7 @@ require 'level'
 require 'ftor'
 class DemoLevel < Level
   def setup
-    @my_actor = @actor_factory.build :my_actor, self
+    @my_actor = create_actor :my_actor
     @my_actor.x = 10
     @my_actor.y = 10
 

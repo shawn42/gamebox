@@ -2,6 +2,7 @@
 # level. Level is responsible for loading its background, props, and directors.
 require 'inflector'
 require 'publisher'
+require 'director'
 class Level
   extend Publisher
 
@@ -18,6 +19,10 @@ class Level
   end
 
   def setup
+  end
+
+  def create_actor(type, args={})
+    @actor_factory.build type, self, args
   end
 
   def update(time)

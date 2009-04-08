@@ -59,7 +59,11 @@ class Ship < Actor
   end
 
   def shoot
-    fire :shoot
+    bullet = spawn :bullet
+    bullet.warp vec2(self.x,self.y)+vec2(self.body.rot.x,self.body.rot.y).normalize*20
+    bullet.body.a += self.body.a
+    bullet.dir = vec2(self.body.rot.x,self.body.rot.y)
+    play_sound :laser
   end
 
   def move_right(time)

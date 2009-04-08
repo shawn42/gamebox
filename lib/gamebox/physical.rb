@@ -1,3 +1,4 @@
+require 'physics'
 require 'behavior'
 require 'inflector'
 require 'publisher'
@@ -6,7 +7,6 @@ class Physical < Behavior
 
   def setup
     # TODO add defaults?
-
     @mass = @opts[:mass]
 
     case @opts[:shape]

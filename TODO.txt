@@ -9,7 +9,11 @@ planned features:
     - SDL
     - rubygame
 possible features:
+  - AI
+    - A*
+    - state machine
+    - rule based
   - optional GUI via rubygoo
   - network manager
   - highscore upload system
-  - AI?
+  - gamebox server (content server?)

@@ -5,16 +5,18 @@ class Actor
   extend Publisher
 
   attr_accessor :behaviors, :x, :y, :level, :input_manager,
-    :resource_manager, :alive
+    :resource_manager, :alive, :opts
 
   can_fire_anything
 
-  def initialize(level, input_manager, resource_manager)
+  def initialize(opts={})
     @x = 0
     @y = 0
-    @level = level
-    @input_manager = input_manager
-    @resource_manager = resource_manager
+    @opts = opts
+    @level = opts[:level]
+    @input_manager = opts[:input]
+    @sound_manager = opts[:sound]
+    @resource_manager = opts[:resources]
     @alive = true
 
     @behaviors = {}
@@ -63,6 +65,14 @@ class Actor
     for behavior in @behaviors.values
       behavior.update time
     end
+  end
+
+  def spawn(type, args={})
+    @level.create_actor type, args
+  end
+
+  def play_sound(sound)
+    @sound_manager.play_sound sound
   end
 
   # to be defined in child class

@@ -3,7 +3,8 @@ require 'actor'
 
 describe 'A new actor' do
   before do
-    @actor = Actor.new "level", "input", "resource"
+    opts = {:level=>"level", :input=>"input", :resources=>"resource"}
+    @actor = Actor.new opts
   end
 
   it 'should be alive' do

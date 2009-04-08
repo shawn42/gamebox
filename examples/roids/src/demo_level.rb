@@ -5,47 +5,27 @@ require 'walls'
 
 class DemoLevel < PhysicalLevel
   def setup
-#    @sound_manager.play :current_rider
     @sound_manager.play :roids
 
-    @ship = @actor_factory.build :ship, self
+    @ship = create_actor :ship
     @ship.warp vec2(300,300)
 
-    @ship_dir = ShipDirector.new
-    @rock_dir = PhysicalDirector.new
-    @score_dir = Director.new
-
-    @ship_dir.when :create_bullet do |ship|
-      bullet = @actor_factory.build :bullet, self
-      bullet.warp vec2(ship.x,ship.y)+vec2(ship.body.rot.x,ship.body.rot.y).normalize*20
-      bullet.body.a += ship.body.a
-      bullet.dir = vec2(ship.body.rot.x,ship.body.rot.y)
-      @sound_manager.play_sound :laser
-      @ship_dir.add_actor bullet
-    end
-
-    @ship_dir.add_actor @ship
-
-    @directors << @rock_dir
-    @directors << @ship_dir
-    @directors << @score_dir
-
-    @score = @actor_factory.build :score, self
+    @score = create_actor :score
     @score.x = 10
     @score.y = 10
-    @score_dir.add_actor @score
 
+    @rocks = []
     @opts[:rocks].times do
-      rock = @actor_factory.build :rock, self
+      rock = create_actor :rock
+      @rocks << rock
       x,y = rand(400)+200,rand(300)+200
       rock.warp vec2(x,y)
-      @rock_dir.add_actor rock
     end
 
-    left_wall = @actor_factory.build :left_wall, self
-    top_wall = @actor_factory.build :top_wall, self
-    right_wall = @actor_factory.build :right_wall, self
-    bottom_wall = @actor_factory.build :bottom_wall, self
+    left_wall = create_actor :left_wall
+    top_wall = create_actor :top_wall
+    right_wall = create_actor :right_wall
+    bottom_wall = create_actor :bottom_wall
 
     right_wall.warp vec2(1023,0)
     bottom_wall.warp vec2(0,799)
@@ -83,18 +63,23 @@ class DemoLevel < PhysicalLevel
 
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
-      @ship_dir.find_physical_obj(ship).when :remove_me do
+#      @ship_dir.find_physical_obj(ship).when :remove_me do
+      @director.find_physical_obj(ship).when :remove_me do
         @sound_manager.play_sound :implosion
         fire :prev_level
       end
-      @ship_dir.remove_physical_obj ship
+#      @ship_dir.remove_physical_obj ship
+      @director.remove_physical_obj ship
     end
 
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
       @sound_manager.play_sound :implosion
       @score += 10
-      @ship_dir.remove_physical_obj bullet
-      @rock_dir.remove_physical_obj rock
+#      @ship_dir.remove_physical_obj bullet
+#      @rock_dir.remove_physical_obj rock
+      @director.remove_physical_obj bullet
+      rock_obj = @director.remove_physical_obj rock
+      @rocks.delete rock_obj
     end
 
     @stars = []
@@ -103,10 +88,13 @@ class DemoLevel < PhysicalLevel
 
   def update(time)
     update_physics time
-    for dir in @directors
-      dir.update time
-    end
-    if @rock_dir.empty?
+#    for dir in @directors
+#      dir.update time
+#    end
+    @director.update time
+
+#    if @rock_dir.empty?
+    if @rocks.empty?
       @ship.when :remove_me do
         fire :next_level
       end

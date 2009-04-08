@@ -1,5 +1,5 @@
 class ActorFactory
-  constructor :input_manager
+  constructor :input_manager, :sound_manager
 
   attr_accessor :mode_manager
 
@@ -13,8 +13,15 @@ class ActorFactory
     model_klass_name = Inflector.camelize actor
     model_klass = Object.const_get model_klass_name
 
-    # This seems like a hack, how _should_ he get the level?
-    model = model_klass.new level, @input_manager, level.resource_manager
+    basic_opts = {
+      :level => level,
+      :input => @input_manager,
+      :sound => @sound_manager,
+      :resources => level.resource_manager
+    }
+    merged_opts = basic_opts.merge(opts)
+
+    model = model_klass.new basic_opts 
 
     view_klass = opts[:view]
     if view_klass

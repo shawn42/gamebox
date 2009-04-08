@@ -17,6 +17,7 @@ class Director
       remove_actor actor
     end
     actor_added actor
+    actor
   end
 
   def remove_actor(actor)

@@ -22,6 +22,7 @@ wrapped_screen:
 actor_factory:
   compose:
     - input_manager
+    - sound_manager
 config_manager:
   compose:
     - resource_manager

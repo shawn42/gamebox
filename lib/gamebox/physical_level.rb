@@ -15,7 +15,7 @@ class PhysicalLevel < Level
     @resource_manager = resource_manager
     @sound_manager = sound_manager
     @opts = opts
-    @directors = []
+    @director = PhysicalDirector.new
     @space = Space.new
     @space.iterations = 7
     @space.damping = DAMPING
@@ -33,9 +33,7 @@ class PhysicalLevel < Level
 
   def update(time)
     update_physics time
-    for dir in @directors
-      dir.update time
-    end
+    @director.update time
   end
 
   def register_physical_object(obj,static=false)
