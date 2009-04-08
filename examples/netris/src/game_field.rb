@@ -12,7 +12,13 @@ class GameField < Actor
   def setup
     i = @input_manager
     i.reg KeyDownEvent, K_SPACE do
-      fire :next_tetromino
+      next_tetromino
     end
+  end
+
+  def next_tetromino 
+    tet = spawn :tetromino
+    tet.x = self.x + rand(240)
+    tet.y = self.y + rand(480)
   end
 end
