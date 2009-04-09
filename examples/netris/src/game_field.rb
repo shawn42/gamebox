@@ -43,6 +43,12 @@ class GameField < Actor
       @grid.piece_right
     end
 
+    i.reg KeyDownEvent, K_DOWN do
+      if @grid.piece_down
+        next_tetromino
+      end
+    end
+
     @time_lapsed = 0
   end
 
