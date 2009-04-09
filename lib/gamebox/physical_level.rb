@@ -3,6 +3,7 @@
 # PhysicalLevel adds a physics space to the Level
 require 'level'
 require 'physics'
+require 'physical_director'
 class PhysicalLevel < Level
   #  GRAVITY = 0.01
 #  DAMPING = 0.8
@@ -12,10 +13,13 @@ class PhysicalLevel < Level
 
   def initialize(actor_factory,resource_manager,sound_manager,opts={})
     @actor_factory = actor_factory
+    @director = PhysicalDirector.new
+    @actor_factory.director = @director
+
     @resource_manager = resource_manager
     @sound_manager = sound_manager
     @opts = opts
-    @director = PhysicalDirector.new
+
     @space = Space.new
     @space.iterations = 7
     @space.damping = DAMPING

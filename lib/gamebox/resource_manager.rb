@@ -9,6 +9,12 @@ class ResourceManager
     @loaded_fonts = {}
   end
 
+  def load_actor_image(actor)
+    # use pngs only for now
+    actor_name = Inflector.underscore(actor.class)
+    return load_image("#{actor_name}.png")
+  end
+
   def load_animation_set(actor, action)
     # use pngs only for now
     actor_dir = Inflector.underscore(actor.class)

@@ -10,13 +10,14 @@ class Level
   attr_accessor :directors, :resource_manager, :sound_manager,
     :opts 
   def initialize(actor_factory, resource_manager, sound_manager,opts={}) 
-    director = Director.new
+
+    @director = Director.new
     @actor_factory = actor_factory
+    @actor_factory.director = @director
+
     @sound_manager = sound_manager
     @resource_manager = resource_manager
     @opts = opts
-    @director = director
-    @actor_factory.director = director
     setup
   end
 

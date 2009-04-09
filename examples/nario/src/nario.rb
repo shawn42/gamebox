@@ -1,28 +1,9 @@
 require 'actor'
-require 'animated_actor_view'
-
-class NarioView < AnimatedActorView
-  def draw(target)
-    x = @actor.x
-    y = @actor.y
-#    bb = @actor.shape.bb
-#    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [240,45,45,255]
-
-    img = @actor.image
-    deg = (@actor.deg.floor+90) % 360
-    img = img.rotozoom(deg,1,true)
-
-    w,h = *img.size
-    x = x-w/2
-    y = y-h/2
-    img.blit target.screen, [x,y]
-  end
-end
 
 class Nario < Actor
   has_behaviors :animated, :physical => {:shape => :poly, 
     :mass => 100,
-    :verts => [[0,0],[0,20],[40,20],[40,0]]}
+    :verts => [[-17,-20],[-17,20],[17,20],[17,-20]]}
 
   def setup
     mass = self.body.mass

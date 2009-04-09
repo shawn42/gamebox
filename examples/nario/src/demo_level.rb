@@ -7,23 +7,22 @@ class DemoLevel < PhysicalLevel
     @space.iterations = 3
     @space.damping = 0.7
 
+    @bg = create_actor :nario_background
+
     @ground = create_actor :ground
-    @ground.warp vec2(0,600)
+    @ground.warp vec2(0,700)
     @ground.shape.e = 0.0004
     @ground.shape.u = 0.0004
 
     @nario = create_actor :nario
     @nario.warp vec2(300,500)
 
-    @stars = []
-    20.times { @stars << vec2(rand(@width),rand(@height)) }
+    # stand nario upright
+    @nario.body.a -= 1.57
   end
 
   def draw(target)
     target.fill [25,25,25,255]
-    for star in @stars
-      target.draw_circle_s([star.x,star.y],1,[255,255,255,255])
-    end
   end
 end
 

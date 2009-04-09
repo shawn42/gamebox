@@ -1,6 +1,4 @@
 require 'physical_level'
-require 'physical_director'
-require 'ship_director'
 require 'walls'
 
 class DemoLevel < PhysicalLevel
@@ -22,10 +20,10 @@ class DemoLevel < PhysicalLevel
       rock.warp vec2(x,y)
     end
 
-    left_wall = create_actor :left_wall
-    top_wall = create_actor :top_wall
-    right_wall = create_actor :right_wall
-    bottom_wall = create_actor :bottom_wall
+    left_wall = create_actor :left_wall, :view => false
+    top_wall = create_actor :top_wall, :view => false
+    right_wall = create_actor :right_wall, :view => false
+    bottom_wall = create_actor :bottom_wall, :view => false
 
     right_wall.warp vec2(1023,0)
     bottom_wall.warp vec2(0,799)

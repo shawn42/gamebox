@@ -1,3 +1,5 @@
+require 'animated_actor_view'
+require 'graphical_actor_view'
 class ActorFactory
   constructor :input_manager, :sound_manager
 
@@ -24,19 +26,23 @@ class ActorFactory
     model = model_klass.new basic_opts 
 
     view_klass = opts[:view]
-    if view_klass
-      view_klass.new @mode_manager.current_mode, model if view_klass
-    else
+
+    if view_klass.nil?
+      # try to auto-figure it..
       begin
         view_klass = Object.const_get model_klass_name+"View"
-        view_klass.new @mode_manager.current_mode, model if view_klass
       rescue Exception => ex
-        # if the view class doesn't exist, don't create it
+        if model.is? :animated
+          view_klass = AnimatedActorView
+        elsif model.is? :graphical or model.is? :physical
+          view_klass = GraphicalActorView
+        end
       end
     end
+    view_klass.new @mode_manager.current_mode, model if view_klass
 
     # Register our new actor with the system
-    director.add_actor model
+    @director.add_actor model
 
     return model
   end

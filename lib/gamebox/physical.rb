@@ -73,6 +73,20 @@ class Physical < Behavior
         define_method :physical do 
           physical_obj
         end
+        define_method :image do 
+          old_image = nil
+          rot_deg = deg.round % 360
+
+          if is? :animated
+            old_image = animated.image
+          elsif is? :graphical
+            old_image = graphical.image
+          end
+
+          if old_image
+            animated.image.rotozoom(rot_deg,1,true)
+          end
+        end
       end
     end
   end
