@@ -53,7 +53,8 @@ class Mode
       # maybe we have included it elsewhere
     end
     level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
-    full_level_def = {:prev_level => prev_level_instance}.merge level_def[level_sym]
+    full_level_def = {:prev_level => prev_level_instance}
+    full_level_def.merge! level_def[level_sym] if level_def[level_sym].is_a? Hash
     level = level_klass.new @actor_factory, @resource_manager, @sound_manager, full_level_def
     level.when :restart_level do
       restart_level
