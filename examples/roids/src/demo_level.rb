@@ -2,6 +2,7 @@ require 'physical_level'
 require 'walls'
 
 class DemoLevel < PhysicalLevel
+  attr_accessor :score
   def setup
     @sound_manager.play :roids
 
@@ -11,6 +12,9 @@ class DemoLevel < PhysicalLevel
     @score = create_actor :score
     @score.x = 10
     @score.y = 10
+
+    prev_level = @opts[:prev_level]
+    @score += prev_level.score.score if prev_level
 
     @rocks = []
     @opts[:rocks].times do
@@ -61,23 +65,25 @@ class DemoLevel < PhysicalLevel
 
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
-#      @ship_dir.find_physical_obj(ship).when :remove_me do
-      @director.find_physical_obj(ship).when :remove_me do
-        @sound_manager.play_sound :implosion
+      @sound_manager.play_sound :implosion
+      shippy = @director.find_physical_obj ship
+      shippy.when :remove_me do
         fire :prev_level
       end
-#      @ship_dir.remove_physical_obj ship
-      @director.remove_physical_obj ship
+      shippy.remove_self if shippy.alive?
     end
 
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|
       @sound_manager.play_sound :implosion
-      @score += 10
-#      @ship_dir.remove_physical_obj bullet
-#      @rock_dir.remove_physical_obj rock
+
+      rocky = @director.find_physical_obj rock
+      rocky.when :remove_me do
+        @score += 10
+      end
+      rocky.remove_self if rocky.alive?
+      @rocks.delete rocky
+
       @director.remove_physical_obj bullet
-      rock_obj = @director.remove_physical_obj rock
-      @rocks.delete rock_obj
     end
 
     @stars = []
@@ -86,12 +92,8 @@ class DemoLevel < PhysicalLevel
 
   def update(time)
     update_physics time
-#    for dir in @directors
-#      dir.update time
-#    end
     @director.update time
 
-#    if @rock_dir.empty?
     if @rocks.empty?
       @ship.when :remove_me do
         fire :next_level

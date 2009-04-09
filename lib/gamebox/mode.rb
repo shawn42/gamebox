@@ -22,30 +22,30 @@ class Mode
   def start
     @level_number = 0
     clear_drawables
-    @level = build_level @levels[@level_number]
+    @level = build_level @levels[@level_number], nil
   end
 
   def next_level
     @level_number += 1
     clear_drawables
-    @level = build_level @levels[@level_number]
+    @level = build_level @levels[@level_number], @level
   end
 
   def prev_level
     @level_number -= 1
     clear_drawables
-    @level = build_level @levels[@level_number]
+    @level = build_level @levels[@level_number], @level
   end
 
   def restart_level
     clear_drawables
-    @level = build_level @levels[@level_number]
+    @level = build_level @levels[@level_number], @level
   end
 
   def stop
   end
 
-  def build_level(level_def)
+  def build_level(level_def, prev_level_instance)
     level_sym = level_def.keys.first
     begin
       require level_sym.to_s+"_level"
@@ -53,7 +53,8 @@ class Mode
       # maybe we have included it elsewhere
     end
     level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
-    level = level_klass.new @actor_factory, @resource_manager, @sound_manager, level_def[level_sym]
+    full_level_def = {:prev_level => prev_level_instance}.merge level_def[level_sym]
+    level = level_klass.new @actor_factory, @resource_manager, @sound_manager, full_level_def
     level.when :restart_level do
       restart_level
     end
