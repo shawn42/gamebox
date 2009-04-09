@@ -10,9 +10,11 @@ end
 
 class GameField < Actor
 
+  TETROMINOS = [:square, :j, :l, :bar, :t, :s, :z]
+
   def setup
     @tetrominos = [:square]
-    @current_speed = 30
+    @current_speed = 40
 
     i = @input_manager
     i.reg KeyDownEvent, K_SPACE do
@@ -21,13 +23,13 @@ class GameField < Actor
   end
 
   def next_tetromino 
-    @current_block = spawn :square
+    type = TETROMINOS[rand(TETROMINOS.length)]
+    @current_block = spawn type
     @current_block.x = self.x + rand(240)
     @current_block.y = self.y + rand(480)
   end
 
   def update(time)
-
     if @current_block
       @current_block.y += @current_speed * (time/1000.0)
 

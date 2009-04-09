@@ -33,7 +33,6 @@ end
 class SquareView < TetrominoView; end
 
 class Square < Tetromino
-
   def setup
     @color = "yellow"
     @blocks = [
@@ -45,5 +44,100 @@ class Square < Tetromino
 
     super
   end
+end
 
+class JView < TetrominoView; end
+
+class J < Tetromino
+  def setup
+    @color = "dark_blue"
+    @blocks = [
+      [0 , 0], 
+      [0,-1], 
+      [1, 0],
+      [2, 0]  
+    ]
+
+    super
+  end
+end
+
+class LView < TetrominoView; end
+
+class L < Tetromino
+  def setup
+    @color = "orange"
+    @blocks = [
+      [0 , 0], 
+      [0,-1], 
+      [-1, 0],
+      [-2, 0]  
+    ]
+
+    super
+  end
+end
+
+class BarView < TetrominoView; end
+
+class Bar < Tetromino
+  def setup
+    @color = "light_blue"
+    @blocks = [
+      [-1, 0], 
+      [0, 0], 
+      [1, 0],
+      [2, 0]  
+    ]
+
+    super
+  end
+end
+
+class TView < TetrominoView; end
+
+class T < Tetromino
+  def setup
+    @color = "purple"
+    @blocks = [
+      [0, 0], 
+      [-1, 0], 
+      [1, 0],
+      [0, -1]  
+    ]
+
+    super
+  end
+end
+
+class SView < TetrominoView; end
+
+class S < Tetromino
+  def setup
+    @color = "green"
+    @blocks = [
+      [0, 0], 
+      [-1, 0], 
+      [0, -1],
+      [1, -1]  
+    ]
+
+    super
+  end
+end
+
+class ZView < TetrominoView; end
+
+class Z < Tetromino
+  def setup
+    @color = "red"
+    @blocks = [
+      [0, 0], 
+      [1, 0], 
+      [0, -1],
+      [-1, -1]  
+    ]
+
+    super
+  end
 end
