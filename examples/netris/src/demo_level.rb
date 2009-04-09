@@ -8,6 +8,8 @@ class DemoLevel < Level
   end
 
   def draw(target)
+    target.fill [0,0,0,255]
+    super
   end
 end
 
