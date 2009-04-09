@@ -31,7 +31,7 @@ class GameField < Actor
     end
 
     i.reg KeyDownEvent, K_SPACE do
-      @grid.drop_piece
+      @grid.drop_piece if @current_block
       next_tetromino
     end
 
