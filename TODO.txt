@@ -1,4 +1,10 @@
 planned features:
+  - make :view => false the way to turn off views
+  - make Physical#image return a rotated image
+  - create a graphical behavior that loads an image from /graphics/[actor].[ext]
+  - make default view of :graphical,:physical just render the image at x,y
+
+  - solidify rdocs
   - add render depth (Z ordering)
   - add physical SVG level that supports loading from svg file
   - make physics params avail for PhysicalLevel
