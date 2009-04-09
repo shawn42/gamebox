@@ -1,20 +1,24 @@
 require 'actor'
 require 'actor_view'
 require 'tetromino'
+require 'grid'
 
 class GameFieldView < ActorView
   def draw(target)
-    target.draw_box [@actor.x,@actor.y], [240,480], [255,255,255,255]
+    target.draw_box [@actor.x,@actor.y], [@actor.grid.width,@actor.grid.height], [255,255,255,255]
   end
 end
 
 class GameField < Actor
 
+  attr_accessor :grid
+
   TETROMINOS = [:square, :j, :l, :bar, :t, :s, :z]
 
   def setup
     @tetrominos = [:square]
-    @current_speed = 40
+    @current_speed = 80
+    @grid = Grid.new(10, 20)
 
     i = @input_manager
     i.reg KeyDownEvent, K_SPACE do
@@ -25,8 +29,9 @@ class GameField < Actor
   def next_tetromino 
     type = TETROMINOS[rand(TETROMINOS.length)]
     @current_block = spawn type
-    @current_block.x = self.x + rand(240)
-    @current_block.y = self.y + rand(480)
+    grid_x, grid_y = @grid.new_piece_coords
+    @current_block.x = self.x + grid_x
+    @current_block.y = self.y + grid_y
   end
 
   def update(time)
