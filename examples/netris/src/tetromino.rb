@@ -36,10 +36,10 @@ class Square < Tetromino
   def setup
     @color = "yellow"
     @blocks = [
-      [0 , 0], # Our block, bottom right
-      [-1, 0], # To the Left
-      [-1,-1], # Up and Left
-      [0 ,-1]  # Above us
+      [0, 0], 
+      [1, 0], 
+      [1, -1], 
+      [0, -1]  
     ]
 
     super
