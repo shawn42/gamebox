@@ -5,7 +5,7 @@ ADDITIONAL_LOAD_PATHS.concat %w(
   src 
   lib
   config 
-  ../..
+  ../../lib
 ).map { |dir| File.dirname(__FILE__) + "/../" + dir }.select { |dir| File.directory?(dir) }
 
 ADDITIONAL_LOAD_PATHS.each do |path|
