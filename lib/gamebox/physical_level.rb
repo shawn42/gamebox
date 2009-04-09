@@ -33,7 +33,7 @@ class PhysicalLevel < Level
 
   def update(time)
     update_physics time
-    @director.update time
+    super
   end
 
   def register_physical_object(obj,static=false)

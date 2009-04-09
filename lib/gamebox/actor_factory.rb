@@ -1,7 +1,7 @@
 class ActorFactory
   constructor :input_manager, :sound_manager
 
-  attr_accessor :mode_manager
+  attr_accessor :mode_manager, :director
 
   def build(actor, level, opts={})
     begin
@@ -34,6 +34,10 @@ class ActorFactory
         # if the view class doesn't exist, don't create it
       end
     end
+
+    # Register our new actor with the system
+    director.add_actor model
+
     return model
   end
 end

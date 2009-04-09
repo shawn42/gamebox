@@ -10,11 +10,13 @@ class Level
   attr_accessor :directors, :resource_manager, :sound_manager,
     :opts 
   def initialize(actor_factory, resource_manager, sound_manager,opts={}) 
+    director = Director.new
     @actor_factory = actor_factory
     @sound_manager = sound_manager
     @resource_manager = resource_manager
     @opts = opts
-    @directors = []
+    @director = director
+    @actor_factory.director = director
     setup
   end
 
@@ -26,14 +28,9 @@ class Level
   end
 
   def update(time)
-    for dir in @directors
-      dir.update time
-    end
+    @director.update time
   end
 
   def draw(target)
-    for dir in @directors
-      dir.draw target
-    end
   end
 end
