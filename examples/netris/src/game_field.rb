@@ -52,6 +52,10 @@ class GameField < Actor
       end
     end
 
+    i.reg KeyDownEvent, K_UP do
+      @grid.rotate_piece if @current_block
+    end
+
     @time_lapsed = 0
   end
 

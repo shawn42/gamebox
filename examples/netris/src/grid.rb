@@ -87,6 +87,11 @@ class Grid
     end
   end
 
+  # Rotate our piece
+  def rotate_piece
+    @falling_piece.rotate
+  end
+
   private
 
   def collides?(where)
