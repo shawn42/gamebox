@@ -6,8 +6,7 @@ class Nario < Actor
     :verts => [[-17,-20],[-17,20],[17,20],[17,-20]]}
 
   def setup
-    # HACK because some people's chipmunk is old?
-    mass = 100 #self.body.mass
+    mass = self.body.mass
     @speed = mass * 0.02
     @jump_speed = -300*@speed
     @max_speed = 100
