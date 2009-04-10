@@ -19,16 +19,20 @@ class DemoLevel < PhysicalLevel
     require 'animated_actor_view'
     pup = create_actor :power_up_block, :view => AnimatedActorView
     pup.body.a -= 1.57
-    pup.warp vec2(500,400)
+    pup.warp vec2(500,600)
 
     nario = create_actor :nario
-    nario.warp vec2(300,500)
+    nario.warp vec2(400,670)
 
     # stand nario upright
     nario.body.a -= 1.57
 
-    @space.add_collision_func(:power_up_block, :ground) do |pup,g|
-      p "power_up_block hit the ground"
+    @space.add_collision_func(:power_up_block, :nario) do |pup,n|
+      pup_obj = @director.find_physical_obj pup
+      if pup_obj.active?
+        p "nario hit the powerup block" 
+        pup_obj.hit
+      end
     end
 
   end
