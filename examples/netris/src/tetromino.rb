@@ -40,8 +40,6 @@ class Tetromino < Actor
       left = block_pos if block_pos < left
     end
 
-    puts "Left boundry is #{left}"
-
     left
   end
 
@@ -52,8 +50,6 @@ class Tetromino < Actor
       block_pos = block[0] * BLOCK_SIZE + x
       right = block_pos if block_pos > right
     end
-
-    puts "Right boundry is #{right}"
 
     right
   end

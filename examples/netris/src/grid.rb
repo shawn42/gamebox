@@ -10,8 +10,6 @@ class Grid
     @columns = columns
     @block_size = block_size
 #    @field = Array.new(rows).map { Array.new(columns) }
-
-    puts "Grid in place. Width of #{self.width} height of #{self.height}"
   end
 
   # Get width of the field in pixels
