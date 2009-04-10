@@ -37,6 +37,11 @@ class Tetromino < Actor
     @current_rotation = (@current_rotation + 1) % @blocks.length
   end
 
+  # For undoing a rotation, for example in the case where a rotation causes a collision
+  def rotate_back
+    @current_rotation = (@current_rotation - 1) % @blocks.length
+  end
+
   # Boundry calculations. Due to the rotations of these pieces,
   # the boundries of tetrominos changes. The following calculate
   # the x and y positions of the boundries of this piece

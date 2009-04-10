@@ -90,6 +90,32 @@ class Grid
   # Rotate our piece
   def rotate_piece
     @falling_piece.rotate
+
+    # Now we need to see if the rotation caused a collision
+    # against one of the walls. 
+    # If so, unrotate it. We nudge the piece a pixel to prevent
+    # the = in the comparitors below from stopping a rotation
+
+    # Right wall
+    @falling_piece.x -= 1
+    if collides?(:right)
+      @falling_piece.rotate_back
+    end
+    @falling_piece.x += 1
+
+    # Left wall
+    @falling_piece.x += 1
+    if collides?(:left)
+      @falling_piece.rotate_back
+    end
+    @falling_piece.x -= 1
+
+    # Bottom
+    @falling_piece.y -= 1
+    if collides?(:down)
+      @falling_piece.rotate_back
+    end
+    @falling_piece.y += 1
   end
 
   private
