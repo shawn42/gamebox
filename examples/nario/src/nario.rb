@@ -3,6 +3,7 @@ require 'actor'
 class Nario < Actor
   has_behaviors :animated, :physical => {:shape => :poly, 
     :mass => 100,
+    :moment => Float::Infinity,
     :verts => [[-17,-20],[-17,20],[17,20],[17,-20]]}
 
   def setup
