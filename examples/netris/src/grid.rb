@@ -9,7 +9,9 @@ class Grid
     @rows = rows
     @columns = columns
     @block_size = block_size
-    @field = Array.new(rows).map { Array.new(columns) }
+#    @field = Array.new(rows).map { Array.new(columns) }
+
+    puts "Grid in place. Width of #{self.width} height of #{self.height}"
   end
 
   # Get width of the field in pixels
@@ -20,6 +22,21 @@ class Grid
   # Get height of the field in pixels
   def height
     @rows * @block_size
+  end
+
+  # X value of the right wall
+  def right_wall
+    self.screen_x + width
+  end
+
+  # X value of left wall
+  def left_wall
+    self.screen_x
+  end
+
+  # Y value of floor
+  def floor
+    self.screen_y + height
   end
 
   # Adds a new playing piece to the field and 
@@ -39,10 +56,12 @@ class Grid
 
   # Move the piece down one row
   def piece_down
-    @falling_piece.y += @block_size
-
-    # Not at the bottom yet
-    return false 
+    if collides?(:down)
+      true
+    else
+      @falling_piece.y += @block_size
+      false
+    end
   end
 
   # Drop piece to the bottom 
@@ -52,12 +71,35 @@ class Grid
 
   # Move to the left
   def piece_left
-    @falling_piece.x -= @block_size
+    if collides?(:left)
+      true
+    else
+      @falling_piece.x -= @block_size
+      false
+    end
   end
 
   # Move to the right
   def piece_right
-    @falling_piece.x += @block_size
+    if collides?(:right)
+      true
+    else
+      @falling_piece.x += @block_size
+      false
+    end
+  end
+
+  private
+
+  def collides?(where)
+    case where
+    when :right
+      @falling_piece.right_boundry >= right_wall
+    when :left
+      @falling_piece.left_boundry <= left_wall
+    when :down
+      @falling_piece.bottom_boundry >= floor
+    end
   end
 
 end

@@ -1,9 +1,9 @@
 require 'actor'
 require 'actor_view'
 
-class TetrominoView < ActorView
+BLOCK_SIZE = 24
 
-  BLOCK_SIZE = 24
+class TetrominoView < ActorView
 
   def draw(target)
     @actor.blocks.each do |b|
@@ -26,6 +26,47 @@ class Tetromino < Actor
 
     # Block Offsets to determine how this Tetromino is drawn
     @blocks ||= [ [0,0] ]
+  end
+
+  # Boundry calculations. Due to the rotations of these pieces,
+  # the boundries of tetrominos changes. The following calculate
+  # the x and y positions of the boundries of this piece
+
+  def left_boundry
+    left = 9999
+    x = self.x
+    self.blocks.each do |block|
+      block_pos = block[0] * BLOCK_SIZE + x
+      left = block_pos if block_pos < left
+    end
+
+    puts "Left boundry is #{left}"
+
+    left
+  end
+
+  def right_boundry
+    right = 0
+    x = self.x + BLOCK_SIZE
+    self.blocks.each do |block|
+      block_pos = block[0] * BLOCK_SIZE + x
+      right = block_pos if block_pos > right
+    end
+
+    puts "Right boundry is #{right}"
+
+    right
+  end
+
+  def bottom_boundry
+    bottom = 0
+    y = self.y + BLOCK_SIZE
+    self.blocks.each do |block|
+      block_pos = block[1] * BLOCK_SIZE + y
+      bottom = block_pos if block_pos > bottom
+    end
+    
+    bottom
   end
 
 end

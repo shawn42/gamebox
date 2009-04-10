@@ -10,6 +10,12 @@ class GameFieldView < ActorView
 
     y1 = @actor.y - 1
     y2 = y1 + @actor.grid.height + 1
+
+#    puts "Width of field is: #{@actor.grid.width}, Height #{@actor.grid.height}"
+#    puts "Actor position x: #{@actor.x} and y #{@actor.y}"
+#
+#    puts "Drawing box to: #{x2},#{y2}"
+
     target.draw_box( [x1, y1], [x2, y2], [255,255,255,255] )
   end
 end
@@ -36,16 +42,18 @@ class GameField < Actor
     end
 
     i.reg KeyDownEvent, K_LEFT do
-      @grid.piece_left
+      @grid.piece_left if @current_block
     end
 
     i.reg KeyDownEvent, K_RIGHT do
-      @grid.piece_right
+      @grid.piece_right if @current_block
     end
 
     i.reg KeyDownEvent, K_DOWN do
-      if @grid.piece_down
-        next_tetromino
+      if @current_block
+        if @grid.piece_down
+          next_tetromino
+        end
       end
     end
 
