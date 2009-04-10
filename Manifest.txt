@@ -16,6 +16,8 @@ lib/gamebox/behavior.rb
 lib/gamebox/config_manager.rb
 lib/gamebox/director.rb
 lib/gamebox/gamebox_application.rb
+lib/gamebox/graphical.rb
+lib/gamebox/graphical_actor_view.rb
 lib/gamebox/inflections.rb
 lib/gamebox/inflector.rb
 lib/gamebox/input_manager.rb
@@ -66,3 +68,4 @@ lib/gamebox/wrapped_screen.rb
 test/helper.rb
 test/test_actor.rb
 test/test_animated.rb
+test/test_physical.rb
