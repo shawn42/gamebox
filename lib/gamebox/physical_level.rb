@@ -23,8 +23,7 @@ class PhysicalLevel < Level
     @space = Space.new
     @space.iterations = 7
     @space.damping = DAMPING
-    # TODO make gravity configurable/optional
-    #    @space.gravity = vec2(0,GRAVITY)
+
     setup
   end
 
@@ -41,19 +40,19 @@ class PhysicalLevel < Level
   end
 
   def register_physical_object(obj,static=false)
-    @space.add_body(obj.body)
     if static
       @space.add_static_shape(obj.shape)
     else
+      @space.add_body(obj.body)
       @space.add_shape(obj.shape)
     end
   end
 
   def unregister_physical_object(obj,static=false)
-    @space.remove_body(obj.body)
     if static
       @space.remove_static_shape(obj.shape)
     else
+      @space.remove_body(obj.body)
       @space.remove_shape(obj.shape)
     end
   end

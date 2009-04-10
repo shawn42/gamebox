@@ -11,7 +11,6 @@ end
 class Ground < Actor
   has_behaviors :physical => {:shape => :poly, 
     :fixed => true,
-    :mass => 99_999,
     :verts => [ 
       [0,0], 
       [0,80], 
