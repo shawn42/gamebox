@@ -22,6 +22,7 @@ lib/gamebox/inflections.rb
 lib/gamebox/inflector.rb
 lib/gamebox/input_manager.rb
 lib/gamebox/level.rb
+lib/gamebox/metaclass.rb
 lib/gamebox/mode.rb
 lib/gamebox/mode_manager.rb
 lib/gamebox/physical.rb
@@ -64,6 +65,7 @@ lib/gamebox/template_app/src/demo_level.rb
 lib/gamebox/template_app/src/game.rb
 lib/gamebox/template_app/src/my_actor.rb
 lib/gamebox/version.rb
+lib/gamebox/viewport.rb
 lib/gamebox/wrapped_screen.rb
 test/helper.rb
 test/test_actor.rb

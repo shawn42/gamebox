@@ -1,6 +1,7 @@
 require 'actor_view'
 
 class AnimatedActorView < ActorView
+
   def draw(target, x_off, y_off)
     x = @actor.x + x_off
     y = @actor.y + y_off

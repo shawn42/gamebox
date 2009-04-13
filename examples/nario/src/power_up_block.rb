@@ -1,4 +1,9 @@
 require 'actor'
+require 'animated_actor_view'
+
+class PowerUpBlockView < AnimatedActorView
+  has_props :layer => 2
+end
 
 class PowerUpBlock < Actor
   HIT_RATE = 90

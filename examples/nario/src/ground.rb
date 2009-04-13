@@ -1,15 +1,12 @@
 require 'actor'
-require 'actor_view'
+require 'graphical_actor_view'
 
-class GroundView < ActorView
-  def draw(target,x_off,y_off)
-    bb = @actor.shape.bb
-    target.draw_box_s [bb.l+x_off,bb.t+y_off], [bb.r+x_off,bb.b+y_off], [40,245,45,255]
-  end
+class GroundView < GraphicalActorView
+  has_props :layer => 2
 end
 
 class Ground < Actor
-  has_behaviors :physical => {:shape => :poly, 
+  has_behaviors :graphical, :physical => {:shape => :poly, 
     :fixed => true,
     :verts => [ 
       [0,0], 

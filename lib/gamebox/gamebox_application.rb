@@ -7,6 +7,7 @@ include Rubygame
 
 require "environment"
 
+require 'metaclass'
 require 'publisher'
 require 'publisher_ext'
 require 'inflector'

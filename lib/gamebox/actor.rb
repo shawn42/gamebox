@@ -102,11 +102,6 @@ class Actor
   def draw(target)
   end
 
-  # Get a metaclass for this class
-  def self.metaclass # :nodoc: 
-    class << self; self; end; 
-  end 
-
   # magic
   metaclass.instance_eval do
     define_method( :behaviors ) do

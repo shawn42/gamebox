@@ -7,7 +7,9 @@ class DemoLevel < PhysicalLevel
     @space.iterations = 3
     @space.damping = 0.7
 
-    bg = create_actor :nario_background
+    mid = create_actor :nario_mid
+    mid.x = 10
+    mid.y = 215
 
     ground = create_actor :ground
     ground.warp vec2(0,700)
@@ -15,17 +17,15 @@ class DemoLevel < PhysicalLevel
     ground.shape.u = 0.0004
 
 
-    # TODO this is a hack
-    require 'animated_actor_view'
-    pup = create_actor :power_up_block, :view => AnimatedActorView
-    pup.body.a -= 1.57
+    pup = create_actor :power_up_block
     pup.warp vec2(500,600)
 
     nario = create_actor :nario
     nario.warp vec2(400,670)
 
-    # stand nario upright
-    nario.body.a -= 1.57
+    @viewport.follow nario, [0,70], [100,60]
+
+    bg = create_actor :nario_background
 
     @space.add_collision_func(:power_up_block, :nario) do |pup,n|
       pup_obj = @director.find_physical_obj pup

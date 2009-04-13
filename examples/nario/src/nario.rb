@@ -1,4 +1,9 @@
 require 'actor'
+require 'animated_actor_view'
+
+class NarioView < AnimatedActorView
+  has_props :layer => 2
+end
 
 class Nario < Actor
   has_behaviors :animated, :physical => {:shape => :poly, 

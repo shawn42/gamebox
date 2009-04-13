@@ -7,12 +7,15 @@ class Mode
   can_fire_anything
 
   attr_accessor :level, :drawables, :resource_manager, :sound_manager
-  def initialize(input_manager, actor_factory, resource_manager, sound_manager, levels)
+  def initialize(input_manager, actor_factory, resource_manager, sound_manager, config_manager, levels)
     @input_manager = input_manager
     @actor_factory = actor_factory
     @resource_manager = resource_manager
     @sound_manager = sound_manager
-    @viewport = Viewport.new
+    @config_manager = config_manager
+    res = @config_manager[:screen_resolution]
+
+    @viewport = Viewport.new res[0], res[1]
     @drawables = {}
     @levels = levels
     setup
@@ -55,9 +58,9 @@ class Mode
       # maybe we have included it elsewhere
     end
     level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
-    full_level_def = {:prev_level => prev_level_instance}
+    full_level_def = { :prev_level => prev_level_instance }
     full_level_def.merge! level_def[level_sym] if level_def[level_sym].is_a? Hash
-    level = level_klass.new @actor_factory, @resource_manager, @sound_manager, full_level_def
+    level = level_klass.new @actor_factory, @resource_manager, @sound_manager, @viewport, full_level_def
     level.when :restart_level do
       restart_level
     end
@@ -81,17 +84,24 @@ class Mode
 
   def update(time)
     @level.update time if @level
+    @viewport.update time
   end
 
   def draw(target)
     @level.draw target, @viewport.x_offset, @viewport.y_offset
-    for d in @drawables.values
-      d.draw target, @viewport.x_offset, @viewport.y_offset
+
+    # draw by layer 0, 1, 2
+    for layer in @drawables.keys.sort
+      for d in @drawables[layer]
+        trans_x = @viewport.x_offset layer
+        trans_y = @viewport.y_offset layer
+        d.draw target, trans_x, trans_y 
+      end
     end
   end
 
   def unregister_drawable(drawable)
-    @drawables.delete drawable.object_id
+    @drawables[drawable.layer].delete drawable
   end
 
   def clear_drawables
@@ -99,7 +109,9 @@ class Mode
   end
 
   def register_drawable(drawable)
-    @drawables[drawable.object_id] = drawable
+    layer = drawable.layer
+    @drawables[layer] ||= []
+    @drawables[layer] << drawable
   end
 end
 
