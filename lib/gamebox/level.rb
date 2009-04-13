@@ -32,6 +32,6 @@ class Level
     @director.update time
   end
 
-  def draw(target)
+  def draw(target,x_off,y_off)
   end
 end

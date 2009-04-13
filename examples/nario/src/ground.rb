@@ -2,9 +2,9 @@ require 'actor'
 require 'actor_view'
 
 class GroundView < ActorView
-  def draw(target)
+  def draw(target,x_off,y_off)
     bb = @actor.shape.bb
-    target.draw_box_s [bb.l,bb.t], [bb.r,bb.b], [40,245,45,255]
+    target.draw_box_s [bb.l+x_off,bb.t+y_off], [bb.r+x_off,bb.b+y_off], [40,245,45,255]
   end
 end
 

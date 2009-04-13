@@ -1,5 +1,5 @@
 class ScoreView < ActorView
-  def draw(target)
+  def draw(target,x_off,y_off)
     text = @actor.score.to_s
     text = '0'*(6-text.size)+text
 

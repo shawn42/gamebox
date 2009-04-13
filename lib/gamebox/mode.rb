@@ -1,4 +1,5 @@
 require 'inflector'
+require 'viewport'
 # Mode is a state that the game is in.  (ie intro mode, multiplayer mode,
 # single player mode).
 class Mode
@@ -11,6 +12,7 @@ class Mode
     @actor_factory = actor_factory
     @resource_manager = resource_manager
     @sound_manager = sound_manager
+    @viewport = Viewport.new
     @drawables = {}
     @levels = levels
     setup
@@ -82,9 +84,9 @@ class Mode
   end
 
   def draw(target)
-    @level.draw target
+    @level.draw target, @viewport.x_offset, @viewport.y_offset
     for d in @drawables.values
-      d.draw target
+      d.draw target, @viewport.x_offset, @viewport.y_offset
     end
   end
 

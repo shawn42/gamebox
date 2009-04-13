@@ -5,10 +5,10 @@ BLOCK_SIZE = 24
 
 class TetrominoView < ActorView
 
-  def draw(target)
+  def draw(target,x_off,y_off)
     @actor.blocks.each do |b|
-      x = (BLOCK_SIZE * b[0]) + @actor.x
-      y = (BLOCK_SIZE * b[1]) + @actor.y
+      x = (BLOCK_SIZE * b[0]) + @actor.x + x_off
+      y = (BLOCK_SIZE * b[1]) + @actor.y + x_off
 
       @actor.image.blit target.screen, [x,y]
     end

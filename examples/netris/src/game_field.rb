@@ -4,12 +4,12 @@ require 'tetromino'
 require 'grid'
 
 class GameFieldView < ActorView
-  def draw(target)
-    x1 = @actor.x - 1
-    x2 = x1 + @actor.grid.width + 1
+  def draw(target,x_off,y_off)
+    x1 = @actor.x - 1 + x_off
+    x2 = x1 + @actor.grid.width + 1 + x_off
 
-    y1 = @actor.y - 1
-    y2 = y1 + @actor.grid.height + 1
+    y1 = @actor.y - 1 + y_off
+    y2 = y1 + @actor.grid.height + 1 + y_off
 
     target.draw_box( [x1, y1], [x2, y2], [255,255,255,255] )
   end

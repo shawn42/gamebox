@@ -37,7 +37,7 @@ class DemoLevel < PhysicalLevel
 
   end
 
-  def draw(target)
+  def draw(target,x_off,y_off)
     target.fill [25,25,25,255]
   end
 end

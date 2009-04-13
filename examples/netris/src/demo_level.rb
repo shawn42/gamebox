@@ -7,7 +7,7 @@ class DemoLevel < Level
     @game_field.y = 80
   end
 
-  def draw(target)
+  def draw(target,x_off,y_off)
     target.fill [0,0,0,255]
     super
   end

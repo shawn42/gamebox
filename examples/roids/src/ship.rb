@@ -2,9 +2,6 @@ require 'actor'
 require 'publisher'
 require 'animated_actor_view'
 
-class ShipView < AnimatedActorView
-end
-
 class Ship < Actor
 
   can_fire :shoot

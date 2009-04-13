@@ -1,9 +1,6 @@
 require 'actor'
 require 'animated_actor_view'
 
-class BulletView < AnimatedActorView
-end
-
 class Bullet < Actor
   has_behaviors :animated, :physical => {:shape => :circle, 
     :mass => 90,
