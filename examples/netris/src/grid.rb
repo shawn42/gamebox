@@ -74,6 +74,7 @@ class Grid
     self.screen_x = @parent.x
     self.screen_y = @parent.y
 
+    next_tetromino
     new_piece
   end
 
@@ -91,7 +92,7 @@ class Grid
   # the grid is drawn at 0,0. If different, make srue these values
   # are modified properly
   def new_piece
-    @falling_piece = next_tetromino
+    next_tetromino
 
     col = @columns / 2 - 1
     row = 1
@@ -108,8 +109,14 @@ class Grid
   end
 
   def next_tetromino
+    @falling_piece = @waiting_piece
+
     type = TETROMINOS[rand(TETROMINOS.length)]
-    @parent.spawn(type)
+    @waiting_piece = @parent.spawn(type)
+    @waiting_piece.x = self.screen_x + self.width + 80
+    @waiting_piece.y = self.screen_y + 40
+
+    @waiting_piece
   end
 
   # Move the piece down one row
@@ -145,7 +152,7 @@ class Grid
     return unless @falling_piece
 
     loop do
-      # Piece down takes care of finishing on hit
+      # piece_down takes care of finishing on hit
       break if piece_down
     end
   end
@@ -204,6 +211,7 @@ class Grid
   # Look for complete rows, and remove them
   def check_row_removal
     to_remove = []
+    # First, we find all rows that need removing
     @field.each_with_index do |row, idx|
       # Ignore last row
       next if row == @field[-1]
@@ -216,7 +224,7 @@ class Grid
       to_remove << idx if good
     end
 
-    # Null out the rows to remove
+    # Then we out the rows to remove
     to_remove.each do |row|
       @field[row].each_index do |col|
         @field[row][col].remove_self if @field[row][col] != 1
@@ -224,7 +232,8 @@ class Grid
       end
     end
 
-    # Move rows above nulled rows down.
+    # And finally move rows above nulled rows down to 
+    # collapse the field
     to_remove.each do |row|
       (1..row).to_a.reverse.each do |r|
         @field[r].length.times do |i|
