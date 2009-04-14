@@ -80,7 +80,16 @@ class DemoLevel < PhysicalLevel
       rocky.when :remove_me do
         @score += 10
       end
-      rocky.remove_self if rocky.alive?
+
+      if rocky.alive?
+        x,y = rocky.x, rocky.y
+        (3+rand(3)).times do
+          bit = create_actor :rock_bit
+          bit.warp vec2(x,y)
+        end
+        rocky.remove_self 
+      end
+
       @rocks.delete rocky
 
       @director.remove_physical_obj bullet
