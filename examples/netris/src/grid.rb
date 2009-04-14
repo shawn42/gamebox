@@ -10,15 +10,15 @@ require 'publisher'
 # should very much simplify collision detection routines. As a visual, the box will look
 # like the following for a 4x8 grid:
 #
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X _ _ _ _ X 
-#   X X X X X X 
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X _ _ _ _ X
+#   X X X X X X
 #
 class Grid
   extend Publisher
@@ -82,10 +82,10 @@ class Grid
     @parent = @falling_piece = nil
     print_field
 
-    fire :game_over 
+    fire :game_over
   end
 
-  # Adds a new playing piece to the field and 
+  # Adds a new playing piece to the field and
   # returns [x,y] of where a new piece needs to be placed.
   # This is an offset from this grid's location, and assumes
   # the grid is drawn at 0,0. If different, make srue these values
@@ -98,7 +98,7 @@ class Grid
 
     @falling_piece.x = col * @block_size + self.screen_x
     @falling_piece.y = row * @block_size + self.screen_y
-    
+
     @falling_piece.grid_position.x = col + 1
     @falling_piece.grid_position.y = row
 
@@ -107,7 +107,7 @@ class Grid
     end
   end
 
-  def next_tetromino 
+  def next_tetromino
     type = TETROMINOS[rand(TETROMINOS.length)]
     @parent.spawn(type)
   end
@@ -175,21 +175,50 @@ class Grid
     return unless @falling_piece
 
     # Now we need to see if the rotation caused a collision.
-    # If so, unrotate it. 
+    # If so, unrotate it.
     @falling_piece.rotate
     @falling_piece.rotate_back if collides?
   end
 
+  # Done with the piece, tell it to break apart into individual block actors, then
+  # keep a reference to those blocks int he position they should be in
   def piece_finished
-    @falling_piece.blocks.each do |block|
-      @field[ @falling_piece.grid_position.y + block[1] ][ @falling_piece.grid_position.x + block[0] ] = 1
+    blocks = @falling_piece.build_blocks
+    blocks.each do |block|
+      @field[
+        @falling_piece.grid_position.y + block.grid_offset_y
+      ][
+        @falling_piece.grid_position.x + block.grid_offset_x
+      ] = block
     end
+
     new_piece
     puts "Piece finished, new field"
     print_field
+
+#    check_row_removal
   end
 
   private
+
+  # Look for complete rows, and remove them
+  def check_row_removal
+    to_remove = []
+    @field.each_with_index do |row, idx|
+      good = true
+      row.each do |col|
+        good = false if col.nil?
+      end
+
+      to_remove << idx if good
+    end
+
+    to_remove.each do |row|
+      @field[row].each_index do |col|
+        @field[row][col] = nil
+      end
+    end
+  end
 
   def print_field
     puts "Field is currently: "
@@ -205,7 +234,7 @@ class Grid
     hit = false
     @falling_piece.blocks.each do |block|
       if !@field[ @falling_piece.grid_position.y + block[1] ][ @falling_piece.grid_position.x + block[0] ].nil?
-        hit = true 
+        hit = true
         break
       end
     end
