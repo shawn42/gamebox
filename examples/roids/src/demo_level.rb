@@ -65,12 +65,14 @@ class DemoLevel < PhysicalLevel
 
     # ship rock collision
     @space.add_collision_func(:rock, :ship) do |rock, ship|
-      @sound_manager.play_sound :implosion
       shippy = @director.find_physical_obj ship
-      shippy.when :remove_me do
-        fire :prev_level
+      unless shippy.invincible?
+        @sound_manager.play_sound :implosion
+        shippy.when :remove_me do
+          fire :prev_level
+        end
+        shippy.remove_self if shippy.alive?
       end
-      shippy.remove_self if shippy.alive?
     end
 
     @space.add_collision_func(:rock, :bullet) do |rock, bullet|

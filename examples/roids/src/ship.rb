@@ -2,6 +2,19 @@ require 'actor'
 require 'publisher'
 require 'animated_actor_view'
 
+class ShipView < AnimatedActorView
+  def draw(target, x_off, y_off)
+    # draw a shield
+    if @actor.invincible?
+      x = @actor.x + x_off
+      y = @actor.y + y_off
+
+      target.draw_circle [x,y], 25, [200,200,255,140]
+    end
+    super target, x_off, y_off
+  end
+end
+
 class Ship < Actor
 
   can_fire :shoot
@@ -13,6 +26,7 @@ class Ship < Actor
     :moving_left, :moving_right
 
   def setup
+    @invincible_timer = 2000
     @speed = 1.1
     @turn_speed = 0.0045
 
@@ -48,7 +62,13 @@ class Ship < Actor
   def moving_forward?;@moving_forward;end
   def moving_left?;@moving_left;end
   def moving_right?;@moving_right;end
+  def invincible?
+    @invincible_timer > 0
+  end
   def update(time)
+    if @invincible_timer > 0
+      @invincible_timer -= time
+    end
     move_forward time if moving_forward?
     move_left time if moving_left?
     move_right time if moving_right?
@@ -57,7 +77,7 @@ class Ship < Actor
 
   def shoot
     bullet = spawn :bullet
-    bullet.warp vec2(self.x,self.y)+vec2(self.body.rot.x,self.body.rot.y).normalize*20
+    bullet.warp vec2(self.x,self.y)+vec2(self.body.rot.x,self.body.rot.y).normalize*30
     bullet.body.a += self.body.a
     bullet.dir = vec2(self.body.rot.x,self.body.rot.y)
     play_sound :laser
