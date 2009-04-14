@@ -18,7 +18,7 @@ end
 
 class Tetromino < Actor
 
-  attr_accessor :image, :blocks, :current_rotation
+  attr_accessor :image, :blocks, :current_rotation, :grid_position
 
   def setup
     @color ||= "green"
@@ -27,6 +27,11 @@ class Tetromino < Actor
     # Block Offsets to determine how this Tetromino is drawn
     @blocks ||= [ [ [0,0] ] ]
     @current_rotation = 0
+
+    # grid_position is this block's current position in the grid
+    # This grid_position is linked to the core rotation block
+    # of this tetromino (the [0,0] block)
+    @grid_position = Struct.new(:x, :y).new(0, 0)
   end
 
   def blocks

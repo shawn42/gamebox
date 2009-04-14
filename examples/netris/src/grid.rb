@@ -1,15 +1,52 @@
+require 'tetromino'
+
 # This class handles the abstract representation of the Tetris grid
-# and conversions from grid cells to hard x and y coordinates in screen space
+# and conversions from grid cells to hard x and y coordinates in screen space.
+#
+# This class also contains an experiement in tetris collision detection. Basically,
+# there are no walls or a floor, but a top-open box made of "blocks". Grid here
+# will keep track of where real pieces are and abstract out this box, but this
+# should very much simplify collision detection routines. As a visual, the box will look
+# like the following for a 4x8 grid:
+#
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X _ _ _ _ X 
+#   X X X X X X 
+#
 class Grid
 
   attr_reader :rows, :columns
   attr_accessor :screen_x, :screen_y
 
+  TETROMINOS = [:square, :j, :l, :bar, :t, :s, :z]
+
   def initialize(columns, rows, block_size = 24)
     @rows = rows
     @columns = columns
     @block_size = block_size
-#    @field = Array.new(rows).map { Array.new(columns) }
+
+    # Build our internal Box representation
+    @field = Array.new(rows)
+
+    (rows + 1).times do |row|
+      @field[row] = Array.new(columns + 2)
+      (columns + 2).times do |col|
+        @field[row][0] = 1
+        @field[row][-1] = 1
+      end
+    end
+
+    (columns + 2).times do |col|
+      @field[-1][col] = 1
+    end
+
+    print_field
   end
 
   # Get width of the field in pixels
@@ -22,19 +59,18 @@ class Grid
     @rows * @block_size
   end
 
-  # X value of the right wall
-  def right_wall
-    self.screen_x + width
+  def playing?
+    !@parent.nil?
   end
 
-  # X value of left wall
-  def left_wall
-    self.screen_x
-  end
+  # Begin Tetris.
+  # Give the block the x and y pixel values of the parent actor
+  def start_play(actor)
+    @parent = actor
+    self.screen_x = @parent.x
+    self.screen_y = @parent.y
 
-  # Y value of floor
-  def floor
-    self.screen_y + height
+    new_piece
   end
 
   # Adds a new playing piece to the field and 
@@ -42,93 +78,127 @@ class Grid
   # This is an offset from this grid's location, and assumes
   # the grid is drawn at 0,0. If different, make srue these values
   # are modified properly
-  def new_piece(piece)
-    @falling_piece = piece
+  def new_piece
+    @falling_piece = next_tetromino
 
-    col = @columns / 2 - 1
-    row = 0
+    col = @columns / 2
+    row = 2
 
     @falling_piece.x = col * @block_size + self.screen_x
     @falling_piece.y = row * @block_size + self.screen_y
+    
+    @falling_piece.grid_position.x = col + 1
+    @falling_piece.grid_position.y = row
+  end
+
+  def next_tetromino 
+    type = TETROMINOS[rand(TETROMINOS.length)]
+    @parent.spawn(type)
   end
 
   # Move the piece down one row
   def piece_down
-    if collides?(:down)
+    return unless @falling_piece
+
+    @falling_piece.y += @block_size
+    @falling_piece.grid_position.y += 1
+
+    # If we collide going down, we're done and next
+    # piece needs to start
+    if collides?
+      piece_up
+      piece_finished
       true
     else
-      @falling_piece.y += @block_size
       false
     end
   end
 
-  # Drop piece to the bottom 
+  # Move a piece back up a position
+  def piece_up
+    return unless @falling_piece
+
+    @falling_piece.y -= @block_size
+    @falling_piece.grid_position.y -= 1
+  end
+
+  # Drop piece to the bottom.
+  # To make sure we only drop as far as collisions allow, we drop each row
+  # and check collisions. Once we collide, move back up and freeze
   def drop_piece
-    @falling_piece.y = self.screen_y + (@rows * @block_size) - @block_size
+    return unless @falling_piece
+
+    loop do
+      # Piece down takes care of finishing on hit
+      break if piece_down
+    end
   end
 
   # Move to the left
   def piece_left
-    if collides?(:left)
-      true
-    else
-      @falling_piece.x -= @block_size
-      false
-    end
+    return unless @falling_piece
+
+    @falling_piece.x -= @block_size
+    @falling_piece.grid_position.x -= 1
+
+    piece_right if collides?
   end
 
   # Move to the right
   def piece_right
-    if collides?(:right)
-      true
-    else
-      @falling_piece.x += @block_size
-      false
-    end
+    return unless @falling_piece
+
+    @falling_piece.x += @block_size
+    @falling_piece.grid_position.x += 1
+
+    piece_left if collides?
   end
 
   # Rotate our piece
   def rotate_piece
+    return unless @falling_piece
+
+    # Now we need to see if the rotation caused a collision.
+    # If so, unrotate it. 
     @falling_piece.rotate
+    @falling_piece.rotate_back if collides?
+  end
 
-    # Now we need to see if the rotation caused a collision
-    # against one of the walls. 
-    # If so, unrotate it. We nudge the piece a pixel to prevent
-    # the = in the comparitors below from stopping a rotation
-
-    # Right wall
-    @falling_piece.x -= 1
-    if collides?(:right)
-      @falling_piece.rotate_back
+  def piece_finished
+    @falling_piece.blocks.each do |block|
+      @field[ @falling_piece.grid_position.y + block[1] ][ @falling_piece.grid_position.x + block[0] ] = 1
     end
-    @falling_piece.x += 1
-
-    # Left wall
-    @falling_piece.x += 1
-    if collides?(:left)
-      @falling_piece.rotate_back
-    end
-    @falling_piece.x -= 1
-
-    # Bottom
-    @falling_piece.y -= 1
-    if collides?(:down)
-      @falling_piece.rotate_back
-    end
-    @falling_piece.y += 1
+    new_piece
+    puts "Piece finished, new field"
+    print_field
   end
 
   private
 
-  def collides?(where)
-    case where
-    when :right
-      @falling_piece.right_boundry >= right_wall
-    when :left
-      @falling_piece.left_boundry <= left_wall
-    when :down
-      @falling_piece.bottom_boundry >= floor
+  def print_field
+    puts "Field is currently: "
+    @field.each do |col|
+      col.each do |item|
+        print "#{item.nil? ? "_" : "X"} "
+      end
+      print "\n"
     end
+  end
+
+  def collides?
+    hit = false
+    @falling_piece.blocks.each do |block|
+      if !@field[ @falling_piece.grid_position.y + block[1] ][ @falling_piece.grid_position.x + block[0] ].nil?
+        hit = true 
+        break
+      end
+    end
+
+    hit
+  end
+
+  # Check blocks in the piece against the position in the field
+  def collides_with_field?
   end
 
 end

@@ -1,6 +1,5 @@
 require 'actor'
 require 'actor_view'
-require 'tetromino'
 require 'grid'
 
 class GameFieldView < ActorView
@@ -12,6 +11,10 @@ class GameFieldView < ActorView
     y2 = y1 + @actor.grid.height + 1 + y_off
 
     target.draw_box( [x1, y1], [x2, y2], [255,255,255,255] )
+
+    # TODO Draw next piece
+
+    # TODO Draw next x pieces?
   end
 end
 
@@ -19,64 +22,47 @@ class GameField < Actor
 
   attr_accessor :grid
 
-  TETROMINOS = [:square, :j, :l, :bar, :t, :s, :z]
-
   def setup
     # Drop a row every x milliseconds
     @drop_after = 500
 
     @grid = Grid.new(10, 20)
     i = @input_manager
+
+    # Setup our key events into the grid
     i.reg KeyDownEvent, K_N do
-      next_tetromino
+      @grid.start_play(self)
     end
 
     i.reg KeyDownEvent, K_SPACE do
-      @grid.drop_piece if @current_block
-      next_tetromino
+      @grid.drop_piece
     end
 
     i.reg KeyDownEvent, K_LEFT do
-      @grid.piece_left if @current_block
+      @grid.piece_left
     end
 
     i.reg KeyDownEvent, K_RIGHT do
-      @grid.piece_right if @current_block
+      @grid.piece_right
     end
 
     i.reg KeyDownEvent, K_DOWN do
-      if @current_block
-        if @grid.piece_down
-          next_tetromino
-        end
-      end
+      @grid.piece_down
     end
 
     i.reg KeyDownEvent, K_UP do
-      @grid.rotate_piece if @current_block
+      @grid.rotate_piece
     end
 
     @time_lapsed = 0
   end
 
-  def next_tetromino 
-    @grid.screen_x = self.x
-    @grid.screen_y = self.y
-
-    type = TETROMINOS[rand(TETROMINOS.length)]
-    @current_block = spawn type
-    @grid.new_piece @current_block
-  end
-
   def update(time)
-    if @current_block
+    if @grid.playing?
       @time_lapsed += time
 
       if @time_lapsed >= @drop_after
-        if @grid.piece_down
-          next_tetromino
-        end
-
+        @grid.piece_down
         @time_lapsed = 0
       end
     end
