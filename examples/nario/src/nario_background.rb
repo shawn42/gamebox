@@ -1,10 +1,6 @@
 require 'actor'
-require 'graphical_actor_view'
-
-class NarioBackgroundView < GraphicalActorView
-  has_props :layer => 0
-end
 
 class NarioBackground < Actor
-  has_behaviors :graphical
+  has_behaviors :graphical,
+    {:layered => {:layer => 0, :parallax => 0}}
 end

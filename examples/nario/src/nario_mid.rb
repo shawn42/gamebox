@@ -1,10 +1,6 @@
 require 'actor'
-require 'graphical_actor_view'
-
-class NarioMidView < GraphicalActorView
-  has_props :layer => 1
-end
 
 class NarioMid < Actor
-  has_behaviors :graphical
+  has_behaviors :graphical,
+    {:layered => {:layer => 0, :parallax => 1}}
 end

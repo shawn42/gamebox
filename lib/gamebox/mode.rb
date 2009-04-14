@@ -90,18 +90,20 @@ class Mode
   def draw(target)
     @level.draw target, @viewport.x_offset, @viewport.y_offset
 
-    # draw by layer 0, 1, 2
-    for layer in @drawables.keys.sort
-      for d in @drawables[layer]
-        trans_x = @viewport.x_offset layer
-        trans_y = @viewport.y_offset layer
-        d.draw target, trans_x, trans_y 
+    for parallax_layer in @drawables.keys.sort
+      pd = @drawables[parallax_layer]
+      for layer in pd.keys.sort
+        for d in pd[layer]
+          trans_x = @viewport.x_offset parallax_layer
+          trans_y = @viewport.y_offset parallax_layer
+          d.draw target, trans_x, trans_y 
+        end
       end
     end
   end
 
   def unregister_drawable(drawable)
-    @drawables[drawable.layer].delete drawable
+    @drawables[drawable.parallax][drawable.layer].delete drawable
   end
 
   def clear_drawables
@@ -110,8 +112,10 @@ class Mode
 
   def register_drawable(drawable)
     layer = drawable.layer
-    @drawables[layer] ||= []
-    @drawables[layer] << drawable
+    parallax = drawable.parallax
+    @drawables[parallax] ||= {}
+    @drawables[parallax][layer] ||= []
+    @drawables[parallax][layer] << drawable
   end
 end
 

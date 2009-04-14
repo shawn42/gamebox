@@ -21,6 +21,7 @@ lib/gamebox/graphical_actor_view.rb
 lib/gamebox/inflections.rb
 lib/gamebox/inflector.rb
 lib/gamebox/input_manager.rb
+lib/gamebox/layered.rb
 lib/gamebox/level.rb
 lib/gamebox/metaclass.rb
 lib/gamebox/mode.rb

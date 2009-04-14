@@ -2,17 +2,17 @@ require 'actor'
 require 'animated_actor_view'
 
 class PowerUpBlockView < AnimatedActorView
-  has_props :layer => 2
 end
 
 class PowerUpBlock < Actor
   HIT_RATE = 90
 
-  has_behaviors :graphical, :physical => {
+  has_behaviors :graphical, {:physical => {
     :shape => :poly,
     :fixed => true,
     :verts => [[-30,-30],[-30,30],[30,30],[30,-30]]
-  }
+  }}, 
+    {:layered => {:layer => 2, :parallax => 2}}
 
   def setup
     @inactive_timer = 0
