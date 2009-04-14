@@ -196,7 +196,7 @@ class Grid
     puts "Piece finished, new field"
     print_field
 
-#    check_row_removal
+    check_row_removal
   end
 
   private
@@ -205,6 +205,9 @@ class Grid
   def check_row_removal
     to_remove = []
     @field.each_with_index do |row, idx|
+      # Ignore last row
+      next if row == @field[-1]
+
       good = true
       row.each do |col|
         good = false if col.nil?
@@ -213,9 +216,26 @@ class Grid
       to_remove << idx if good
     end
 
+    # Null out the rows to remove
     to_remove.each do |row|
       @field[row].each_index do |col|
+        @field[row][col].remove_self if @field[row][col] != 1
         @field[row][col] = nil
+      end
+    end
+
+    # Move rows above nulled rows down.
+    to_remove.each do |row|
+      (1..row).to_a.reverse.each do |r|
+        @field[r].length.times do |i|
+          if @field[r-1][i].is_a?(Actor)
+            @field[r][i] = @field[r-1][i]
+            @field[r][i].y += BLOCK_SIZE 
+            @field[r-1][i] = nil
+            @field[r][0] = 1
+            @field[r][-1] = 1
+          end
+        end
       end
     end
   end
