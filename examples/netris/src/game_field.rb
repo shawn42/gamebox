@@ -29,6 +29,12 @@ class GameField < Actor
     @grid = Grid.new(10, 20)
     i = @input_manager
 
+    @grid.when(:game_over) do
+      puts "Game over man!"
+      # TODO nice way to quit a game
+      exit(0)
+    end
+
     # Setup our key events into the grid
     i.reg KeyDownEvent, K_N do
       @grid.start_play(self)

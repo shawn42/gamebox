@@ -1,4 +1,5 @@
 require 'tetromino'
+require 'publisher'
 
 # This class handles the abstract representation of the Tetris grid
 # and conversions from grid cells to hard x and y coordinates in screen space.
@@ -20,6 +21,9 @@ require 'tetromino'
 #   X X X X X X 
 #
 class Grid
+  extend Publisher
+
+  can_fire :game_over
 
   attr_reader :rows, :columns
   attr_accessor :screen_x, :screen_y
@@ -73,6 +77,14 @@ class Grid
     new_piece
   end
 
+  def game_over
+    puts "GAME OVER!"
+    @parent = @falling_piece = nil
+    print_field
+
+    fire :game_over 
+  end
+
   # Adds a new playing piece to the field and 
   # returns [x,y] of where a new piece needs to be placed.
   # This is an offset from this grid's location, and assumes
@@ -81,14 +93,18 @@ class Grid
   def new_piece
     @falling_piece = next_tetromino
 
-    col = @columns / 2
-    row = 2
+    col = @columns / 2 - 1
+    row = 1
 
     @falling_piece.x = col * @block_size + self.screen_x
     @falling_piece.y = row * @block_size + self.screen_y
     
     @falling_piece.grid_position.x = col + 1
     @falling_piece.grid_position.y = row
+
+    if collides?
+      game_over
+    end
   end
 
   def next_tetromino 
