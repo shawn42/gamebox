@@ -82,12 +82,12 @@ class DemoLevel < PhysicalLevel
       end
 
       if rocky.alive?
+        rocky.remove_self 
         x,y = rocky.x, rocky.y
         (3+rand(3)).times do
           bit = create_actor :rock_bit
           bit.warp vec2(x,y)
         end
-        rocky.remove_self 
       end
 
       @rocks.delete rocky
