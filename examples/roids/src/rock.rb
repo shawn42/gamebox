@@ -10,7 +10,7 @@ class Rock < Actor
     @behaviors[:physical].body.a -= rand(10)
     @speed = (rand(2)+1)/4.0
     @turn_speed = rand(2)*0.00004
-    @dir = vec2(rand,rand)
+    @dir = vec2(rand-0.5,rand-0.5)
   end
 
   def update(time)

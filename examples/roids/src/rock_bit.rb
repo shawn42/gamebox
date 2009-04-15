@@ -10,7 +10,7 @@ class RockBit < Actor
     @behaviors[:physical].body.a -= rand(10)
     @speed = (rand(2)+1)/6.0
     @turn_speed = rand(2)*0.00004
-    @dir = vec2(rand,rand)
+    @dir = vec2(rand-0.5,rand-0.5)
 
     #bits only live for 500-1000
     @ttl = 500+rand(500)
