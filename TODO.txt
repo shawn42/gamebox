@@ -1,10 +1,8 @@
 planned features:
+  - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
   - unify GraphicalActorView and AnimatedActorView (animated is designed for use w/ physics which uses x,y at center instead of x,y at top-left corner)
-  - add a scrolling viewport
-  - make an actor following viewport
 
   - solidify rdocs
-  - add render depth (Z ordering)
   - add physical SVG level that supports loading from svg file
   - make physics params avail for PhysicalLevel
     - set different gravity, etc
@@ -14,12 +12,12 @@ planned features:
     - SDL
     - rubygame
 possible features:
-  - add parallax scrolling
   - AI
     - A*
     - state machine
     - rule based
   - optional GUI via rubygoo
+  - particle system? ParticleGroupActor?
   - network manager
   - highscore upload system
   - gamebox server (content server?)
