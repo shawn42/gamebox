@@ -5,7 +5,7 @@ class PowerUpBlockView < AnimatedActorView
 end
 
 class PowerUpBlock < Actor
-  HIT_RATE = 90
+  HIT_RATE = 500
 
   has_behaviors :graphical, {:physical => {
     :shape => :poly,
@@ -21,6 +21,7 @@ class PowerUpBlock < Actor
 
   # the block can only be hit onces every HIT_RATE ms
   def hit
+    p "nario hit the powerup block" 
     @active = false
     @inactive_timer = HIT_RATE if has_more?
   end

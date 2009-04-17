@@ -20,17 +20,25 @@ class DemoLevel < PhysicalLevel
     pup = create_actor :power_up_block
     pup.warp vec2(500,600)
 
-    nario = create_actor :nario
-    nario.warp vec2(400,670)
+    @nario = create_actor :nario
+    @nario.warp vec2(400,670)
 
-    @viewport.follow nario, [0,70], [100,60]
+    @viewport.follow @nario, [0,70], [100,60]
 
     bg = create_actor :nario_background
 
-    @space.add_collision_func(:power_up_block, :nario) do |pup,n|
+    # TODO clean up the common stuff here
+    #@space.add_collision_func([:power_up_block,:ground], [:nario_feet]) do |pup,n|
+    @space.add_collision_func(:ground, :nario_feet) do |pup,n|
+      @nario.stop_jump
+    end
+    @space.add_collision_func(:power_up_block, :nario_feet) do |pup,n|
+      @nario.stop_jump
+    end
+    @space.add_collision_func(:power_up_block, :nario_hat) do |pup,n|
       pup_obj = @director.find_physical_obj pup
       if pup_obj.active?
-        p "nario hit the powerup block" 
+        @nario.stop_jump
         pup_obj.hit
       end
     end

@@ -110,7 +110,15 @@ class Actor
     define_method( :has_behaviors ) do |*args|
       @behaviors ||= []
       for a in args
-        @behaviors << a
+        if a.is_a? Hash
+          for k,v in a 
+            h = {}
+            h[k]=v
+            @behaviors << h
+          end
+        else
+          @behaviors << a
+        end
       end
       @behaviors
     end

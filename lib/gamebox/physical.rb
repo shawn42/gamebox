@@ -30,7 +30,7 @@ class Physical < Behavior
 
     @shape.collision_type = Inflector.underscore(@actor.class).to_sym
     @shape.body.p = ZeroVec2
-    @shape.e = 0.1
+    @shape.e = 1.1
     @shape.u = 0.7
 
     physical_obj = self
@@ -45,6 +45,23 @@ class Physical < Behavior
       end
     else
       raise "physical actor in a non-physical level!"
+    end
+
+    if @opts[:parts]
+      for obj in @opts[:parts]
+        for part_name, part_def in obj
+          part_obj = @actor.spawn part_name
+          a = @body
+          b = part_obj.body
+          if part_def
+            off_x,off_y = *part_def
+            part_obj.body.p = vec2(b.p.x+off_x,b.p.y+off_y)
+          end
+          # TODO fix this joint
+          joint = Constraint::PinJoint.new a, b, a.world2local(a.p), b.world2local(a.p)
+          @actor.level.register_physical_constraint joint
+        end
+      end
     end
 
     # write code here to keep physics and x,y of actor in sync

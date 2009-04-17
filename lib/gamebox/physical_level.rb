@@ -49,6 +49,14 @@ class PhysicalLevel < Level
     end
   end
 
+  def register_physical_constraint(constraint)
+    @space.add_constraint constraint
+  end
+
+  def unregister_physical_constraint(constraint)
+    @space.remove_constraint constraint
+  end
+
   def unregister_physical_object(obj,static=false)
     if static
       @space.remove_static_shape(obj.shape)
