@@ -74,6 +74,11 @@ class Grid
     self.screen_x = @parent.x
     self.screen_y = @parent.y
 
+    @score = @parent.spawn :score
+    @score.x = self.screen_x + self.width + 40
+    @score.y = self.screen_y + 240
+    @score.score = 0
+
     next_tetromino
     new_piece
   end
@@ -89,7 +94,7 @@ class Grid
   # Adds a new playing piece to the field and
   # returns [x,y] of where a new piece needs to be placed.
   # This is an offset from this grid's location, and assumes
-  # the grid is drawn at 0,0. If different, make srue these values
+  # the grid is drawn at 0,0. If different, make sure these values
   # are modified properly
   def new_piece
     next_tetromino
@@ -246,6 +251,12 @@ class Grid
           end
         end
       end
+    end
+
+    if to_remove.length == 4
+      @score + 1000
+    else
+      @score + 100 * to_remove.length
     end
   end
 

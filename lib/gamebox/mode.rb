@@ -54,7 +54,9 @@ class Mode
     level_sym = level_def.keys.first
     begin
       require level_sym.to_s+"_level"
-    rescue LoadError
+    rescue LoadError => ex
+      puts "Load error: #{ex.inspect}"
+      puts ex.backtrace.join("\n")
       # maybe we have included it elsewhere
     end
     level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
