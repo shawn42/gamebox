@@ -296,7 +296,11 @@ class Grid
   def collides?
     hit = false
     @falling_piece.blocks.each do |block|
-      if !@field[ @falling_piece.grid_position.y + block[1] ][ @falling_piece.grid_position.x + block[0] ].nil?
+      row = @falling_piece.grid_position.y + block[1] 
+      col = @falling_piece.grid_position.x + block[0] 
+      next if row < 0 # Don't collide up
+
+      if !@field[row][col].nil?
         hit = true
         break
       end
