@@ -23,7 +23,7 @@ require 'publisher'
 class Grid
   extend Publisher
 
-  can_fire :game_over
+  can_fire :game_over, :next_level
 
   attr_reader :rows, :columns
   attr_accessor :screen_x, :screen_y
@@ -34,6 +34,10 @@ class Grid
     @rows = rows
     @columns = columns
     @block_size = block_size
+
+    # Keep track of game progression
+    @line_count = 0
+    @tnl = 10
 
     # Build our internal Box representation
     @field = Array.new(rows)
@@ -74,10 +78,11 @@ class Grid
     self.screen_x = @parent.x
     self.screen_y = @parent.y
 
-    @score = @parent.spawn :score
-    @score.x = self.screen_x + self.width + 40
-    @score.y = self.screen_y + 240
-    @score.score = 0
+    @game_info = @parent.spawn :game_info
+    @game_info.x = self.screen_x + self.width + 40
+    @game_info.y = self.screen_y + 240
+    @game_info.score = 0
+    @game_info.current_level = 1
 
     next_tetromino
     new_piece
@@ -89,6 +94,15 @@ class Grid
     print_field
 
     fire :game_over
+  end
+
+  def next_level
+    @game_info.score += 100
+    @game_info.current_level += 1
+    @line_count = 0
+    @tnl += 10
+
+    fire :next_level
   end
 
   # Adds a new playing piece to the field and
@@ -205,9 +219,6 @@ class Grid
     end
 
     new_piece
-    puts "Piece finished, new field"
-    print_field
-
     check_row_removal
   end
 
@@ -253,10 +264,22 @@ class Grid
       end
     end
 
-    if to_remove.length == 4
-      @score + 1000
+    update_game_data(to_remove.length) if to_remove.length > 0
+  end
+
+  # Update game data like score and check to see
+  # if we should progress to the next level
+  def update_game_data(removing)
+    if removing == 4
+      @game_info.score += 1000
     else
-      @score + 100 * to_remove.length
+      @game_info.score += 100 * removing
+    end
+
+    @line_count += removing
+    if @line_count >= @tnl
+      puts "Next level!"
+      self.next_level
     end
   end
 

@@ -26,13 +26,18 @@ class GameField < Actor
     # Drop a row every x milliseconds
     @drop_after = 500
 
-    @grid = Grid.new(10, 20)
+    @grid = Grid.new(10, 21)
     i = @input_manager
 
     @grid.when(:game_over) do
       puts "Game over man!"
       # TODO nice way to quit a game
       exit(0)
+    end
+
+    @grid.when(:next_level) do
+      puts "Next Level!"
+      @drop_after -= 50
     end
 
     # Setup our key events into the grid
