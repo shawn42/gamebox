@@ -10,11 +10,11 @@ class GameFieldView < ActorView
     y1 = @actor.y - 1 + y_off
     y2 = y1 + @actor.grid.height + 1 + y_off
 
+    # Draw box
     target.draw_box( [x1, y1], [x2, y2], [255,255,255,255] )
 
-    # TODO Draw next piece
-
-    # TODO Draw next x pieces?
+    # But hide the top line
+    target.draw_line( [x1, y1], [x2, y1], [0, 0, 0, 255] )
   end
 end
 
@@ -31,7 +31,8 @@ class GameField < Actor
 
     @grid.when(:game_over) do
       puts "Game over man!"
-      # TODO nice way to quit a game
+      # TODO nice way to quit a game, or
+      # a menu system so we jump back into the menu mode
       exit(0)
     end
 

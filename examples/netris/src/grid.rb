@@ -114,7 +114,7 @@ class Grid
     next_tetromino
 
     col = @columns / 2 - 1
-    row = 1
+    row = 0
 
     @falling_piece.x = col * @block_size + self.screen_x
     @falling_piece.y = row * @block_size + self.screen_y
