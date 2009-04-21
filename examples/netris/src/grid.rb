@@ -291,6 +291,7 @@ class Grid
       end
       print "\n"
     end
+    puts @game_info.score if @game_info
   end
 
   def collides?
