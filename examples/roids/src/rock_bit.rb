@@ -8,8 +8,8 @@ class RockBit < Actor
 
   def setup
     @behaviors[:physical].body.a -= rand(10)
-    @speed = (rand(2)+1)/6.0
-    @turn_speed = rand(2)*0.00004
+    @speed = (rand(2)+1)/6.0 * 180
+    @turn_speed = rand(2)*0.00004 
     x = (rand-0.5) * 2
     y = (rand-0.5) * 2
     @dir = vec2(x,y)

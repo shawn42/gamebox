@@ -3,13 +3,13 @@ require 'animated_actor_view'
 
 class Bullet < Actor
   has_behaviors :animated, :physical => {:shape => :circle, 
-    :mass => 90,
+    :mass => 10,
     :radius => 3}
 
   attr_accessor :dir
 
   def setup
-    @speed = 1
+    @speed = 500
     # bullets live for 1/2 second
     @power = 500
   end

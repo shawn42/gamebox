@@ -7,8 +7,7 @@ require 'physical_director'
 class PhysicalLevel < Level
   #  GRAVITY = 0.01
 #  DAMPING = 0.8
-  DAMPING = 0.994
-  STEP = 10
+#  DAMPING = 0.994
   attr_accessor :space
 
   def initialize(actor_factory, resource_manager, sound_manager, viewport, opts={}) 
@@ -22,16 +21,20 @@ class PhysicalLevel < Level
     @opts = opts
 
     @space = Space.new
-    @space.iterations = 7
-    @space.damping = DAMPING
+    @space.iterations = 20
+    @space.elastic_iterations = 0
+#    @space.damping = DAMPING
 
     setup
   end
 
+  PHYSICS_STEP = 25.0
   def update_physics(time)
-    num_steps = time/STEP
-    num_steps.times do 
-      @space.step STEP
+    steps = (time/PHYSICS_STEP).ceil
+    # from chipmunk demo
+    dt = 1.0/60/steps
+    steps.times do
+      @space.step dt
     end
   end
 

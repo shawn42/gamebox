@@ -1,11 +1,12 @@
 planned features:
+  - make x,y a param that can be preset
   - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
   - unify GraphicalActorView and AnimatedActorView (animated is designed for use w/ physics which uses x,y at center instead of x,y at top-left corner)
 
   - solidify rdocs
-  - add physical SVG level that supports loading from svg file
   - make physics params avail for PhysicalLevel
     - set different gravity, etc
+  - add physical SVG level that supports loading from svg file
   - add while key down K_UP callback?
   - static deployment bundles (crate)
     - ruby

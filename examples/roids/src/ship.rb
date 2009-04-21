@@ -20,15 +20,17 @@ class Ship < Actor
   can_fire :shoot
 
   has_behaviors :animated, :physical => {:shape => :circle, 
-    :mass => 500,
+    :mass => 100,
+    :friction => 1.7,
     :radius => 10}
   attr_accessor :moving_forward, :moving_back,
     :moving_left, :moving_right
 
   def setup
     @invincible_timer = 2000
-    @speed = 1.1
+    @speed = 1.1 * 350
     @turn_speed = 0.0045
+    @max_speed = 700
 
     i = @input_manager
     i.reg KeyDownEvent, K_SPACE do
@@ -72,7 +74,15 @@ class Ship < Actor
     move_forward time if moving_forward?
     move_left time if moving_left?
     move_right time if moving_right?
+    enforce_limits time
     super time
+  end
+
+  def enforce_limits(time)
+    physical.body.w -= 30 if physical.body.w > 2.5
+    if physical.body.v.length > @max_speed
+      physical.body.apply_impulse(-physical.body.v*time, ZeroVec2) 
+    end
   end
 
   def shoot
@@ -85,13 +95,23 @@ class Ship < Actor
 
   def move_right(time)
     physical.body.a += time*@turn_speed
-    physical.body.w += time*@turn_speed/5.0 if physical.body.w > 2.5
+    if physical.body.w > 2.5
+      physical.body.w += time*@turn_speed/5.0 
+    end
   end
   def move_left(time)
     physical.body.a -= time*@turn_speed
-    physical.body.w -= time*@turn_speed/5.0 if physical.body.w > 2.5
+    if physical.body.w > 2.5
+      physical.body.w -= time*@turn_speed/5.0 
+    end
   end
   def move_forward(time)
-    physical.body.apply_impulse(physical.body.rot*time*@speed, ZeroVec2) if physical.body.v.length < 400
+    move_vec = physical.body.rot*time*@speed
+#    p move_vec
+#    p physical.body.v
+#    if (move_vec + physical.body.v).length < @max_speed
+      physical.body.apply_impulse(move_vec, ZeroVec2) 
+
+#    end
   end
 end

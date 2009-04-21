@@ -3,12 +3,13 @@ require 'behavior'
 require 'inflector'
 require 'publisher'
 class Physical < Behavior
-  attr_accessor :shape, :body, :opts
+  attr_accessor :shape, :body, :opts, :parts
 
   def setup
     # TODO add defaults?
     @mass = @opts[:mass]
     @mass ||= Float::Infinity
+    @parts = {}
 
     moment_of_inertia = @opts[:moment]
 
@@ -28,10 +29,16 @@ class Physical < Behavior
       @shape = Shape::Poly.new(@body, shape_array, ZeroVec2)
     end
 
-    @shape.collision_type = Inflector.underscore(@actor.class).to_sym
+    collision_type = @opts[:collision_group]
+    collision_type ||= 
+      Inflector.underscore(@actor.class).to_sym
+
+    @shape.collision_type = collision_type
     @shape.body.p = ZeroVec2
-    @shape.e = 1.1
-    @shape.u = 0.7
+    @shape.e = 0
+    friction = @opts[:friction]
+    friction ||= 0.7
+    @shape.u = friction
 
     physical_obj = self
 
@@ -51,15 +58,37 @@ class Physical < Behavior
       for obj in @opts[:parts]
         for part_name, part_def in obj
           part_obj = @actor.spawn part_name
+          @parts[part_name] = part_obj
           a = @body
           b = part_obj.body
           if part_def
             off_x,off_y = *part_def
-            part_obj.body.p = vec2(b.p.x+off_x,b.p.y+off_y)
+
+            aj = vec2(a.p.x,a.p.y+off_y)
+
+#            anch_a = a.world2local(aj)
+#            anch_b = b.world2local(-aj)
+
+            if off_y < 0
+            anch_a = vec2(0,0) #a.world2local(ZeroVec2)
+            anch_b = vec2(0,-off_y) #a.world2local(ZeroVec2)
+            else
+            anch_a = vec2(0,0) #a.world2local(ZeroVec2)
+            anch_b = vec2(0,off_y) #a.world2local(ZeroVec2)
+            end
+#            anch_b = b.world2local(-aj)
+
+            p part_name
+            p anch_a
+            p anch_b
+
+            joint = Constraint::PinJoint.new a, b, anch_a, anch_b
+
+            # really lock it into place, no floating around
+            joint.bias_coef = 0.99
+            @actor.level.register_physical_constraint joint
+#            part_obj.body.p = vec2(b.p.x+off_x,b.p.y+off_y)
           end
-          # TODO fix this joint
-          joint = Constraint::PinJoint.new a, b, a.world2local(a.p), b.world2local(a.p)
-          @actor.level.register_physical_constraint joint
         end
       end
     end
@@ -84,6 +113,9 @@ class Physical < Behavior
         end
         define_method :body do 
           physical_obj.body
+        end
+        define_method :parts do 
+          physical_obj.parts
         end
         define_method :deg do 
           # TODO hack!! why do poly's not work the same?
