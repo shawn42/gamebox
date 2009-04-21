@@ -23,7 +23,7 @@ class ActorFactory
     }
     merged_opts = basic_opts.merge(opts)
 
-    model = model_klass.new basic_opts 
+    model = model_klass.new merged_opts 
 
     view_klass = opts[:view]
 

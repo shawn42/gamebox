@@ -11,9 +11,11 @@ class Actor
   can_fire_anything
 
   def initialize(opts={}) # :nodoc:
-    @x = 0
-    @y = 0
     @opts = opts
+    @x = @opts[:x]
+    @y = @opts[:y]
+    @x ||= 0
+    @y ||= 0
     @level = opts[:level]
     @input_manager = opts[:input]
     @sound_manager = opts[:sound]

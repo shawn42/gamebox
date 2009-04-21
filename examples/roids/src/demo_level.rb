@@ -6,8 +6,8 @@ class DemoLevel < PhysicalLevel
   def setup
     @sound_manager.play :roids
 
-    @ship = create_actor :ship
-    @ship.warp vec2(300,300)
+    @ship = create_actor :ship, :x => 300, :y => 300
+#    @ship.warp vec2(300,300)
 
     @score = create_actor :score
     @score.x = 10
@@ -28,9 +28,6 @@ class DemoLevel < PhysicalLevel
     top_wall = create_actor :top_wall, :view => false
     right_wall = create_actor :right_wall, :view => false
     bottom_wall = create_actor :bottom_wall, :view => false
-
-    right_wall.warp vec2(1023,0)
-    bottom_wall.warp vec2(0,799)
 
     # TODO get this from screen config
     @width = 1024

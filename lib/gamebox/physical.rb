@@ -34,7 +34,11 @@ class Physical < Behavior
       Inflector.underscore(@actor.class).to_sym
 
     @shape.collision_type = collision_type
-    @shape.body.p = ZeroVec2
+    start_x = @opts[:x]
+    start_y = @opts[:y]
+    start_x ||= @actor.x
+    start_y ||= @actor.y
+    @shape.body.p = vec2(start_x,start_y)
     @shape.e = 0
     friction = @opts[:friction]
     friction ||= 0.7
