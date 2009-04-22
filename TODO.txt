@@ -1,5 +1,4 @@
 planned features:
-  - make x,y a param that can be preset
   - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
   - unify GraphicalActorView and AnimatedActorView (animated is designed for use w/ physics which uses x,y at center instead of x,y at top-left corner)
 

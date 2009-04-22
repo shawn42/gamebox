@@ -9,9 +9,8 @@ class DemoLevel < PhysicalLevel
     @ship = create_actor :ship, :x => 300, :y => 300
 #    @ship.warp vec2(300,300)
 
-    @score = create_actor :score
-    @score.x = 10
-    @score.y = 10
+    @score = create_actor :score, :x => 10, :y => 10
+    create_actor :logo, :x => 900, :y => 600
 
     prev_level = @opts[:prev_level]
     @score += prev_level.score.score if prev_level
@@ -31,7 +30,7 @@ class DemoLevel < PhysicalLevel
 
     # TODO get this from screen config
     @width = 1024
-    @height = 800
+    @height = 768
     # setup ship torusness
     @space.add_collision_func(:ship, :left_wall) do |ship, wall|
       ship.body.p = vec2(@width-ship.bb.r-ship.bb.l,ship.body.p.y)
