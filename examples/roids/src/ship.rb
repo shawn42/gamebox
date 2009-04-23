@@ -28,9 +28,9 @@ class Ship < Actor
 
   def setup
     @invincible_timer = 2000
-    @speed = 1.1 * 350
+    @speed = 350
     @turn_speed = 0.0045
-    @max_speed = 700
+    @max_speed = 600
 
     i = @input_manager
     i.reg KeyDownEvent, K_SPACE do

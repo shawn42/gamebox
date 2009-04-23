@@ -8,7 +8,7 @@ class Rock < Actor
 
   def setup
     @behaviors[:physical].body.a -= rand(10)
-    @speed = (rand(2)+1) * 90
+    @speed = (rand(2)+1) * 85
     @turn_speed = rand(2)*0.0004 
     @dir = vec2(rand-0.5,rand-0.5)
   end
