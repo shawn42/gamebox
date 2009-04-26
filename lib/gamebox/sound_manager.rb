@@ -51,18 +51,20 @@ class SoundManager
     @enabled
   end
 
-  def play_sound(what)
-    if @enabled
+  def play_sound(what, volume=nil)
+    if @enabled && @sounds[what]
       @sound_thread = Thread.new do
-        @sounds[what].play if @sounds[what]
+        @sounds[what].volume = volume if volume
+        @sounds[what].play
       end
     end
   end
 
-  def play(what)
-    if @enabled
+  def play(what, volume=nil)
+    if @enabled && @music[what]
       @music_thread = Thread.new do
-        @music[what].play :repeats => -1 if @music[what]
+        @music[what].volume = volume if volume
+        @music[what].play :repeats => -1
       end
     end
   end

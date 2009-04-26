@@ -90,8 +90,8 @@ class Actor
 
   # Plays a sound via the SoundManager.  See SoundManager for
   # details on how to "define" sounds.
-  def play_sound(sound)
-    @sound_manager.play_sound sound
+  def play_sound(*args)
+    @sound_manager.play_sound *args
   end
 
   # to be defined in child class
