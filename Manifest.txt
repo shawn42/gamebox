@@ -5,6 +5,8 @@ Rakefile
 TODO.txt
 bin/gamebox
 docs/logo.png
+docs/gamebox04_big.png
+docs/getting_started.rdoc
 lib/gamebox.rb
 lib/gamebox/actor.rb
 lib/gamebox/actor_factory.rb

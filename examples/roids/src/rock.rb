@@ -3,12 +3,12 @@ require 'animated_actor_view'
 
 class Rock < Actor
   has_behaviors :animated, :physical => {:shape => :circle, 
-    :mass => 200,
+    :mass => 90,
     :radius => 20}
 
   def setup
     @behaviors[:physical].body.a -= rand(10)
-    @speed = (rand(2)+1) * 85
+    @speed = (rand(2)+1) * 39
     @turn_speed = rand(2)*0.0004 
     @dir = vec2(rand-0.5,rand-0.5)
   end
