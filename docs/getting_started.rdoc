@@ -21,7 +21,6 @@
 == Sound
 == Resources
 == Behaviors
-== Directors (probably leave these out for now)
 == Levels
 == Modes
 

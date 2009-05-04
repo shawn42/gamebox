@@ -46,8 +46,6 @@ class Physical < Behavior
 
     physical_obj = self
 
-    # TODO do we want some way of placing the object _BEFORE_
-    # dropping it into the physical space?
     if @actor.level.respond_to? :register_physical_object
       if @opts[:fixed]
         @actor.level.register_physical_object physical_obj, true
@@ -81,10 +79,6 @@ class Physical < Behavior
             anch_b = vec2(0,off_y) #a.world2local(ZeroVec2)
             end
 #            anch_b = b.world2local(-aj)
-
-            p part_name
-            p anch_a
-            p anch_b
 
             joint = Constraint::PinJoint.new a, b, anch_a, anch_b
 
