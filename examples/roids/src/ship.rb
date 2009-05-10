@@ -1,8 +1,8 @@
 require 'actor'
 require 'publisher'
-require 'animated_actor_view'
+require 'graphical_actor_view'
 
-class ShipView < AnimatedActorView
+class ShipView < GraphicalActorView
   def draw(target, x_off, y_off)
     # draw a shield
     if @actor.invincible?

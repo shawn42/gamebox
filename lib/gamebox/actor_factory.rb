@@ -1,4 +1,3 @@
-require 'animated_actor_view'
 require 'graphical_actor_view'
 class ActorFactory
   constructor :input_manager, :sound_manager
@@ -32,9 +31,7 @@ class ActorFactory
       begin
         view_klass = Object.const_get model_klass_name+"View"
       rescue Exception => ex
-        if model.is? :animated
-          view_klass = AnimatedActorView
-        elsif model.is? :graphical or model.is? :physical
+        if model.is? :animated or model.is? :graphical or model.is? :physical
           view_klass = GraphicalActorView
         end
       end

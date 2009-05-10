@@ -1,8 +1,8 @@
 planned features:
   - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
-  - unify GraphicalActorView and AnimatedActorView (animated is designed for use w/ physics which uses x,y at center instead of x,y at top-left corner)
+  - add basic generator for things like actors/levels/etc with tests
 
-  - solidify rdocs
+  - solidify rdocs (including tutorial)
   - make physics params avail for PhysicalLevel
     - set different gravity, etc
   - add physical SVG level that supports loading from svg file

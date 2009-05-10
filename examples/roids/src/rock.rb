@@ -1,5 +1,4 @@
 require 'actor'
-require 'animated_actor_view'
 
 class Rock < Actor
   has_behaviors :animated, :physical => {:shape => :circle, 
