@@ -18,8 +18,11 @@ class InputManager
     ]
     
     @clock = Clock.new do |c|
-#      c.calibrate if c.respond_to? :calibrate
       c.target_framerate = 40
+      if c.respond_to? :calibrate
+        c.calibrate 
+        p c.granularity
+      end
     end
 
     @hooks = {}

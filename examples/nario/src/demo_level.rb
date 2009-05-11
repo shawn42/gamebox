@@ -26,7 +26,7 @@ class DemoLevel < PhysicalLevel
     @viewport.follow @nario, [0,70], [300,400]
 
     bg = create_actor :nario_background
-    @space.add_collision_func(:coin, :nario) do |c,n|
+    @space.add_collision_func(:coin, [:nario,:nario_feet,:nario_hat]) do |c,n|
       coin = @director.find_physical_obj c
       unless coin.dying?
         coin.die 400
