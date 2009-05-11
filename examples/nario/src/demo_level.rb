@@ -2,6 +2,8 @@ require 'physical_level'
 require 'physical_director'
 class DemoLevel < PhysicalLevel
   def setup
+    @sound_manager.play :overworld
+      
     @space.gravity = vec2(0,800)
     @space.iterations = 10
 

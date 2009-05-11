@@ -2,6 +2,7 @@ require 'actor_view'
 
 class GraphicalActorView < ActorView
   def draw(target, x_off, y_off)
+    debug = false
     x = @actor.x
     y = @actor.y
     img = @actor.image
@@ -12,7 +13,7 @@ class GraphicalActorView < ActorView
       y = y-h/2
       img.blit target.screen, [x+x_off,y+y_off]
       
-      if @actor.is? :physical
+      if @actor.is? :physical and debug
         @actor.physical.shapes.each do |shape|
           bb = shape.bb
           x = bb.l + x_off

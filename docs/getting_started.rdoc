@@ -3,7 +3,6 @@
 == Purpose
   Why use Gamebox?
 
-
 == Installation
     - gem install gamebox
     - or tar from shawn42.github.com—gamebox
