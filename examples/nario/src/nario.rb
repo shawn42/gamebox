@@ -34,6 +34,7 @@ class Nario < Actor
     i = @input_manager
     i.reg KeyDownEvent, K_UP do
       if !jumping? and grounded?
+        play_sound :nario_jump
         @grounded = false
         @jump_timer = JUMP_TIME 
         self.action = "jump_#{@facing_dir}".to_sym
