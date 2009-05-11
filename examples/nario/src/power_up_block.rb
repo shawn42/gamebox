@@ -19,7 +19,7 @@ class PowerUpBlock < Actor
   # the block can only be hit onces every HIT_RATE ms
   def hit
     play_sound :coin
-    spawn :coin, :x => x, :y => y-20
+    spawn :coin, :x => x, :y => y-20, :ttl => 600
 
     @active = false
     @inactive_timer = HIT_RATE if has_more?

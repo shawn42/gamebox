@@ -21,7 +21,7 @@ class Nario < Actor
   def setup
     mass = nario_body.mass
     @speed = mass * 1.8
-    @jump_speed = 8*@speed
+    @jump_speed = 10*@speed
     @jump_timer = 0
 
     @max_speed = 399 #100

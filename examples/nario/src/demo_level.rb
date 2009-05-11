@@ -17,6 +17,7 @@ class DemoLevel < PhysicalLevel
     ground.shape.e = 0 #0.0004
     ground.shape.u = 0.9 #0.0004
 
+    create_actor :coin, :x => 200, :y => 630
 
     pup = create_actor :power_up_block, :x => 500, :y => 550
 
@@ -25,6 +26,14 @@ class DemoLevel < PhysicalLevel
     @viewport.follow @nario, [0,70], [300,400]
 
     bg = create_actor :nario_background
+    @space.add_collision_func(:coin, :nario) do |c,n|
+      coin = @director.find_physical_obj c
+      unless coin.dying?
+        coin.die 400
+        @score += 10
+        create_actor :coin, :x => (200+rand(400)), :y => 100
+      end
+    end
 
     @space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
       # p 'feet collided w/ ground like obj'
