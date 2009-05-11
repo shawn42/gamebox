@@ -18,14 +18,13 @@ class ResourceManager
   def load_animation_set(actor, action)
     # use pngs only for now
     actor_dir = Inflector.underscore(actor.class)
-    gfx_path = DATA_PATH+"graphics/"
-    frames = Dir.glob("#{gfx_path}#{actor_dir}/#{action}/*.png")
+    frames = Dir.glob("#{GFX_PATH}#{actor_dir}/#{action}/*.png")
     action_imgs = []
 
     frames = frames.sort_by {|f| File.basename(f).to_i }
     
     for frame in frames
-      rel_path = frame.slice(gfx_path.size,frame.size)
+      rel_path = frame.slice(GFX_PATH.size,frame.size)
       action_imgs << load_image(rel_path)
     end
     action_imgs
@@ -34,7 +33,12 @@ class ResourceManager
   def load_image(file_name)
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
-      cached_img = Rubygame::Surface.load(File.expand_path(DATA_PATH + "graphics/" + file_name))
+      begin
+        cached_img = Rubygame::Surface.load(File.expand_path(GFX_PATH + file_name))
+      rescue Exception => ex
+        #check global gamebox location
+        cached_img = Rubygame::Surface.load(File.expand_path(GAMEBOX_GFX_PATH + file_name))
+      end
       @loaded_images[file_name] = cached_img
     end
     cached_img
@@ -67,13 +71,18 @@ class ResourceManager
         TTF.setup
         @ttf_loaded = true
       end
-      
-      full_name = File.expand_path(DATA_PATH + "fonts/" + name)
-      font = TTF.new(full_name, size)
-      @loaded_fonts[name][size] = font
+      full_name = File.expand_path(FONTS_PATH + name)
+      begin
+        font = TTF.new(full_name, size)
+        @loaded_fonts[name][size] = font
+      rescue Exception => ex
+        full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
+        font = TTF.new(full_name, size)
+        @loaded_fonts[name][size] = font
+      end
       return font
     rescue Exception => ex
-      puts "Cannot load font " + full_name + " : " + ex
+      puts "Cannot load font #{full_name}:#{ex}"
     end
     return nil
   end

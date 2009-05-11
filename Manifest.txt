@@ -13,9 +13,15 @@ lib/gamebox/actor_factory.rb
 lib/gamebox/actor_view.rb
 lib/gamebox/aliasing.rb
 lib/gamebox/animated.rb
-lib/gamebox/animated_actor_view.rb
 lib/gamebox/behavior.rb
 lib/gamebox/config_manager.rb
+lib/gamebox/data/fonts/Asimov.ttf
+lib/gamebox/data/fonts/GAMEBOX_FONTS_GO_HERE
+lib/gamebox/data/graphics/.DS_Store
+lib/gamebox/data/graphics/GAMEBOX_GRAPHICS_GO_HERE
+lib/gamebox/data/graphics/logo.png
+lib/gamebox/data/music/GAMEBOX_MUSIC_GOES_HERE
+lib/gamebox/data/sounds/GAMEBOX_SOUND_FX_GO_HERE
 lib/gamebox/director.rb
 lib/gamebox/gamebox_application.rb
 lib/gamebox/graphical.rb
@@ -25,6 +31,7 @@ lib/gamebox/inflector.rb
 lib/gamebox/input_manager.rb
 lib/gamebox/layered.rb
 lib/gamebox/level.rb
+lib/gamebox/logo.rb
 lib/gamebox/metaclass.rb
 lib/gamebox/mode.rb
 lib/gamebox/mode_manager.rb
