@@ -15,13 +15,13 @@ class Nario < Actor
     :layered => {:layer => 2, :parallax => 1}
 
   # how long to apply the jump force for
-  JUMP_TIME = 30
+  JUMP_TIME = 20
 
   attr_accessor :jump_timer
   def setup
     mass = nario_body.mass
     @speed = mass * 1.8
-    @jump_speed = 6*@speed
+    @jump_speed = 8*@speed
     @jump_timer = 0
 
     @max_speed = 399 #100
