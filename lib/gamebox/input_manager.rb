@@ -19,7 +19,7 @@ class InputManager
     
     @clock = Clock.new do |c|
       c.target_framerate = 40
-      if c.respond_to? :calibrate
+      if c.respond_to? :calibrate and false
         c.calibrate 
         p c.granularity
       end
