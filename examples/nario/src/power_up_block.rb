@@ -6,6 +6,7 @@ class PowerUpBlock < Actor
   has_behaviors :graphical, {:physical => {
     :shape => :poly,
     :fixed => true,
+    :friction => 0.6,
     :verts => [[-30,-30],[-30,30],[30,30],[30,-30]]
   }}, 
     {:layered => {:layer => 2, :parallax => 1}}

@@ -1,3 +1,4 @@
+require 'actor'
 require 'graphical_actor_view'
 class ActorFactory
   constructor :input_manager, :sound_manager
@@ -9,7 +10,6 @@ class ActorFactory
       require actor.to_s
       require actor.to_s+"_view"
     rescue LoadError => ex
-      p ex
       # maybe its included somewhere else
     end
     model_klass_name = Inflector.camelize actor
@@ -32,7 +32,6 @@ class ActorFactory
       begin
         view_klass = Object.const_get model_klass_name+"View"
       rescue Exception => ex
-        p ex
         if model.is? :animated or model.is? :graphical or model.is? :physical
           view_klass = GraphicalActorView
         end

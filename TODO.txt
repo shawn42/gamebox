@@ -1,13 +1,14 @@
 planned features:
+	- move logo to gamebox lib, add gamebox install to search paths for fonts and images (for logo and score)
   - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
 		- physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
   - add basic generator for things like actors/levels/etc with tests
-
   - solidify rdocs (including tutorial)
-  - make physics params avail for PhysicalLevel
-    - set different gravity, etc
   - add physical SVG level that supports loading from svg file
-  - add while key down K_UP callback?
+  - add while key down K_UP callback?	
+	- add nice actore debugging
+	- add Extra; actor with a short time to live (TTL); useful for special effects
+	- add some kind of fade in/out for actors w/ smooth interpolation
   - static deployment bundles (crate)
     - ruby
     - SDL

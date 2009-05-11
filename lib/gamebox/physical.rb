@@ -14,6 +14,7 @@ class Physical < Behavior
     @mass = @opts[:mass]
     @mass ||= Float::Infinity
     @parts = {}
+    @shapes = []
 
     moment_of_inertia = @opts[:moment]
 
@@ -45,10 +46,10 @@ class Physical < Behavior
     @shape.body.p = vec2(start_x,start_y)
     @shape.e = 0
     friction = @opts[:friction]
-    friction ||= 0.2
+    friction ||= 0.4
     @shape.u = friction
     
-    @shapes = [@shape]
+    @shapes << @shape
 
     if @opts[:parts]
       for obj in @opts[:parts]
@@ -57,6 +58,8 @@ class Physical < Behavior
           part_shape_array = part_def[:verts].collect{|v| vec2(v[0],v[1])}
           part_shape = Shape::Poly.new(@body, part_shape_array, part_def[:offset])
           part_shape.collision_type = part_name.to_sym
+          # TODO pass all physics params to parts (ie u and e)
+          part_shape.u = friction
           @shapes << part_shape
         end
       end

@@ -4,6 +4,10 @@ class Viewport
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
     :height
 
+  def debug
+    "xoff:#{@x_offset} yoff:#{@y_offset}"
+  end
+
   def initialize(width, height)
     @x_offset = 0
     @y_offset = 0
@@ -13,12 +17,12 @@ class Viewport
   end
 
   def x_offset(layer=1)
-    # trans_x = layer*@x_offset
+    return @x_offset if layer == 1
     @x_offset / layer
   end
 
   def y_offset(layer=1)
-    # trans_y = layer*@y_offset
+    return @y_offset if layer == 1
     @y_offset / layer
   end
 
