@@ -45,10 +45,15 @@ class PhysicalLevel < Level
 
   def register_physical_object(obj,static=false)
     if static
-      @space.add_static_shape(obj.shape)
+      obj.shapes.each do |shape|
+        @space.add_static_shape shape
+      end
     else
       @space.add_body(obj.body)
-      @space.add_shape(obj.shape)
+      
+      obj.shapes.each do |shape|
+        @space.add_shape shape
+      end
     end
   end
 
@@ -62,10 +67,15 @@ class PhysicalLevel < Level
 
   def unregister_physical_object(obj,static=false)
     if static
-      @space.remove_static_shape(obj.shape)
+      obj.shapes.each do |shape|
+        @space.remove_static_shape shape
+      end
     else
       @space.remove_body(obj.body)
-      @space.remove_shape(obj.shape)
+      
+      obj.shapes.each do |shape|
+        @space.remove_shape shape
+      end
     end
   end
 

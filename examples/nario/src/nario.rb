@@ -1,73 +1,18 @@
 require 'actor'
-require 'actor_view'
-
-class NarioHatView < ActorView
-  def draw(target, x_off, y_off)
-    bb = @actor.shape.bb
-    x = bb.l + x_off
-    y = bb.b + y_off
-    x2 = bb.r + x_off
-    y2 = bb.t + y_off
-    target.draw_box [x,y], [x2,y2], [255,25,25,255]
-    target.draw_circle_s [@actor.x+x_off,@actor.y+y_off], 1, [25,25,255,255]
-  end
-end
-
-class NarioView < NarioHatView
-  def draw(target, x_off, y_off)
-    bb = @actor.shape.bb
-    x = bb.l + x_off
-    y = bb.b + y_off
-    x2 = bb.r + x_off
-    y2 = bb.t + y_off
-    target.draw_box [x,y], [x2,y2], [255,255,255,255]
-    target.draw_circle_s [@actor.x+x_off,@actor.y+y_off], 1, [255,255,255,255]
-  end
-end
-
-class NarioFeetView < NarioHatView
-  def draw(target, x_off, y_off)
-    bb = @actor.shape.bb
-    x = bb.l + x_off
-    y = bb.b + y_off
-    x2 = bb.r + x_off
-    y2 = bb.t + y_off
-    target.draw_box [x,y], [x2,y2], [25,255,25,255]
-    target.draw_circle_s [@actor.x+x_off,@actor.y+y_off], 1, [25,255,25,255]
-  end
-end
-
-class NarioHat < Actor
-  has_behaviors :physical => {
-    :shape => :poly, 
-    :mass => 20,
-    :moment => Float::Infinity,
-    :verts => [[-8,20],[-8,21],[8,21],[8,20]]},
-    :layered => {:layer => 2, :parallax => 2}
-end
-
-
-# TODO why can't I subclass NarioHat for his physics
-class NarioFeet < Actor
-  has_behaviors :physical => {
-    :shape => :poly, 
-    :mass => 100,
-    :moment => Float::Infinity,
-    :verts => [[-8,20],[-8,21],[8,21],[8,20]]},
-    :layered => {:layer => 2, :parallax => 2}
-end
 
 class Nario < Actor
   has_behaviors :animated, 
     :physical => {
         :shape => :poly, 
-        :parts => [:nario_feet => [0,22],:nario_hat => [0,-22]],
-#        :parts => [:nario_feet => [0,22]],
-#        :parts => [:nario_hat => [0,-22]],
+        # :parts => [:nario_feet => [0,22],:nario_hat => [0,-22]],
+        :parts => [
+          :nario_feet => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,22)},
+          :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-32)}
+          ],
         :mass => 70,
         :moment => Float::Infinity,
         :verts => [[-17,-20],[-17,20],[17,20],[17,-20]]},
-    :layered => {:layer => 2, :parallax => 2}
+    :layered => {:layer => 2, :parallax => 1}
 
   # how long to apply the jump force for
   JUMP_TIME = 10
@@ -75,11 +20,11 @@ class Nario < Actor
   attr_accessor :jump_timer
   def setup
     mass = nario_body.mass
-    @speed = mass * 2.5
+    @speed = mass * 2
     @jump_speed = 7*@speed
     @jump_timer = 0
 
-    @max_speed = 299 #100
+    @max_speed = 399 #100
     @facing_dir = :right
 
     # TODO these will need to be updated if nario's speed changes
@@ -117,7 +62,6 @@ class Nario < Actor
   def jumping?;@jump_timer > 0;end
   def grounded?;@grounded;end
   def update(time)
-#    p self.y
     move_left time if moving_left?
     move_right time if moving_right?
     jump time if jumping?
@@ -137,12 +81,7 @@ class Nario < Actor
   end
 
   def nario_body
-    # apply force to feet instead?
-    if physical.parts[:nario_feet]
-       physical.parts[:nario_feet].body 
-    else
-      physical.body
-    end
+    physical.body
   end
 
   def jump(time)

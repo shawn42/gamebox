@@ -92,7 +92,7 @@ class Mode
   def draw(target)
     @level.draw target, @viewport.x_offset, @viewport.y_offset
 
-    for parallax_layer in @drawables.keys.sort
+    for parallax_layer in @drawables.keys.sort.reverse
       pd = @drawables[parallax_layer]
       for layer in pd.keys.sort
         for d in pd[layer]

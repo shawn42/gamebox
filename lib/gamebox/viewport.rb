@@ -4,8 +4,6 @@ class Viewport
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
     :height
 
-  PARALLAX_SCROLLING_COEFFICIENT = 0.5
-
   def initialize(width, height)
     @x_offset = 0
     @y_offset = 0
@@ -15,13 +13,13 @@ class Viewport
   end
 
   def x_offset(layer=1)
-    trans_x = layer*@x_offset
-    trans_x *= PARALLAX_SCROLLING_COEFFICIENT unless trans_x == 1
+    # trans_x = layer*@x_offset
+    @x_offset / layer
   end
 
   def y_offset(layer=1)
-    trans_y = layer*@y_offset
-    trans_y *= PARALLAX_SCROLLING_COEFFICIENT unless trans_y == 1
+    # trans_y = layer*@y_offset
+    @y_offset / layer
   end
 
   def update(time)

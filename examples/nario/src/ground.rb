@@ -10,6 +10,7 @@ class GroundView < ActorView
     target.draw_box_s [x,y], [x2,y2], [255,25,25,255]
   end
 end
+
 class Ground < Actor
   has_behaviors :graphical, {:physical => {:shape => :poly, 
     :fixed => true,
@@ -23,5 +24,5 @@ class Ground < Actor
       [1024,80], 
       [1024,0],
   ]}},
-  {:layered => {:layer => 0, :parallax => 2}}
+  {:layered => {:layer => 0, :parallax => 1}}
 end

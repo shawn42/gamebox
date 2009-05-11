@@ -3,8 +3,12 @@ require 'behavior'
 require 'inflector'
 require 'publisher'
 class Physical < Behavior
-  attr_accessor :shape, :body, :opts, :parts
+  attr_accessor :shapes, :body, :opts, :parts
 
+  def shape
+    @shapes.first if @shapes
+  end
+  
   def setup
     # TODO add defaults?
     @mass = @opts[:mass]
@@ -41,8 +45,23 @@ class Physical < Behavior
     @shape.body.p = vec2(start_x,start_y)
     @shape.e = 0
     friction = @opts[:friction]
-    friction ||= 0.7
+    friction ||= 0.2
     @shape.u = friction
+    
+    @shapes = [@shape]
+
+    if @opts[:parts]
+      for obj in @opts[:parts]
+        for part_name, part_def in obj
+          # add another shape here
+          part_shape_array = part_def[:verts].collect{|v| vec2(v[0],v[1])}
+          part_shape = Shape::Poly.new(@body, part_shape_array, part_def[:offset])
+          part_shape.collision_type = part_name.to_sym
+          @shapes << part_shape
+        end
+      end
+    end
+
 
     physical_obj = self
 
@@ -56,40 +75,42 @@ class Physical < Behavior
       raise "physical actor in a non-physical level!"
     end
 
-    if @opts[:parts]
-      for obj in @opts[:parts]
-        for part_name, part_def in obj
-          part_obj = @actor.spawn part_name
-          @parts[part_name] = part_obj
-          a = @body
-          b = part_obj.body
-          if part_def
-            off_x,off_y = *part_def
-
-            aj = vec2(a.p.x,a.p.y+off_y)
-
-#            anch_a = a.world2local(aj)
-#            anch_b = b.world2local(-aj)
-
-            if off_y < 0
-            anch_a = vec2(0,0) #a.world2local(ZeroVec2)
-            anch_b = vec2(0,-off_y) #a.world2local(ZeroVec2)
-            else
-            anch_a = vec2(0,0) #a.world2local(ZeroVec2)
-            anch_b = vec2(0,off_y) #a.world2local(ZeroVec2)
-            end
-#            anch_b = b.world2local(-aj)
-
-            joint = Constraint::PinJoint.new a, b, anch_a, anch_b
-
-            # really lock it into place, no floating around
-            joint.bias_coef = 0.99
-            @actor.level.register_physical_constraint joint
-#            part_obj.body.p = vec2(b.p.x+off_x,b.p.y+off_y)
-          end
-        end
-      end
-    end
+    # if @opts[:parts]
+    #   for obj in @opts[:parts]
+    #     for part_name, part_def in obj
+    #       
+          # OLD WAY
+#           part_obj = @actor.spawn part_name
+#           @parts[part_name] = part_obj
+#           a = @body
+#           b = part_obj.body
+#           if part_def
+#             off_x,off_y = *part_def
+# 
+#             aj = vec2(a.p.x,a.p.y+off_y)
+# 
+# #            anch_a = a.world2local(aj)
+# #            anch_b = b.world2local(-aj)
+# 
+#             if off_y < 0
+#             anch_a = vec2(0,0) #a.world2local(ZeroVec2)
+#             anch_b = vec2(0,-off_y) #a.world2local(ZeroVec2)
+#             else
+#             anch_a = vec2(0,0) #a.world2local(ZeroVec2)
+#             anch_b = vec2(0,off_y) #a.world2local(ZeroVec2)
+#             end
+# #            anch_b = b.world2local(-aj)
+# 
+#             joint = Constraint::PinJoint.new a, b, anch_a, anch_b
+# 
+#             # really lock it into place, no floating around
+#             joint.bias_coef = 0.99
+#             @actor.level.register_physical_constraint joint
+# #            part_obj.body.p = vec2(b.p.x+off_x,b.p.y+off_y)
+#           end
+    #     end
+    #   end
+    # end
 
     # write code here to keep physics and x,y of actor in sync
     @actor.instance_eval do

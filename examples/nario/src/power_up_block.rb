@@ -1,8 +1,4 @@
 require 'actor'
-require 'animated_actor_view'
-
-class PowerUpBlockView < AnimatedActorView
-end
 
 class PowerUpBlock < Actor
   HIT_RATE = 500
@@ -12,7 +8,7 @@ class PowerUpBlock < Actor
     :fixed => true,
     :verts => [[-30,-30],[-30,30],[30,30],[30,-30]]
   }}, 
-    {:layered => {:layer => 2, :parallax => 2}}
+    {:layered => {:layer => 2, :parallax => 1}}
 
   def setup
     @inactive_timer = 0

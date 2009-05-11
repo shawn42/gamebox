@@ -1,5 +1,6 @@
 planned features:
   - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
+		- physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
   - add basic generator for things like actors/levels/etc with tests
 
   - solidify rdocs (including tutorial)
