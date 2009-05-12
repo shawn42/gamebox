@@ -20,5 +20,6 @@ class Bacon::Context
 end
 
 
+require 'metaclass'
 require 'actor'
 
