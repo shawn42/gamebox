@@ -13,7 +13,6 @@ Hoe.new('gamebox', Gamebox::VERSION) do |p|
   p.url = "http://shawn42.github.com/gamebox"
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
   p.remote_rdoc_dir = '' # Release to root
-  p.rdoc_pattern = /^(lib|bin|ext)|txt$|rdoc$/
   p.extra_deps << ['constructor']
   p.extra_deps << ['publisher']
   p.extra_deps << ['bacon']
