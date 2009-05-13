@@ -1,6 +1,9 @@
 require 'actor'
 require 'actor_view'
 
+require "enumerator"
+
+
 # SvgActor knows how to build himself based on an svg document based on the :name 
 # passed in being the group name in the doc (layer).
 class SvgActor < Actor
