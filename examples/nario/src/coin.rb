@@ -4,7 +4,8 @@ class Coin < Actor
   has_behaviors :animated, {:physical => {
       :shape => :circle,
       :mass => 1,
-      :radius => 20    
+      :radius => 15,
+      :angle => -1.57079633 # -90 degrees
     }},
     :layered => {:layer => 2, :parallax => 1}
   

@@ -37,6 +37,8 @@ class Physical < Behavior
     collision_type = @opts[:collision_group]
     collision_type ||= 
       Inflector.underscore(@actor.class).to_sym
+      
+    @body.a = @opts[:angle] if @opts[:angle]
 
     @shape.collision_type = collision_type
     start_x = @opts[:x]
@@ -77,43 +79,6 @@ class Physical < Behavior
     else
       raise "physical actor in a non-physical level!"
     end
-
-    # if @opts[:parts]
-    #   for obj in @opts[:parts]
-    #     for part_name, part_def in obj
-    #       
-          # OLD WAY
-#           part_obj = @actor.spawn part_name
-#           @parts[part_name] = part_obj
-#           a = @body
-#           b = part_obj.body
-#           if part_def
-#             off_x,off_y = *part_def
-# 
-#             aj = vec2(a.p.x,a.p.y+off_y)
-# 
-# #            anch_a = a.world2local(aj)
-# #            anch_b = b.world2local(-aj)
-# 
-#             if off_y < 0
-#             anch_a = vec2(0,0) #a.world2local(ZeroVec2)
-#             anch_b = vec2(0,-off_y) #a.world2local(ZeroVec2)
-#             else
-#             anch_a = vec2(0,0) #a.world2local(ZeroVec2)
-#             anch_b = vec2(0,off_y) #a.world2local(ZeroVec2)
-#             end
-# #            anch_b = b.world2local(-aj)
-# 
-#             joint = Constraint::PinJoint.new a, b, anch_a, anch_b
-# 
-#             # really lock it into place, no floating around
-#             joint.bias_coef = 0.99
-#             @actor.level.register_physical_constraint joint
-# #            part_obj.body.p = vec2(b.p.x+off_x,b.p.y+off_y)
-#           end
-    #     end
-    #   end
-    # end
 
     # write code here to keep physics and x,y of actor in sync
     @actor.instance_eval do
