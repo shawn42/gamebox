@@ -144,7 +144,7 @@ class Physical < Behavior
           if physical_obj.opts[:shape] == :poly
             -((physical_obj.body.a-1.57) * 180.0 / Math::PI + 90)
           else
-            -((physical_obj.body.a) * 180.0 / Math::PI)
+            -((physical_obj.body.a) * 180.0 / Math::PI + 90)
           end
         end
         define_method :warp do |new_p|
