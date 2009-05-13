@@ -4,6 +4,7 @@ $: << "#{File.dirname(__FILE__)}/../config"
 require 'rubygems'
 require 'rubygame'
 include Rubygame
+require 'surface_ext'
 
 require "environment"
 

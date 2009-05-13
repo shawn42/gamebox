@@ -17,7 +17,6 @@ lib/gamebox/behavior.rb
 lib/gamebox/config_manager.rb
 lib/gamebox/data/fonts/Asimov.ttf
 lib/gamebox/data/fonts/GAMEBOX_FONTS_GO_HERE
-lib/gamebox/data/graphics/.DS_Store
 lib/gamebox/data/graphics/GAMEBOX_GRAPHICS_GO_HERE
 lib/gamebox/data/graphics/logo.png
 lib/gamebox/data/music/GAMEBOX_MUSIC_GOES_HERE
@@ -43,6 +42,10 @@ lib/gamebox/publisher_ext.rb
 lib/gamebox/resource_manager.rb
 lib/gamebox/score.rb
 lib/gamebox/sound_manager.rb
+lib/gamebox/surface_ext.rb
+lib/gamebox/svg_actor.rb
+lib/gamebox/svg_document.rb
+lib/gamebox/svg_physical_level.rb
 lib/gamebox/template_app/README
 lib/gamebox/template_app/Rakefile
 lib/gamebox/template_app/config/boot.rb

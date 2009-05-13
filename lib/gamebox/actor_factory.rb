@@ -4,7 +4,7 @@ class ActorFactory
   constructor :input_manager, :sound_manager
 
   attr_accessor :mode_manager, :director
-
+  
   def build(actor, level, opts={})
     begin
       require actor.to_s

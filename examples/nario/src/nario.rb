@@ -112,5 +112,9 @@ class Nario < Actor
     "x:#{self.x} y:#{self.y} jt:#{@jump_timer} g?:#{@grounded}"
   end
 
+  def die
+    puts "You Died!"
+    # play_sound :nario_death
+  end
 
 end

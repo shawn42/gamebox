@@ -166,8 +166,6 @@ class Physical < Behavior
 
           if old_image
             old_image.rotozoom(rot_deg,1,true)
-          else
-            raise "no image could be found"
           end
         end
       end

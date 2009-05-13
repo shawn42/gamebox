@@ -2,11 +2,13 @@
 $: << "#{File.dirname(__FILE__)}/../config"
 require "fileutils"
 require 'inflector'
+require 'svg_document'
 
 class ResourceManager
   def initialize
     @loaded_images = {}
     @loaded_fonts = {}
+    @loaded_svgs = {}
   end
 
   def load_actor_image(actor)
@@ -105,6 +107,16 @@ class ResourceManager
     File.open user_file, "w" do |f|
       f.write settings.to_yaml
     end
+  end
+  
+  def load_svg(file_name)
+    # TODO create LEVEL_PATH in environment
+    cached_svg = @loaded_svgs[file_name]
+    if cached_svg.nil?
+      cached_svg = SvgDocument.new(File.open(File.expand_path(DATA_PATH + "levels/" + file_name + ".svg")))
+      @loaded_svgs[file_name] = cached_svg
+    end
+    cached_svg
   end
   
 end

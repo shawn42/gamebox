@@ -14,10 +14,14 @@ class Coin < Actor
     die ttl if ttl
   end
   
-  def die(ttl)
-    @ttl = ttl
+  def collect
+    die 400
     play_sound :coin
     self.action = :spinning
+  end
+  
+  def die(ttl=0)
+    @ttl = ttl
     body.apply_impulse(vec2(0,-400), ZeroVec2)
   end
   

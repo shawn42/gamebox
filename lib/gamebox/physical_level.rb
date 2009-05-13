@@ -5,9 +5,7 @@ require 'level'
 require 'physics'
 require 'physical_director'
 class PhysicalLevel < Level
-  #  GRAVITY = 0.01
-#  DAMPING = 0.8
-#  DAMPING = 0.994
+  
   attr_accessor :space
 
   def initialize(actor_factory, resource_manager, sound_manager, viewport, opts={}) 
@@ -23,7 +21,6 @@ class PhysicalLevel < Level
     @space = Space.new
     @space.iterations = 20
     @space.elastic_iterations = 0
-#    @space.damping = DAMPING
 
     setup
   end

@@ -17,11 +17,13 @@ class Viewport
   end
 
   def x_offset(layer=1)
+    return 0 if layer == Float::Infinity
     return @x_offset if layer == 1
     @x_offset / layer
   end
 
   def y_offset(layer=1)
+    return 0 if layer == Float::Infinity
     return @y_offset if layer == 1
     @y_offset / layer
   end
