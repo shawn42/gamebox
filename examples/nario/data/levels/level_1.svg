@@ -115,16 +115,16 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.0140625"
-     inkscape:cx="123.5818"
-     inkscape:cy="-24.618478"
+     inkscape:zoom="0.25175781"
+     inkscape:cx="1877.4865"
+     inkscape:cy="-276.43251"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer4"
      showgrid="false"
      inkscape:window-width="1386"
      inkscape:window-height="741"
-     inkscape:window-x="6"
-     inkscape:window-y="22" />
+     inkscape:window-x="8"
+     inkscape:window-y="36" />
   <metadata
      id="metadata2870">
     <rdf:RDF>
@@ -155,7 +155,7 @@
        id="image2483"
        height="389"
        width="1013"
-       xlink:href="../data/graphics/nario_mid.png"
+       xlink:href="../graphics/nario_mid.png"
        game:class="nario_mid"
        game:handle="nario_mid" />
     <image
