@@ -17,8 +17,8 @@ class DemoLevel < SvgPhysicalLevel
             v = v.to_f if float_keys.include? k
             new_opts[k.to_sym] = v
           end
-          
-          dynamic_actors[handle.to_sym] = create_actor klass, new_opts if handle
+          actor = create_actor klass, new_opts
+          dynamic_actors[handle.to_sym] = actor if handle
        end
      end
      
@@ -59,11 +59,26 @@ class DemoLevel < SvgPhysicalLevel
       fire :restart_level
     end
 
-    @space.add_collision_func(:death_zone, :coin) do |d,c|
+    @space.add_collision_func(:goomba, [:nario, :nario_hat]) do |g,n|
+      goomba = @director.find_physical_obj g
+      unless goomba.dying?
+        @nario.die
+        fire :restart_level
+      end
+    end
+    
+    @space.add_collision_func(:goomba, :nario_feet) do |g,n|
+      goomba = @director.find_physical_obj g
+      unless goomba.dying?
+        goomba.die
+        @score += 10
+      end
+    end
+
+    @space.add_collision_func(:death_zone, [:coin,:goomba]) do |d,c|
       coin = @director.find_physical_obj c
       coin.die
     end
-
 
     @space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
       @nario.stop_jump
