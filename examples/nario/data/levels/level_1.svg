@@ -129,9 +129,9 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.50351562"
-     inkscape:cx="5907.7489"
-     inkscape:cy="276.95268"
+     inkscape:zoom="1.0070312"
+     inkscape:cx="720.8379"
+     inkscape:cy="221.15195"
      inkscape:document-units="px"
      inkscape:current-layer="layer4"
      showgrid="false"
@@ -227,8 +227,8 @@
        game:class="coin"
        game:handle="coin" />
     <image
-       y="616.47443"
-       x="829.15137"
+       y="617.46747"
+       x="729.84961"
        id="image2479"
        height="32"
        width="32"
@@ -242,6 +242,31 @@
        width="32"
        xlink:href="../graphics/flag.png"
        game:class="flag" />
+    <image
+       y="535.42432"
+       x="893.50659"
+       id="image2552"
+       height="60"
+       width="60"
+       xlink:href="../graphics/power_up_block.png"
+       game:class="power_up_block"
+       game:handle="block1" />
+    <image
+       y="618.93561"
+       x="806.21881"
+       id="image2554"
+       height="32"
+       width="32"
+       xlink:href="../graphics/goomba/idle/1.png"
+       game:class="goomba" />
+    <image
+       y="631.84485"
+       x="1139.8728"
+       id="image2556"
+       height="32"
+       width="32"
+       xlink:href="../graphics/goomba/idle/1.png"
+       game:class="goomba" />
   </g>
   <g
      inkscape:groupmode="layer"
