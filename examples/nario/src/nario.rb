@@ -114,7 +114,7 @@ class Nario < Actor
 
   def die
     puts "You Died!"
-    # play_sound :nario_death
+    play_sound :nario_death
   end
 
 end

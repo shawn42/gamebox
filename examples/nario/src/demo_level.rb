@@ -72,6 +72,7 @@ class DemoLevel < SvgPhysicalLevel
       goomba = @director.find_physical_obj g
       unless goomba.dying?
         goomba.die
+        @sound_manager.play_sound :nario_stomp
         @score += 50
       end
     end
@@ -86,6 +87,10 @@ class DemoLevel < SvgPhysicalLevel
       @score += 100 # for the flag
       @score += @score.score if @nario.y < flag.y
       puts "YOU WIN! #{@score.score}"
+      @sound_manager.stop :overworld
+      @sound_manager.play_sound :finish_level
+      # maybe pause phsyics and game loop?
+      sleep 6
       fire :next_level
     end
 
