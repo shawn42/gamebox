@@ -28,7 +28,7 @@ class DemoLevel < SvgPhysicalLevel
   def setup
     @sound_manager.play :overworld
       
-    @space.gravity = vec2(0,800)
+    @space.gravity = vec2(0,1800)
     @space.iterations = 10
 
     @score = create_actor :score, :x => 10, :y => 10

@@ -5,23 +5,23 @@ class Nario < Actor
     :physical => {
         :shape => :poly,
         :parts => [
-          :nario_feet => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,6)},
+          :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
           :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}
           ],
         :mass => 200,
         :friction => 0.4,
         :moment => Float::Infinity,
-        :verts => [[-17,-20],[-17,20],[17,20],[17,-20]]},
+        :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
     :layered => {:layer => 2, :parallax => 1}
 
   # how long to apply the jump force for
-  JUMP_TIME = 20
+  JUMP_TIME = 10
 
   attr_accessor :jump_timer
   def setup
     mass = nario_body.mass
     @speed = mass * 0.6
-    @jump_speed = 32*@speed
+    @jump_speed = 47*@speed
     @jump_timer = 0
 
     @max_speed = 399 #100
