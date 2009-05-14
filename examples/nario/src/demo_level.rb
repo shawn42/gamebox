@@ -1,6 +1,7 @@
 require 'svg_physical_level'
 class DemoLevel < SvgPhysicalLevel
   
+  # TODO move to Level?
   # extract all the params from a node that are needed to construct an actor
    def create_actors_from_svg
      float_keys = ["x","y"]
@@ -71,13 +72,21 @@ class DemoLevel < SvgPhysicalLevel
       goomba = @director.find_physical_obj g
       unless goomba.dying?
         goomba.die
-        @score += 10
+        @score += 50
       end
     end
 
     @space.add_collision_func(:death_zone, [:coin,:goomba]) do |d,c|
       coin = @director.find_physical_obj c
       coin.die
+    end
+    
+    @space.add_collision_func([:nario,:nario_feet,:nario_hat],:flag) do |n,f|
+      flag = @director.find_physical_obj f
+      @score += 100 # for the flag
+      @score += @score.score if @nario.y < flag.y
+      puts "YOU WIN! #{@score.score}"
+      fire :next_level
     end
 
     @space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
