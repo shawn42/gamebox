@@ -111,8 +111,13 @@ class Nario < Actor
   def debug
     "x:#{self.x} y:#{self.y} jt:#{@jump_timer} g?:#{@grounded}"
   end
+  
+  def dying?
+    @dying
+  end
 
   def die
+    @dying = true
     puts "You Died!"
     play_sound :nario_death
   end

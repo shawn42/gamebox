@@ -56,15 +56,29 @@ class DemoLevel < SvgPhysicalLevel
     end
     
     @space.add_collision_func(:death_zone, [:nario,:nario_feet,:nario_hat]) do |d,n|
-      @nario.die
-      fire :restart_level
+      unless @nario.dying?
+        @nario.die
+        @sound_manager.stop :overworld
+        pause_physics
+        Thread.new do
+          sleep 4
+          fire :restart_level
+        end
+      end
     end
 
     @space.add_collision_func(:goomba, [:nario, :nario_hat]) do |g,n|
       goomba = @director.find_physical_obj g
       unless goomba.dying?
-        @nario.die
-        fire :restart_level
+        unless @nario.dying?
+          @nario.die
+          @sound_manager.stop :overworld
+          pause_physics
+          Thread.new do
+            sleep 4
+            fire :restart_level
+          end
+        end
       end
     end
     
@@ -97,6 +111,7 @@ class DemoLevel < SvgPhysicalLevel
     @space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
       @nario.stop_jump
     end
+    
     @space.add_collision_func(:power_up_block, :nario_hat) do |pup,n|
       pup_obj = @director.find_physical_obj pup
       if pup_obj.active?

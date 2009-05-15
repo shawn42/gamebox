@@ -27,12 +27,22 @@ class PhysicalLevel < Level
 
   PHYSICS_STEP = 25.0
   def update_physics(time)
-    steps = (time/PHYSICS_STEP).ceil
-    # from chipmunk demo
-    dt = 1.0/60/steps
-    steps.times do
-      @space.step dt
+    unless @physics_paused
+      steps = (time/PHYSICS_STEP).ceil
+      # from chipmunk demo
+      dt = 1.0/60/steps
+      steps.times do
+        @space.step dt
+      end
     end
+  end
+  
+  def pause_physics
+    @physics_paused = true
+  end
+  
+  def restart_physics
+    @physics_paused = false
   end
 
   def update(time)
