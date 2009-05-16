@@ -34,6 +34,7 @@ lib/gamebox/logo.rb
 lib/gamebox/metaclass.rb
 lib/gamebox/mode.rb
 lib/gamebox/mode_manager.rb
+lib/gamebox/numbers_ext.rb
 lib/gamebox/physical.rb
 lib/gamebox/physical_director.rb
 lib/gamebox/physical_level.rb

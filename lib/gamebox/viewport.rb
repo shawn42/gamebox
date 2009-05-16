@@ -1,3 +1,4 @@
+require 'numbers_ext'
 # Viewport represents the current "camera" location.  Essensially it translates from
 # world to screen coords and from screen coords to world coords.
 class Viewport
