@@ -16,6 +16,9 @@ Hoe.new('gamebox', Gamebox::VERSION) do |p|
   p.extra_deps << ['constructor']
   p.extra_deps << ['publisher']
   p.extra_deps << ['bacon']
+  if p.extra_rdoc_files
+    p.extra_rdoc_files << 'docs/getting_started.rdoc' 
+  end
 end
 
 STATS_DIRECTORIES = [

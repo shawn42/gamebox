@@ -1,27 +1,90 @@
 = Getting started with Gamebox
 
 == Purpose
-  Why use Gamebox?
+
+Why use Gamebox? Gamebox was designed to spring board game development. It is meant to allow the developer to be defining business rules about the game within minutes without having to worry about resource loading, sound/music management, creating windows, or messing with viewports.  The idea is to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.  I wrote Gamebox to aid in 48 hour game writing competitions and to allow me to write simple educational games for my kid(s).
 
 == Installation
-    - gem install gamebox
-    - or tar from shawn42.github.com—gamebox
-          <http://shawn42.github.com/gamebox>
-    - or git pull from git://github.com/shawn42/gamebox.git
+
+- gem install gamebox
+- or tar from http://shawn42.github.com/gamebox
+- or git pull from git://github.com/shawn42/gamebox.git
+
 == Game Creation
-    - gamebox my_zapper
-    - this will create the directory structure and needed files
-        - more info on which files go where
-== first actor to the stage
-    - what is an actor
-    - welcome to the factory
-    -  how to get your actor drawn?  (ActorViews)
-    -  getting events to your actor
+
+- gamebox zapper
+- this will create the directory structure and needed files to get a basic actor up on the screen
+	zapper
+	|-- README
+	|-- Rakefile
+	|-- config
+	|   |-- boot.rb
+	|   |-- environment.rb
+	|   |-- game.yml
+	|   |-- mode_level_config.yml
+	|   `-- objects.yml
+	|-- data
+	|   |-- fonts
+	|   |   `-- FONTS_GO_HERE
+	|   |-- graphics
+	|   |   `-- GRAPHICS_GO_HERE
+	|   |-- music
+	|   |   `-- MUSIC_GOES_HERE
+	|   |-- sound
+	|   `-- sounds
+	|       `-- SOUND_FX_GO_HERE
+	|-- doc
+	|   `-- README_FOR_APP
+	|-- lib
+	|   |-- code_statistics.rb
+	|   |-- diy.rb
+	|   `-- platform.rb
+	|-- script
+	|-- src
+	|   |-- app.rb
+	|   |-- demo_level.rb
+	|   |-- game.rb
+	|   `-- my_actor.rb
+	`-- test
+- you now have a runnable gamebox game
+
+	cd zapper
+	ruby src/app.rb
+
+== Actors to the Stage
+
+An Actor is the base class for any game object. A building, the player, the score, the bullet are all examples of actors. Actors can even be invisible. Any number of Behavior s can be added to an Actor to define how it will react to the world via the Actor.has_behaviors method.
+
+So Actors sound fun, how do I get one? That's where the ActorFactory comes in. In your Level class (demo_level.rb by default) you can use the create_actor helper method as shown below.
+
+	@score = create_actor :score, :x => 10, :y => 10
+	
+This call will return an instance of the Score class.  The ActorFactory will create the view for the actor and register it to be drawn.  Which view is instantiated depends on the actor requested.  The factory will always look for a class named the same as the actor with View on the end. So the actor Score will look for ScoreView.  If ScoreView does not exist, a generic view class will be used based on the behaviors of the actor. See ActorFactor#build for more details.
+
+That's great, but how do I tell my actors what to do?  They can register for events of course! A common place for this is in your actor's setup method. Here is an example from the roids example.
+
+	@input_manager.reg KeyDownEvent, K_SPACE do
+		shoot
+	end
+
 == Sound
+
+There are two ways to play sounds in Gamebox. From your level you can simple access the SoundManager via the @sound_manager instance variable. From your actors, you can play sounds via the play_sound helper method.
+
+	# music
+	@sound_manager.play :overworld
+	
+	# sounds
+	@sound_manager.play_sound :death
+
+or
+
+	# from an actor
+	play_sound :jump
+
 == Resources
 == Behaviors
 == Levels
 == Modes
-
 == Physics
 == SVG Levels
