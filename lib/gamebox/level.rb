@@ -7,10 +7,10 @@ class Level
   extend Publisher
 
   can_fire_anything
-  attr_accessor :directors, :resource_manager, :sound_manager,
+  attr_accessor :director, :resource_manager, :sound_manager,
     :opts, :viewport
+    
   def initialize(actor_factory, resource_manager, sound_manager, viewport, opts={}) 
-
     @director = Director.new
     @actor_factory = actor_factory
     @actor_factory.director = @director
@@ -35,4 +35,30 @@ class Level
 
   def draw(target,x_off,y_off)
   end
+  
+  # extract all the params from a node that are needed to construct an actor
+  def create_actors_from_svg
+    float_keys = ["x","y"]
+    dynamic_actors ||= {}
+    layer = @svg_doc.find_group_by_label("actors")
+
+    unless layer.nil?
+      # each image in the layer is an actor
+      layer.images.each do |actor_def|
+      klass = actor_def.game_class.to_sym
+      handle = actor_def.game_handle
+      new_opts = {}
+      actor_def.node.attributes.each do |k,v|
+        v = v.to_f if float_keys.include? k
+        new_opts[k.to_sym] = v
+      end
+    
+      actor = create_actor klass, new_opts
+      dynamic_actors[handle.to_sym] = actor if handle
+    end
+  end
+
+  dynamic_actors
+  end
+
 end

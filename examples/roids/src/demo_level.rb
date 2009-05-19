@@ -4,7 +4,7 @@ require 'walls'
 class DemoLevel < PhysicalLevel
   attr_accessor :score
   def setup
-    @sound_manager.play :roids
+    @sound_manager.play_music :roids
 
     @ship = create_actor :ship, :x => 300, :y => 300
 #    @ship.warp vec2(300,300)
@@ -16,7 +16,7 @@ class DemoLevel < PhysicalLevel
     @score += prev_level.score.score if prev_level
 
     @rocks = []
-    @opts[:rocks].times do
+    opts[:rocks].times do
       rock = create_actor :rock
       @rocks << rock
       x,y = rand(400)+200,rand(300)+200
@@ -32,36 +32,36 @@ class DemoLevel < PhysicalLevel
     @width = 1024
     @height = 768
     # setup ship torusness
-    @space.add_collision_func(:ship, :left_wall) do |ship, wall|
+    space.add_collision_func(:ship, :left_wall) do |ship, wall|
       ship.body.p = vec2(@width-ship.bb.r-ship.bb.l,ship.body.p.y)
     end
-    @space.add_collision_func(:ship, :right_wall) do |ship, wall|
+    space.add_collision_func(:ship, :right_wall) do |ship, wall|
       ship.body.p = vec2(ship.bb.r-ship.bb.l,ship.body.p.y)
     end
-    @space.add_collision_func(:ship, :top_wall) do |ship, wall|
+    space.add_collision_func(:ship, :top_wall) do |ship, wall|
       ship.body.p = vec2(ship.body.p.x,@height-ship.bb.b-ship.bb.t)
     end
-    @space.add_collision_func(:ship, :bottom_wall) do |ship, wall|
+    space.add_collision_func(:ship, :bottom_wall) do |ship, wall|
       ship.body.p = vec2(ship.body.p.x,ship.bb.t-ship.bb.b)
     end
 
     # setup rock torusness
-    @space.add_collision_func(:rock, :left_wall) do |rock, wall|
+    space.add_collision_func(:rock, :left_wall) do |rock, wall|
       rock.body.p = vec2(@width-rock.bb.r-rock.bb.l,rock.body.p.y)
     end
-    @space.add_collision_func(:rock, :right_wall) do |rock, wall|
+    space.add_collision_func(:rock, :right_wall) do |rock, wall|
       rock.body.p = vec2(rock.bb.r-rock.bb.l,rock.body.p.y)
     end
-    @space.add_collision_func(:rock, :top_wall) do |rock, wall|
+    space.add_collision_func(:rock, :top_wall) do |rock, wall|
       rock.body.p = vec2(rock.body.p.x,@height-rock.bb.b-rock.bb.t)
     end
-    @space.add_collision_func(:rock, :bottom_wall) do |rock, wall|
+    space.add_collision_func(:rock, :bottom_wall) do |rock, wall|
       rock.body.p = vec2(rock.body.p.x,rock.bb.t-rock.bb.b)
     end
 
     # ship rock collision
-    @space.add_collision_func(:rock, :ship) do |rock, ship|
-      shippy = @director.find_physical_obj ship
+    space.add_collision_func(:rock, :ship) do |rock, ship|
+      shippy = director.find_physical_obj ship
       unless shippy.invincible?
         @sound_manager.play_sound :implosion
         shippy.when :remove_me do
@@ -71,10 +71,10 @@ class DemoLevel < PhysicalLevel
       end
     end
 
-    @space.add_collision_func(:rock, :bullet) do |rock, bullet|
-      @sound_manager.play_sound :implosion
+    space.add_collision_func(:rock, :bullet) do |rock, bullet|
+      sound_manager.play_sound :implosion
 
-      rocky = @director.find_physical_obj rock
+      rocky = director.find_physical_obj rock
       rocky.when :remove_me do
         @score += 10
       end
@@ -90,7 +90,7 @@ class DemoLevel < PhysicalLevel
 
       @rocks.delete rocky
 
-      @director.remove_physical_obj bullet
+      director.remove_physical_obj bullet
     end
 
     @stars = []
@@ -99,7 +99,7 @@ class DemoLevel < PhysicalLevel
 
   def update(time)
     update_physics time
-    @director.update time
+    director.update time
 
     if @rocks.empty?
       @ship.when :remove_me do

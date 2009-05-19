@@ -60,7 +60,7 @@ class SoundManager
     end
   end
 
-  def play(what, volume=nil)
+  def play_music(what, volume=nil)
     if @enabled && @music[what]
       @music_thread = Thread.new do
         @music[what].volume = volume if volume
@@ -69,9 +69,15 @@ class SoundManager
     end
   end
 
-  def stop(what)
+  def stop_music(what)
     if @enabled
       @music[what].stop if @music[what]
+    end
+  end
+  
+  def stop_sound(what)
+    if @enabled
+      @sounds[what].stop if @sounds[what]
     end
   end
 

@@ -46,7 +46,6 @@ lib/gamebox/sound_manager.rb
 lib/gamebox/surface_ext.rb
 lib/gamebox/svg_actor.rb
 lib/gamebox/svg_document.rb
-lib/gamebox/svg_physical_level.rb
 lib/gamebox/template_app/README
 lib/gamebox/template_app/Rakefile
 lib/gamebox/template_app/config/boot.rb

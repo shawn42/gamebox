@@ -6,7 +6,7 @@ class Actor
   extend Publisher
 
   attr_accessor :behaviors, :x, :y, :level, :input_manager,
-    :resource_manager, :alive, :opts
+    :resource_manager, :alive, :opts, :sound_manager
 
   can_fire_anything
 
@@ -92,6 +92,11 @@ class Actor
   # details on how to "define" sounds.
   def play_sound(*args)
     @sound_manager.play_sound *args
+  end
+
+  # Stops a sound via the SoundManager.
+  def stop_sound(*args)
+    @sound_manager.stop_sound *args
   end
 
   # to be defined in child class

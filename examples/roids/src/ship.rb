@@ -32,7 +32,7 @@ class Ship < Actor
     @turn_speed = 0.0045
     @max_speed = 500
 
-    i = @input_manager
+    i = input_manager
     i.reg KeyDownEvent, K_SPACE do
       shoot
     end

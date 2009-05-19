@@ -1,36 +1,14 @@
-require 'svg_physical_level'
-class DemoLevel < SvgPhysicalLevel
-  
-  # TODO move to Level?
-  # extract all the params from a node that are needed to construct an actor
-   def create_actors_from_svg
-     float_keys = ["x","y"]
-     dynamic_actors ||= {}
-     layer = @svg_doc.find_group_by_label("actors")
-     
-     unless layer.nil?
-       # each image in the layer is an actor
-       layer.images.each do |actor_def|
-          klass = actor_def.game_class.to_sym
-          handle = actor_def.game_handle
-          new_opts = {}
-          actor_def.node.attributes.each do |k,v|
-            v = v.to_f if float_keys.include? k
-            new_opts[k.to_sym] = v
-          end
-          actor = create_actor klass, new_opts
-          dynamic_actors[handle.to_sym] = actor if handle
-       end
-     end
-     
-     dynamic_actors
-   end
+require 'physical_level'
+
+class DemoLevel < PhysicalLevel
   
   def setup
-    @sound_manager.play :overworld
+    sound_manager.play_music :overworld
+
+    @svg_doc = resource_manager.load_svg opts[:file]
       
-    @space.gravity = vec2(0,1800)
-    @space.iterations = 10
+    space.gravity = vec2(0,1800)
+    space.iterations = 10
 
     @score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 10, :y => 660
@@ -44,10 +22,10 @@ class DemoLevel < SvgPhysicalLevel
 
     # TODO fix the viewport to not suck
 #    @viewport.follow @nario, [0,70], [300,400]
-    @viewport.follow @nario, [0,0], [0,0]
+    viewport.follow @nario, [0,0], [0,0]
 
-    @space.add_collision_func(:coin, [:nario,:nario_feet,:nario_hat]) do |c,n|
-      coin = @director.find_physical_obj c
+    space.add_collision_func(:coin, [:nario,:nario_feet,:nario_hat]) do |c,n|
+      coin = director.find_physical_obj c
       unless coin.dying?
         coin.collect
         @score += 10
@@ -55,10 +33,10 @@ class DemoLevel < SvgPhysicalLevel
       end
     end
     
-    @space.add_collision_func(:death_zone, [:nario,:nario_feet,:nario_hat]) do |d,n|
+    space.add_collision_func(:death_zone, [:nario,:nario_feet,:nario_hat]) do |d,n|
       unless @nario.dying?
         @nario.die
-        @sound_manager.stop :overworld
+        sound_manager.stop_music :overworld
         pause_physics
         Thread.new do
           sleep 4
@@ -67,12 +45,12 @@ class DemoLevel < SvgPhysicalLevel
       end
     end
 
-    @space.add_collision_func(:goomba, [:nario, :nario_hat]) do |g,n|
-      goomba = @director.find_physical_obj g
+    space.add_collision_func(:goomba, [:nario, :nario_hat]) do |g,n|
+      goomba = director.find_physical_obj g
       unless goomba.dying?
         unless @nario.dying?
           @nario.die
-          @sound_manager.stop :overworld
+          sound_manager.stop_music :overworld
           pause_physics
           Thread.new do
             sleep 4
@@ -82,38 +60,38 @@ class DemoLevel < SvgPhysicalLevel
       end
     end
     
-    @space.add_collision_func(:goomba, :nario_feet) do |g,n|
-      goomba = @director.find_physical_obj g
+    space.add_collision_func(:goomba, :nario_feet) do |g,n|
+      goomba = director.find_physical_obj g
       unless goomba.dying?
         goomba.die
-        @sound_manager.play_sound :nario_stomp
+        sound_manager.play_sound :nario_stomp
         @score += 50
       end
     end
 
-    @space.add_collision_func(:death_zone, [:coin,:goomba]) do |d,c|
-      coin = @director.find_physical_obj c
+    space.add_collision_func(:death_zone, [:coin,:goomba]) do |d,c|
+      coin = director.find_physical_obj c
       coin.die
     end
     
-    @space.add_collision_func([:nario,:nario_feet,:nario_hat],:flag) do |n,f|
-      flag = @director.find_physical_obj f
+    space.add_collision_func([:nario,:nario_feet,:nario_hat],:flag) do |n,f|
+      flag = director.find_physical_obj f
       @score += 100 # for the flag
       @score += @score.score if @nario.y < flag.y
       puts "YOU WIN! #{@score.score}"
-      @sound_manager.stop :overworld
-      @sound_manager.play_sound :finish_level
+      sound_manager.stop_music :overworld
+      sound_manager.play_sound :finish_level
       # maybe pause phsyics and game loop?
       sleep 6
       fire :next_level
     end
 
-    @space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
+    space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
       @nario.stop_jump
     end
     
-    @space.add_collision_func(:power_up_block, :nario_hat) do |pup,n|
-      pup_obj = @director.find_physical_obj pup
+    space.add_collision_func(:power_up_block, :nario_hat) do |pup,n|
+      pup_obj = director.find_physical_obj pup
       if pup_obj.active?
         @nario.stop_jump
         pup_obj.hit
@@ -122,7 +100,7 @@ class DemoLevel < SvgPhysicalLevel
     end
 
     @nario.instance_variable_get('@input_manager').reg KeyDownEvent, K_P do
-      p @viewport.debug
+      p viewport.debug
       p @nario.debug
     end
 
