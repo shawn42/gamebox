@@ -33,6 +33,7 @@ class FakeMap
   
   # is the location available for the specified type
   def blocked?(location, type=nil)
+    return true if type == :blocked
     return true if location.x >= @w || location.y >= @h || location.x < 0 || location.y < 0
     if @grid[location.x] and @grid[location.x][location.y]
       return true
@@ -232,4 +233,33 @@ describe 'A new polaris' do
     path.first.location.y.should == 1
     path.last.location.should == to
   end
+  
+  it 'should return nil when the shortest path is longer than the max step passed in' do
+    from = FakeLocation.new 0, 0
+    to = FakeLocation.new 5, 4
+    
+    path = @pather.guide(from,to,nil,4)
+    path.should == nil
+  end  
+  
+  it 'should return nil when the path does not exist' do
+    from = FakeLocation.new 0, 0
+    to = FakeLocation.new 2, 0
+    
+    # put up a wall
+    @map.h.times do |i|
+      @map.place FakeLocation.new(1, i), "ME"
+    end
+    
+    path = @pather.guide(from,to)
+    path.should == nil
+  end  
+
+  it 'should return nil when the path does not exist for unit type' do
+    from = FakeLocation.new 0, 0
+    to = FakeLocation.new 2, 0
+    
+    path = @pather.guide(from,to,:blocked)
+    path.should == nil
+  end  
 end

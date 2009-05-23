@@ -6,8 +6,8 @@ class Polaris
     @map = map
   end
   
-  def guide(from, to, max_depth=400)
-    return nil if @map.blocked? from or @map.blocked? to
+  def guide(from, to, unit_type=nil, max_depth=400)
+    return nil if @map.blocked? from, unit_type or @map.blocked? to, unit_type
     from_element = PathElement.new(from)
     from_element.dist_from = @map.distance(from,to)
     open = [from_element]
@@ -35,7 +35,7 @@ class Polaris
         for next_door in @map.neighbors(loc)
           next unless closed.select{|c|c.location.x == next_door.x and c.location.y == next_door.y}.empty?
           
-          unless @map.blocked? next_door
+          unless @map.blocked? next_door, unit_type
             next_door_element = open.select{|o|o.location.x == next_door.x and o.location.y == next_door.y}.first
             g = current_element.cost_to + @map.cost(loc, next_door)
             if next_door_element.nil?
