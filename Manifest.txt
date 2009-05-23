@@ -11,6 +11,7 @@ lib/gamebox.rb
 lib/gamebox/actor.rb
 lib/gamebox/actor_factory.rb
 lib/gamebox/actor_view.rb
+lib/gamebox/ai/polaris.rb
 lib/gamebox/aliasing.rb
 lib/gamebox/animated.rb
 lib/gamebox/behavior.rb
@@ -72,3 +73,4 @@ test/helper.rb
 test/test_actor.rb
 test/test_animated.rb
 test/test_physical.rb
+test/test_polaris.rb
