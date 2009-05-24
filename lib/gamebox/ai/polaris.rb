@@ -1,3 +1,4 @@
+require 'sorted_list'
 
 # Polaris is the star that guides, aka "The North Star".  It implements the A* algorithm.
 class Polaris
@@ -10,16 +11,15 @@ class Polaris
     return nil if @map.blocked? from, unit_type or @map.blocked? to, unit_type
     from_element = PathElement.new(from)
     from_element.dist_from = @map.distance(from,to)
-    open = [from_element]
-    closed = []
+    open = SortedList.new [from_element]
+    closed = SortedList.new
     step = 0
     
     until open.empty? or step > max_depth
       step += 1
       
-      open = open.sort_by{|n|n.rating}
-      
       current_element = open.shift
+      
       loc = current_element.location
       if @map.cost(loc,to) == 0
         path = []
@@ -30,19 +30,20 @@ class Polaris
 
         return path
       else
-        closed << current_element
-        
+        closed.add current_element
         for next_door in @map.neighbors(loc)
-          next unless closed.select{|c|c.location.x == next_door.x and c.location.y == next_door.y}.empty?
+          el = PathElement.new(next_door,current_element)
+          it = closed.find(el)
+          next unless it.nil?
           
           unless @map.blocked? next_door, unit_type
-            next_door_element = open.select{|o|o.location.x == next_door.x and o.location.y == next_door.y}.first
+            next_door_element = open.find el
             g = current_element.cost_to + @map.cost(loc, next_door)
             if next_door_element.nil?
               # add to open
-              el = PathElement.new(next_door,current_element)
               el.cost_to = g
               el.dist_from = @map.distance(next_door,to)
+              
               open << el
             elsif next_door_element.cost_to > g
               # update the parent and cost
@@ -58,6 +59,8 @@ class Polaris
 end
 
 class PathElement
+  include Comparable
+  
   attr_accessor :location, :parent
   attr_reader :cost_to, :dist_from, :rating
   def initialize(location=nil,parent=nil)
@@ -84,5 +87,20 @@ class PathElement
   
   def to_s
     "#{@location} at cost of #{@cost_to} and rating of #{@rating}"
+  end
+  
+  def <=>(b)
+    a = self
+    if a.rating < b.rating
+      return -1
+    elsif a.rating > b.rating
+      return 1
+    else
+      0
+    end
+  end
+  def ==(other)
+    return false if other.nil?
+    @location == other.location
   end
 end
