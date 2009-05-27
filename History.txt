@@ -8,4 +8,6 @@
     * Level manages directors, backgrounds, level goals
     * Mode manages level loading and order
     * Behavior system for adding behaviors to actors (ie physical to put an actor into a physical space)
+    * Loading of Levels from an SVG file
+		* Polaris A* path finder
     * Lots more to come!

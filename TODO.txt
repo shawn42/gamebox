@@ -1,4 +1,5 @@
 planned features:
+	- change Polaris to return partial path when step max is reached
 	- allow for repeating actors (tiles)
 	- allow overriding of animation timing
   - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)

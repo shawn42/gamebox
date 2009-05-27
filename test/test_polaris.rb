@@ -185,5 +185,6 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     path.should == nil
+    @pather.nodes_considered.should == @map.h
   end
 end

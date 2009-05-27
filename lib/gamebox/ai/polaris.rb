@@ -1,24 +1,27 @@
 require 'sorted_list'
 
-# Polaris is the star that guides, aka "The North Star".  It implements the A* algorithm.
+# Polaris is a star that guides, aka "The North Star".  It implements the A* algorithm.
 class Polaris
+  attr_reader :nodes_considered
   
   def initialize(map)
     @map = map
+    @nodes_considered = 0
   end
   
   def guide(from, to, unit_type=nil, max_depth=400)
-    return nil if @map.blocked? from, unit_type or @map.blocked? to, unit_type
+    return nil if @map.blocked?(from, unit_type) || @map.blocked?(to, unit_type)
     from_element = PathElement.new(from)
     from_element.dist_from = @map.distance(from,to)
     open = SortedList.new [from_element]
     closed = SortedList.new
     step = 0
     
-    until open.empty? or step > max_depth
+    until open.empty? || step > max_depth
       step += 1
       
       current_element = open.shift
+      @nodes_considered += 1
       
       loc = current_element.location
       if @map.cost(loc,to) == 0
@@ -31,24 +34,24 @@ class Polaris
         return path
       else
         closed.add current_element
-        for next_door in @map.neighbors(loc)
+        @map.neighbors(loc).each do |next_door|
           el = PathElement.new(next_door,current_element)
-          it = closed.find(el)
-          next unless it.nil?
+          closed_el = closed.find(el)
+          next unless closed_el.nil?
           
           unless @map.blocked? next_door, unit_type
             next_door_element = open.find el
-            g = current_element.cost_to + @map.cost(loc, next_door)
+            current_rating = current_element.cost_to + @map.cost(loc, next_door)
             if next_door_element.nil?
               # add to open
-              el.cost_to = g
+              el.cost_to = current_rating
               el.dist_from = @map.distance(next_door,to)
               
               open << el
-            elsif next_door_element.cost_to > g
+            elsif next_door_element.cost_to > current_rating
               # update the parent and cost
               next_door_element.parent = current_element
-              next_door_element.cost_to = g
+              next_door_element.cost_to = current_rating
             end
           end
         end
