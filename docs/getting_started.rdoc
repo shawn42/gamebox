@@ -2,7 +2,11 @@
 
 == Purpose
 
-Why use Gamebox? Gamebox was designed to spring board game development. It is meant to allow the developer to be defining business rules about the game within minutes without having to worry about resource loading, sound/music management, creating windows, or messing with viewports.  The idea is to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.  I wrote Gamebox to aid in 48 hour game writing competitions and to allow me to write simple educational games for my kid(s).
+Why use Gamebox? Gamebox was designed to spring board game development. It allows the developer to define business rules about a game very quickly without having to worry about resource loading, sound/music management, creating windows, or messing with viewports.  Gamebox allows you to define a game's business rules within minutes.
+
+The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.  
+
+The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing competitions and second, to allow me to write simple educational games for my kid(s).
 
 == Installation
 
