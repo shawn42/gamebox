@@ -1,4 +1,12 @@
-require 'sorted_list'
+
+require 'algorithms'
+include Containers
+
+class PriorityQueue
+  def each(&block)
+    @heap.instance_variable_get("@stored").values.each &block
+  end
+end
 
 # Polaris is a star that guides, aka "The North Star".  It implements the A* algorithm.
 class Polaris
@@ -13,14 +21,15 @@ class Polaris
     return nil if @map.blocked?(from, unit_type) || @map.blocked?(to, unit_type)
     from_element = PathElement.new(from)
     from_element.dist_from = @map.distance(from,to)
-    open = SortedList.new [from_element]
-    closed = SortedList.new
+    open = PriorityQueue.new { |x, y| (x <=> y) == -1 }
+    open.push from_element, from_element.rating
+    closed = SplayTreeMap.new
     step = 0
     
     until open.empty? || step > max_depth
       step += 1
       
-      current_element = open.shift
+      current_element = open.pop
       @nodes_considered += 1
       
       loc = current_element.location
@@ -33,21 +42,27 @@ class Polaris
 
         return path
       else
-        closed.add current_element
+        closed.push current_element.location, current_element
         @map.neighbors(loc).each do |next_door|
           el = PathElement.new(next_door,current_element)
-          closed_el = closed.find(el)
-          next unless closed_el.nil?
+          next if closed.has_key? next_door
           
-          unless @map.blocked? next_door, unit_type
-            next_door_element = open.find el
+          if @map.blocked? next_door, unit_type
+            
+            #closed.push el.location, el
+          else
+            next_door_element = nil
+            open.each do |n|
+              next_door_element = el if n == el
+            end
+
             current_rating = current_element.cost_to + @map.cost(loc, next_door)
             if next_door_element.nil?
               # add to open
               el.cost_to = current_rating
               el.dist_from = @map.distance(next_door,to)
               
-              open << el
+              open.push el, el.rating
             elsif next_door_element.cost_to > current_rating
               # update the parent and cost
               next_door_element.parent = current_element
@@ -102,6 +117,7 @@ class PathElement
       0
     end
   end
+  
   def ==(other)
     return false if other.nil?
     @location == other.location
