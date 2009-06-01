@@ -16,7 +16,11 @@ require 'constructor'
 require 'diy'
 require 'actor_factory'
 
+require 'drb'
+
 class GameboxApp
+  include DRbUndumped
+  attr_reader :context, :game
   def self.run(argv,env)
     GameboxApp.new.start argv, env
   end
@@ -28,6 +32,17 @@ class GameboxApp
   def setup
     Rubygame.init
     @game = @context[:game]
+    
+    @config_manager = @context[:config_manager]
+    setup_debug_server if @config_manager[:debug_server]
+  end
+  
+  def setup_debug_server
+    puts "Starting debug server..."
+    
+    require 'drb'
+    DRb.start_service "druby://localhost:7373", self
+    puts "on #{DRb.uri}"
   end
   
   def main_loop
@@ -37,6 +52,10 @@ class GameboxApp
 
   def shutdown
     Rubygame.quit
+  end
+  
+  def debug_eval(eval_str)
+    instance_eval eval_str
   end
 
   def start(argv,env)

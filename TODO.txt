@@ -1,28 +1,28 @@
 planned features:
-	- change Polaris to return partial path when step max is reached
-	- allow for repeating actors (tiles)
-	- allow overriding of animation timing
-  - make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
-		- physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
+change Polaris to return partial path when step max is reached
+allow for repeating actors (tiles)
+allow overriding of animation timing
+ make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
+	physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
   - add basic generator for things like actors/levels/etc with tests
   - solidify rdocs (including tutorial)
-	- SVGS
-		- create a DynamicPhysicalActor that can be built from external verts
-  - add while key down K_UP callback?	
-	- add nice actor debugging
-	- add Extra; actor with a short time to live (TTL); useful for special effects (maybe as a behavior)
-	- add some kind of fade in/out for actors w/ smooth interpolation
+SVGS
+	create a DynamicPhysicalActor that can be built from external verts
+add while key down K_UP callback?	
+add nice actor debugging
+add Extra; actor with a short time to live (TTL); useful for special effects (maybe as a behavior)
+add some kind of fade in/out for actors w/ smooth interpolation
 	
-  - static deployment bundles (crate)
-    - ruby
-    - SDL
-    - rubygame
+static deployment bundles (crate)
+	ruby
+	SDL
+	rubygame
 possible features:
-  - AI
-    - state machine
-    - rule based
-  - optional GUI via rubygoo
-  - particle system? ParticleGroupActor?
-  - network manager
-  - highscore upload system
-  - gamebox server (content server?)
+AI
+	 state machine
+	 rule based
+optional GUI via rubygoo
+particle system? ParticleGroupActor?
+network manager
+highscore upload system
+gamebox server (content server?)

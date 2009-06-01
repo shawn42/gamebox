@@ -1,5 +1,6 @@
 --- 
 :sound: true
+:debug_server: true
 :fullscreen: false
 :screen_resolution: 
 - 1024
