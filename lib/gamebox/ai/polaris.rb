@@ -1,12 +1,5 @@
-
 require 'algorithms'
 include Containers
-
-class PriorityQueue
-  def each(&block)
-    @heap.instance_variable_get("@stored").values.each &block
-  end
-end
 
 # Polaris is a star that guides, aka "The North Star".  It implements the A* algorithm.
 class Polaris
@@ -48,26 +41,15 @@ class Polaris
           next if closed.has_key? next_door
           
           if @map.blocked? next_door, unit_type
-            
             #closed.push el.location, el
           else
-            next_door_element = nil
-            open.each do |n|
-              next_door_element = el if n == el
-            end
-
             current_rating = current_element.cost_to + @map.cost(loc, next_door)
-            if next_door_element.nil?
-              # add to open
-              el.cost_to = current_rating
-              el.dist_from = @map.distance(next_door,to)
-              
-              open.push el, el.rating
-            elsif next_door_element.cost_to > current_rating
-              # update the parent and cost
-              next_door_element.parent = current_element
-              next_door_element.cost_to = current_rating
-            end
+            
+            # add to open
+            el.cost_to = current_rating
+            el.dist_from = @map.distance(next_door,to)
+            
+            open.push el, el.rating
           end
         end
       end
