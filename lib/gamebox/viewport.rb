@@ -33,7 +33,7 @@ class Viewport
     if @follow_target
       x_diff = @width/2 + @follow_offset_x - @follow_target.x - @x_offset
       if x_diff.abs > @buffer_x
-        # move screen
+        # move screen 
         if x_diff > 0
           @x_offset += x_diff - @buffer_x 
         else

@@ -151,10 +151,13 @@ describe 'A new polaris' do
     path.should != nil
     path.size.should == 5
     
-    # TODO how to check the shortest path?
-    # check each node to make sure they are neighbors?
-    path.first.location.x.should == 1
-    path.first.location.y.should == 1
+    # make sure that all elements of the path are neighbors
+    prev_el = PathElement.new from, nil
+    path.each do |path_el|
+      @map.neighbors(prev_el.location).should.include? path_el.location
+      prev_el = path_el
+    end
+    
     path.last.location.should == to
   end
   

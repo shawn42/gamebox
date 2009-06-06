@@ -16,10 +16,7 @@ require 'constructor'
 require 'diy'
 require 'actor_factory'
 
-require 'drb'
-
 class GameboxApp
-  include DRbUndumped
   attr_reader :context, :game
   def self.run(argv,env)
     GameboxApp.new.start argv, env
@@ -38,9 +35,11 @@ class GameboxApp
   end
   
   def setup_debug_server
-    puts "Starting debug server..."
     
     require 'drb'
+    self.class.extend DRbUndumped
+    puts "Starting debug server..."
+    
     DRb.start_service "druby://localhost:7373", self
     puts "on #{DRb.uri}"
   end

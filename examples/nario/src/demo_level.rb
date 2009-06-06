@@ -19,10 +19,7 @@ class DemoLevel < PhysicalLevel
     create_actor :svg_actor, :name => :death_zone, :svg_doc => @svg_doc
 
     @nario = dynamic_actors[:nario]
-
-    # TODO fix the viewport to not suck
-#    @viewport.follow @nario, [0,70], [300,400]
-    viewport.follow @nario, [0,0], [0,0]
+    viewport.follow @nario, [0,70], [200,100]
 
     space.add_collision_func(:coin, [:nario,:nario_feet,:nario_hat]) do |c,n|
       coin = director.find_physical_obj c
