@@ -14,19 +14,24 @@ class Rague< Actor
     i = input_manager
     i.reg KeyDownEvent, K_RIGHT do
       fire :move_right
+      fire :action_taken
     end
     i.reg KeyDownEvent, K_LEFT do
       fire :move_left
+      fire :action_taken
     end
     i.reg KeyDownEvent, K_UP do
       fire :move_up
+      fire :action_taken
     end
     i.reg KeyDownEvent, K_DOWN do
       fire :move_down
+      fire :action_taken
     end
     
     i.reg KeyDownEvent, K_SPACE do
-      fire :change_location
+      # skip turn
+      fire :action_taken
     end
   end
 

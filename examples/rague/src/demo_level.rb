@@ -15,8 +15,10 @@ class DemoLevel < Level
     
     map_loader.load_map @map, 'entry.map'
     
-    #@rague = create_actor :rague, :x => 60, :y => 60
-  
+    @rague.when :action_taken do
+      puts "NPCs get their turn"
+    end
+    
     @rague.when :move_right do
       x,y = @map.screen_to_tile(@rague.x,@rague.y)
       new_loc = loc2 x+1, y
