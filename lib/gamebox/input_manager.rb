@@ -27,6 +27,14 @@ class InputManager
 
     @hooks = {}
   end
+  
+  def framerate=(frame_rate)
+    @clock.target_framerate = frame_rate
+  end
+  
+  def framerate
+    @clock.target_framerate
+  end
 
   def main_loop(game)
     catch(:rubygame_quit) do

@@ -1,24 +1,4 @@
-# TwoDGridLocation exibits an x,y,cost location
-class TwoDGridLocation
-  attr_accessor :x,:y
-  def initialize(x,y);@x=x;@y=y;end
-  def ==(other)
-    @x == other.x and @y == other.y
-  end
-  
-  def <=>(b)
-    ret = 1
-    if @x == b.x && @y == b.y  
-      ret = 0
-    end
-    ret = -1 if @x <= b.x && @y < b.y
-    return ret
-  end
-  
-  def to_s
-    "#{@x},#{@y}"
-  end
-end
+require 'ai/two_d_grid_location'
 
 # TwoDGridMap exibits the contract that the map requires. 
 # Works on an X,Y grid that uses Ftors for 2D vectors
@@ -33,9 +13,20 @@ class TwoDGridMap
     @grid = {}
   end
   
-  def place(location, thing)
+  # place thing at location. If thing is nil, location will be placed in the map
+  def place(location, thing=nil)
+    thing ||= location
     @grid[location.x] ||= {}
     @grid[location.x][location.y] = thing
+  end
+  
+  def occupant(location)
+    @grid[location.x][location.y] if @grid[location.x]
+  end
+  
+  def clear(location)
+    @grid[location.x] ||= {}
+    @grid[location.x][location.y] = nil
   end
   
   # is the location available for the specified type

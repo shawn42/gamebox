@@ -1,0 +1,29 @@
+game:
+  compose:
+    - wrapped_screen
+    - input_manager
+    - sound_manager
+    - mode_manager
+resource_manager:
+mode_manager:
+  compose:
+    - input_manager
+    - resource_manager
+    - sound_manager
+    - config_manager
+    - actor_factory
+sound_manager:
+  compose:
+    - resource_manager
+    - config_manager
+input_manager:
+wrapped_screen:
+  compose:
+    - config_manager
+actor_factory:
+  compose:
+    - input_manager
+    - sound_manager
+config_manager:
+  compose:
+    - resource_manager
