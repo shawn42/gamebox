@@ -1,20 +1,21 @@
 require 'level'
 require 'map'
+require 'map_loader'
 require 'tile'
 class DemoLevel < Level
   def setup
-    @map = create_actor :map, :height => 40, :width => 60
+    @map = create_actor :map
+    map_defs = resource_manager.load_config 'map_defs'
+    map_loader = MapLoader.new map_defs
     
-    @map.w.times do |col|
-      @map.h.times do |row|
-        loc = Tile.new col, row
-        loc.lit = false
-        loc.solid = true if col == 35 && row < 20
-        @map.place loc
-      end
+    map_loader.when :create_actor do |name, opts|
+      act = create_actor name, opts
+      @rague = act if name == :rague
     end
     
-    @rague = create_actor :rague
+    map_loader.load_map @map, 'entry.map'
+    
+    #@rague = create_actor :rague, :x => 60, :y => 60
   
     @rague.when :move_right do
       x,y = @map.screen_to_tile(@rague.x,@rague.y)

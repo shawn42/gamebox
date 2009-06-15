@@ -7,7 +7,10 @@ class Map < Actor
   def setup
     @tile_width = 30
     @tile_height = 30
-    @map = TwoDGridMap.new @opts[:width], @opts[:height]
+  end
+  
+  def size=(s)
+    @map = TwoDGridMap.new s[0], s[1]
     @los = LineOfSite.new @map
   end
   
@@ -66,16 +69,16 @@ class MapView < ActorView
         color = [150,250,45,alpha]
         color = [150,50,45,alpha] if tile.solid?
         
-        target.draw_box_s [x,y], [x+@actor.tile_width,y+@actor.tile_height], color
+        target.draw_box_s [x,y], [x+@actor.tile_width-1,y+@actor.tile_height-1], color
       end
     end
     
-    @actor.w.times do |col|
-      @actor.h.times do |row|
-        x = @actor.x+col*@actor.tile_width+x_off
-        y = @actor.y+row*@actor.tile_height+y_off
-        target.draw_box [x,y], [x+@actor.tile_width,y+@actor.tile_height], [155,155,155,255]
-      end
-    end
+    #@actor.w.times do |col|
+    #  @actor.h.times do |row|
+    #    x = @actor.x+col*@actor.tile_width+x_off
+    #    y = @actor.y+row*@actor.tile_height+y_off
+    #    target.draw_box [x,y], [x+@actor.tile_width,y+@actor.tile_height], [155,155,155,255]
+    #  end
+    #end
   end
 end
