@@ -104,5 +104,13 @@ describe 'A new viewport' do
     @viewport.x_offset.should == -499
     @viewport.y_offset.should == 101
   end
+  
+  it 'should fire :scrolled event when targeting an actor' do
+    fail 'finish'
+  end
+  
+  it 'should fire :scrolled event from update when the actor moves' do
+    fail 'finish'
+  end
 
 end

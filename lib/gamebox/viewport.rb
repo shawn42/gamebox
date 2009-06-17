@@ -1,7 +1,12 @@
 require 'numbers_ext'
+require 'publisher'
+
 # Viewport represents the current "camera" location.  Essensially it translates from
 # world to screen coords and from screen coords to world coords.
 class Viewport
+  extend Publisher
+  can_fire :scrolled
+  
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
     :height
 
@@ -30,14 +35,17 @@ class Viewport
   end
 
   def update(time)
+    scrolled = false
     if @follow_target
       x_diff = @width/2 + @follow_offset_x - @follow_target.x - @x_offset
       if x_diff.abs > @buffer_x
         # move screen 
         if x_diff > 0
           @x_offset += x_diff - @buffer_x 
+          scrolled = true
         else
           @x_offset += x_diff + @buffer_x 
+          scrolled = true
         end
       end
 
@@ -46,11 +54,14 @@ class Viewport
         # move screen
         if y_diff > 0
           @y_offset += y_diff - @buffer_y 
+          scrolled = true
         else
           @y_offset += y_diff + @buffer_y 
+          scrolled = true
         end
       end
 
+      fire :scrolled if scrolled
     end
   end
 
@@ -63,6 +74,8 @@ class Viewport
 
     @x_offset = @width/2 - @follow_target.x + @follow_offset_x
     @y_offset = @height/2 - @follow_target.y + @follow_offset_y
+    
+    fire :scrolled
   end
 
 end

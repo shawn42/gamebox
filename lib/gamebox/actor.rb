@@ -4,11 +4,11 @@ require 'publisher'
 # They are created and hooked up to their optional View class in Level#create_actor.
 class Actor
   extend Publisher
-
-  attr_accessor :behaviors, :x, :y, :level, :input_manager,
-    :resource_manager, :alive, :opts, :sound_manager
-
   can_fire_anything
+  
+  attr_accessor :behaviors, :x, :y, :level, :input_manager,
+    :resource_manager, :alive, :opts, :sound_manager, :visible
+
 
   def initialize(opts={}) # :nodoc:
     @opts = opts
@@ -104,11 +104,21 @@ class Actor
     # TODO maybe use a callback list for child classes
     update_behaviors time
   end
-
-  # to be defined in child class
-  def draw(target)
+  
+  def hide
+    @visible = false
+    fire :hide_me
   end
-
+  
+  def show
+    @visible = true
+    fire :show_me
+  end
+  
+  def visible?
+    @visible
+  end
+  
   # magic
   metaclass.instance_eval do
     define_method( :behaviors ) do

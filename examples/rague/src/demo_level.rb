@@ -59,6 +59,10 @@ class DemoLevel < Level
         @map.update_lit_locations new_loc
       end
     end
+    viewport.when :scrolled do
+      @map.update_drawable_tiles viewport
+    end
+    
     viewport.follow @rague
     
     # start the visibility stuff

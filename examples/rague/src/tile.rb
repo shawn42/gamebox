@@ -1,8 +1,14 @@
 # Tile is a location on the map
-class Tile < TwoDGridLocation
-  attr_accessor :lit, :seen, :solid, :occupants
-  def initialize(x,y)
-    super x, y
+class Tile < Actor
+  has_behaviors :graphical, :layered => 1
+  attr_accessor :lit, :seen, :solid, :occupants, :location
+  
+  def setup
+    x = @opts[:x]
+    y = @opts[:y]
+    x ||= 0
+    y ||= 0
+    @location = loc2 x, y
   end
   
   # returns true if the tile is currenlty being lit by the player
@@ -19,6 +25,35 @@ class Tile < TwoDGridLocation
   def solid?
     @solid
   end
+end
+
+class TileView < GraphicalActorView
+  
+  def draw(target, x_off, y_off)
+    w = 30
+    h = 30
+    x = @actor.location.x*w+x_off
+    y = @actor.location.y*h+y_off
+    
+    if @actor.seen? || @actor.lit?       
+      if @actor.solid?
+        alpha = 155
+        alpha += 100 if @actor.lit?
+        color = [45,50,45,alpha]
+        target.draw_box_s [x,y], [x+w-1,y+h-1], color
+      else
+        @actor.image.blit target.screen, [x,y]
+      end
+    end
+
+    alpha = 255
+    alpha -= 155 if @actor.seen?
+    alpha = 0 if @actor.lit?
+  
+    color = [0,0,0,alpha]
+    target.draw_box_s [x,y], [x+w-1,y+h-1], color
+  end
+
 end
 
 # helper for creating locations more easily

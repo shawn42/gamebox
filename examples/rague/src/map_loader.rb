@@ -20,10 +20,10 @@ class MapLoader
     map_lines.each_with_index do |row_str, row|
       row_str.strip.length.times do |col|
         tile_klass = @config[:tiles][row_str[col]]
-        loc = Tile.new col, row
+        tile = map.spawn :tile, :x => col, :y => row
         #puts "#{col},#{row} => #{klass} : #{row_str[col]}"
-        loc.lit = false
-        loc.solid = true if tile_klass == "Wall"
+        tile.lit = false
+        tile.solid = true if tile_klass == "Wall"
         if tile_klass.nil?
           actor_klass = @config[:actors][row_str[col]]
           unless actor_klass.nil?
@@ -34,7 +34,7 @@ class MapLoader
           end
                       
         end
-        map.place loc
+        map.place tile.location, tile
       end
     end
   end

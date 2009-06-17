@@ -14,8 +14,17 @@ class ActorView
     actor.when :remove_me do
       @mode.unregister_drawable self
     end
-    @mode.register_drawable self
-
+    
+    actor.when :hide_me do
+      @mode.unregister_drawable self
+    end
+    
+    actor.when :show_me do
+      @mode.register_drawable self
+    end
+    
+    actor.show
+    
     setup
   end
 

@@ -3,15 +3,38 @@ require 'ai/line_of_site'
 
 # this is the grid map for rague
 class Map < Actor
-  attr_accessor :tile_width, :tile_height
+  attr_accessor :tile_width, :tile_height, :drawable_tiles
   def setup
     @tile_width = 30
     @tile_height = 30
+    @drawable_tiles = []
   end
   
   def size=(s)
     @map = TwoDGridMap.new s[0], s[1]
     @los = LineOfSite.new @map
+  end
+  
+  def update_drawable_tiles(viewport)
+    @drawable_tiles.each do |t|
+      t.hide
+    end
+    @drawable_tiles = []
+    left = x - viewport.x_offset
+    right = left + viewport.width
+    top = y - viewport.y_offset
+    bottom = top + viewport.height
+    
+    l,t = screen_to_tile left, top
+    r,b = screen_to_tile right, bottom
+    
+    (l..r).each do |col|
+      (t..b).each do |row|
+        tile = @map.occupant(loc2(col,row))
+        tile.show
+        @drawable_tiles << tile
+      end
+    end
   end
   
   def update_lit_locations(source_location, range=11)
@@ -54,31 +77,5 @@ end
 
 class MapView < ActorView
   def draw(target, x_off, y_off)
-    @actor.w.times do |col|
-      @actor.h.times do |row|
-        x = @actor.x+col*@actor.tile_width+x_off
-        y = @actor.y+row*@actor.tile_height+y_off
-        
-        tile = @actor.occupant loc2(col,row)
-        
-        alpha = 80        
-        alpha = 155 if tile.seen?
-        alpha = 255 if tile.lit?
-        
-        # TODO move color to tile?
-        color = [150,250,45,alpha]
-        color = [150,50,45,alpha] if tile.solid?
-        
-        target.draw_box_s [x,y], [x+@actor.tile_width-1,y+@actor.tile_height-1], color
-      end
-    end
-    
-    #@actor.w.times do |col|
-    #  @actor.h.times do |row|
-    #    x = @actor.x+col*@actor.tile_width+x_off
-    #    y = @actor.y+row*@actor.tile_height+y_off
-    #    target.draw_box [x,y], [x+@actor.tile_width,y+@actor.tile_height], [155,155,155,255]
-    #  end
-    #end
   end
 end

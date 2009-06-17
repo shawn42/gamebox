@@ -6,11 +6,14 @@ class Layered < Behavior
 
   attr_accessor :layer, :parallax
   def setup
-
-    @layer = @opts[:layer]
+    if @opts.is_a? Hash
+      @layer = @opts[:layer]
+      @parallax = @opts[:parallax]
+    else
+      @layer = @opts
+    end
+    
     @layer ||= 0
-
-    @parallax = @opts[:parallax]
     @parallax ||= 1
 
     layered_obj = self
