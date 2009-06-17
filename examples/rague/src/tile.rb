@@ -1,7 +1,7 @@
 # Tile is a location on the map
 class Tile < Actor
-  has_behaviors :graphical, :layered => 1
-  attr_accessor :lit, :seen, :solid, :occupants, :location
+  has_behaviors :graphical
+  attr_accessor :seen, :solid, :occupants, :location
   
   def setup
     x = @opts[:x]
@@ -9,6 +9,20 @@ class Tile < Actor
     x ||= 0
     y ||= 0
     @location = loc2 x, y
+    @occupants = []
+  end
+  
+  def lit=(isLit)
+    @lit = isLit
+    if isLit
+      @occupants.each do |occ|
+        occ.show unless occ.visible?
+      end
+    else
+      @occupants.each do |occ|
+        occ.hide if occ.visible?
+      end
+    end
   end
   
   # returns true if the tile is currenlty being lit by the player
@@ -25,6 +39,7 @@ class Tile < Actor
   def solid?
     @solid
   end
+  
 end
 
 class TileView < GraphicalActorView

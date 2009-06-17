@@ -8,7 +8,7 @@ require 'actor_view'
 # end
 
 class Sword < Actor
-  has_behaviors :graphical
+  has_behaviors :graphical, :layered => 2
 
   def setup
   end

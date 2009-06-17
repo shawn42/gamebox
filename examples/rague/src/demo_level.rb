@@ -7,13 +7,9 @@ class DemoLevel < Level
     @map = create_actor :map
     map_defs = resource_manager.load_config 'map_defs'
     map_loader = MapLoader.new map_defs
-    
-    map_loader.when :create_actor do |name, opts|
-      act = create_actor name, opts
-      @rague = act if name == :rague
-    end
-    
+        
     map_loader.load_map @map, 'entry.map'
+    @rague = map_loader.rague
     
     @rague.when :action_taken do
       puts "NPCs get their turn"

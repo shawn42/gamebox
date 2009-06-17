@@ -1,11 +1,9 @@
 require 'inflector'
 require 'map'
-require 'publisher'
 
 # loads maps from given string array
 class MapLoader
-  extend Publisher
-  can_fire :create_actor
+  attr_accessor :rague
   
   def initialize(config)
     @config = config
@@ -30,7 +28,12 @@ class MapLoader
             x = col * map.tile_width
             y = row * map.tile_height
             name = Inflector.underscore(actor_klass).to_sym
-            fire :create_actor, name, :x=>x, :y=>y
+            act = map.spawn name, :x=>x, :y=>y
+            if name == :rague
+              @rague = act 
+            else
+              tile.occupants << act
+            end
           end
                       
         end

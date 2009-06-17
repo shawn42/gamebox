@@ -8,7 +8,7 @@ require 'actor_view'
 # end
 
 class Rague< Actor
-  has_behaviors :graphical, :layered => 2
+  has_behaviors :graphical, :layered => 3
 
   def setup
 
