@@ -32,15 +32,30 @@ class Rague< Actor
     
     i.reg KeyDownEvent, K_SPACE do
       # skip turn
-      if visible?
-        hide
-      else
-        show
-      end
       fire :action_taken
     end
   end
 
+  # allows for rague to handle the contents of the given tile
+  def handle_tile_contents(tile)
+    removed = []
+    tile.occupants.each do |thing|
+      # TODO actually do something here...
+      if thing.is? :hostile
+        # TODO fight it?
+      else
+        # pick it up?
+        removed << thing
+      end
+    end
+    removed.each do |thing|
+      tile.occupants.delete thing
+      thing.hide
+      thing.remove_self
+      puts "picked up #{thing.class}"
+    end
+  end
+  
   def update(time)
   end
 end

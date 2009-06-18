@@ -22,6 +22,7 @@ class DemoLevel < Level
       if new_tile && !new_tile.solid?
         # move the player
         @rague.x += @map.tile_width
+        @rague.handle_tile_contents new_tile
         @map.update_lit_locations new_loc
       end
     end
@@ -32,6 +33,7 @@ class DemoLevel < Level
       if new_tile && !new_tile.solid?
         # move the player
         @rague.x -= @map.tile_width
+        @rague.handle_tile_contents new_tile
         @map.update_lit_locations new_loc
       end
     end
@@ -42,6 +44,7 @@ class DemoLevel < Level
       if new_tile && !new_tile.solid?
         # move the player
         @rague.y -= @map.tile_height
+        @rague.handle_tile_contents new_tile
         @map.update_lit_locations new_loc
       end
     end
@@ -52,6 +55,7 @@ class DemoLevel < Level
       if new_tile && !new_tile.solid?
         # move the player
         @rague.y += @map.tile_height
+        @rague.handle_tile_contents new_tile
         @map.update_lit_locations new_loc
       end
     end
