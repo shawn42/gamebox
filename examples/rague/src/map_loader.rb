@@ -14,9 +14,13 @@ class MapLoader
     # TODO randomize starting location
     x = 12
     y = 5
+    log "Generating random map ..."
+    
     a = Generator.new().create_dungeon(Arena.new, walk_length, true, Walker.new(x,y))
     a[x,y] = '@'
     a[x+1,y] = '<'
+    
+    log "done."
     
     build_map map, a.to_s.split("\n")
   end
@@ -28,16 +32,17 @@ class MapLoader
   end
   
   def build_map(map, map_lines)
-
+    log "Building map..."
     map.size = [map_lines[0].length-1, map_lines.size-1]
     
     map_lines.each_with_index do |row_str, row|
       row_str.strip.length.times do |col|
+        
         tile_klass = @config[:tiles][row_str[col]]
         tile = map.spawn :tile, :x => col, :y => row
-        #puts "#{col},#{row} => #{klass} : #{row_str[col]}"
         tile.lit = false
         tile.solid = true if tile_klass == "Wall"
+        
         if tile_klass.nil?
           actor_klass = @config[:actors][row_str[col]]
           unless actor_klass.nil?
@@ -56,6 +61,7 @@ class MapLoader
         map.place tile.location, tile
       end
     end
+    log "done."
   end
   
 end

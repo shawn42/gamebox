@@ -66,6 +66,12 @@ class GameboxApp
   end
 end
 
+# TODO move this to some logging class
+def log(output, level = :debug)
+  t = Time.now
+  puts "[#{t.min}:#{t.sec}:#{t.usec}] [#{level}] #{output}"
+end
+
 if $0 == __FILE__
   GameboxApp.run ARGV, ENV
 end

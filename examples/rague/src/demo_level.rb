@@ -18,52 +18,20 @@ class DemoLevel < Level
     raise "Invalid map! No Rague (@) was found!" if @rague.nil?
     
     @rague.when :action_taken do
-      puts "NPCs get their turn"
+      give_every_their_turn
     end
     
     @rague.when :move_right do
-      x,y = @map.screen_to_tile(@rague.x,@rague.y)
-      new_loc = loc2 x+1, y
-      new_tile = @map.occupant new_loc
-      if new_tile && !new_tile.solid?
-        # move the player
-        @rague.x += @map.tile_width
-        @rague.handle_tile_contents new_tile
-        @map.update_lit_locations new_loc
-      end
+      move_rague [1,0]
     end
     @rague.when :move_left do
-      x,y = @map.screen_to_tile(@rague.x,@rague.y)
-      new_loc = loc2 x-1, y
-      new_tile = @map.occupant new_loc
-      if new_tile && !new_tile.solid?
-        # move the player
-        @rague.x -= @map.tile_width
-        @rague.handle_tile_contents new_tile
-        @map.update_lit_locations new_loc
-      end
+      move_rague [-1,0]
     end
     @rague.when :move_up do
-      x,y = @map.screen_to_tile(@rague.x,@rague.y)
-      new_loc = loc2 x, y-1
-      new_tile = @map.occupant new_loc
-      if new_tile && !new_tile.solid?
-        # move the player
-        @rague.y -= @map.tile_height
-        @rague.handle_tile_contents new_tile
-        @map.update_lit_locations new_loc
-      end
+      move_rague [0,-1]
     end
     @rague.when :move_down do
-      x,y = @map.screen_to_tile(@rague.x,@rague.y)
-      new_loc = loc2 x, y+1
-      new_tile = @map.occupant new_loc
-      if new_tile && !new_tile.solid?
-        # move the player
-        @rague.y += @map.tile_height
-        @rague.handle_tile_contents new_tile
-        @map.update_lit_locations new_loc
-      end
+      move_rague [0,1]
     end
     viewport.when :scrolled do
       @map.update_drawable_tiles viewport
@@ -78,6 +46,33 @@ class DemoLevel < Level
 
   def draw(target, x_off, y_off)
     target.fill [25,25,25,255]
+  end
+  
+  def give_every_their_turn
+    puts "NPCs get their turn"
+  end
+  
+  def move_rague(dir)
+    log "Starting Rague's turn ..."
+    x,y = @map.screen_to_tile(@rague.x,@rague.y)
+    new_loc = loc2 x+dir[0], y+dir[1]
+    new_tile = @map.occupant new_loc
+    if new_tile && !new_tile.solid?
+      # move the player
+      @rague.y += @map.tile_height * dir[1]
+      @rague.x += @map.tile_width * dir[0]
+      log "Starting tile contents ..."
+      @rague.handle_tile_contents new_tile
+      log "done."
+      
+      log "Updating lit locations ..."
+      @map.update_lit_locations new_loc
+      log "done."
+      
+      give_every_their_turn
+    end
+    
+    log "done."
   end
 end
 
