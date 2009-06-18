@@ -1,5 +1,6 @@
 require 'inflector'
 require 'map'
+require 'generator'
 
 # loads maps from given string array
 class MapLoader
@@ -9,9 +10,24 @@ class MapLoader
     @config = config
   end
   
+  def build_random_map(map, walk_length=400)
+    # TODO randomize starting location
+    x = 12
+    y = 5
+    a = Generator.new().create_dungeon(Arena.new, walk_length, true, Walker.new(x,y))
+    a[x,y] = '@'
+    a[x+1,y] = '<'
+    
+    build_map map, a.to_s.split("\n")
+  end
+  
   def load_map(map, filename)
     full_path = File.join(DATA_PATH,'maps',filename)
     map_lines = File.open(full_path).readlines
+    build_map map, map_lines
+  end
+  
+  def build_map(map, map_lines)
 
     map.size = [map_lines[0].length-1, map_lines.size-1]
     

@@ -1,16 +1,13 @@
 require 'actor'
-require 'actor_view'
-# 
-# class RagueView < ActorView
-#   def draw(target, x_off, y_off)
-#     target.draw_box [x_off+@actor.x,y_off+@actor.y], [x_off+@actor.x+30,y_off+@actor.y+30], [240,45,45,255]
-#   end
-# end
 
-class Rague< Actor
+class Rague < Actor
   has_behaviors :graphical, :layered => 3
+  
+  attr_accessor :stats
 
   def setup
+    
+    generate_random_stats
 
     i = input_manager
     i.reg KeyDownEvent, K_RIGHT do
@@ -56,6 +53,13 @@ class Rague< Actor
     end
   end
   
-  def update(time)
+  def generate_random_stats
+    @stats = {
+      :strength=>57,
+      :intelligence=>44,
+      :constitution=>71,
+      :dexterity=>58
+    }
   end
+  
 end

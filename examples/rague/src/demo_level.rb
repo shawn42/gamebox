@@ -8,8 +8,14 @@ class DemoLevel < Level
     map_defs = resource_manager.load_config 'map_defs'
     map_loader = MapLoader.new map_defs
         
-    map_loader.load_map @map, 'entry.map'
+    #map_loader.load_map @map, 'sample.map'
+    
+    # smaller maps for now...
+    map_loader.build_random_map @map, 200
+    
     @rague = map_loader.rague
+    
+    raise "Invalid map! No Rague (@) was found!" if @rague.nil?
     
     @rague.when :action_taken do
       puts "NPCs get their turn"
