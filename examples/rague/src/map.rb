@@ -39,11 +39,8 @@ class Map < Actor
   
   def update_lit_locations(source_location, range=11)
     # clear visibility of tiles
-    @map.w.times do |col|
-      @map.h.times do |row|
-        # TODO fix map access.. figure out Location usage (maybe .each_location )
-        @map.occupant(loc2(col,row)).lit = false
-      end
+    @drawable_tiles.each do |t|
+      t.lit = false
     end
     
     r = ((range-1)/2).floor
