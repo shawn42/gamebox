@@ -19,6 +19,7 @@
 * Rubygame (its dependancies, SDL)
 * constructor gem
 * publisher gem
+* bacon (for gamebox tests)
 * algorithms gem (optional for line of site and A*)
 
 == INSTALL:

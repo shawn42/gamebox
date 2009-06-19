@@ -37,4 +37,6 @@ task :bacon do
   sh "bacon -Ilib:test --automatic "
 end
 
+task :test => :bacon
+
 # vim: syntax=Ruby
