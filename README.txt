@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-  A game template for building and distributing Rubygame games.
+  A game template for building and distributing Rubygame games. See docs/getting_started.rdoc for help getting started.
 
 == FEATURES/PROBLEMS:
 
@@ -17,6 +17,9 @@
 == REQUIREMENTS:
 
 * Rubygame (its dependancies, SDL)
+* constructor gem
+* publisher gem
+* algorithms gem (optional for line of site and A*)
 
 == INSTALL:
 

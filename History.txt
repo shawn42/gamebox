@@ -1,4 +1,4 @@
-=== 0.0.1 / 2009-02-23
+=== 0.0.1 / 2009-06-19
 
 * Gamebox lives!
   * got game generation working in ruby 1.8
@@ -11,3 +11,8 @@
     * Loading of Levels from an SVG file
 		* Polaris A* path finder
     * Lots more to come!
+  * examples to show how to use it
+    * netris
+    * roids
+    * rague
+    * nario
