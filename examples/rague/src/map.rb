@@ -16,6 +16,7 @@ class Map < Actor
   end
   
   def update_drawable_tiles(viewport)
+    log "Updating drawable tiles ... "
     @drawable_tiles.each do |t|
       t.hide
     end
@@ -35,6 +36,7 @@ class Map < Actor
         @drawable_tiles << tile
       end
     end
+    log "done."
   end
   
   def update_lit_locations(source_location, range=11)
@@ -67,12 +69,11 @@ class Map < Actor
     tiles
   end
   
-  def method_missing(name, *args)
-    @map.send name, *args
+  def place(location, thing=nil)
+    @map.place location, thing
   end
-end
-
-class MapView < ActorView
-  def draw(target, x_off, y_off)
-  end
+  
+  def occupant(location)
+    @map.occupant location
+  end  
 end

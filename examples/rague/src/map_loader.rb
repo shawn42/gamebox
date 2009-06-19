@@ -52,6 +52,8 @@ class MapLoader
             act = map.spawn name, :x=>x, :y=>y
             if name == :rague
               @rague = act 
+              @rague.tile_x = col
+              @rague.tile_y = row
             else
               tile.occupants << act
             end

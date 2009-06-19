@@ -3,7 +3,7 @@ require 'actor'
 class Rague < Actor
   has_behaviors :graphical, :layered => 3
   
-  attr_accessor :stats
+  attr_accessor :stats, :tile_x, :tile_y
 
   def setup
     

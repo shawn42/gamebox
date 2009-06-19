@@ -16,9 +16,9 @@ class DemoLevel < Level
     @rague = map_loader.rague
     
     raise "Invalid map! No Rague (@) was found!" if @rague.nil?
-    
+
     @rague.when :action_taken do
-      give_every_their_turn
+      give_everyone_their_turn
     end
     
     @rague.when :move_right do
@@ -35,20 +35,22 @@ class DemoLevel < Level
     end
     viewport.when :scrolled do
       @map.update_drawable_tiles viewport
+      log "Updating lit locations ..."
+      @map.update_lit_locations loc2(@rague.tile_x,@rague.tile_y)
+      log "done."
     end
     
     viewport.follow @rague
     
     # start the visibility stuff
-    x,y = @map.screen_to_tile(@rague.x,@rague.y)
-    @map.update_lit_locations loc2(x,y)
+    @map.update_lit_locations loc2(@rague.tile_x,@rague.tile_y)
   end
 
   def draw(target, x_off, y_off)
-    target.fill [25,25,25,255]
+    target.fill [0,0,0,255]
   end
   
-  def give_every_their_turn
+  def give_everyone_their_turn
     puts "NPCs get their turn"
   end
   
@@ -59,17 +61,15 @@ class DemoLevel < Level
     new_tile = @map.occupant new_loc
     if new_tile && !new_tile.solid?
       # move the player
+      @rague.tile_x = x
+      @rague.tile_y = y
       @rague.y += @map.tile_height * dir[1]
       @rague.x += @map.tile_width * dir[0]
       log "Starting tile contents ..."
       @rague.handle_tile_contents new_tile
       log "done."
       
-      log "Updating lit locations ..."
-      @map.update_lit_locations new_loc
-      log "done."
-      
-      give_every_their_turn
+      give_everyone_their_turn
     end
     
     log "done."
