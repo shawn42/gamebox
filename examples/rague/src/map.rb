@@ -1,5 +1,7 @@
 require 'ai/two_d_grid_map'
 require 'ai/line_of_site'
+require 'algorithms'
+include Containers
 
 # this is the grid map for rague
 class Map < Actor
@@ -7,7 +9,7 @@ class Map < Actor
   def setup
     @tile_width = 30
     @tile_height = 30
-    @drawable_tiles = []
+    @drawable_tiles = Stack.new
   end
   
   def size=(s)
@@ -20,7 +22,7 @@ class Map < Actor
     @drawable_tiles.each do |t|
       t.hide
     end
-    @drawable_tiles = []
+    @drawable_tiles = Stack.new
     left = x - viewport.x_offset
     right = left + viewport.width
     top = y - viewport.y_offset
@@ -33,7 +35,7 @@ class Map < Actor
       (t..b).each do |row|
         tile = @map.occupant(loc2(col,row))
         tile.show
-        @drawable_tiles << tile
+        @drawable_tiles.push tile
       end
     end
     log "done."

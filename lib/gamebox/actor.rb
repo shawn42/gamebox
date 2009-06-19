@@ -106,13 +106,13 @@ class Actor
   end
   
   def hide
+    fire :hide_me if visible?
     @visible = false
-    fire :hide_me
   end
   
   def show
+    fire :show_me unless visible?
     @visible = true
-    fire :show_me
   end
   
   def visible?
