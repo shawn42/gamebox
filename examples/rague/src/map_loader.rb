@@ -20,8 +20,9 @@ class MapLoader
     a[x,y] = '@'
     a[x+1,y] = '<'
     
-    log "done."
+    puts a
     
+    log "done."
     build_map map, a.to_s.split("\n")
   end
   
@@ -37,24 +38,31 @@ class MapLoader
     
     map_lines.each_with_index do |row_str, row|
       row_str.strip.length.times do |col|
+        x = (col-0.5) * map.tile_width
+        y = (row-0.5) * map.tile_height
         
         tile_klass = @config[:tiles][row_str[col]]
-        tile = map.spawn :tile, :x => col, :y => row, :action => tile_klass
+        tile = map.spawn :tile, :x => x, :y => y, :action => tile_klass,
+          :tile_x => col, :tile_y => row, :hide => true
         tile.lit = false
         tile.solid = true if tile_klass == :wall
         
         if tile_klass.nil?
-          name = @config[:actors][row_str[col]]
-          unless name.nil?
-            x = col * map.tile_width
-            y = row * map.tile_height
-            
-            act = map.spawn name, :x=>x, :y=>y
-            if name == :rague
-              @rague = act 
-              @rague.tile_x = col
-              @rague.tile_y = row
+          monster_name = @config[:monsters][row_str[col]]
+          if monster_name == :rague
+            act = map.spawn :rague, :x=>x, :y=>y
+            @rague = act 
+            @rague.tile_x = col
+            @rague.tile_y = row
+          else
+            if monster_name.nil?
+              item_name = @config[:items][row_str[col]]
+              unless item_name.nil?
+                act = map.spawn :item, :name=>item_name, :x=>x, :y=>y, :hide => true
+                tile.occupants << act
+              end
             else
+              act = map.spawn :monster, :name=>monster_name, :x=>x, :y=>y, :hide => true
               tile.occupants << act
             end
           end

@@ -15,7 +15,7 @@ class SvgActor < Actor
     
     my_layer = @svg_doc.find_group_by_label(@name.to_s)
     build_from_vertices my_layer.path.vertices
-    @visible = my_layer.path.visible?
+    hide unless my_layer.path.visible?
   end
   
   def build_from_vertices(vertices)
@@ -36,16 +36,10 @@ class SvgActor < Actor
       @level.space.add_static_shape(seg)
     end
   end
-  
-  def visible?
-    @visible
-  end
-  
 end
 
 class SvgActorView < ActorView
   def draw(target,x_off,y_off)
-    return unless @actor.visible?
     @actor.segments.each do |seg|
       p1 = seg[0]
       p2 = seg[1]

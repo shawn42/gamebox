@@ -23,8 +23,6 @@ class ActorView
       @mode.register_drawable self
     end
     
-    actor.show
-    
     setup
   end
 

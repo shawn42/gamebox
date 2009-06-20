@@ -6,8 +6,10 @@ class GraphicalActorView < ActorView
     x = @actor.x
     y = @actor.y
     img = @actor.image
+    return if img.nil?
 
-    if @actor.is? :animated or @actor.is? :physical
+    #if @actor.is? :animated or 
+    if @actor.is? :physical
       w,h = *img.size
       x = x-w/2
       y = y-h/2

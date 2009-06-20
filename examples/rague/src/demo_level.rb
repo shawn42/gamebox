@@ -39,6 +39,7 @@ class DemoLevel < Level
     end
     
     viewport.follow @rague
+    
   end
 
   def draw(target, x_off, y_off)
@@ -46,28 +47,23 @@ class DemoLevel < Level
   end
   
   def give_everyone_their_turn
-    puts "NPCs get their turn"
+    #puts "NPCs get their turn"
   end
   
   def move_rague(dir)
-    log "Starting Rague's turn ..."
-    x,y = @map.screen_to_tile(@rague.x,@rague.y)
-    new_loc = loc2 x+dir[0], y+dir[1]
+    new_loc = loc2 @rague.tile_x+dir[0], @rague.tile_y+dir[1]
     new_tile = @map.occupant new_loc
     if new_tile && !new_tile.solid?
       # move the player
-      @rague.tile_x = x
-      @rague.tile_y = y
+      @rague.tile_x = new_loc.x
+      @rague.tile_y = new_loc.y
       @rague.y += @map.tile_height * dir[1]
       @rague.x += @map.tile_width * dir[0]
-      log "Starting tile contents ..."
+
       @rague.handle_tile_contents new_tile
-      log "done."
       
       give_everyone_their_turn
     end
-    
-    log "done."
   end
 end
 

@@ -4,16 +4,16 @@ class Tile < Actor
   attr_accessor :seen, :solid, :occupants, :location
   
   def setup
-    x = @opts[:x]
-    y = @opts[:y]
+    tile_x = @opts[:tile_x]
+    tile_y = @opts[:tile_y]
     new_action = @opts[:action]
     new_action ||= :floor
     self.action = new_action
     stop_animating
     
-    x ||= 0
-    y ||= 0
-    @location = loc2 x, y
+    tile_x ||= 0
+    tile_y ||= 0
+    @location = loc2 tile_x, tile_y
     @occupants = []
   end
   
@@ -52,11 +52,12 @@ class TileView < GraphicalActorView
   def draw(target, x_off, y_off)
     w = 30
     h = 30
-    x = @actor.location.x*w+x_off
-    y = @actor.location.y*h+y_off
+    x = @actor.x+x_off
+    y = @actor.y+y_off
     
-    if @actor.seen? || @actor.lit?       
-      @actor.image.blit target.screen, [x,y]
+    if @actor.seen? || @actor.lit?  
+      super target, x_off, y_off     
+      #@actor.image.blit target.screen, [x,y]
     end
 
     alpha = 255

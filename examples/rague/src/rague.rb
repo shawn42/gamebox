@@ -36,9 +36,11 @@ class Rague < Actor
       # TODO actually do something here...
       if thing.is? :hostile
         # TODO fight it?
-      else
+      elsif thing.is? :pickupable
         # pick it up?
         removed << thing
+      else
+        # nothing?
       end
     end
     removed.each do |thing|

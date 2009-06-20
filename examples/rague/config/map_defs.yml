@@ -1,6 +1,9 @@
 --- 
-:actors: 
+:monsters: 
   "@": :rague
-  "!": :sword
 :tiles: 
   "#": :wall
+:items: 
+  "!": :sword
+  "<": :stairs_up
+  ">": :stairs_down

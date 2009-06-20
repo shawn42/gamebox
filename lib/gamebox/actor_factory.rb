@@ -58,6 +58,8 @@ class ActorFactory
     
     # Register our new actor with the system
     @director.add_actor model
+    
+    model.show unless opts[:hide]
 
     return model
   end

@@ -18,7 +18,7 @@ class Map < Actor
   end
   
   def update_drawable_tiles(viewport)
-    log "Updating drawable tiles ... "
+    
     @drawable_tiles.each do |t|
       t.hide
     end
@@ -31,14 +31,14 @@ class Map < Actor
     l,t = screen_to_tile left, top
     r,b = screen_to_tile right, bottom
     
-    (l..r).each do |col|
-      (t..b).each do |row|
+    (l..r+1).each do |col|
+      (t..b+1).each do |row|
         tile = @map.occupant(loc2(col,row))
         tile.show
         @drawable_tiles.push tile
       end
     end
-    log "done."
+    
   end
   
   def update_lit_locations(source_location, range=11)
