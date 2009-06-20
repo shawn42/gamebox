@@ -140,9 +140,14 @@ class Generator
     height = -rand(max)..rand(max)
     height.each do |y|
       width.each do |x|
-        arena[x+walker.x, y+walker.y] = ' '
+        arena[x+walker.x, y+walker.y] = get_floor
       end
     end
+  end
+  
+  def get_floor
+    tile = ' '
+    tile = '!' if rand(100) > 98
   end
 end
 
