@@ -4,20 +4,21 @@ require 'hoe'
 module Gamebox
   VERSION = '0.0.1'
 end
-Hoe.new('gamebox', Gamebox::VERSION) do |p|
-  p.developer('Shawn Anderson', 'shawn42@gmail.com')
-  p.author = "Shawn Anderson"
-  p.description = "Framework for building and distributing games using Rubygame"
-  p.email = 'shawn42@gmail.com'
-  p.summary = "Framework for building and distributing games using Rubygame"
-  p.url = "http://shawn42.github.com/gamebox"
-  p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
-  p.remote_rdoc_dir = '' # Release to root
-  p.extra_deps << ['constructor']
-  p.extra_deps << ['publisher']
-  p.extra_deps << ['bacon']
-  if p.extra_rdoc_files
-    p.extra_rdoc_files << 'docs/getting_started.rdoc' 
+Hoe.spec 'gamebox' do
+  developer('Shawn Anderson', 'shawn42@gmail.com')
+  author = "Shawn Anderson"
+  description = "Framework for building and distributing games using Rubygame"
+  email = 'shawn42@gmail.com'
+  summary = "Framework for building and distributing games using Rubygame"
+  url = "http://shawn42.github.com/gamebox"
+  version = Gamebox::VERSION
+  changes = paragraphs_of('History.txt', 0..1).join("\n\n")
+  remote_rdoc_dir = '' # Release to root
+  extra_deps << ['constructor']
+  extra_deps << ['publisher']
+  extra_deps << ['bacon']
+  if extra_rdoc_files
+    extra_rdoc_files << 'docs/getting_started.rdoc' 
   end
 end
 

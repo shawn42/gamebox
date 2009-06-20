@@ -11,7 +11,7 @@ class DemoLevel < Level
     #map_loader.load_map @map, 'sample.map'
     
     # smaller maps for now...
-    map_loader.build_random_map @map, 50
+    map_loader.build_random_map @map, 200
     
     @rague = map_loader.rague
     
@@ -35,15 +35,10 @@ class DemoLevel < Level
     end
     viewport.when :scrolled do
       @map.update_drawable_tiles viewport
-      log "Updating lit locations ..."
       @map.update_lit_locations loc2(@rague.tile_x,@rague.tile_y)
-      log "done."
     end
     
     viewport.follow @rague
-    
-    # start the visibility stuff
-    #@map.update_lit_locations loc2(@rague.tile_x,@rague.tile_y)
   end
 
   def draw(target, x_off, y_off)

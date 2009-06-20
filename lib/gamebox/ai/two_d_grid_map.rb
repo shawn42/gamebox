@@ -13,6 +13,10 @@ class TwoDGridMap
     @grid = {}
   end
   
+  def size
+    [@w,@h]
+  end
+  
   # place thing at location. If thing is nil, location will be placed in the map
   def place(location, thing=nil)
     thing ||= location

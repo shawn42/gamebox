@@ -1,6 +1,6 @@
 --- 
 :actors: 
-  "@": Rague
-  "!": Sword
+  "@": :rague
+  "!": :sword
 :tiles: 
-  "#": Wall
+  "#": :wall

@@ -1,11 +1,16 @@
 # Tile is a location on the map
 class Tile < Actor
-  has_behaviors :graphical
+  has_behaviors :animated
   attr_accessor :seen, :solid, :occupants, :location
   
   def setup
     x = @opts[:x]
     y = @opts[:y]
+    new_action = @opts[:action]
+    new_action ||= :floor
+    self.action = new_action
+    stop_animating
+    
     x ||= 0
     y ||= 0
     @location = loc2 x, y
@@ -51,14 +56,7 @@ class TileView < GraphicalActorView
     y = @actor.location.y*h+y_off
     
     if @actor.seen? || @actor.lit?       
-      if @actor.solid?
-        alpha = 155
-        alpha += 100 if @actor.lit?
-        color = [45,50,45,alpha]
-        target.draw_box_s [x,y], [x+w-1,y+h-1], color
-      else
-        @actor.image.blit target.screen, [x,y]
-      end
+      @actor.image.blit target.screen, [x,y]
     end
 
     alpha = 255

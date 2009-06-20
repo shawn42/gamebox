@@ -39,16 +39,16 @@ class MapLoader
       row_str.strip.length.times do |col|
         
         tile_klass = @config[:tiles][row_str[col]]
-        tile = map.spawn :tile, :x => col, :y => row
+        tile = map.spawn :tile, :x => col, :y => row, :action => tile_klass
         tile.lit = false
-        tile.solid = true if tile_klass == "Wall"
+        tile.solid = true if tile_klass == :wall
         
         if tile_klass.nil?
-          actor_klass = @config[:actors][row_str[col]]
-          unless actor_klass.nil?
+          name = @config[:actors][row_str[col]]
+          unless name.nil?
             x = col * map.tile_width
             y = row * map.tile_height
-            name = Inflector.underscore(actor_klass).to_sym
+            
             act = map.spawn name, :x=>x, :y=>y
             if name == :rague
               @rague = act 

@@ -78,4 +78,8 @@ class Map < Actor
   def occupant(location)
     @map.occupant location
   end  
+  
+  def size
+    @map.size
+  end
 end
