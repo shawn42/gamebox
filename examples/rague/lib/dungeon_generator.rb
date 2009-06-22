@@ -147,7 +147,7 @@ class Generator
   
   def get_floor
     tile = ' '
-    tile = '!' if rand(100) > 98
+    #tile = '!' if rand(100) > 98
   end
 end
 

@@ -1,6 +1,6 @@
 require 'inflector'
 require 'map'
-require 'generator'
+require 'dungeon_generator'
 
 # loads maps from given string array
 class MapLoader
@@ -41,14 +41,14 @@ class MapLoader
         x = (col-0.5) * map.tile_width
         y = (row-0.5) * map.tile_height
         
-        tile_klass = @config[:tiles][row_str[col]]
+        tile_klass = @config[:tiles][row_str[col].chr]
         tile = map.spawn :tile, :x => x, :y => y, :action => tile_klass,
           :tile_x => col, :tile_y => row, :hide => true
         tile.lit = false
         tile.solid = true if tile_klass == :wall
         
         if tile_klass.nil?
-          monster_name = @config[:monsters][row_str[col]]
+          monster_name = @config[:monsters][row_str[col].chr]
           if monster_name == :rague
             act = map.spawn :rague, :x=>x, :y=>y
             @rague = act 
@@ -56,7 +56,7 @@ class MapLoader
             @rague.tile_y = row
           else
             if monster_name.nil?
-              item_name = @config[:items][row_str[col]]
+              item_name = @config[:items][row_str[col].chr]
               unless item_name.nil?
                 act = map.spawn :item, :name=>item_name, :x=>x, :y=>y, :hide => true
                 tile.occupants << act

@@ -34,8 +34,10 @@ class Map < Actor
     (l..r+1).each do |col|
       (t..b+1).each do |row|
         tile = @map.occupant(loc2(col,row))
-        tile.show
-        @drawable_tiles.push tile
+        if tile
+          tile.show
+          @drawable_tiles.push tile
+        end
       end
     end
     
