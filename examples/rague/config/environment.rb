@@ -1,7 +1,8 @@
 require 'rubygems'
 ADDITIONAL_LOAD_PATHS = []
 ADDITIONAL_LOAD_PATHS.concat %w(
-  src 
+  src
+  src/behaviors 
   lib
   config 
   ../../lib

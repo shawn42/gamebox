@@ -1,6 +1,7 @@
 --- 
 :monsters: 
   "@": :rague
+  "g": :goblin
 :tiles: 
   "#": :wall
 :items: 

@@ -57,7 +57,6 @@ class TileView < GraphicalActorView
     
     if @actor.seen? || @actor.lit?  
       super target, x_off, y_off     
-      #@actor.image.blit target.screen, [x,y]
     end
 
     alpha = 255

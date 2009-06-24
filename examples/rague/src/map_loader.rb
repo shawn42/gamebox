@@ -1,9 +1,12 @@
 require 'inflector'
 require 'map'
 require 'dungeon_generator'
+require 'publisher'
 
 # loads maps from given string array
 class MapLoader
+  extend Publisher
+  can_fire :monster_spawned
   attr_accessor :rague
   
   def initialize(config)
@@ -15,8 +18,8 @@ class MapLoader
     x = 12
     y = 5
     log "Generating random map ..."
-    
-    a = Generator.new().create_dungeon(Arena.new, walk_length, true, Walker.new(x,y))
+    things_to_place = ['!','!','g','g','g']
+    a = Generator.new().create_dungeon(Arena.new(things_to_place), walk_length, true, Walker.new(x,y))
     a[x,y] = '@'
     a[x+1,y] = '<'
     
@@ -64,6 +67,7 @@ class MapLoader
             else
               act = map.spawn :monster, :name=>monster_name, :x=>x, :y=>y, :hide => true
               tile.occupants << act
+              fire :monster_spawned, act
             end
           end
                       

@@ -7,8 +7,13 @@ class DemoLevel < Level
     @map = create_actor :map
     map_defs = resource_manager.load_config 'map_defs'
     map_loader = MapLoader.new map_defs
-        
     #map_loader.load_map @map, 'sample.map'
+    
+    @monsters = []
+    map_loader.when :monster_spawned do |monster|
+      @monsters << monster
+    end
+    
     
     # smaller maps for now...
     map_loader.build_random_map @map, 200
@@ -38,6 +43,7 @@ class DemoLevel < Level
       @map.update_lit_locations loc2(@rague.tile_x,@rague.tile_y)
     end
     
+    
     viewport.follow @rague
     
   end
@@ -47,6 +53,9 @@ class DemoLevel < Level
   end
   
   def give_everyone_their_turn
+    @monsters.each do |m|
+      m.update 0
+    end
     #puts "NPCs get their turn"
   end
   

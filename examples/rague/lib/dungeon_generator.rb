@@ -63,8 +63,9 @@ end
 
 
 class Arena
-  attr_reader :left, :right, :top, :bottom
-  def initialize
+  attr_reader :left, :right, :top, :bottom, :random_items_to_place
+  def initialize(random_items_to_place=[])
+    @random_items_to_place = random_items_to_place
     @arena = Hash.new {|h,k| h[k]=Hash.new('#')}
     @left = @right = @top = @bottom = 0
   end
@@ -136,18 +137,21 @@ class Generator
 
   def create_room(arena, walker)
     max = 10
+    ha = []
+    wa = []
     width = -rand(max)..rand(max)
     height = -rand(max)..rand(max)
     height.each do |y|
+      ha << y
       width.each do |x|
-        arena[x+walker.x, y+walker.y] = get_floor
+        wa << x
+        arena[x+walker.x, y+walker.y] = ' '
       end
     end
-  end
-  
-  def get_floor
-    tile = ' '
-    #tile = '!' if rand(100) > 98
+    
+    # TODO make sure all items get placed...
+    arena[walker.x+wa[rand(wa.size)], walker.y+ha[rand(ha.size)]] = arena.random_items_to_place.pop unless arena.random_items_to_place.empty?
+    
   end
 end
 
