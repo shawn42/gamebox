@@ -1,4 +1,5 @@
 require 'rubygems'
+gem 'hoe', '>= 2.3.0'
 require 'hoe'
 
 module Gamebox
