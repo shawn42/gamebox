@@ -1,7 +1,7 @@
 require 'actor'
 
 class RockBit < Actor
-  has_behaviors :animated, :physical => {:shape => :circle, 
+  has_behaviors :animated, :updatable, :physical => {:shape => :circle, 
     :mass => 30,
     :radius => 10}
 

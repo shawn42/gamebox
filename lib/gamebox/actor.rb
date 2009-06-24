@@ -7,7 +7,8 @@ class Actor
   can_fire_anything
   
   attr_accessor :behaviors, :x, :y, :level, :input_manager,
-    :resource_manager, :alive, :opts, :sound_manager, :visible
+    :resource_manager, :alive, :opts, :sound_manager, :visible,
+    :director
 
 
   def initialize(opts={}) # :nodoc:
@@ -20,6 +21,7 @@ class Actor
     @input_manager = opts[:input]
     @sound_manager = opts[:sound]
     @resource_manager = opts[:resources]
+    @director = opts[:director]
     @alive = true
 
     @behaviors = {}

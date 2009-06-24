@@ -3,7 +3,7 @@ require 'actor'
 class PowerUpBlock < Actor
   HIT_RATE = 500
 
-  has_behaviors :graphical, {:physical => {
+  has_behaviors :graphical, :updatable, {:physical => {
     :shape => :poly,
     :fixed => true,
     :friction => 0.6,

@@ -1,7 +1,7 @@
 require 'actor'
 
 class Goomba < Actor
-  has_behaviors :animated, 
+  has_behaviors :animated, :updatable, 
     :physical => {
         :shape => :poly,
         :mass => 200,

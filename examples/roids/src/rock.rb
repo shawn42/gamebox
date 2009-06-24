@@ -1,7 +1,7 @@
 require 'actor'
 
 class Rock < Actor
-  has_behaviors :animated, :physical => {:shape => :circle, 
+  has_behaviors :animated, :updatable, :physical => {:shape => :circle, 
     :mass => 90,
     :radius => 20}
 

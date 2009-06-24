@@ -1,4 +1,8 @@
 planned features:
+create an :updatable behavior for actors that wish to be updated (to remove unnecessarily calling update)
+  - add auto_update_actors method to Level?
+allow easy pausing of game and physics
+  - fire :pause event w/ a new Director of actors? 
 change Polaris to return partial path when step max is reached
 update physical objects to use chipmunk_object.rb
 allow for repeating actors (tiles)

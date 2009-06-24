@@ -1,7 +1,7 @@
 require 'actor'
 
 class Nario < Actor
-  has_behaviors :animated, 
+  has_behaviors :animated, :updatable, 
     :physical => {
         :shape => :poly,
         :parts => [

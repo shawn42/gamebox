@@ -19,7 +19,7 @@ class GameFieldView < ActorView
 end
 
 class GameField < Actor
-
+  has_behaviors :updatable
   attr_accessor :grid
 
   def setup

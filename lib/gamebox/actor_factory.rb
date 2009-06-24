@@ -42,6 +42,7 @@ class ActorFactory
       :level => level,
       :input => @input_manager,
       :sound => @sound_manager,
+      :director => @director,
       :resources => level.resource_manager
     }
     merged_opts = basic_opts.merge(opts)
@@ -55,9 +56,6 @@ class ActorFactory
       view_klass ||= GraphicalActorView
     end
     view_klass.new @mode_manager.current_mode, model if view_klass
-    
-    # Register our new actor with the system
-    @director.add_actor model
     
     model.show unless opts[:hide]
 

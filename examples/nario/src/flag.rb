@@ -1,7 +1,7 @@
 require 'actor'
 
 class Flag < Actor
-  has_behaviors :graphical, 
+  has_behaviors :graphical, :updatable, 
     :physical => {
         :shape => :poly,
         :fixed => true,

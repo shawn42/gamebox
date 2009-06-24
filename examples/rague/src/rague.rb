@@ -1,7 +1,7 @@
 require 'actor'
 
 class Rague < Actor
-  has_behaviors :graphical, :layered => 3
+  has_behaviors :graphical, :updatable, :layered => 3
   
   attr_accessor :stats, :tile_x, :tile_y
 
