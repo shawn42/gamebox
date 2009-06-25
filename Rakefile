@@ -5,22 +5,22 @@ require 'hoe'
 module Gamebox
   VERSION = '0.0.1'
 end
-Hoe.spec 'gamebox' do
-  developer('Shawn Anderson', 'shawn42@gmail.com')
-  author = "Shawn Anderson"
-  description = "Framework for building and distributing games using Rubygame"
-  email = 'shawn42@gmail.com'
-  summary = "Framework for building and distributing games using Rubygame"
-  url = "http://shawn42.github.com/gamebox"
-  version = Gamebox::VERSION
-  changes = paragraphs_of('History.txt', 0..1).join("\n\n")
-  remote_rdoc_dir = '' # Release to root
-  extra_deps << ['constructor']
-  extra_deps << ['publisher']
-  extra_deps << ['bacon']
-  if extra_rdoc_files
-    extra_rdoc_files << 'docs/getting_started.rdoc' 
+Hoe.new 'gamebox' do |spec|
+  spec.developer('Shawn Anderson', 'shawn42@gmail.com')
+  spec.author = "Shawn Anderson"
+  spec.description = "Framework for building and distributing games using Rubygame"
+  spec.email = 'shawn42@gmail.com'
+  spec.summary = "Framework for building and distributing games using Rubygame"
+  spec.url = "http://shawn42.github.com/gamebox"
+  spec.version = Gamebox::VERSION
+  spec.changes = spec.paragraphs_of('History.txt', 0..1).join("\n\n")
+  spec.extra_deps << ['constructor']
+  spec.extra_deps << ['publisher']
+  spec.extra_deps << ['bacon']
+  if spec.extra_rdoc_files
+    spec.extra_rdoc_files << 'docs/getting_started.rdoc' 
   end
+  spec.remote_rdoc_dir = ' ' # Release to root
 end
 
 STATS_DIRECTORIES = [
