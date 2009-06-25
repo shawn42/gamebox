@@ -81,6 +81,20 @@ class Map < Actor
     @map.occupant location
   end  
   
+  def move_to(thing, location)
+    new_tile = occupant location
+    if thing.location
+      old_tile = occupant thing.location 
+      old_tile.occupants.delete thing
+    end
+    new_tile.occupants << thing
+    thing.location = location
+    
+    # TODO is there a better way to keep x,y in sync with map locaiton?
+    thing.x = (location.x-0.5)*@tile_width
+    thing.y = (location.y-0.5)*@tile_height
+  end
+  
   def size
     @map.size
   end

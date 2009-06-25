@@ -49,30 +49,27 @@ class MapLoader
           :tile_x => col, :tile_y => row, :hide => true
         tile.lit = false
         tile.solid = true if tile_klass == :wall
+        map.place tile.location, tile
         
         if tile_klass.nil?
           monster_name = @config[:monsters][row_str[col].chr]
           if monster_name == :rague
-            act = map.spawn :rague, :x=>x, :y=>y
-            @rague = act 
-            @rague.tile_x = col
-            @rague.tile_y = row
+            act = map.spawn :rague
+            @rague = act
           else
             if monster_name.nil?
               item_name = @config[:items][row_str[col].chr]
               unless item_name.nil?
-                act = map.spawn :item, :name=>item_name, :x=>x, :y=>y, :hide => true
-                tile.occupants << act
+                act = map.spawn :item, :name=>item_name, :hide => true
               end
             else
-              act = map.spawn :monster, :name=>monster_name, :x=>x, :y=>y, :hide => true
-              tile.occupants << act
+              act = map.spawn :monster, :name=>monster_name, :hide => true
               fire :monster_spawned, act
             end
           end
-                      
+          map.move_to act, loc2(col,row) if act              
         end
-        map.place tile.location, tile
+        
       end
     end
     log "done."

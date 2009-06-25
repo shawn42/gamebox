@@ -1,7 +1,7 @@
 require 'behavior'
 class Wanderer < Behavior
   def setup
-    @dirs = [:up,:down,:left,:right]
+    @dirs = [:up,:down,:left,:right,nil]
     pick_random_dir
   end
   
@@ -11,8 +11,7 @@ class Wanderer < Behavior
   
   def update(time)
     # move dir
-    @actor.send "move_#{@dir}".to_sym
-    
+    @actor.send "move_#{@dir}".to_sym if @dir
     pick_random_dir
   end
 end

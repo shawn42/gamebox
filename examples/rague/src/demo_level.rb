@@ -11,6 +11,18 @@ class DemoLevel < Level
     
     @monsters = []
     map_loader.when :monster_spawned do |monster|
+      monster.when :move_right do
+        move_monster monster, [1,0]
+      end
+      monster.when :move_left do
+        move_monster monster, [-1,0]
+      end
+      monster.when :move_up do
+        move_monster monster, [0,-1]
+      end
+      monster.when :move_down do
+        move_monster monster, [0,1]
+      end
       @monsters << monster
     end
     
@@ -40,10 +52,9 @@ class DemoLevel < Level
     end
     viewport.when :scrolled do
       @map.update_drawable_tiles viewport
-      @map.update_lit_locations loc2(@rague.tile_x,@rague.tile_y)
+      @map.update_lit_locations loc2(@rague.location.x,@rague.location.y)
     end
-    
-    
+       
     viewport.follow @rague
     
   end
@@ -56,19 +67,21 @@ class DemoLevel < Level
     @monsters.each do |m|
       m.update 0
     end
-    #puts "NPCs get their turn"
+  end
+  
+  def move_monster(monster, dir)
+    new_loc = loc2 monster.location.x+dir[0], monster.location.y+dir[1]
+    new_tile = @map.occupant new_loc
+    if new_tile && !new_tile.solid?
+      @map.move_to monster, new_loc
+    end
   end
   
   def move_rague(dir)
-    new_loc = loc2 @rague.tile_x+dir[0], @rague.tile_y+dir[1]
+    new_loc = loc2 @rague.location.x+dir[0], @rague.location.y+dir[1]
     new_tile = @map.occupant new_loc
     if new_tile && !new_tile.solid?
-      # move the player
-      @rague.tile_x = new_loc.x
-      @rague.tile_y = new_loc.y
-      @rague.y += @map.tile_height * dir[1]
-      @rague.x += @map.tile_width * dir[0]
-
+      @map.move_to @rague, new_loc
       @rague.handle_tile_contents new_tile
       
       give_everyone_their_turn

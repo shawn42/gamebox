@@ -1,6 +1,7 @@
 require 'actor'
 
 class Item < Actor
+  attr_accessor :location
   has_behaviors :animated, :layered => 2
 
   def setup

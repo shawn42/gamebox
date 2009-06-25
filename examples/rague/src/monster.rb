@@ -1,6 +1,9 @@
 require 'actor'
+require 'publisher'
 
 class Monster < Actor
+  extend Publisher
+  attr_accessor :location
   has_behaviors :animated, :layered => 2
 
   def setup
@@ -24,19 +27,19 @@ class Monster < Actor
   end
   
   def move_up
-    #puts "monster up"
+    fire :move_up
   end
   
   def move_down
-    #puts "monster down"
+    fire :move_down
   end
   
   def move_left
-    #puts "monster left"
+    fire :move_left
   end
   
   def move_right
-    #puts "monster right"
+    fire :move_right
   end
 
 end
