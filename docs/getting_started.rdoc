@@ -13,6 +13,12 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 - gem install gamebox
 - or tar from http://shawn42.github.com/gamebox
 - or git pull from git://github.com/shawn42/gamebox.git
+- required gems
+  - hoe
+  - rubygame (all of its dependencies)
+  - constructor
+  - publisher
+  - bacon for unit tests
 
 == Game Creation
 
@@ -93,6 +99,41 @@ All file loading is handled by the ResourceManager.  It handles loading images, 
 	font = @mode.resource_manager.load_font 'Asimov.ttf', 30
 
 == Behaviors
+
+Behaviors are designed to allow you to build Actors from previously built chunks of code. Lets look at the built in Animated behavior.
+  class SuperHero < Actor
+    has_behaviors :animated, :updatable
+  end
+
+This snippet show us that our Actor wants to be updated on every gameloop and that it wants to be animated.  Gamebox favors convention over configuration. This means that there are default locations and setting for most things. They can be overridden but you are not required to do so. The animated behavior assumes that your animated images are in a directory structure based on the Actor's underscored name and its current action.
+
+	zapper/
+	`-- data
+	    `-- graphics
+	        `-- super_hero
+	            |-- flying
+	            |   |-- 1.png
+	            |   |-- 2.png
+	            |   |-- ...
+	            |   `-- 8.png
+	            |-- idle
+	            |   `-- 1.png
+	            `-- walking
+	                |-- 1.png
+	                `-- 2.png
+	
+Here we can see that the SuperHere class has three actions (flying, walking, idle).  These actions will be set by calling action= on your Actor.
+
+  batman = create_actor :super_hero
+  batman.action = :flying
+
+The animation will cycle through all the numbered png files for the current action.  To stop animating you simple call stop_animating.
+
+  batman.stop_animating
+
+
+Animated and Updatable are just two behaviors available in Gamebox. Other include	graphical, layered, and physical. You can easily add your own game specific behaviors by extending Behavior. (see Wanderer in rague example).
+
 == Levels
 == Modes
 == Physics
