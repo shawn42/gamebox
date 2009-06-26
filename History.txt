@@ -21,3 +21,8 @@
 
 * Bug fix release for RubyWeekend #3
   * input_manager had problems with mouse events
+
+=== 0.0.3 / 2009-06-26
+
+* Bug fix release for RubyWeekend #3
+  * updatable behavior was not in the manifest

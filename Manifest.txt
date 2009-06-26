@@ -72,6 +72,7 @@ lib/gamebox/template_app/src/app.rb
 lib/gamebox/template_app/src/demo_level.rb
 lib/gamebox/template_app/src/game.rb
 lib/gamebox/template_app/src/my_actor.rb
+lib/gamebox/updatable.rb
 lib/gamebox/version.rb
 lib/gamebox/viewport.rb
 lib/gamebox/wrapped_screen.rb
