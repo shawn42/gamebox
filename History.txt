@@ -16,3 +16,8 @@
     * roids
     * rague
     * nario
+
+=== 0.0.2 / 2009-06-26
+
+* Bug fix release for RubyWeekend #3
+  * input_manager had problems with mouse events

@@ -3,6 +3,12 @@ class InputManager
   extend Publisher
   can_fire :key_up, :event_received
 
+  MOUSE_BUTTON_LOOKUP = {
+    1 => :left,
+    2 => :middle,
+    3 => :right,
+  }
+
   attr_accessor :hooks
   
   def initialize
@@ -55,10 +61,14 @@ class InputManager
           fire :event_received, event
 
           event_hooks = @hooks[event.class] 
-          event_action_hooks = event_hooks[event.key] if event_hooks
-          if event_action_hooks
-            for callback in event_action_hooks
-              callback.call
+          id = event.key if event.respond_to? :key
+          id ||= MOUSE_BUTTON_LOOKUP[event.button] if event.respond_to? :button
+          unless id.nil?
+            event_action_hooks = event_hooks[id] if event_hooks
+            if event_action_hooks
+              for callback in event_action_hooks
+                callback.call event
+              end
             end
           end
         end
@@ -86,14 +96,7 @@ class InputManager
     @hooks[event_class] ||= {}
     for event_id in event_ids
       @hooks[event_class][event_id] ||= []
-      if block_given?
-        @hooks[event_class][event_id].delete block
-      else
-#        for blocks in @hooks[event_class][event_id]
-#          listener = eval("self", block.binding) 
-#          @hooks[event_class][event_id].delete block if listener == id
-#        end
-      end
+      @hooks[event_class][event_id].delete block if block_given?
     end
   end
   alias unreg unregister_hook
