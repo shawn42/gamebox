@@ -32,6 +32,7 @@ class InputManager
     end
 
     @hooks = {}
+    @non_id_hooks = {}
   end
   
   def framerate=(frame_rate)
@@ -71,6 +72,13 @@ class InputManager
               end
             end
           end
+          
+          non_id_event_hooks = @non_id_hooks[event.class]
+          if non_id_event_hooks
+            for callback in non_id_event_hooks
+              callback.call event
+            end
+          end          
         end
 
         game.update @clock.tick
@@ -85,6 +93,10 @@ class InputManager
       @hooks[event_class][event_id] ||= []
       @hooks[event_class][event_id] << block
     end
+    @non_id_hooks[event_class] ||= []
+    if event_ids.empty?
+      @non_id_hooks[event_class] << block
+    end
     listener = eval("self", block.binding) 
     listener.when :remove_me do
       unregister_hook event_class, *event_ids, &block
@@ -98,10 +110,15 @@ class InputManager
       @hooks[event_class][event_id] ||= []
       @hooks[event_class][event_id].delete block if block_given?
     end
+    if event_ids.empty?
+      @hooks[event_class] ||= []
+      @hooks[event_class].delete block if block_given?
+    end
   end
   alias unreg unregister_hook
 
   def clear_hooks
     @hooks = {}
+    @non_id_hooks = {}
   end
 end

@@ -26,3 +26,8 @@
 
 * Bug fix release for RubyWeekend #3
   * updatable behavior was not in the manifest
+
+=== 0.0.4 / 2009-06-27
+
+* Bug fix release for RubyWeekend #3
+  * added registering for events with input_manager that have no ids (ie i.reg KeyDownEvent do |e| ... will get all keys pressed)
