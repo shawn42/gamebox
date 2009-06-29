@@ -31,3 +31,8 @@
 
 * Bug fix release for RubyWeekend #3
   * added registering for events with input_manager that have no ids (ie i.reg KeyDownEvent do |e| ... will get all keys pressed)
+
+=== 0.0.5 / 2009-06-28
+
+* Bug fix release for RubyWeekend #3
+  * sound manager now ignores txt files

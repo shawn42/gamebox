@@ -31,7 +31,10 @@ class SoundManager
         name = File.basename(f)
         begin
           sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
-          @music[sym] = @resource_manager.load_music(f)
+          ext = name.gsub(" ","_").split(".").last
+          unless ext == "txt"
+            @music[sym] = @resource_manager.load_music(f)
+          end
         rescue;end
       end if files
 
@@ -41,7 +44,10 @@ class SoundManager
         name = File.basename(f)
         begin
           sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
-          @sounds[sym] = @resource_manager.load_sound(f)
+          ext = name.gsub(" ","_").split(".").last
+          unless ext == "txt"
+            @sounds[sym] = @resource_manager.load_sound(f)
+          end
         rescue;end
       end if files
     end
