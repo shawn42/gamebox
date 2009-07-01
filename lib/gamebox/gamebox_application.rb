@@ -31,7 +31,7 @@ class GameboxApp
     @game = @context[:game]
     
     @config_manager = @context[:config_manager]
-    setup_debug_server if @config_manager[:debug_server]
+    setup_debug_server if @config_manager[:debug_server] || ARGV.include?("-debug-server")
   end
   
   def setup_debug_server

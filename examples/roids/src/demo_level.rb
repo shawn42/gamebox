@@ -7,7 +7,6 @@ class DemoLevel < PhysicalLevel
     @sound_manager.play_music :roids
 
     @ship = create_actor :ship, :x => 300, :y => 300
-#    @ship.warp vec2(300,300)
 
     @score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600

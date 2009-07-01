@@ -8,14 +8,15 @@ class Level
 
   can_fire_anything
   attr_accessor :director, :resource_manager, :sound_manager,
-    :opts, :viewport
+    :opts, :viewport, :input_manager
     
-  def initialize(actor_factory, resource_manager, sound_manager, viewport, opts={}) 
+  def initialize(actor_factory, resource_manager, sound_manager, input_manager, viewport, opts={}) 
     @director = Director.new
     @actor_factory = actor_factory
     @actor_factory.director = @director
 
     @sound_manager = sound_manager
+    @input_manager = input_manager
     @resource_manager = resource_manager
     @viewport = viewport
     @opts = opts
