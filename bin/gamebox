@@ -3,8 +3,28 @@
 Signal.trap("INT") { puts; exit }
 
 require File.dirname(__FILE__) + '/../lib/gamebox/version'
-if %w(--version -v).include? ARGV.first
+
+def print_version
   puts "Gamebox #{Gamebox::VERSION::STRING}"
+end
+def print_usage
+  print_version
+  puts "Usage:"
+  puts "gamebox [opts] game_name"
+  puts " -h, --help display this message"
+  puts " -v, --version display gamebox version"
+end
+
+if %w(--version -v).include? ARGV.first
+  print_version
+  exit(0)
+end
+if %w(--help -h).include? ARGV.first
+  print_usage
+  exit(0)
+end
+if ARGV.empty?
+  print_usage
   exit(0)
 end
 

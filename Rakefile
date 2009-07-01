@@ -2,9 +2,7 @@ require 'rubygems'
 gem 'hoe', '>= 2.3.0'
 require 'hoe'
 
-module Gamebox
-  VERSION = '0.0.6'
-end
+require File.dirname(__FILE__)+'/lib/gamebox/version'
 Hoe.new 'gamebox' do |spec|
   spec.developer('Shawn Anderson', 'shawn42@gmail.com')
   spec.author = "Shawn Anderson"
@@ -12,7 +10,7 @@ Hoe.new 'gamebox' do |spec|
   spec.email = 'shawn42@gmail.com'
   spec.summary = "Framework for building and distributing games using Rubygame"
   spec.url = "http://shawn42.github.com/gamebox"
-  spec.version = Gamebox::VERSION
+  spec.version = Gamebox::VERSION::STRING
   spec.changes = spec.paragraphs_of('History.txt', 10..11).join("\n\n")
   spec.extra_deps << ['constructor']
   spec.extra_deps << ['publisher']

@@ -41,3 +41,6 @@
 
 * Multiple fixes and features
   * added rake run to all gamebox games
+  * added rake debug to all gamebox games
+  * added input_manager to levels
+  * added usage -help to gamebox
