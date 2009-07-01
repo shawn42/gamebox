@@ -1,3 +1,4 @@
+require 'rubygame'
 require 'ftor'
 module Rubygame
 
