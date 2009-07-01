@@ -1,4 +1,4 @@
-require 'rubygame'
+require 'lib/rubygame/shared'
 require 'ftor'
 module Rubygame
 
