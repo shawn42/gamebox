@@ -45,6 +45,7 @@ lib/gamebox/physical.rb
 lib/gamebox/physical_director.rb
 lib/gamebox/physical_level.rb
 lib/gamebox/physics.rb
+lib/gamebox/platform.rb
 lib/gamebox/publisher_ext.rb
 lib/gamebox/resource_manager.rb
 lib/gamebox/score.rb
@@ -53,6 +54,7 @@ lib/gamebox/sound_manager.rb
 lib/gamebox/surface_ext.rb
 lib/gamebox/svg_actor.rb
 lib/gamebox/svg_document.rb
+lib/gamebox/tasks/gamebox_tasks.rb
 lib/gamebox/template_app/README
 lib/gamebox/template_app/Rakefile
 lib/gamebox/template_app/config/boot.rb

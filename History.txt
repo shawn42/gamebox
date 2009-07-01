@@ -36,3 +36,8 @@
 
 * Bug fix release for RubyWeekend #3
   * sound manager now ignores txt files
+
+=== 0.0.6 / 2009-06-30
+
+* Multiple fixes and features
+  * added rake run to all gamebox games
