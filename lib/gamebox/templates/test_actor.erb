@@ -1,0 +1,11 @@
+require 'helper'
+require '<%= Inflector.underscore @actor_name %>'
+
+describe 'a new <%= @actor_name %>' do
+  before do 
+    opts = {:level=>"level", :input=>"input", :resources=>"resource"}
+    @test_me = <%= @actor_name %>.new opts
+  end
+
+  it 'should do something'
+end

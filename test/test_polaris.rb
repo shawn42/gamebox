@@ -11,19 +11,19 @@ describe 'A new polaris' do
   it 'should return an empty path if destination is not valid' do
     from = TwoDGridLocation.new @map.w-1, @map.h-1
     to = TwoDGridLocation.new @map.w, @map.h
-    @pather.guide(from,to).should == nil
+    @pather.guide(from,to).should be_nil
 
     to = TwoDGridLocation.new(-1, -1)
-    @pather.guide(from,to).should == nil
+    @pather.guide(from,to).should be_nil
   end
 
   it 'should return an empty path if start is not valid' do
     from = TwoDGridLocation.new @map.w, @map.h
     to = TwoDGridLocation.new @map.w-1, @map.h-1
-    @pather.guide(from,to).should == nil
+    @pather.guide(from,to).should be_nil
     
     from = TwoDGridLocation.new -1, -1
-    @pather.guide(from,to).should == nil
+    @pather.guide(from,to).should be_nil
   end
   
   it 'should return the path of "to" for accessible neighbor' do
@@ -31,13 +31,13 @@ describe 'A new polaris' do
     to = TwoDGridLocation.new 1, 0
     
     path = @pather.guide(from,to)
-    path.should != nil
-    path.size.should == 1
+    path.should_not be_nil
+    path.size.should equal(1)
     
-    path.first.cost_to.should == TwoDGridMap::TRAVEL_COST_STRAIGHT
-    path.first.dist_from.should == 0
-    path.first.location.x.should == to.x
-    path.first.location.y.should == to.y
+    path.first.cost_to.should equal(TwoDGridMap::TRAVEL_COST_STRAIGHT)
+    path.first.dist_from.should equal(0)
+    path.first.location.x.should equal(to.x)
+    path.first.location.y.should equal(to.y)
   end
   
   it 'should return the right horizontal path of length 2' do
@@ -46,11 +46,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 1
-    path.first.location.y.should == 0
+    path.first.location.x.should equal(1)
+    path.first.location.y.should equal(0)
     path.last.location.should == to
   end
 
@@ -60,11 +60,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 1
-    path.first.location.y.should == 0
+    path.first.location.x.should equal(1)
+    path.first.location.y.should equal(0)
     path.last.location.should == to
   end  
   
@@ -75,11 +75,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 1
-    path.first.location.y.should == 1
+    path.first.location.x.should equal(1)
+    path.first.location.y.should equal(1)
     path.last.location.should == to
   end  
   
@@ -89,11 +89,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 3
-    path.first.location.y.should == 1
+    path.first.location.x.should equal(3)
+    path.first.location.y.should equal(1)
     path.last.location.should == to
   end
   
@@ -103,11 +103,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 3
-    path.first.location.y.should == 3
+    path.first.location.x.should equal(3)
+    path.first.location.y.should equal(3)
     path.last.location.should == to
   end   
   
@@ -117,11 +117,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 1
-    path.first.location.y.should == 3
+    path.first.location.x.should equal(1)
+    path.first.location.y.should equal(3)
     path.last.location.should == to
   end  
   
@@ -134,11 +134,11 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 2
+    path.should_not be_nil
+    path.size.should equal(2)
     
-    path.first.location.x.should == 1
-    path.first.location.y.should == 1
+    path.first.location.x.should equal(1)
+    path.first.location.y.should equal(1)
     path.last.location.should == to
   end
   
@@ -148,13 +148,13 @@ describe 'A new polaris' do
     
     path = @pather.guide(from,to)
     
-    path.should != nil
-    path.size.should == 5
+    path.should_not be_nil
+    path.size.should equal(5)
     
     # make sure that all elements of the path are neighbors
     prev_el = PathElement.new from, nil
     path.each do |path_el|
-      @map.neighbors(prev_el.location).should.include? path_el.location
+      @map.neighbors(prev_el.location).include?(path_el.location).should be_true
       prev_el = path_el
     end
     

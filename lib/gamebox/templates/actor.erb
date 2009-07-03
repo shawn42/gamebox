@@ -1,0 +1,12 @@
+require 'actor'
+
+class <%= @actor_name %> < Actor
+  <% if @behaviors %>
+      has_baviors <%= @behaviors.join "," %> 
+  <% end %>
+
+  def setup
+    # register for events here
+    # or pull stuff out of @opts
+  end
+end

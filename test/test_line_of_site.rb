@@ -8,7 +8,5 @@ describe 'A new LineOfSite' do
     @los = LineOfSite.new @map
   end
 
-  it 'should be sane' do
-    true.should == true
-  end
+  it 'should be sane'
 end

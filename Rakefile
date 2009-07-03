@@ -14,7 +14,7 @@ Hoe.new 'gamebox' do |spec|
   spec.changes = spec.paragraphs_of('History.txt', 10..11).join("\n\n")
   spec.extra_deps << ['constructor']
   spec.extra_deps << ['publisher']
-  spec.extra_deps << ['bacon']
+  spec.extra_deps << ['rspec']
   if spec.extra_rdoc_files
     spec.extra_rdoc_files << 'docs/getting_started.rdoc' 
   end
@@ -31,12 +31,12 @@ task :stats do
   CodeStatistics.new(*STATS_DIRECTORIES).to_s
 end
 
-desc "Run all the strips of bacon"
-task :bacon do
-#  sh "bacon -Ilib:test --automatic --quiet"
-  sh "bacon -Ilib:test --automatic "
+require 'spec/rake/spectask'
+desc "Run all specs"
+Spec::Rake::SpecTask.new('specs') do |t|
+  t.spec_opts = ["-r", "./test/helper"]
+  t.spec_files = FileList['test//test_*.rb']
 end
-
-task :test => :bacon
+task :test => :specs
 
 # vim: syntax=Ruby

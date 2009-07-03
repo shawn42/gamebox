@@ -29,16 +29,18 @@ if ARGV.empty?
 end
 
 begin
+  # ruby 1.9
   require 'ftools'
   fklass = File
 rescue LoadError
+  # ruby 1.8
   require 'fileutils'
   fklass = FileUtils
 end
 
 PROJECT_NAME = ARGV[0]
 TARGET_DIR = File.expand_path(Dir.pwd + "/" + PROJECT_NAME)
-SOURCE_DIR = File.expand_path(File.dirname(__FILE__) + "/../lib/gamebox")
+SOURCE_DIR = File.expand_path(File.dirname(__FILE__) + "/../lib/gamebox/templates")
 
 Dir.mkdir(TARGET_DIR)
 
@@ -63,7 +65,9 @@ Dir.glob("**/*").each do |file|
     target_dir = TARGET_DIR + "/" + file
     Dir.mkdir(target_dir) unless File.exists? target_dir
   else
-    fklass.copy(file, TARGET_DIR + "/" + file) 
+    new_file = TARGET_DIR + "/" + file 
+    fklass.install file, new_file
+    fklass.chmod 0755, new_file if file =~ /script/
   end
 end
 

@@ -7,7 +7,7 @@ class DemoLevel < Level
     @my_actor.y = 10
 
     @stars = []
-    20.times { @stars << Ftor.new(rand(@width),rand(@height)) }
+    20.times { @stars << Ftor.new(rand(viewport.width),rand(viewport.height)) }
   end
 
   def draw(target, x_off, y_off)

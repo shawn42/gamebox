@@ -8,31 +8,29 @@ describe 'A new actor' do
   end
 
   it 'should be alive' do
-    @actor.alive?.should.equal true
+    @actor.alive?.should be_true
   end
 
   it 'should be at (0,0)' do
-    @actor.x.should.equal 0
-    @actor.y.should.equal 0
+    @actor.x.should equal(0)
+    @actor.y.should equal(0)
   end
 
   it 'should have atts set' do
-    @actor.level.should.equal "level" 
-    @actor.input_manager.should.equal "input" 
-    @actor.resource_manager.should.equal "resource" 
-    @actor.behaviors.size.should.equal 0
+    @actor.level.should == "level" 
+    @actor.input_manager.should == "input" 
+    @actor.resource_manager.should == "resource" 
+    @actor.behaviors.size.should equal(0)
   end
 
   it 'should fire anything' do
-    should.not.raise do
+    Proc.new {
       @actor.when :foofoo_bar do
         "blah"
       end
-    end
+    }.should_not raise_error
   end
 
-  it 'should setup behaviors' do
-    should.flunk 'cannot test easily!'
-  end
+  it 'should setup behaviors; hard to test'
 
 end

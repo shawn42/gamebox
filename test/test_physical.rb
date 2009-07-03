@@ -20,7 +20,7 @@ describe 'A new physical behavior' do
 
   it 'should add methods to its actor' do
     @actor.should.respond_to? :x
-    should.flunk 'testing this feels dirty...'
+    pending 'testing this feels dirty...'
   end
 
 end
