@@ -28,7 +28,7 @@ class DemoLevel < Level
     
     
     # smaller maps for now...
-    map_loader.build_random_map @map, 200
+    map_loader.build_random_map @map, 400
     
     @rague = map_loader.rague
     

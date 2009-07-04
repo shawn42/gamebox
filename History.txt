@@ -46,3 +46,4 @@
   * added usage -help to gamebox
   * added ./script/generate to generate actors (ie ./script/generate actor Foo)
   * migrated all test to use rspec
+  * changed clear_hooks to take a listener instance

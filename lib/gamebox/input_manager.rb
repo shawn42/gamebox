@@ -117,8 +117,24 @@ class InputManager
   end
   alias unreg unregister_hook
 
-  def clear_hooks
-    @hooks = {}
-    @non_id_hooks = {}
+  def clear_hooks(listener=nil)
+    if listener
+      for event_klass, id_listeners in @hooks
+        for key in id_listeners.keys.dup
+          id_listeners[key].delete_if do |block|
+            eval('self',block.binding).equal?(listener)
+          end
+        end
+      end
+      
+      for key in @non_id_hooks.keys.dup
+        @non_id_hooks[key].delete_if do |block|
+          eval('self',block.binding).equal?(listener)
+        end
+      end
+    else
+      @hooks = {}
+      @non_id_hooks = {}
+    end
   end
 end
