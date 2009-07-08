@@ -10,6 +10,8 @@ class Polaris
     @nodes_considered = 0
   end
   
+  # Returns the path without the from location. 
+  # Returns nil if max_depth is hit or if no path exists.
   def guide(from, to, unit_type=nil, max_depth=400)
     return nil if @map.blocked?(from, unit_type) || @map.blocked?(to, unit_type)
     from_element = PathElement.new(from)

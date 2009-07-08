@@ -63,10 +63,14 @@ class DemoLevel < PhysicalLevel
       shippy = director.find_physical_obj ship
       unless shippy.invincible?
         @sound_manager.play_sound :implosion
-        shippy.when :remove_me do
-          fire :prev_level
+
+        if shippy.alive?
+          explosion = create_actor :particle_system, :x => shippy.x, :y => shippy.y
+          explosion.when :remove_me do
+            fire :prev_level
+          end
+          shippy.remove_self 
         end
-        shippy.remove_self if shippy.alive?
       end
     end
 

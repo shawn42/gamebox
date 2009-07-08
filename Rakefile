@@ -11,7 +11,7 @@ Hoe.new 'gamebox' do |spec|
   spec.summary = "Framework for building and distributing games using Rubygame"
   spec.url = "http://shawn42.github.com/gamebox"
   spec.version = Gamebox::VERSION::STRING
-  spec.changes = spec.paragraphs_of('History.txt', 10..11).join("\n\n")
+  spec.changes = spec.paragraphs_of('History.txt', 12..13).join("\n\n")
   spec.extra_deps << ['constructor']
   spec.extra_deps << ['publisher']
   spec.extra_deps << ['rspec']

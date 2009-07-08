@@ -47,3 +47,8 @@
   * added ./script/generate to generate actors (ie ./script/generate actor Foo)
   * migrated all test to use rspec
   * changed clear_hooks to take a listener instance
+
+=== 0.0.7 / 2009-07-04
+
+* Started next release
+  * TODO: stuff

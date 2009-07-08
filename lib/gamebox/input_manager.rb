@@ -1,16 +1,33 @@
 require 'publisher'
+
+# InputManager handles the pumping of SDL for events and distributing of said events.
+# You can gain access to these events by registering for all events, 
+# or just the ones you care about.
+# All events:
+# input_manager.when :event_received do |evt|
+#   ...
+# end
+# 
+# Some events:
+# input_manager.reg KeyDownEvent, K_SPACE do
+#   ...
+# end
+#
+# Don't forget to unreg for these things between levels and modes, 
+# since the InputManager is shared across levels and modes.
 class InputManager
   extend Publisher
   can_fire :key_up, :event_received
 
+  # lookup map for mouse button clicks
   MOUSE_BUTTON_LOOKUP = {
     1 => :left,
     2 => :middle,
     3 => :right,
   }
 
-  attr_accessor :hooks
-  
+  # Sets up the clock and main event loop. You should never call this method, 
+  # as this class should be initialized by diy.
   def initialize
     @queue = EventQueue.new
     @queue.ignore = [
@@ -35,14 +52,18 @@ class InputManager
     @non_id_hooks = {}
   end
   
+  # Sets the target framerate for the game. 
+  # This setting controls how lock Clock#tick will delay.
   def framerate=(frame_rate)
     @clock.target_framerate = frame_rate
   end
   
+  # Returns the target framerate.
   def framerate
     @clock.target_framerate
   end
 
+  # This is where the queue gets pumped. This gets called from your game application.
   def main_loop(game)
     catch(:rubygame_quit) do
       loop do
@@ -86,6 +107,14 @@ class InputManager
     end
   end
 
+  # registers a block to be called when matching events are pulled from the SDL queue.
+  # ie 
+  # input_manager.register_hook KeyDownEvent do |evt|
+  #   # will be called on every key press
+  # end
+  # input_manager.register_hook KeyDownEvent, K_SPACE do |evt|
+  #   # will be called on every spacebar key press
+  # end
   def register_hook(event_class, *event_ids, &block)
     return unless block_given?
     @hooks[event_class] ||= {}
@@ -104,6 +133,10 @@ class InputManager
   end
   alias reg register_hook
 
+  # unregisters a block to be called when matching events are pulled from the SDL queue.
+  # ie 
+  # input_manager.register_hook KeyDownEvent, K_SPACE, registered_block
+  # also see InputManager#clear_hooks for clearing many hooks
   def unregister_hook(event_class, *event_ids, &block)
     @hooks[event_class] ||= {}
     for event_id in event_ids
@@ -117,6 +150,9 @@ class InputManager
   end
   alias unreg unregister_hook
 
+
+  # removes all blocks that are in the scope of listener's instance.
+  # clears all listeners if listener is nil
   def clear_hooks(listener=nil)
     if listener
       for event_klass, id_listeners in @hooks
