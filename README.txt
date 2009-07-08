@@ -28,6 +28,6 @@
 
 == LICENSE:
 
-(GPLv2)
+(MIT)
 
 Copyright (c) 2009 Shawn Anderson

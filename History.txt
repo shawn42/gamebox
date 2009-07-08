@@ -50,5 +50,5 @@
 
 === 0.0.7 / 2009-07-04
 
-* Started next release
-  * TODO: stuff
+* New Particle System code in roids
+* Changed license to MIT
