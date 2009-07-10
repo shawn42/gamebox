@@ -1,6 +1,8 @@
 class SoundManager
 
   constructor :resource_manager, :config_manager
+  
+  # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
   def setup
     # Not in the pygame version - for Rubygame, we need to 
     # explicitly open the audio device.
@@ -17,7 +19,6 @@ class SoundManager
     #   Samplesize - Bytes per output sample. Specifically, this
     #                determines the size of the buffer that the
     #                sounds will be mixed in.
-#    Rubygame::Mixer::open_audio( 22050, Rubygame::Mixer::AUDIO_U8, 2, 1024 )
     Rubygame::Mixer::open_audio( 22050, nil, 2, 1024 )
 
     puts 'Warning, sound disabled' unless
@@ -57,6 +58,8 @@ class SoundManager
     @enabled
   end
 
+  # plays the sound based on the name with the specified volume level.
+  # play_sound :foo # play sound at 100% volume
   def play_sound(what, volume=nil)
     if @enabled && @sounds[what]
       @sound_thread = Thread.new do
@@ -66,6 +69,9 @@ class SoundManager
     end
   end
 
+  # plays the music based on the name with the specified volume level.
+  # will loop until SoundManager#stop_music is called.
+  # play_music :foo, 0.8  # play music at 80% volumne
   def play_music(what, volume=nil)
     if @enabled && @music[what]
       @music_thread = Thread.new do
@@ -75,12 +81,16 @@ class SoundManager
     end
   end
 
+  # stops the music file that is passed in.
+  # stop_music :foo
   def stop_music(what)
     if @enabled
       @music[what].stop if @music[what]
     end
   end
   
+  # stops the sound that is passed in.
+  # stop_sound :foo
   def stop_sound(what)
     if @enabled
       @sounds[what].stop if @sounds[what]
