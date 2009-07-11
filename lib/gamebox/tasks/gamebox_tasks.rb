@@ -1,4 +1,4 @@
-require 'gamebox/platform'
+require 'gamebox/lib/platform'
 
 task :default => :run
 desc "Run the game"

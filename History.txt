@@ -52,3 +52,6 @@
 
 * New Particle System code in roids
 * Changed license to MIT
+* Bug fixes
+  * added OpenGL option for screen (per jacius request)
+* reorganized code

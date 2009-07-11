@@ -1,25 +1,23 @@
-$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'gamebox'))
+here = File.dirname(__FILE__)
+gamebox_root = File.expand_path(File.join(here, '..', 'lib'))
 
+#$LOAD_PATH.unshift File.expand_path(gamebox_root, 'gamebox')
 require 'rubygems'
 require 'spec'
 
-#require 'bacon'
-#require 'mocha'
-#require 'aliasing'
-
-#class Bacon::Context
-#  include Mocha::Standalone
-#  def it_with_mocha description
-#    it_without_mocha description do
-#      mocha_setup
-#      yield
-#      mocha_verify
-#      mocha_teardown
-#    end
-#  end
-#  alias_method_chain :it, :mocha
-#end
-
+# TODO this lives in both gamebox.rb and here... seems strange
+[
+"gamebox",
+"gamebox/actors", 
+"gamebox/ai", 
+"gamebox/behaviors", 
+"gamebox/generators", 
+"gamebox/lib", 
+"gamebox/tasks", 
+"gamebox/views"
+].each do |path|
+  $LOAD_PATH.unshift File.join(gamebox_root,path)
+end
 
 require 'metaclass'
 require 'actor'

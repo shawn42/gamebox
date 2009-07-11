@@ -8,8 +8,9 @@ change Polaris to return partial path when step max is reached
 update physical objects to use chipmunk_object.rb
 allow for repeating actors (tiles)
 allow overriding of animation timing
- make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
-	physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
+
+make complex Phyiscal behaviors (made up by a group of shapes/bodies pinned together?)
+physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
   
   - solidify rdocs (including tutorial)
 SVGS
