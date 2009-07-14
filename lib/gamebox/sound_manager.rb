@@ -1,4 +1,5 @@
 class SoundManager
+  attr_accessor :sounds, :music
 
   constructor :resource_manager, :config_manager
   
