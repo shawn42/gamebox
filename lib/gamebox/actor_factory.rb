@@ -11,14 +11,21 @@ class ActorFactory
     cached_actor = @actor_cache[actor]
     return cached_actor if cached_actor
 
-    begin
-      require actor.to_s
-      require actor.to_s+"_view"
-    rescue LoadError => ex
-      # maybe its included somewhere else
-    end
+    
     model_klass_name = Inflector.camelize actor
-    model_klass = Object.const_get model_klass_name
+    begin
+      model_klass = Object.const_get model_klass_name
+    rescue NameError
+      # not there yet
+      begin
+        require actor.to_s
+        require actor.to_s+"_view"
+      rescue LoadError => ex
+        # maybe its included somewhere else
+      ensure
+        model_klass = Object.const_get model_klass_name
+      end
+    end
     
     begin
       view_klass = Object.const_get model_klass_name+"View"
