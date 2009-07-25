@@ -42,27 +42,27 @@ class GameField < Actor
     end
 
     # Setup our key events into the grid
-    i.reg KeyDownEvent, K_N do
+    i.reg KeyPressed, :n do
       @grid.start_play(self)
     end
 
-    i.reg KeyDownEvent, K_SPACE do
+    i.reg KeyPressed, :space do
       @grid.drop_piece
     end
 
-    i.reg KeyDownEvent, K_LEFT do
+    i.reg KeyPressed, :left do
       @grid.piece_left
     end
 
-    i.reg KeyDownEvent, K_RIGHT do
+    i.reg KeyPressed, :right do
       @grid.piece_right
     end
 
-    i.reg KeyDownEvent, K_DOWN do
+    i.reg KeyPressed, :down do
       @grid.piece_down
     end
 
-    i.reg KeyDownEvent, K_UP do
+    i.reg KeyPressed, :up do
       @grid.rotate_piece
     end
 
