@@ -5,6 +5,7 @@ require 'rubygems'
 require 'rubygame'
 include Rubygame
 include Rubygame::Events
+require 'event_compat'
 require 'surface_ext'
 
 require "environment"

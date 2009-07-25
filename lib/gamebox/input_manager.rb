@@ -20,6 +20,14 @@ class InputManager
   can_fire :key_up, :event_received
 
 
+  # lookup map for mouse button clicks
+  MOUSE_BUTTON_LOOKUP = {
+    MOUSE_LEFT   => :left,
+    MOUSE_MIDDLE => :middle,
+    MOUSE_RIGHT  => :right,
+  }
+
+
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by diy.
   def initialize
@@ -84,7 +92,11 @@ class InputManager
 
           event_hooks = @hooks[event.class] 
           id = event.key if event.respond_to? :key
-          id ||= event.button if event.respond_to? :button
+
+          if event.respond_to? :button
+            id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
+          end
+
           unless id.nil?
             event_action_hooks = event_hooks[id] if event_hooks
             if event_action_hooks
