@@ -33,29 +33,29 @@ class Ship < Actor
     @max_speed = 500
 
     i = input_manager
-    i.reg KeyDownEvent, K_SPACE do
+    i.reg KeyPressed, :space do
       shoot
     end
-    i.reg KeyDownEvent, K_RCTRL, K_LCTRL do
+    i.reg KeyPressed, :right_ctrl, :left_ctrl do
       warp vec2(rand(400)+100,rand(400)+100)
     end
-    i.reg KeyDownEvent, K_LEFT do
+    i.reg KeyPressed, :left do
       @moving_left = true
     end
-    i.reg KeyDownEvent, K_RIGHT do
+    i.reg KeyPressed, :right do
       @moving_right = true
     end
-    i.reg KeyDownEvent, K_UP do
+    i.reg KeyPressed, :up do
       @moving_forward = true
       self.action = :thrust
     end
-    i.reg KeyUpEvent, K_LEFT do
+    i.reg KeyReleased, :left do
       @moving_left = false
     end
-    i.reg KeyUpEvent, K_RIGHT do
+    i.reg KeyReleased, :right do
       @moving_right = false
     end
-    i.reg KeyUpEvent, K_UP do
+    i.reg KeyReleased, :up do
       @moving_forward = false
       self.action = :idle
     end

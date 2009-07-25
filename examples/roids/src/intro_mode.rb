@@ -3,7 +3,7 @@ class IntroMode < Mode
   def start
     @image = @resource_manager.load_image 'intro.png'
     i = @input_manager
-    i.reg KeyDownEvent, K_SPACE do
+    i.reg KeyPressed, :space do
       fire :next_mode
     end
   end
