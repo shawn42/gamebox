@@ -1,4 +1,4 @@
-require 'ftor'
+require 'rubygame/ftor'
 module Rubygame
 
   class Surface
