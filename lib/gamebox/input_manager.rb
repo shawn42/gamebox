@@ -9,7 +9,7 @@ require 'publisher'
 # end
 # 
 # Some events:
-# input_manager.reg KeyDownEvent, K_SPACE do
+# input_manager.reg KeyPressed, :space do
 #   ...
 # end
 #
@@ -19,25 +19,25 @@ class InputManager
   extend Publisher
   can_fire :key_up, :event_received
 
-  # lookup map for mouse button clicks
-  MOUSE_BUTTON_LOOKUP = {
-    1 => :left,
-    2 => :middle,
-    3 => :right,
-  }
 
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by diy.
   def initialize
     @queue = EventQueue.new
+    @queue.enable_new_style_events
     @queue.ignore = [
-      ActiveEvent,
-      JoyAxisEvent,
-      JoyBallEvent,
-      JoyDownEvent,
-      JoyHatEvent,
-      JoyUpEvent,
-      ResizeEvent
+      InputFocusGained,
+      InputFocusLost,
+      MouseFocusGained,
+      MouseFocusLost,
+      WindowMinimized,
+      WindowUnminimized,
+      JoystickAxisMoved,
+      JoystickBallMoved,
+      JoystickButtonPressed,
+      JoystickButtonReleased,
+      JoystickHatMoved,
+      WindowResized
     ]
     
     @clock = Clock.new do |c|
@@ -70,21 +70,21 @@ class InputManager
         # add magic hooks
         @queue.each do |event|
           case event
-          when KeyDownEvent
+          when KeyPressed
             case event.key
-            when K_F
+            when :f
               puts "Framerate:#{@clock.framerate}"
-            when K_ESCAPE
+            when :escape
               throw :rubygame_quit
             end
-          when QuitEvent
+          when QuitRequested
             throw :rubygame_quit
           end
           fire :event_received, event
 
           event_hooks = @hooks[event.class] 
           id = event.key if event.respond_to? :key
-          id ||= MOUSE_BUTTON_LOOKUP[event.button] if event.respond_to? :button
+          id ||= event.button if event.respond_to? :button
           unless id.nil?
             event_action_hooks = event_hooks[id] if event_hooks
             if event_action_hooks
@@ -109,10 +109,10 @@ class InputManager
 
   # registers a block to be called when matching events are pulled from the SDL queue.
   # ie 
-  # input_manager.register_hook KeyDownEvent do |evt|
+  # input_manager.register_hook KeyPressed do |evt|
   #   # will be called on every key press
   # end
-  # input_manager.register_hook KeyDownEvent, K_SPACE do |evt|
+  # input_manager.register_hook KeyPressed, K_SPACE do |evt|
   #   # will be called on every spacebar key press
   # end
   def register_hook(event_class, *event_ids, &block)
@@ -135,7 +135,7 @@ class InputManager
 
   # unregisters a block to be called when matching events are pulled from the SDL queue.
   # ie 
-  # input_manager.register_hook KeyDownEvent, K_SPACE, registered_block
+  # input_manager.unregister_hook KeyPressed, :space, registered_block
   # also see InputManager#clear_hooks for clearing many hooks
   def unregister_hook(event_class, *event_ids, &block)
     @hooks[event_class] ||= {}
