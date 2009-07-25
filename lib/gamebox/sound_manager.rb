@@ -5,22 +5,6 @@ class SoundManager
   
   # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
   def setup
-    # Not in the pygame version - for Rubygame, we need to 
-    # explicitly open the audio device.
-    # Args are:
-    #   Frequency - Sampling frequency in samples per second (Hz).
-    #               22050 is recommended for most games; 44100 is
-    #               CD audio rate. The larger the value, the more
-    #               processing required.
-    #   Format - Output sample format.  This is one of the
-    #            AUDIO_* constants in Rubygame::Mixer
-    #   Channels -output sound channels. Use 2 for stereo,
-    #             1 for mono. (this option does not affect number
-    #             of mixing channels) 
-    #   Samplesize - Bytes per output sample. Specifically, this
-    #                determines the size of the buffer that the
-    #                sounds will be mixed in.
-    Rubygame::Mixer::open_audio( 22050, nil, 2, 1024 )
 
     puts 'Warning, sound disabled' unless
       (@enabled = (Rubygame::VERSIONS[:sdl_mixer] != nil))
