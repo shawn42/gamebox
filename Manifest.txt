@@ -31,6 +31,7 @@ lib/gamebox/data/graphics/logo.png
 lib/gamebox/data/music/GAMEBOX_MUSIC_GOES_HERE
 lib/gamebox/data/sounds/GAMEBOX_SOUND_FX_GO_HERE
 lib/gamebox/director.rb
+lib/gamebox/ftor.rb
 lib/gamebox/gamebox_application.rb
 lib/gamebox/gamebox_generator.rb
 lib/gamebox/generators/actor_generator.rb
