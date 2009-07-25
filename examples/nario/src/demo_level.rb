@@ -96,7 +96,7 @@ class DemoLevel < PhysicalLevel
       end
     end
 
-    @nario.instance_variable_get('@input_manager').reg KeyDownEvent, K_P do
+    @nario.instance_variable_get('@input_manager').reg KeyPressed, :p do
       p viewport.debug
       p @nario.debug
     end

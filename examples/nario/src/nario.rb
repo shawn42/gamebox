@@ -32,7 +32,7 @@ class Nario < Actor
     @right_vec = -@left_vec
 
     i = @input_manager
-    i.reg KeyDownEvent, K_UP do
+    i.reg KeyPressed, :up do
       if !jumping? and grounded?
         play_sound :nario_jump
         @grounded = false
@@ -40,22 +40,22 @@ class Nario < Actor
         self.action = "jump_#{@facing_dir}".to_sym
       end
     end
-    i.reg KeyDownEvent, K_LEFT do
+    i.reg KeyPressed, :left do
       @moving_left = true
       self.action = :move_left
     end
-    i.reg KeyDownEvent, K_RIGHT do
+    i.reg KeyPressed, :right do
       @moving_right = true
       self.action = :move_right
     end
-    i.reg KeyUpEvent, K_LEFT do
+    i.reg KeyReleased, :left do
       @moving_left = false
       idle
     end
-    i.reg KeyUpEvent, K_UP do
+    i.reg KeyReleased, :up do
       idle
     end
-    i.reg KeyUpEvent, K_RIGHT do
+    i.reg KeyReleased, :right do
       @moving_right = false
       idle
     end
