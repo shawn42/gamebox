@@ -10,25 +10,25 @@ class Rague < Actor
     generate_random_stats
 
     i = input_manager
-    i.reg KeyDownEvent, K_RIGHT do
+    i.reg KeyPressed, :right do
       fire :move_right
     end
-    i.reg KeyDownEvent, K_LEFT do
+    i.reg KeyPressed, :left do
       fire :move_left
     end
-    i.reg KeyDownEvent, K_UP do
+    i.reg KeyPressed, :up do
       fire :move_up
     end
-    i.reg KeyDownEvent, K_DOWN do
+    i.reg KeyPressed, :down do
       fire :move_down
     end
     
-    i.reg KeyDownEvent, K_SPACE do
+    i.reg KeyPressed, :space do
       # skip turn
       fire :action_taken
     end
     
-    i.reg KeyDownEvent, K_C do
+    i.reg KeyPressed, :c do
       puts "clearing inventory"
       @inventory.each do |i|
         remove_from_inventory i
