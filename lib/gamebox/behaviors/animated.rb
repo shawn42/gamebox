@@ -4,11 +4,11 @@ require 'behavior'
 # by default it expects images to be:
 # data/graphics/classname/action/01..n.png
 class Animated < Behavior
-  FRAME_UPDATE_TIME = 60
-
-  attr_accessor :frame_time, :frame_num, :animating
+  attr_accessor :frame_time, :frame_num, :animating, :frame_update_time
   def setup
     @images = {}
+    @frame_update_time = @opts[:frame_update_time]
+    @frame_update_time ||= 60
     @frame_time = 0
     
     # all animated actors have to have an idle animation
@@ -43,9 +43,9 @@ class Animated < Behavior
   def update(time)
     return unless @animating
     @frame_time += time
-    if @frame_time > FRAME_UPDATE_TIME
+    if @frame_time > @frame_update_time
       next_frame
-      @frame_time = @frame_time-FRAME_UPDATE_TIME
+      @frame_time = @frame_time-@frame_update_time
     end
   end
 
