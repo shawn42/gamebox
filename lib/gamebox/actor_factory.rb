@@ -1,11 +1,15 @@
 require 'actor'
 require 'graphical_actor_view'
+
+# ActorFactory is responsible for loading all Actors. It passes along required params such as 
+# level, input_manager, sound_manager, director, resource_manager. It also creates the ActorView 
+# associated with the Actor and registers it to the Mode be drawn. 
 class ActorFactory
   constructor :input_manager, :sound_manager
 
   attr_accessor :mode_manager, :director
   
-  # returns a hash of actor params
+  # Returns a hash of actor params {:model_klass=>k, :view_klass=>v}. This is for performance reasons.
   def cached_actor_def(actor)
     @actor_cache ||= {}
     cached_actor = @actor_cache[actor]
@@ -41,7 +45,7 @@ class ActorFactory
     actor_def
   end
 
-  
+  # returns the newly created Actor after it and its ActorView has been created.
   def build(actor, level, opts={})
     actor_def = cached_actor_def actor
 

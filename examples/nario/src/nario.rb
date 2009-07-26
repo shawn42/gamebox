@@ -1,7 +1,7 @@
 require 'actor'
 
 class Nario < Actor
-  has_behaviors :animated, :updatable, 
+  has_behaviors :updatable, 
     :physical => {
         :shape => :poly,
         :parts => [
@@ -12,7 +12,8 @@ class Nario < Actor
         :friction => 0.4,
         :moment => Float::Infinity,
         :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
-    :layered => {:layer => 2, :parallax => 1}
+    :layered => {:layer => 2, :parallax => 1},
+    :animated => {:frame_update_time=>120}
 
   # how long to apply the jump force for
   JUMP_TIME = 10
