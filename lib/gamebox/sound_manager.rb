@@ -1,3 +1,6 @@
+# SoundManager auto loads sounds/music from data/sounds and data/music. It makes them accessible via name.
+# The name is a symbol of the filename without extension. This means that foo.wav and foo.ogg in the sound
+# directory will generate indeterminent behavior.
 class SoundManager
   attr_accessor :sounds, :music
 
