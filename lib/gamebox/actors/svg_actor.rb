@@ -15,7 +15,6 @@ class SvgActor < Actor
     
     my_layer = @svg_doc.find_group_by_label(@name.to_s)
     build_from_vertices my_layer.path.vertices
-    hide unless my_layer.path.visible?
   end
   
   def build_from_vertices(vertices)

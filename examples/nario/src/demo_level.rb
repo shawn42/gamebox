@@ -16,7 +16,7 @@ class DemoLevel < PhysicalLevel
     dynamic_actors = create_actors_from_svg
 
     create_actor :svg_actor, :name => :ground, :svg_doc => @svg_doc
-    create_actor :svg_actor, :name => :death_zone, :svg_doc => @svg_doc
+    create_actor :svg_actor, :name => :death_zone, :svg_doc => @svg_doc, :hide => true
 
     @nario = dynamic_actors[:nario]
     viewport.follow @nario, [0,70], [200,100]
