@@ -66,8 +66,8 @@ class Physical < Behavior
     
     @shapes << @shape
 
-    if @opts[:parts]
-      for obj in @opts[:parts]
+    if @opts[:shapes]
+      for obj in @opts[:shapes]
         for part_name, part_def in obj
           # add another shape here
           part_shape_array = part_def[:verts].collect{|v| vec2(v[0],v[1])}

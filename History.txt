@@ -55,3 +55,5 @@
 * Bug fixes
   * added OpenGL option for screen (per jacius request)
 * reorganized code
+* changed :parts to :shapes in the physical behavior
+* merged in jacius' new event system
