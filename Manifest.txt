@@ -20,6 +20,7 @@ lib/gamebox/ai/two_d_grid_map.rb
 lib/gamebox/behavior.rb
 lib/gamebox/behaviors/animated.rb
 lib/gamebox/behaviors/graphical.rb
+lib/gamebox/behaviors/layered.rb
 lib/gamebox/behaviors/physical.rb
 lib/gamebox/behaviors/updatable.rb
 lib/gamebox/config_manager.rb
@@ -37,7 +38,6 @@ lib/gamebox/gamebox_application.rb
 lib/gamebox/gamebox_generator.rb
 lib/gamebox/generators/actor_generator.rb
 lib/gamebox/input_manager.rb
-lib/gamebox/layered.rb
 lib/gamebox/level.rb
 lib/gamebox/lib/aliasing.rb
 lib/gamebox/lib/inflections.rb
