@@ -1,9 +1,35 @@
-require 'level'
+require 'physical_level'
+require 'walls'
 
-class PlaygroundLevel < Level
+class PlaygroundLevel < PhysicalLevel
   def setup
     @stars = []
     20.times { @stars << Ftor.new(rand(viewport.width),rand(viewport.height)) }
+
+    @shooter = create_actor :box_shooter, :x => 30, :y => 700
+    wall = create_actor(:left_wall)
+    wall.shape.e = 1.0
+    wall.shape.u = 1.0
+
+    wall = create_actor(:right_wall)
+    wall.shape.e = 1.0
+    wall.shape.u = 1.0
+
+    wall = create_actor(:top_wall)
+    wall.shape.e = 1.0
+    wall.shape.u = 1.0
+
+    wall = create_actor(:bottom_wall)
+    wall.shape.e = 1.0
+    wall.shape.u = 1.0
+
+    space.gravity = vec2(0, 300)
+
+#    space.add_collision_func(:box, [:left_wall, :right_wall, :top_wall, :bottom_wall]) do |box, wall|
+#      puts "Box #{box.inspect} ran into wall #{wall.inspect}"
+#    end
+
+    space.elastic_iterations = 10
   end
 
   def draw(target, x_off, y_off)
