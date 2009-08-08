@@ -6,15 +6,25 @@ class BoxShooter < Actor
 
   def setup
     @last_shot = 4000
+
+    i = @input_manager
+    i.reg KeyPressed, :space do
+      spawn :clicky, :x => @mouse_x, :y => @mouse_y
+    end
+
+    i.reg MouseMotionEvent do |evt|
+      @mouse_x = evt.pos[0]
+      @mouse_y = evt.pos[1]
+    end
   end
 
   def update(delta)
-    if @last_shot > 500 
-      @last_shot = 0
-      shoot_box
-    end
-
-    @last_shot += delta
+#    if @last_shot > 500 
+#      @last_shot = 0
+#      shoot_box
+#    end
+#
+#    @last_shot += delta
   end
 
   def shoot_box

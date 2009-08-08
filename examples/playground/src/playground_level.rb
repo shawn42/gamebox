@@ -3,10 +3,9 @@ require 'walls'
 
 class PlaygroundLevel < PhysicalLevel
   def setup
-    @stars = []
-    20.times { @stars << Ftor.new(rand(viewport.width),rand(viewport.height)) }
-
+    i = @input_manager
     @shooter = create_actor :box_shooter, :x => 30, :y => 700
+
     wall = create_actor(:left_wall)
     wall.shape.e = 1.0
     wall.shape.u = 1.0
@@ -34,9 +33,6 @@ class PlaygroundLevel < PhysicalLevel
 
   def draw(target, x_off, y_off)
     target.fill [25,25,25,255]
-    for star in @stars
-      target.draw_circle_s([star.x,star.y],1,[255,255,255,255])
-    end
   end
 end
 
