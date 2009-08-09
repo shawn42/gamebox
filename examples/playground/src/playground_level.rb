@@ -6,21 +6,10 @@ class PlaygroundLevel < PhysicalLevel
     i = @input_manager
     @shooter = create_actor :box_shooter, :x => 30, :y => 700
 
-    wall = create_actor(:left_wall)
-    wall.shape.e = 1.0
-    wall.shape.u = 1.0
-
-    wall = create_actor(:right_wall)
-    wall.shape.e = 1.0
-    wall.shape.u = 1.0
-
-    wall = create_actor(:top_wall)
-    wall.shape.e = 1.0
-    wall.shape.u = 1.0
-
-    wall = create_actor(:bottom_wall)
-    wall.shape.e = 1.0
-    wall.shape.u = 1.0
+    create_actor(:left_wall)
+    create_actor(:right_wall)
+    create_actor(:top_wall)
+    create_actor(:bottom_wall)
 
     space.gravity = vec2(0, 300)
 

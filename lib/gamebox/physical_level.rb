@@ -21,7 +21,7 @@ class PhysicalLevel < Level
 
     @space = Space.new
     @space.iterations = 20
-    @space.elastic_iterations = 0
+    @space.elastic_iterations = 5
 
     setup
   end

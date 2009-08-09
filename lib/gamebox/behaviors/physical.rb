@@ -16,7 +16,7 @@ require 'publisher'
 #    :moment => Float::Infinity,
 #    :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]}
 class Physical < Behavior
-  attr_accessor :shapes, :body, :opts, :parts
+  attr_accessor :shapes, :body, :opts, :parts, :segments_groups
 
   def shape
     @shapes.first if @shapes
@@ -45,6 +45,10 @@ class Physical < Behavior
       moment_of_inertia ||= @opts[:fixed] ? Float::Infinity : moment_for_poly(@mass, shape_array, ZeroVec2)
       @body = Body.new(@mass, moment_of_inertia)
       @shape = Shape::Poly.new(@body, shape_array, ZeroVec2)
+      @segments_groups = []
+      verts = @opts[:verts]
+      verts << @opts[:verts][0]
+      @segments_groups << verts
     end
 
     collision_type = @opts[:collision_group]
@@ -76,6 +80,9 @@ class Physical < Behavior
           # TODO pass all physics params to parts (ie u and e)
           part_shape.u = friction
           @shapes << part_shape
+          verts = part_def[:verts]
+          verts << part_def[:verts][0]
+          @segments_groups << verts
         end
       end
     end
@@ -128,6 +135,9 @@ class Physical < Behavior
         define_method :warp do |new_p|
           physical_obj.body.p = new_p
           @level.space.rehash_static if physical_obj.opts[:fixed]
+        end
+        define_method :segment_groups do 
+          physical_obj.segments_groups
         end
         define_method :physical do 
           physical_obj
