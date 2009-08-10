@@ -33,6 +33,7 @@ class Clicky < Actor
     }}
   
   def setup
+    self.shape.e = 1.0
     i = @input_manager
 
     @following_mouse = false
@@ -54,7 +55,7 @@ class Clicky < Actor
     end
 
     i.reg MouseMotionEvent do |evt|
-      @velocity = vec2(evt.pos[0]-@last_mouse_x, evt.pos[1]-@last_mouse_y)
+      @velocity = vec2((evt.pos[0]-@last_mouse_x) * 1.2, (evt.pos[1]-@last_mouse_y) * 1.2)
       @last_mouse_x = evt.pos[0]
       @last_mouse_y = evt.pos[1]
     end
