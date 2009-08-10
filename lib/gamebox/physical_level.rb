@@ -87,4 +87,17 @@ class PhysicalLevel < Level
     end
   end
 
+  # Find any / all objects who's bounding box currently contains
+  # the passed in screen position. Requires a block as this sets
+  # a callback all the way down in Chipmunk and could be called
+  # later in the future.
+  #
+  # This block is called on each actor found
+  def pick(x, y, &block)
+    @space.shape_point_query(vec2(x, y)) do |found|
+      actor = @director.find_physical_obj(found)
+      block.call(actor)
+    end
+  end
+
 end

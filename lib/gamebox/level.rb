@@ -36,7 +36,15 @@ class Level
 
   def draw(target,x_off,y_off)
   end
-  
+
+  # Find any / all actors that are currently under the given
+  # screen position.
+  #
+  # Block is called with each found actor
+  def pick(x, y, &block)
+    raise "#pick not implemented on Level"
+  end
+
   # extract all the params from a node that are needed to construct an actor
   def create_actors_from_svg
     float_keys = ["x","y"]

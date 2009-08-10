@@ -22,13 +22,11 @@ class PlaygroundLevel < PhysicalLevel
       @mouse_y = evt.pos[1]
     end
 
-#    space.add_collision_func(:clicky, [:clicky]) do |box,wall|
-##                             , :left_wall, :right_wall, :top_wall, :bottom_wall]) do |box, wall|
-#      puts "Box #{box.inspect} ran into wall #{wall.inspect}"
-#      clicky = director.find_physical_obj box
-#      p clicky.body.p
-#      p clicky.body.v
-#    end
+    i.reg MouseDownEvent do |evt|
+      pick(evt.pos[0], evt.pos[1]) do |actor|
+        puts "Got actor #{actor}"
+      end
+    end
 
     space.elastic_iterations = 3
   end
