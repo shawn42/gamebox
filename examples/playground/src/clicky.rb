@@ -3,26 +3,24 @@ require 'actor_view'
 
 class ClickyView < ActorView
   def draw(target, x_off, y_off)
-    x_off = (@actor.x + x_off).floor
-    y_off = (@actor.y + y_off).floor
-    @actor.segment_groups.each do |seg_group|
-#      p seg_group
+    x_off = @actor.x + x_off
+    y_off = @actor.y + y_off
 
-      seg_group.each_cons(2) do |a,b|
-#        p "drawing #{a.inspect} -> #{b.inspect} "
-        target.draw_line [a[0]+x_off,a[1]+y_off], [b[0]+x_off,b[1]+y_off], [255,255,255,255]
+    if @image.nil?
+      @image = Surface.new [101,101], 0, SRCCOLORKEY
+      @image.set_colorkey [0,0,0]
+
+      @actor.segment_groups.each do |seg_group|
+        seg_group.each_cons(2) do |a,b|
+          @image.draw_line [50+a[0],50+a[1]], [50+b[0],50+b[1]], [255,255,255]
+        end
       end
-
-#      seg_group.each do |seg|
-#        p seg
-#        p1 = seg[0]
-#        p2 = seg[1]
-#        puts "p1: #{p1.inspect} p2: #{p2.inspect} xoff: #{x_off.inspect} yoff: #{y_off.inspect} "
-#        puts "#{p1[0]+x_off},#{p1[1]+y_off} to #{p2[0]+x_off},#{p2[1]+y_off}"
-#        target.draw_line [p1[0]+x_off,p1[1]+y_off], [p2[0]+x_off,p2[1]+y_off], [255,255,255,255]
-##        target.draw_line_s [p1[0]+x_off,p1[1]+y_off], [p2[0]+x_off,p2[1]+y_off], [25,255,25,255], 6
-#      end
     end
+    rot_deg = @actor.deg.round % 360
+    rot_image = rot_deg == 0 ? @image : @image.rotozoom(rot_deg,1,true) 
+    rot_image.set_colorkey [0,0,0]
+    w,h = rot_image.size
+    rot_image.blit target.screen, [x_off-(w/2).floor, y_off-(h/2).floor]
   end
 end
 
@@ -42,21 +40,21 @@ class Clicky < Actor
     @last_mouse_y = @y
 
     i.reg MouseDownEvent do |evt|
-      puts "Mouse down"
       mouse_x = evt.pos[0]
       mouse_y = evt.pos[1]
       bounds = self.shape.bb
 
-      puts "Bounds: #{bounds.inspect}. Event: #{evt.inspect}"
-
       if mouse_x >= bounds.l && mouse_x <= bounds.r &&
         mouse_y >= bounds.b && mouse_y <= bounds.t
-        puts "GOT YOU!"
+        @offset_x = mouse_x - self.x
+        @offset_y = mouse_y - self.y
+#        puts "mouse [#{mouse_x},#{mouse_y}] : clicky [#{@x},#{@y}]"
         @following_mouse = true
       end
     end
 
     i.reg MouseMotionEvent do |evt|
+      @velocity = vec2(evt.pos[0]-@last_mouse_x, evt.pos[1]-@last_mouse_y)
       @last_mouse_x = evt.pos[0]
       @last_mouse_y = evt.pos[1]
     end
@@ -68,8 +66,8 @@ class Clicky < Actor
 
   def update(delta)
     if @following_mouse
-      self.warp vec2(@last_mouse_x, @last_mouse_y)
-      self.body.v = ZeroVec2
+      self.warp vec2(@last_mouse_x-@offset_x, @last_mouse_y-@offset_y)
+      self.body.v = @velocity * delta
     end
   end
 end

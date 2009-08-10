@@ -28,6 +28,7 @@ class Physical < Behavior
     @mass ||= Float::Infinity
     @parts = {}
     @shapes = []
+    @segments_groups = []
 
     moment_of_inertia = @opts[:moment]
 
@@ -45,8 +46,7 @@ class Physical < Behavior
       moment_of_inertia ||= @opts[:fixed] ? Float::Infinity : moment_for_poly(@mass, shape_array, ZeroVec2)
       @body = Body.new(@mass, moment_of_inertia)
       @shape = Shape::Poly.new(@body, shape_array, ZeroVec2)
-      @segments_groups = []
-      verts = @opts[:verts]
+      verts = @opts[:verts].dup
       verts << @opts[:verts][0]
       @segments_groups << verts
     end
@@ -63,7 +63,7 @@ class Physical < Behavior
     start_x ||= @actor.x
     start_y ||= @actor.y
     @shape.body.p = vec2(start_x,start_y)
-    @shape.e = 0
+    @shape.e = 0.1
     friction = @opts[:friction]
     friction ||= 0.4
     @shape.u = friction
@@ -80,7 +80,7 @@ class Physical < Behavior
           # TODO pass all physics params to parts (ie u and e)
           part_shape.u = friction
           @shapes << part_shape
-          verts = part_def[:verts]
+          verts = part_def[:verts].dup
           verts << part_def[:verts][0]
           @segments_groups << verts
         end

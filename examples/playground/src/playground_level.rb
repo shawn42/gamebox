@@ -13,11 +13,15 @@ class PlaygroundLevel < PhysicalLevel
 
     space.gravity = vec2(0, 300)
 
-#    space.add_collision_func(:box, [:left_wall, :right_wall, :top_wall, :bottom_wall]) do |box, wall|
+#    space.add_collision_func(:clicky, [:clicky]) do |box,wall|
+##                             , :left_wall, :right_wall, :top_wall, :bottom_wall]) do |box, wall|
 #      puts "Box #{box.inspect} ran into wall #{wall.inspect}"
+#      clicky = director.find_physical_obj box
+#      p clicky.body.p
+#      p clicky.body.v
 #    end
 
-    space.elastic_iterations = 10
+    space.elastic_iterations = 1
   end
 
   def draw(target, x_off, y_off)

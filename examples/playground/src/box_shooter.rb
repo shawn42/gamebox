@@ -19,12 +19,12 @@ class BoxShooter < Actor
   end
 
   def update(delta)
-#    if @last_shot > 500 
-#      @last_shot = 0
-#      shoot_box
-#    end
-#
-#    @last_shot += delta
+    if @last_shot > 500 
+      @last_shot = 0
+      shoot_box
+    end
+
+    @last_shot += delta
   end
 
   def shoot_box

@@ -11,18 +11,11 @@ class Box < Actor
     }}
 
   def setup
-    puts "Setup, wtf?"
-    @ttl = 3000
+    @ttl = 30000
   end
 
   def update(delta)
-    @ttl ||= 30000
     @ttl -= delta
     remove_self if @ttl < 0
-  end
-
-  def setup
-    # register for events here
-    # or pull stuff out of @opts
   end
 end
