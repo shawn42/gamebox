@@ -66,7 +66,7 @@ class Physical < Behavior
 
     elasticity = @opts[:elasticity]
     elasticity ||= 0.1
-    @shape.u = elasticity
+    @shape.e = elasticity
 
     friction = @opts[:friction]
     friction ||= 0.4
