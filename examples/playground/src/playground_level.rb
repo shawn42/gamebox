@@ -6,6 +6,9 @@ class PlaygroundLevel < PhysicalLevel
     i = @input_manager
     @shooter = create_actor :box_shooter, :x => 30, :y => 700
 
+    @last_mouse_x = 200
+    @last_mouse_y = 200
+
     create_actor(:left_wall)
     create_actor(:right_wall)
     create_actor(:top_wall)
@@ -14,18 +17,29 @@ class PlaygroundLevel < PhysicalLevel
     space.gravity = vec2(0, 300)
 
     i.reg KeyPressed, :space do
-      create_actor :clicky, :x => @mouse_x, :y => @mouse_y
+      create_actor :clicky, :x => @last_mouse_x, :y => @last_mouse_y
     end
 
     i.reg MouseMotionEvent do |evt|
-      @mouse_x = evt.pos[0]
-      @mouse_y = evt.pos[1]
+      @velocity = vec2((evt.pos[0] - @last_mouse_x) * 1.2, (evt.pos[1] - @last_mouse_y) * 1.2)
+      @last_mouse_x = evt.pos[0]
+      @last_mouse_y = evt.pos[1]
     end
 
     i.reg MouseDownEvent do |evt|
       pick(evt.pos[0], evt.pos[1]) do |actor|
         puts "Got actor #{actor}"
+        @grabbed = actor
       end
+
+      if @grabbed
+        @offset_x = evt.pos[0] - @grabbed.x
+        @offset_y = evt.pos[1] - @grabbed.y
+      end
+    end
+
+    i.reg MouseUpEvent do |evt|
+      @grabbed = nil
     end
 
     space.elastic_iterations = 3
@@ -33,6 +47,15 @@ class PlaygroundLevel < PhysicalLevel
 
   def draw(target, x_off, y_off)
     target.fill [25,25,25,255]
+  end
+
+  def update(delta)
+    if @grabbed
+      @grabbed.warp vec2(@last_mouse_x - @offset_x, @last_mouse_y - @offset_y)
+      @grabbed.body.v = @velocity * delta
+    end
+
+    super
   end
 end
 
