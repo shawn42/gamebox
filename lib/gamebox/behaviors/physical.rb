@@ -63,7 +63,11 @@ class Physical < Behavior
     start_x ||= @actor.x
     start_y ||= @actor.y
     @shape.body.p = vec2(start_x,start_y)
-    @shape.e = 0.1
+
+    elasticity = @opts[:elasticity]
+    elasticity ||= 0.1
+    @shape.u = elasticity
+
     friction = @opts[:friction]
     friction ||= 0.4
     @shape.u = friction
