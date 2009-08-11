@@ -21,7 +21,7 @@ class RockBit < Actor
     @ttl -= time
     remove_self if @ttl < 0
     physical.body.w += time*@turn_speed
-    physical.body.apply_impulse(@dir*time*@speed, ZeroVec2) if physical.body.v.length < 400
+    physical.body.apply_impulse(@dir*time*@speed, ZERO_VEC_2) if physical.body.v.length < 400
   end
 
 end

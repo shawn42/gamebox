@@ -19,7 +19,7 @@ class Ship < Actor
 
   can_fire :shoot
 
-  has_behaviors :animated, :updatable, :physical => {:shape => :circle, 
+  has_behavior :animated, :updatable, :physical => {:shape => :circle, 
     :mass => 100,
     :friction => 1.7,
     :radius => 10}
@@ -81,7 +81,7 @@ class Ship < Actor
   def enforce_limits(time)
     physical.body.w -= 30 if physical.body.w > 2.5
     if physical.body.v.length > @max_speed
-      physical.body.apply_impulse(-physical.body.v*time, ZeroVec2) 
+      physical.body.apply_impulse(-physical.body.v*time, ZERO_VEC_2) 
     end
   end
 
@@ -110,7 +110,7 @@ class Ship < Actor
 #    p move_vec
 #    p physical.body.v
 #    if (move_vec + physical.body.v).length < @max_speed
-      physical.body.apply_impulse(move_vec, ZeroVec2) 
+      physical.body.apply_impulse(move_vec, ZERO_VEC_2) 
 
 #    end
   end

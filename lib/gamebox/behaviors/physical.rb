@@ -13,7 +13,7 @@ require 'publisher'
 #      ],
 #    :mass => 200,
 #    :friction => 0.4,
-#    :moment => Float::Infinity,
+#    :moment => Float::INFINITY,
 #    :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]}
 class Physical < Behavior
   attr_accessor :shapes, :body, :opts, :parts, :segments_groups
@@ -25,7 +25,7 @@ class Physical < Behavior
   def setup
     # TODO add defaults?
     @mass = @opts[:mass]
-    @mass ||= Float::Infinity
+    @mass ||= Float::INFINITY
     @parts = {}
     @shapes = []
     @segments_groups = []
@@ -36,16 +36,16 @@ class Physical < Behavior
     when :circle
       @radius = @opts[:radius]
 
-      moment_of_inertia ||= @opts[:fixed] ? Float::Infinity : moment_for_circle(@mass, @radius, 0, ZeroVec2)
+      moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_circle(@mass, @radius, 0, ZERO_VEC_2)
       @body = Body.new(@mass, moment_of_inertia)
-      @shape = Shape::Circle.new(@body, @radius, ZeroVec2)
+      @shape = Shape::Circle.new(@body, @radius, ZERO_VEC_2)
 
     when :poly
       shape_array = @opts[:verts].collect{|v| vec2(v[0],v[1])}
 
-      moment_of_inertia ||= @opts[:fixed] ? Float::Infinity : moment_for_poly(@mass, shape_array, ZeroVec2)
+      moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_poly(@mass, shape_array, ZERO_VEC_2)
       @body = Body.new(@mass, moment_of_inertia)
-      @shape = Shape::Poly.new(@body, shape_array, ZeroVec2)
+      @shape = Shape::Poly.new(@body, shape_array, ZERO_VEC_2)
       verts = @opts[:verts].dup
       verts << @opts[:verts][0]
       @segments_groups << verts

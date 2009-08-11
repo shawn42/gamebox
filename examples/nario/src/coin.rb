@@ -23,7 +23,7 @@ class Coin < Actor
   
   def die(ttl=0)
     @ttl = ttl
-    body.apply_impulse(vec2(0,-400), ZeroVec2)
+    body.apply_impulse(vec2(0,-400), ZERO_VEC_2)
   end
   
   def dying?;@ttl;end

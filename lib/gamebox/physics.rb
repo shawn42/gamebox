@@ -2,7 +2,7 @@ require 'chipmunk'
 
 require 'numbers_ext'
 include CP
-ZeroVec2 = vec2(0,0)
+ZERO_VEC_2 = vec2(0,0)
 
 class Space
   alias :add_collision_func_old :add_collision_func

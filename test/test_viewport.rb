@@ -47,12 +47,12 @@ describe 'A new viewport' do
     @viewport.y_offset(2).should equal(-150)
   end
 
-  it 'should return a zero offset on Infinity' do
+  it 'should return a zero offset on INFINITY' do
     @viewport.x_offset = -200
     @viewport.y_offset = -300
     
-    @viewport.x_offset(Float::Infinity).should equal(0)
-    @viewport.y_offset(Float::Infinity).should equal(0)
+    @viewport.x_offset(Float::INFINITY).should equal(0)
+    @viewport.y_offset(Float::INFINITY).should equal(0)
   end
   
   it 'shouldn\'t update anything unless following a target' do

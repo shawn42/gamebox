@@ -11,6 +11,7 @@ lib/gamebox.rb
 lib/gamebox/actor.rb
 lib/gamebox/actor_factory.rb
 lib/gamebox/actor_view.rb
+lib/gamebox/actors/logo.rb
 lib/gamebox/actors/score.rb
 lib/gamebox/actors/svg_actor.rb
 lib/gamebox/ai/line_of_site.rb
@@ -49,7 +50,6 @@ lib/gamebox/lib/platform.rb
 lib/gamebox/lib/publisher_ext.rb
 lib/gamebox/lib/sorted_list.rb
 lib/gamebox/lib/surface_ext.rb
-lib/gamebox/logo.rb
 lib/gamebox/mode.rb
 lib/gamebox/mode_manager.rb
 lib/gamebox/physical_director.rb

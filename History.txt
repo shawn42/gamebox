@@ -57,3 +57,4 @@
 * reorganized code
 * changed :parts to :shapes in the physical behavior
 * merged in jacius' new event system
+* new physics playground example

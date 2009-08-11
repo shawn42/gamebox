@@ -8,12 +8,19 @@ class Nario < Actor
           :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
           :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}
           ],
-        :bodies => [
-          
+        :bodies => [ # TODO make physical read multiple bodies
+          :shape => :poly,
+          :shapes => [
+            :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
+            :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}
+            ],
+          :mass => 150,
+          :friction => 0.4,
+          :moment => Float::INFINITY,
+          :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
         ],
         :mass => 150,
         :friction => 0.4,
-        :moment => Float::Infinity,
         :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
     :layered => {:layer => 2, :parallax => 1},
     :animated => {:frame_update_time=>120}
@@ -97,19 +104,19 @@ class Nario < Actor
     @jump_timer -= time
     @jump_timer = 0 if @jump_timer < 0
 
-    nario_body.apply_impulse(vec2(0,-@jump_speed)*time, ZeroVec2) if physical.body.v.length < @max_speed
+    nario_body.apply_impulse(vec2(0,-@jump_speed)*time, ZERO_VEC_2) if physical.body.v.length < @max_speed
   end
 
   def move_right(time)
     @facing_dir = :right
     force = grounded? ? @right_vec*2 : @right_vec
-    nario_body.apply_impulse(force*time, ZeroVec2) if physical.body.v.length < @max_speed
+    nario_body.apply_impulse(force*time, ZERO_VEC_2) if physical.body.v.length < @max_speed
   end
 
   def move_left(time)
     @facing_dir = :left
     force = grounded? ? @left_vec*2 : @left_vec
-    nario_body.apply_impulse(force*time, ZeroVec2) if physical.body.v.length < @max_speed
+    nario_body.apply_impulse(force*time, ZERO_VEC_2) if physical.body.v.length < @max_speed
   end
   
   def debug

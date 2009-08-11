@@ -16,7 +16,7 @@ class Rock < Actor
     physical.body.w += time*@turn_speed
     move_vec = @dir*time*@speed
 #    if (move_vec + physical.body.v).length < 400
-      physical.body.apply_impulse(move_vec, ZeroVec2) 
+      physical.body.apply_impulse(move_vec, ZERO_VEC_2) 
 #    end
     super time
   end

@@ -6,7 +6,7 @@ class Goomba < Actor
         :shape => :poly,
         :mass => 200,
         :friction => 0.8,
-        :moment => Float::Infinity,
+        :moment => Float::INFINITY,
         :verts => [[-17,-16],[-17,14],[17,14],[17,-16]]},
     :layered => {:layer => 2, :parallax => 1}
 
@@ -51,11 +51,11 @@ class Goomba < Actor
   end
 
   def move_right(time)
-    goomba_body.apply_impulse(@right_vec*time, ZeroVec2) if physical.body.v.length < @max_speed
+    goomba_body.apply_impulse(@right_vec*time, ZERO_VEC_2) if physical.body.v.length < @max_speed
   end
 
   def move_left(time)
-    goomba_body.apply_impulse(@left_vec*time, ZeroVec2) if physical.body.v.length < @max_speed
+    goomba_body.apply_impulse(@left_vec*time, ZERO_VEC_2) if physical.body.v.length < @max_speed
   end
   
   def debug

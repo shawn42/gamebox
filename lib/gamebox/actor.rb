@@ -141,5 +141,8 @@ class Actor
       end
       @behaviors
     end
+    define_method( :has_behavior ) do |*args|
+      has_behaviors *args
+    end
   end
 end

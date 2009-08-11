@@ -42,7 +42,7 @@ class SvgDocument
       if transform and transform =~ /translate\(\s*(.+?)\s*,\s*(.+?\)\s*)/
         vec2($1.to_f, ty = $2.to_f)
       else
-        ZeroVec2
+        ZERO_VEC_2
       end
     end
   end

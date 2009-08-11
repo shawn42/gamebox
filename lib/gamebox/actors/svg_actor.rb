@@ -19,7 +19,7 @@ class SvgActor < Actor
   
   def build_from_vertices(vertices)
     
-    moment_of_inertia,mass = Float::Infinity,Float::Infinity
+    moment_of_inertia,mass = Float::INFINITY,Float::INFINITY
     terrain_body = CP::Body.new(mass,moment_of_inertia)
     elasticity = 0
     friction = 0.7
