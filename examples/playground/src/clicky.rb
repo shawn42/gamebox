@@ -34,41 +34,5 @@ class Clicky < Actor
   
   def setup
     self.shape.e = 1.0
-    i = @input_manager
-
-    @following_mouse = false
-    @last_mouse_x = @x
-    @last_mouse_y = @y
-
-    i.reg MouseDownEvent do |evt|
-      mouse_x = evt.pos[0]
-      mouse_y = evt.pos[1]
-      bounds = self.shape.bb
-
-      if mouse_x >= bounds.l && mouse_x <= bounds.r &&
-        mouse_y >= bounds.b && mouse_y <= bounds.t
-        @offset_x = mouse_x - self.x
-        @offset_y = mouse_y - self.y
-#        puts "mouse [#{mouse_x},#{mouse_y}] : clicky [#{@x},#{@y}]"
-        @following_mouse = true
-      end
-    end
-
-    i.reg MouseMotionEvent do |evt|
-      @velocity = vec2((evt.pos[0]-@last_mouse_x) * 1.2, (evt.pos[1]-@last_mouse_y) * 1.2)
-      @last_mouse_x = evt.pos[0]
-      @last_mouse_y = evt.pos[1]
-    end
-
-    i.reg MouseUpEvent do |evt|
-      @following_mouse = false
-    end
-  end
-
-  def update(delta)
-    if @following_mouse
-      self.warp vec2(@last_mouse_x-@offset_x, @last_mouse_y-@offset_y)
-      self.body.v = @velocity * delta
-    end
   end
 end

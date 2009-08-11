@@ -6,7 +6,7 @@ class Box < Actor
   has_behaviors :updatable, 
     :graphical,
     {:physical => {
-      :shape => :poly, :verts => [ [-10,-10], [-10,10], [10,10], [10,-10] ],
+      :shape => :poly, :verts => [ [-15,-15], [-15,15], [15,15], [15,-15] ],
       :mass => 1
     }}
 
