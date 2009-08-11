@@ -29,10 +29,8 @@ class Clicky < Actor
   has_behaviors :updatable, 
     {:physical => {
       :shape => :poly, :verts => [ [-50,-50], [-50,50], [50,50], [50,-50] ],
-      :mass => 1
+      :mass => 1,
+      :elasticity => 1.0
     }}
-  
-  def setup
-    self.shape.e = 1.0
-  end
+
 end

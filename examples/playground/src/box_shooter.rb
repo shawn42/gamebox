@@ -20,8 +20,6 @@ class BoxShooter < Actor
   def shoot_box
     box = spawn :box, :x => @x, :y => @y
     box.body.apply_impulse vec2(500, -700), ZERO_VEC_2
-    box.shape.e = 1.0
-    box.shape.u = 0.0
   end
 
 end
