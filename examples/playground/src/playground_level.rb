@@ -33,13 +33,21 @@ class PlaygroundLevel < PhysicalLevel
       end
 
       if @grabbed
+        # add Pin constraint
+        # TODO should this move to Actor#pin or something?
+
         @offset_x = evt.pos[0] - @grabbed.x
         @offset_y = evt.pos[1] - @grabbed.y
+        
+        @mouse_body = Body.new Float::INFINITY, Float::INFINITY
+        @pin = Constraint::PivotJoint.new(@mouse_body, @grabbed.body, vec2(0,0), vec2(@offset_x,-@offset_y))
+        register_physical_constraint @pin
       end
     end
 
     i.reg MouseUpEvent do |evt|
       @grabbed = nil
+      unregister_physical_constraint @pin if @pin
     end
 
     space.elastic_iterations = 3
@@ -51,8 +59,10 @@ class PlaygroundLevel < PhysicalLevel
 
   def update(delta)
     if @grabbed
-      @grabbed.warp vec2(@last_mouse_x - @offset_x, @last_mouse_y - @offset_y)
-      @grabbed.body.v = @velocity * delta
+#      @grabbed.warp vec2(@last_mouse_x - @offset_x, @last_mouse_y - @offset_y)
+#      @grabbed.body.v = @velocity * delta
+      @mouse_body.p = vec2(@last_mouse_x - @offset_x, @last_mouse_y - @offset_y)
+      @mouse_body.v = @velocity * delta
     end
 
     super
