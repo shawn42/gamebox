@@ -36,10 +36,12 @@ class ResourceManager
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
       begin
-        cached_img = Rubygame::Surface.load(File.expand_path(GFX_PATH + file_name))
+        #cached_img = Rubygame::Surface.load(File.expand_path(GFX_PATH + file_name))
+        cached_img = Rubygame::Surface.load(GFX_PATH + file_name)
       rescue Exception => ex
         #check global gamebox location
-        cached_img = Rubygame::Surface.load(File.expand_path(GAMEBOX_GFX_PATH + file_name))
+        #cached_img = Rubygame::Surface.load(File.expand_path(GAMEBOX_GFX_PATH + file_name))
+        cached_img = Rubygame::Surface.load(GAMEBOX_GFX_PATH + file_name)
       end
       @loaded_images[file_name] = cached_img
     end
@@ -73,12 +75,14 @@ class ResourceManager
         TTF.setup
         @ttf_loaded = true
       end
-      full_name = File.expand_path(FONTS_PATH + name)
+      #full_name = File.expand_path(FONTS_PATH + name)
+      full_name = FONTS_PATH + name
       begin
         font = TTF.new(full_name, size)
         @loaded_fonts[name][size] = font
       rescue Exception => ex
-        full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
+        #full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
+        full_name = GAMEBOX_FONTS_PATH + name
         font = TTF.new(full_name, size)
         @loaded_fonts[name][size] = font
       end
@@ -113,7 +117,8 @@ class ResourceManager
     # TODO create LEVEL_PATH in environment
     cached_svg = @loaded_svgs[file_name]
     if cached_svg.nil?
-      cached_svg = SvgDocument.new(File.open(File.expand_path(DATA_PATH + "levels/" + file_name + ".svg")))
+      #cached_svg = SvgDocument.new(File.open(File.expand_path(DATA_PATH + "levels/" + file_name + ".svg")))
+      cached_svg = SvgDocument.new(File.open(DATA_PATH + "levels/" + file_name + ".svg"))
       @loaded_svgs[file_name] = cached_svg
     end
     cached_svg

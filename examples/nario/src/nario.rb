@@ -1,5 +1,17 @@
 require 'actor'
-
+=begin
+:bodies => [ # TODO make physical read multiple bodies
+  :shape => :poly,
+  :shapes => [
+    :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
+    :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}
+    ],
+  :mass => 150,
+  :friction => 0.4,
+  :moment => Float::INFINITY,
+  :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
+],
+=end
 class Nario < Actor
   has_behaviors :updatable, 
     :physical => {
@@ -8,17 +20,6 @@ class Nario < Actor
           :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
           :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}
           ],
-        :bodies => [ # TODO make physical read multiple bodies
-          :shape => :poly,
-          :shapes => [
-            :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
-            :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}
-            ],
-          :mass => 150,
-          :friction => 0.4,
-          :moment => Float::INFINITY,
-          :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
-        ],
         :mass => 150,
         :friction => 0.4,
         :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
