@@ -46,7 +46,7 @@ class ResourceManager
 
     action_imgs = []
     w,h = *tileset.size
-    tileset.set_colorkey(tileset.get_at(0,0))
+    color = tileset.get_at 0, 0
 
     if h > w
       # down
@@ -55,7 +55,10 @@ class ResourceManager
       clip_to = Rubygame::Rect.new(0, 0, w, w)
       num_frames.times do
         surface = Rubygame::Surface.new(clip_to.size)
+        surface.fill color
         tileset.blit surface, clip_to, clip_from
+        surface.set_colorkey color
+        surface = surface.to_display_alpha
         action_imgs << surface
         clip_from.y += w
       end
@@ -66,7 +69,10 @@ class ResourceManager
       clip_to = Rubygame::Rect.new(0, 0, h, h)
       num_frames.times do
         surface = Rubygame::Surface.new(clip_to.size)
+        surface.fill color
         tileset.blit surface, clip_to, clip_from
+        surface.set_colorkey color
+        surface = surface.to_display_alpha
         action_imgs << surface
         clip_from.x += h
       end
