@@ -46,16 +46,16 @@ class ResourceManager
 
     action_imgs = []
     w,h = *tileset.size
+    tileset.set_colorkey(tileset.get_at(0,0))
 
     if h > w
       # down
       num_frames = h/w
       clip_from = Rubygame::Rect.new(0, 0, w, w)
-      clip_to = Rubygame::Rect.new(0, 0, w, w)      
+      clip_to = Rubygame::Rect.new(0, 0, w, w)
       num_frames.times do
         surface = Rubygame::Surface.new(clip_to.size)
         tileset.blit surface, clip_to, clip_from
-        surface.set_colorkey(surface.get_at(0,0))
         action_imgs << surface
         clip_from.y += w
       end
@@ -63,17 +63,16 @@ class ResourceManager
       # right
       num_frames = w/h
       clip_from = Rubygame::Rect.new(0, 0, h, h)
-      clip_to = Rubygame::Rect.new(0, 0, h, h)      
+      clip_to = Rubygame::Rect.new(0, 0, h, h)
       num_frames.times do
         surface = Rubygame::Surface.new(clip_to.size)
         tileset.blit surface, clip_to, clip_from
-        surface.set_colorkey(surface.get_at(0,0))
         action_imgs << surface
         clip_from.x += h
       end
     end
 
-    action_imgs 
+    action_imgs
   end
 
   def load_frame_set(actor, action)
@@ -83,7 +82,7 @@ class ResourceManager
     action_imgs = []
 
     frames = frames.sort_by {|f| File.basename(f).to_i }
-    
+
     for frame in frames
       rel_path = frame.slice(GFX_PATH.size,frame.size)
       action_imgs << load_image(rel_path)
@@ -171,7 +170,7 @@ class ResourceManager
       f.write settings.to_yaml
     end
   end
-  
+
   def load_svg(file_name)
     # TODO create LEVEL_PATH in environment
     cached_svg = @loaded_svgs[file_name]
@@ -182,5 +181,5 @@ class ResourceManager
     end
     cached_svg
   end
-  
+
 end
