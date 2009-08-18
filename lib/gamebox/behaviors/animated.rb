@@ -81,4 +81,5 @@ class Animated < Behavior
   def stop_animating
     @animating = false
   end
+
 end

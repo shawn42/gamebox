@@ -18,6 +18,65 @@ class ResourceManager
   end
 
   def load_animation_set(actor, action)
+    actor_dir = Inflector.underscore(actor.class)
+    using_tileset = File.exist?("#{GFX_PATH}#{actor_dir}/#{action}.png")
+    if using_tileset
+      load_tile_set(actor, action)
+    else
+      load_frame_set(actor, action)
+    end
+  end
+
+  #
+  #         --------------- image from @path --------------
+  # :right | [frame#1][frame#2][frame#3][frame#4][frame#5]|
+  #         -----------------------------------------------
+  #
+  # :down  ---image----
+  #       | [frame#1] |
+  #       | [frame#2] |
+  #       | [frame#3] |
+  #       | [frame#4] |
+  #       | [frame#5] |
+  #       -------------
+  #
+  def load_tile_set(actor, action)
+    actor_dir = Inflector.underscore(actor.class)
+    tileset = load_image "#{actor_dir}/#{action}.png"
+
+    action_imgs = []
+    w,h = *tileset.size
+
+    if h > w
+      # down
+      num_frames = h/w
+      clip_from = Rubygame::Rect.new(0, 0, w, w)
+      clip_to = Rubygame::Rect.new(0, 0, w, w)      
+      num_frames.times do
+        surface = Rubygame::Surface.new(clip_to.size)
+        tileset.blit surface, clip_to, clip_from
+        surface.set_colorkey(surface.get_at(0,0))
+        action_imgs << surface
+        clip_from.y += w
+      end
+    else
+      # right
+      num_frames = w/h
+      clip_from = Rubygame::Rect.new(0, 0, h, h)
+      clip_to = Rubygame::Rect.new(0, 0, h, h)      
+      num_frames.times do
+        surface = Rubygame::Surface.new(clip_to.size)
+        tileset.blit surface, clip_to, clip_from
+        surface.set_colorkey(surface.get_at(0,0))
+        action_imgs << surface
+        clip_from.x += h
+      end
+    end
+
+    action_imgs 
+  end
+
+  def load_frame_set(actor, action)
     # use pngs only for now
     actor_dir = Inflector.underscore(actor.class)
     frames = Dir.glob("#{GFX_PATH}#{actor_dir}/#{action}/*.png")

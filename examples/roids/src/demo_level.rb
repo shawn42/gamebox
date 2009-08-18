@@ -6,8 +6,13 @@ class DemoLevel < PhysicalLevel
   def setup
     @sound_manager.play_music :roids
 
+    space.elastic_iterations = 4
+
     @ship = create_actor :ship, :x => 300, :y => 300
 
+    input_manager.reg KeyDownEvent, K_S do |evt|
+      @ship.action = :exploding
+    end
     @score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600
 
@@ -46,16 +51,16 @@ class DemoLevel < PhysicalLevel
 
     # setup rock torusness
     space.add_collision_func(:rock, :left_wall) do |rock, wall|
-      rock.body.p = vec2(@width-rock.bb.r-rock.bb.l,rock.body.p.y)
+      rock.body.p = vec2(@width-rock.bb.r-rock.bb.l-10,rock.body.p.y)
     end
     space.add_collision_func(:rock, :right_wall) do |rock, wall|
-      rock.body.p = vec2(rock.bb.r-rock.bb.l,rock.body.p.y)
+      rock.body.p = vec2(rock.bb.r-rock.bb.l-10,rock.body.p.y)
     end
     space.add_collision_func(:rock, :top_wall) do |rock, wall|
-      rock.body.p = vec2(rock.body.p.x,@height-rock.bb.b-rock.bb.t)
+      rock.body.p = vec2(rock.body.p.x,@height-rock.bb.b-rock.bb.t-10)
     end
     space.add_collision_func(:rock, :bottom_wall) do |rock, wall|
-      rock.body.p = vec2(rock.body.p.x,rock.bb.t-rock.bb.b)
+      rock.body.p = vec2(rock.body.p.x,rock.bb.t-rock.bb.b-10)
     end
 
     # ship rock collision
@@ -101,6 +106,11 @@ class DemoLevel < PhysicalLevel
   end
 
   def update(time)
+    # todo move this
+    unless @faded_in
+      fire :fade_in, 2000
+      @faded_in = true
+    end
     update_physics time
     director.update time
 

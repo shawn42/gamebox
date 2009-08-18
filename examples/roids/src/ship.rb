@@ -22,6 +22,7 @@ class Ship < Actor
   has_behavior :animated, :updatable, :physical => {:shape => :circle, 
     :mass => 100,
     :friction => 1.7,
+    :elasticity => 0.4,
     :radius => 10}
   attr_accessor :moving_forward, :moving_back,
     :moving_left, :moving_right

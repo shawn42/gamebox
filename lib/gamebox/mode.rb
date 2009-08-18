@@ -81,6 +81,13 @@ class Mode
       end
     end
 
+    level.when :fade_in do |dur|
+      fire :fade_in, dur
+    end
+    level.when :fade_out do |dur|
+      fire :fade_out, dur
+    end
+
     level
   end
 

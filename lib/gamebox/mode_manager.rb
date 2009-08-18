@@ -1,12 +1,19 @@
 require 'inflector'
 require 'mode'
+require 'publisher'
 class ModeManager
+  extend Publisher
+  can_fire :faded_in, :faded_out
 
   constructor :resource_manager, :actor_factory, :input_manager,
     :sound_manager, :config_manager
 
   def setup
     @modes = {}
+    @fade_counter = 2000
+    @fade_out_ttl = 0
+    @fade_in_ttl = 0
+
     @actor_factory.mode_manager = self
     modes = @resource_manager.load_config('mode_level_config')[:modes]
 
@@ -31,9 +38,23 @@ class ModeManager
         mode_instance.when :prev_mode do
           prev_mode
         end
+        mode_instance.when :fade_out do |dur|
+          fade_out dur
+        end
+        mode_instance.when :fade_in do |dur|
+          fade_in dur
+        end
         add_mode mode, mode_instance
       end
     end
+  end
+
+  def fade_out(duration)
+    @fade_out_ttl = duration
+  end
+
+  def fade_in(duration)
+    @fade_in_ttl = duration
   end
 
   def next_mode
@@ -61,7 +82,10 @@ class ModeManager
   end
 
   def change_mode_to(mode, *args)
-    @modes[@mode].stop unless @modes[@mode].nil?
+    @prev_mode = @modes[@mode]
+    unless @prev_mode.nil?
+      @prev_mode.stop 
+    end
     @mode = mode
     @modes[@mode].start *args
   end
@@ -71,10 +95,34 @@ class ModeManager
   end
 
   def update(time)
+    if @fade_out_ttl > 0
+#      was_fading_out = true
+      @fade_out_ttl -= time
+    elsif @fade_in_ttl > 0
+      @fade_in_ttl -= time
+    end
+#    if @fade_out_ttl < 0 && was_fading_out
+#      @fade_in_ttl = @fade_counter 
+#    end
     @modes[@mode].update time unless @modes[@mode].nil?
   end
 
   def draw(target)
-    @modes[@mode].draw target unless @modes[@mode].nil?
+    if @fade_out_ttl > 0
+      if @prev_mode.nil?
+        @fade_out_ttl = 0
+      else
+        @prev_mode.draw target 
+      end
+      alpha = (1-@fade_out_ttl/@fade_counter.to_f) * 255
+      target.draw_box_s [0,0], target.screen.size, [0,0,0,alpha]
+    else
+      @modes[@mode].draw target unless @modes[@mode].nil?
+    end
+
+    if @fade_in_ttl > 0
+      alpha = @fade_in_ttl/@fade_counter.to_f * 255
+      target.draw_box_s [0,0], target.screen.size, [0,0,0,alpha]
+    end
   end
 end
