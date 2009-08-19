@@ -22,14 +22,14 @@ describe 'A new animated behavior' do
   it 'shouldn\'t update frame for non-animating' do
     @animated.stop_animating
 
-    @animated.update Animated::FRAME_UPDATE_TIME+1
+    @animated.update @animated.frame_update_time+1
 
     @animated.frame_time.should equal(0)
     @animated.frame_num.should equal(0)
   end
 
   it 'should update frame for animating' do
-    time_passed = Animated::FRAME_UPDATE_TIME-1
+    time_passed = @animated.frame_update_time-1
     @animated.update time_passed
     @animated.frame_time.should equal(time_passed)
     @animated.frame_num.should equal(0)
@@ -40,7 +40,7 @@ describe 'A new animated behavior' do
     @animated.frame_time.should equal(1)
     @animated.frame_num.should equal(1)
 
-    time_passed_again = Animated::FRAME_UPDATE_TIME
+    time_passed_again = @animated.frame_update_time
     @animated.update time_passed_again
     # we rolled over the time
     @animated.frame_time.should equal(1)
