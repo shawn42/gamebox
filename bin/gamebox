@@ -42,7 +42,7 @@ PROJECT_NAME = ARGV[0]
 TARGET_DIR = File.expand_path(Dir.pwd + "/" + PROJECT_NAME)
 SOURCE_DIR = File.expand_path(File.dirname(__FILE__) + "/../lib/gamebox/templates")
 
-Dir.mkdir(TARGET_DIR)
+Dir.mkdir(TARGET_DIR) unless File.exist?(TARGET_DIR) && File.directory?(TARGET_DIR)
 
 # Generate the directory structure for the new application
 # Gems does not pull in empty directories so template_app only
