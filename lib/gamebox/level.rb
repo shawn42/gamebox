@@ -26,9 +26,16 @@ class Level
   def setup
   end
 
+  def start
+  end
+
+  def faded_out;end
+  def faded_in;end
+
   def create_actor(type, args={})
     @actor_factory.build type, self, args
   end
+  alias :spawn :create_actor 
 
   def update(time)
     @director.update time

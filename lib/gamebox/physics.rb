@@ -1,6 +1,6 @@
 require 'chipmunk'
 
-require 'numbers_ext'
+#require 'numbers_ext'
 include CP
 ZERO_VEC_2 = vec2(0,0)
 

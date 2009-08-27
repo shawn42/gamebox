@@ -72,6 +72,7 @@ class DemoLevel < PhysicalLevel
         if shippy.alive?
           explosion = create_actor :particle_system, :x => shippy.x, :y => shippy.y
           explosion.when :remove_me do
+            fire :fade_out, 1000
             fire :prev_level
           end
           shippy.remove_self 
@@ -105,12 +106,20 @@ class DemoLevel < PhysicalLevel
     20.times { @stars << vec2(rand(@width),rand(@height)) }
   end
 
+  def start
+    fire :fade_in, 1000
+  end
+
+  def faded_in
+    @running = true
+  end
+
+  def running?
+    @running
+  end
+
   def update(time)
-    # todo move this
-    unless @faded_in
-      fire :fade_in, 2000
-      @faded_in = true
-    end
+    return unless running?
     update_physics time
     director.update time
 

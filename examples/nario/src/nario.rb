@@ -1,3 +1,4 @@
+require 'numbers_ext'
 require 'actor'
 =begin
 :bodies => [ # TODO make physical read multiple bodies
@@ -16,6 +17,7 @@ class Nario < Actor
   has_behaviors :updatable, 
     :physical => {
         :shape => :poly,
+        :moment => Float::INFINITY,
         :shapes => [
           :nario_feet => {:verts => [[-13,20],[-13,21],[13,21],[13,20]],:shape=>:poly, :offset => vec2(0,6)},
           :nario_hat => {:verts => [[-8,20],[-8,21],[8,21],[8,20]],:shape=>:poly, :offset => vec2(0,-46)}

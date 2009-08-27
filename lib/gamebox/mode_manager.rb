@@ -1,9 +1,6 @@
 require 'inflector'
 require 'mode'
-require 'publisher'
 class ModeManager
-  extend Publisher
-  can_fire :faded_in, :faded_out
 
   constructor :resource_manager, :actor_factory, :input_manager,
     :sound_manager, :config_manager
@@ -94,16 +91,18 @@ class ModeManager
     @modes[@mode]
   end
 
-  def update(time)
+  def update_fades(time)
     if @fade_out_ttl > 0
-#      was_fading_out = true
       @fade_out_ttl -= time
+      @modes[@mode].faded_out if @fade_out_ttl < 0 
     elsif @fade_in_ttl > 0
       @fade_in_ttl -= time
+      @modes[@mode].faded_in if @fade_in_ttl < 0 
     end
-#    if @fade_out_ttl < 0 && was_fading_out
-#      @fade_in_ttl = @fade_counter 
-#    end
+  end
+
+  def update(time)
+    update_fades time
     @modes[@mode].update time unless @modes[@mode].nil?
   end
 
@@ -111,8 +110,6 @@ class ModeManager
     if @fade_out_ttl > 0
       if @prev_mode.nil?
         @fade_out_ttl = 0
-      else
-        @prev_mode.draw target 
       end
       alpha = (1-@fade_out_ttl/@fade_counter.to_f) * 255
       target.draw_box_s [0,0], target.screen.size, [0,0,0,alpha]

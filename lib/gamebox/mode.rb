@@ -88,7 +88,16 @@ class Mode
       fire :fade_out, dur
     end
 
+    level.start
     level
+  end
+
+  def faded_in
+    @level.faded_in if @level
+  end
+
+  def faded_out
+    @level.faded_out if @level
   end
 
   def update(time)
