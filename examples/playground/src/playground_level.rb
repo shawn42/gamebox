@@ -40,7 +40,11 @@ class PlaygroundLevel < PhysicalLevel
         @offset_y = evt.pos[1] - @grabbed.y
         
         @mouse_body = Body.new Float::INFINITY, Float::INFINITY
-        @pin = Constraint::PivotJoint.new(@mouse_body, @grabbed.body, vec2(0,0), vec2(@offset_x,-@offset_y))
+        #@pin = Constraint::PivotJoint.new(@mouse_body, @grabbed.body, vec2(0,0), vec2(@offset_x,-@offset_y))
+        #@pin = Constraint::SlideJoint.new(@mouse_body, @grabbed.body, vec2(0,0), vec2(0,0), 15, 30)
+        #@pin = Constraint::GrooveJoint.new(@mouse_body, @grabbed.body, vec2(0,0), vec2(0,0),vec2(@offset_x,-@offset_y))
+        @pin = Constraint::DampedSpring.new(@mouse_body, @grabbed.body, vec2(0,0), vec2(0,0),10,40,20)
+        
         register_physical_constraint @pin
       end
     end
