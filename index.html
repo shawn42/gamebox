@@ -442,11 +442,17 @@ h2
     <pre>gem install gamebox
 gamebox zappy</pre><br/>
     This will create a zappy game with the basic scaffolding
-of a game setup very similar to Cold Season. There would then be rake
-tasks for creating stand-alone apps. (exe/.apps/linux binaries -
-including dependencies). This would all be configurable. Do you want
-keyboard, mouse, networking, sound, etc. This will be much like
-environment.rb in rails land.</p><br/><br/>
+    of a game setup very similar to Cold Season. 
+
+    You can then do things like:
+    <pre>cd zappy
+./script/generate actor Starship</pre><br/>
+
+    to get you started with a Starship actor class.
+    
+    There will be rake tasks for creating stand-alone apps. (exe/.apps/linux binaries -
+including dependencies). These tasks  will let you configure if you want
+keyboard, mouse, networking, sound, etc to be included in your deployable.</p><br/><br/>
 <h2>Dependencies</h2>
 <p>SDL
 SDL_*
