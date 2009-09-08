@@ -27,41 +27,11 @@ class DemoLevel < PhysicalLevel
       rock.warp vec2(x,y)
     end
 
-    left_wall = create_actor :left_wall, :view => false
-    top_wall = create_actor :top_wall, :view => false
-    right_wall = create_actor :right_wall, :view => false
-    bottom_wall = create_actor :bottom_wall, :view => false
+    space.damping = 0.4
 
     # TODO get this from screen config
     @width = 1024
     @height = 768
-    # setup ship torusness
-    space.add_collision_func(:ship, :left_wall) do |ship, wall|
-      ship.body.p = vec2(@width-ship.bb.r-ship.bb.l,ship.body.p.y)
-    end
-    space.add_collision_func(:ship, :right_wall) do |ship, wall|
-      ship.body.p = vec2(ship.bb.r-ship.bb.l,ship.body.p.y)
-    end
-    space.add_collision_func(:ship, :top_wall) do |ship, wall|
-      ship.body.p = vec2(ship.body.p.x,@height-ship.bb.b-ship.bb.t)
-    end
-    space.add_collision_func(:ship, :bottom_wall) do |ship, wall|
-      ship.body.p = vec2(ship.body.p.x,ship.bb.t-ship.bb.b)
-    end
-
-    # setup rock torusness
-    space.add_collision_func(:rock, :left_wall) do |rock, wall|
-      rock.body.p = vec2(@width-rock.bb.r-rock.bb.l-10,rock.body.p.y)
-    end
-    space.add_collision_func(:rock, :right_wall) do |rock, wall|
-      rock.body.p = vec2(rock.bb.r-rock.bb.l-10,rock.body.p.y)
-    end
-    space.add_collision_func(:rock, :top_wall) do |rock, wall|
-      rock.body.p = vec2(rock.body.p.x,@height-rock.bb.b-rock.bb.t-10)
-    end
-    space.add_collision_func(:rock, :bottom_wall) do |rock, wall|
-      rock.body.p = vec2(rock.body.p.x,rock.bb.t-rock.bb.b-10)
-    end
 
     # ship rock collision
     space.add_collision_func(:rock, :ship) do |rock, ship|
@@ -91,7 +61,7 @@ class DemoLevel < PhysicalLevel
       if rocky.alive?
         rocky.remove_self 
         x,y = rocky.x, rocky.y
-        (3+rand(3)).times do
+        (10+rand(10)).times do
           bit = create_actor :rock_bit
           bit.warp vec2(x,y)
         end

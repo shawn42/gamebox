@@ -2,12 +2,12 @@ require 'actor'
 
 class RockBit < Actor
   has_behaviors :animated, :updatable, :physical => {:shape => :circle, 
-    :mass => 30,
+    :mass => 0.5,
     :radius => 10}
 
   def setup
     @behaviors[:physical].body.a -= rand(10)
-    @speed = (rand(2)+1)/6.0 * 110
+    @speed = (rand(2)+1)/6.0 * 50
     @turn_speed = rand(2)*0.00004 
     x = (rand-0.5) * 2
     y = (rand-0.5) * 2

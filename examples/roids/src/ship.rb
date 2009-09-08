@@ -20,10 +20,12 @@ class Ship < Actor
   can_fire :shoot
 
   has_behavior :animated, :updatable, :physical => {:shape => :circle, 
-    :mass => 100,
+    :mass => 10,
     :friction => 1.7,
     :elasticity => 0.4,
-    :radius => 10}
+    :radius => 10,
+    :moment => 150 
+  }
   attr_accessor :moving_forward, :moving_back,
     :moving_left, :moving_right
 
@@ -72,10 +74,12 @@ class Ship < Actor
     if @invincible_timer > 0
       @invincible_timer -= time
     end
+    physical.body.reset_forces
     move_forward time if moving_forward?
     move_left time if moving_left?
     move_right time if moving_right?
-    enforce_limits time
+#    enforce_limits time
+    physical.body.p = CP::Vec2.new(physical.body.p.x % 1024, physical.body.p.y % 768)
     super time
   end
 
@@ -95,24 +99,17 @@ class Ship < Actor
   end
 
   def move_right(time)
-    physical.body.a += time*@turn_speed
-    if physical.body.w > 2.5
-      physical.body.w += time*@turn_speed/5.0 
-    end
+    physical.body.t += 100.0 * time
   end
-  def move_left(time)
-    physical.body.a -= time*@turn_speed
-    if physical.body.w > 2.5
-      physical.body.w -= time*@turn_speed/5.0 
-    end
-  end
-  def move_forward(time)
-    move_vec = physical.body.rot*time*@speed
-#    p move_vec
-#    p physical.body.v
-#    if (move_vec + physical.body.v).length < @max_speed
-      physical.body.apply_impulse(move_vec, ZERO_VEC_2) 
 
-#    end
+  def move_left(time)
+    physical.body.t -= 100.0 * time
+  end
+
+  def move_forward(time)
+    val = physical.body.a
+    move_vec = CP::Vec2.new(Math::cos(val), Math::sin(val)) * time * @speed
+
+    physical.body.apply_force(move_vec, ZERO_VEC_2) 
   end
 end
