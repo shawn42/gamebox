@@ -1,7 +1,10 @@
 require 'level'
 require 'ftor'
+require 'pretty_gem'
 class DemoLevel < Level
   def setup
+#    @gem = create_actor :pretty_gem
+    @gem = create_actor :major_ruby
     @stars = []
     20.times { @stars << Ftor.new(rand(viewport.width),rand(viewport.height)) }
   end

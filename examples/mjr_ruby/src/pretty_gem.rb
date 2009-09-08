@@ -2,6 +2,7 @@ require 'actor'
 
 class PrettyGem < Actor
   
+  has_behavior :graphical
 
   def setup
     # register for events here
