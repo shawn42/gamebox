@@ -1,5 +1,4 @@
 require 'physical_level'
-require 'walls'
 
 class DemoLevel < PhysicalLevel
   attr_accessor :score
