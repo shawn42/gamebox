@@ -78,16 +78,8 @@ class Ship < Actor
     move_forward time if moving_forward?
     move_left time if moving_left?
     move_right time if moving_right?
-#    enforce_limits time
     physical.body.p = CP::Vec2.new(physical.body.p.x % 1024, physical.body.p.y % 768)
     super time
-  end
-
-  def enforce_limits(time)
-    physical.body.w -= 30 if physical.body.w > 2.5
-    if physical.body.v.length > @max_speed
-      physical.body.apply_impulse(-physical.body.v*time, ZERO_VEC_2) 
-    end
   end
 
   def shoot
