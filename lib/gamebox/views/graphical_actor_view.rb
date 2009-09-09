@@ -27,7 +27,19 @@ class GraphicalActorView < ActorView
       end
       
     else
-      img.blit target.screen, [x+x_off,y+y_off]
+      if @actor.is?(:graphical) && @actor.graphical.tiled?
+        x_tiles = @actor.graphical.num_x_tiles
+        y_tiles = @actor.graphical.num_y_tiles
+        img_w, img_h = *img.size
+        x_tiles.times do |col|
+          y_tiles.times do |row|
+            img.blit target.screen, [x+x_off+col*img_w,y+y_off+row*img_h]
+          end
+        end
+      else
+        img.blit target.screen, [x+x_off,y+y_off]
+      end
+
     end
   end
 end

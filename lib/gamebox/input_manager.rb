@@ -129,6 +129,13 @@ class InputManager
   # end
   def register_hook(event_class, *event_ids, &block)
     return unless block_given?
+    listener = eval("self", block.binding) 
+    _register_hook listener, event_class, *event_ids, &block
+  end
+  alias reg register_hook
+
+  def _register_hook(listener, event_class, *event_ids, &block)
+    return unless block_given?
     @hooks[event_class] ||= {}
     for event_id in event_ids
       @hooks[event_class][event_id] ||= []
@@ -138,12 +145,10 @@ class InputManager
     if event_ids.empty?
       @non_id_hooks[event_class] << block
     end
-    listener = eval("self", block.binding) 
     listener.when :remove_me do
       unregister_hook event_class, *event_ids, &block
     end
   end
-  alias reg register_hook
 
   # unregisters a block to be called when matching events are pulled from the SDL queue.
   # ie 
@@ -185,4 +190,15 @@ class InputManager
       @non_id_hooks = {}
     end
   end
+
+  # autohook a boolean to be set to true while a key is pressed
+  def while_key_pressed(key, target, accessor)
+    _register_hook target, KeyPressed, key do
+      target.send accessor.to_s+"=", true
+    end
+    _register_hook target, KeyReleased, key do
+      target.send accessor.to_s+"=", false
+    end
+  end
+
 end

@@ -4,36 +4,21 @@ class MajorRuby < Actor
 
   has_behavior :animated, :updatable
 
+  attr_accessor :move_left, :move_right, :jump
   def setup
-    @speed = 5
-    # TODO add the while button down idea...
-    input_manager.reg KeyPressed, :left do
-      @move_left = true 
-    end
-    input_manager.reg KeyPressed, :right do
-      @move_right = true 
-    end
-    input_manager.reg KeyPressed, :up do
-      @jump = true
-    end
-    input_manager.reg KeyReleased, :left do
-      @move_left = false 
-    end
-    input_manager.reg KeyReleased, :right do
-      @move_right = false 
-    end
-    input_manager.reg KeyReleased, :up do
-      @jump = false
-    end
+    @speed = 1
+    input_manager.while_key_pressed :left, self, :move_left
+    input_manager.while_key_pressed :right, self, :move_right
+    input_manager.while_key_pressed :up, self, :jump
   end
 
   def update(time_delta)
     #adjust physics
-    if @move_right
-      @x += @speed 
+    if move_right
+      @x += @speed * time_delta
       self.action = :right
-    elsif @move_left
-      @x -= @speed 
+    elsif move_left
+      @x -= @speed * time_delta
       self.action = :left
     else
       self.action = :idle
