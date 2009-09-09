@@ -29,6 +29,9 @@ class Animated < Behavior
         define_method :stop_animating do
           animated_obj.stop_animating
         end
+        define_method :action do
+          animated_obj.action
+        end
         define_method :action= do |action_sym|
           animated_obj.action = action_sym
         end
@@ -56,6 +59,10 @@ class Animated < Behavior
   # load all the images for this action
   def load_action(action)
     @actor.resource_manager.load_animation_set @actor, action 
+  end
+
+  def action
+    @action
   end
 
   def action=(new_action)
