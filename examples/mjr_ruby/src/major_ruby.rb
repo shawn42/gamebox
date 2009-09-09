@@ -13,6 +13,9 @@ class MajorRuby < Actor
   end
 
   def update(time_delta)
+    # TODO sucks that I have to call this here to update my behaviors
+    super time_delta
+
     #adjust physics
     if move_right
       @x += @speed * time_delta
