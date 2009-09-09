@@ -14,8 +14,8 @@ class Mappy < Actor
     @width = lines[0].size
 
     @map = TwoDGridMap.new @width, @height
-    tw = 60
-    th = 60
+    tw = 50
+    th = 50
 
     @width.times do |x|
       @height.times do |y|
@@ -24,11 +24,9 @@ class Mappy < Actor
             when '"'
               # grass
               :grass
-              :pretty_gem
             when '#'
               # earth
               :earth
-              :pretty_gem
             when 'x'
               # gem
               :pretty_gem
