@@ -19,10 +19,10 @@ class MajorRuby < Actor
     #adjust physics
     if move_right
       @x += @speed * time_delta
-      self.action = :move_right
+      self.action = :move_right unless self.action == :move_right
     elsif move_left
       @x -= @speed * time_delta
-      self.action = :move_left
+      self.action = :move_left unless self.action == :move_left
     else
       self.action = :idle
     end
