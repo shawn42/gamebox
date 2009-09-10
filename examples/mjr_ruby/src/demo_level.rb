@@ -6,6 +6,8 @@ class DemoLevel < Level
     @map = create_actor :mappy, :map_filename => 'map.txt'
     @major_ruby = @map.major_ruby
 
+    sound_manager.play_music :future
+
     viewport.follow @major_ruby
   end
 
