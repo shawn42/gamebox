@@ -52,6 +52,7 @@ class MajorRuby < Actor
 
   def try_to_jump
     unless would_fit?(0, 1) 
+#      play_sound :jump
       @vy = -20
     end
   end
@@ -77,6 +78,7 @@ class MajorRuby < Actor
       matched = false
       if (pg.x - @x).abs < 50 and (pg.y - @y).abs < 50
         matched = true
+        play_sound :pretty
         pg.remove_self
       end
       matched
