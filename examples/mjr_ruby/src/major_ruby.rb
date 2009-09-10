@@ -7,16 +7,20 @@ class MajorRuby < Actor
   attr_accessor :move_left, :move_right, :jump
   def setup
     @speed = 8
-    @gravity = 5
+    @vy = 0
     @map = @opts[:map]
     input_manager.while_key_pressed :left, self, :move_left
     input_manager.while_key_pressed :right, self, :move_right
     input_manager.while_key_pressed :up, self, :jump
+    input_manager.reg KeyPressed, :up do 
+      try_to_jump
+    end
   end
 
   def update(time_delta)
     # TODO sucks that I have to call this here to update my behaviors
     super time_delta
+
     time_delta = 1
 
     #adjust physics
@@ -30,19 +34,26 @@ class MajorRuby < Actor
         move -1, 0
       end
       self.action = :move_left unless self.action == :move_left
-    elsif jump
-      (@speed * 2 * time_delta).times do
-        move 0, -1
-      end
-      self.action = :jump unless self.action == :jump
     else
       self.action = :idle
     end
-
-    (@gravity * time_delta).ceil.times do
-      move 0, 1
+    if @vy < 0
+      self.action = :jump unless self.action == :jump
     end
 
+    @vy += 1
+    if @vy > 0 
+      @vy.times { if would_fit?(0, 1) then @y += 1 else @vy = 0 end }
+    end
+    if @vy < 0 
+      (-@vy).times { if would_fit?(0, -1) then @y -= 1 else @vy = 0 end }
+    end
+  end
+
+  def try_to_jump
+    unless would_fit?(0, 1) 
+      @vy = -20
+    end
   end
 
   def move(dx,dy)
@@ -55,7 +66,20 @@ class MajorRuby < Actor
   end
 
   def would_fit?(x_off, y_off)
-    not @map.solid? @x.floor+x_off+15, @y.floor+y_off+10 and
-      not @map.solid? @x.floor+x_off+45, @y.floor+y_off+50 
+    not @map.solid? @x.floor+x_off+25, @y.floor+y_off+5 and
+    not @map.solid? @x.floor+x_off+25, @y.floor+y_off+45 and
+    not @map.solid? @x.floor+x_off+10, @y.floor+y_off+25 and
+      not @map.solid? @x.floor+x_off+40, @y.floor+y_off+25 
+  end
+
+  def collect_gems(gems)
+    gems.reject! do |pg|
+      matched = false
+      if (pg.x - @x).abs < 50 and (pg.y - @y).abs < 50
+        matched = true
+        pg.remove_self
+      end
+      matched
+    end
   end
 end

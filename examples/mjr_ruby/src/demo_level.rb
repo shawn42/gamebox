@@ -9,6 +9,12 @@ class DemoLevel < Level
     viewport.follow @major_ruby
   end
 
+  def update(time_delta)
+    super time_delta
+
+    @major_ruby.collect_gems @map.pretty_gems
+  end
+
   def draw(target, x_off, y_off)
     target.fill [25,25,25,255]
   end

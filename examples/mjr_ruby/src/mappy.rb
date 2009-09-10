@@ -49,7 +49,6 @@ class Mappy < Actor
 
   def solid?(x,y)
     occ = @map.occupant TwoDGridLocation.new(x/@tw, y/@th)
-#    puts "[#{x/@tw},#{y/@th}][#{x},#{y}] => #{occ.class}"
     not occ.nil? and occ.class != PrettyGem
   end
   
