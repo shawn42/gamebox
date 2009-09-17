@@ -1,5 +1,5 @@
-== Welcome to Gamebox
-Blurb here
+== Welcome to Major Ruby
+Major Ruby was written as a port of Cptn Ruby from the Gosu example. It is a collect the rubies platformer.
 
 == Description of Contents
 
@@ -23,8 +23,3 @@ script
 test
   Unit and functional tests along with fixtures. When using the script/generate scripts, template
   test files will be generated for you and placed in this directory.
-
-vendor
-  External libraries that the application depends on. Also includes the plugins subdirectory.
-  If the app has frozen rails, those gems also go here, under vendor/rails/.
-  This directory is in the load path.
