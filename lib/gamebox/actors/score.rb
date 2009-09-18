@@ -13,6 +13,7 @@ class ScoreView < ActorView
   end
 end
 class Score < Actor
+  has_behavior :layered => {:layer => 999}
   attr_accessor :score
 
   def setup

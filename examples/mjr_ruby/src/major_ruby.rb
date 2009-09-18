@@ -90,14 +90,17 @@ class MajorRuby < Actor
   end
 
   def collect_gems(gems)
-    gems.reject! do |pg|
+    collected = []
+    gems.each do |pg|
       matched = false
       if (pg.x - @x).abs < 50 and (pg.y - @y).abs < 50
         matched = true
         play_sound :pretty
         pg.remove_self
+        collected << pg
       end
       matched
     end
+    collected
   end
 end
