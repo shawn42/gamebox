@@ -2,8 +2,8 @@ require 'level'
 require 'ftor'
 class DemoLevel < Level
   def setup
-    create_actor :background, :x => -100, :y => -100
     @map = create_actor :mappy, :map_filename => 'map.txt'
+    create_actor :background, :x => -100, :y => -100, :map => @map
     @major_ruby = @map.major_ruby
 
     create_actor :logo, :x => 900, :y => 650
@@ -12,8 +12,13 @@ class DemoLevel < Level
     sound_manager.play_music :future
 
     viewport.follow @major_ruby
-    viewport.x_offset_range = 540..2190
-    viewport.y_offset_range = 0..830
+
+    min_x = (viewport.width/2.0-@map.tw).floor
+    max_x = (@map.tw*@map.width-viewport.width/2.0).floor
+    min_y = (viewport.height/2.0-@map.th).floor
+    max_y = (@map.th*@map.height-viewport.height/2.0).floor
+    viewport.x_offset_range = min_x..max_x
+    viewport.y_offset_range = min_y..max_y
   end
 
   def update(time_delta)

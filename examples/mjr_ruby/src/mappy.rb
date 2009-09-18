@@ -2,7 +2,7 @@ require 'actor'
 require 'two_d_grid_map'
 
 class Mappy < Actor
-  attr_reader :major_ruby, :pretty_gems
+  attr_reader :major_ruby, :pretty_gems, :tw, :th, :width, :height
 
   def setup
     load_map @opts[:map_filename]
