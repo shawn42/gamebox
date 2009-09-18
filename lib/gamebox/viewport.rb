@@ -8,7 +8,7 @@ class Viewport
   can_fire :scrolled
   
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
-    :height
+    :height, :x_offset_range, :y_offset_range
 
   def debug
     "xoff:#{@x_offset} yoff:#{@y_offset}"
@@ -37,7 +37,17 @@ class Viewport
   def update(time)
     scrolled = false
     if @follow_target
-      x_diff = @width/2 + @follow_offset_x - @follow_target.x - @x_offset
+      x = @follow_target.x
+      y = @follow_target.y
+      if @x_offset_range
+        x = @x_offset_range.min if @x_offset_range.min > x 
+        x = @x_offset_range.max if @x_offset_range.max < x 
+      end
+      if @y_offset_range
+        y = @y_offset_range.min if @y_offset_range.min > y 
+        y = @y_offset_range.max if @y_offset_range.max < y 
+      end
+      x_diff = @width/2 + @follow_offset_x - x - @x_offset
       if x_diff.abs > @buffer_x
         # move screen 
         if x_diff > 0
@@ -49,7 +59,7 @@ class Viewport
         end
       end
 
-      y_diff = @height/2 + @follow_offset_y - @follow_target.y - @y_offset
+      y_diff = @height/2 + @follow_offset_y - y - @y_offset
       if y_diff.abs > @buffer_y
         # move screen
         if y_diff > 0

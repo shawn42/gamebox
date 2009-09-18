@@ -19,5 +19,5 @@ class PrettyGemView < ActorView
 end
 
 class PrettyGem < Actor
-  has_behavior :graphical, :dancing, :updatable
+  has_behavior :graphical, :dancing, :updatable, :layered => {:layer => 3}
 end

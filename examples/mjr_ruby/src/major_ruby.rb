@@ -2,8 +2,7 @@ require 'actor'
 
 class MajorRuby < Actor
 
-  has_behavior :animated, :updatable
-
+  has_behavior :animated, :updatable, :layered => {:layer => 4}
   attr_accessor :move_left, :move_right, :jump
   def setup
     @speed = 8
@@ -19,7 +18,7 @@ class MajorRuby < Actor
 
   def update(time_delta)
     # TODO sucks that I have to call this here to update my behaviors
-    super time_delta
+    super 
 
     time_delta = 1
 
@@ -41,17 +40,35 @@ class MajorRuby < Actor
       self.action = :jump unless self.action == :jump
     end
 
+    apply_gravity
+
+  end
+
+  def apply_gravity
     @vy += 1
-    if @vy > 0 
-      @vy.times { if would_fit?(0, 1) then @y += 1 else @vy = 0 end }
-    end
     if @vy < 0 
       (-@vy).times { if would_fit?(0, -1) then @y -= 1 else @vy = 0 end }
+    end
+    if @vy > 0 
+      (@vy).times do 
+        if would_fit?(0, 1) 
+          if (move_left and !would_fit?(-1,0)) || 
+            (move_right and !would_fit?(1,0)) 
+            fall_rate = 0.2
+          else
+            fall_rate = 1
+          end
+          @y += fall_rate
+        else 
+          @vy = 0 
+        end 
+      end
     end
   end
 
   def try_to_jump
-    unless would_fit?(0, 1) 
+    if !would_fit?(0, 1) || (move_left and !would_fit?(-1,0)) || 
+      (move_right and !would_fit?(1,0)) 
 #      play_sound :jump
       @vy = -20
     end
