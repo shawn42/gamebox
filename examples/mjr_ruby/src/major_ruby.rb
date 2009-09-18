@@ -20,9 +20,8 @@ class MajorRuby < Actor
     # TODO sucks that I have to call this here to update my behaviors
     super 
 
-    time_delta = 1
+    time_delta = time_delta/25.floor
 
-    #adjust physics
     if move_right
       (@speed * time_delta).times do
         move 1, 0
@@ -40,7 +39,7 @@ class MajorRuby < Actor
       self.action = :jump unless self.action == :jump
     end
 
-    apply_gravity
+    time_delta.times { apply_gravity }
 
   end
 
