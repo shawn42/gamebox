@@ -19,6 +19,9 @@ class Layered < Behavior
     layered_obj = self
     @actor.instance_eval do
       (class << self; self; end).class_eval do
+        define_method :layer= do |new_layer|
+          layered_obj.layer = new_layer
+        end
         define_method :layer do 
           layered_obj.layer
         end
@@ -30,5 +33,11 @@ class Layered < Behavior
         end
       end
     end
+  end
+
+  def layer=(new_layer)
+    @layer = new_layer
+    @actor.hide
+    @actor.show
   end
 end

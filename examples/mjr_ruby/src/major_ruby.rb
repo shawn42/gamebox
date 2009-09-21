@@ -83,17 +83,17 @@ class MajorRuby < Actor
   end
 
   def would_fit?(x_off, y_off)
-    not @map.solid? @x.floor+x_off+25, @y.floor+y_off+5 and
-    not @map.solid? @x.floor+x_off+25, @y.floor+y_off+45 and
-    not @map.solid? @x.floor+x_off+10, @y.floor+y_off+25 and
-      not @map.solid? @x.floor+x_off+40, @y.floor+y_off+25 
+    not @map.solid? @x.floor+x_off+10, @y.floor+y_off+5 and
+    not @map.solid? @x.floor+x_off+40, @y.floor+y_off+5 and
+    not @map.solid? @x.floor+x_off+10, @y.floor+y_off+45 and
+      not @map.solid? @x.floor+x_off+40, @y.floor+y_off+45 
   end
 
   def collect_gems(gems)
     collected = []
     gems.each do |pg|
       matched = false
-      if (pg.x - @x).abs < 50 and (pg.y - @y).abs < 50
+      if (pg.x+25 - @x).abs < 50 and (pg.y+25 - @y).abs < 50
         matched = true
         play_sound :pretty
         pg.remove_self

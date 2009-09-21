@@ -25,9 +25,8 @@ class PrettyGemView < ActorView
     roto_img = src_img.rotozoom rot, 1, true
     @@roto_imgs[rot] = roto_img 
   end
-
 end
 
 class PrettyGem < Actor
-  has_behavior :graphical, :dancing, :updatable, :layered => {:layer => 3}
+  has_behavior :graphical, :dancing, :updatable, :layered 
 end

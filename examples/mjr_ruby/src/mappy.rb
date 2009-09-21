@@ -1,6 +1,15 @@
 require 'actor'
 require 'two_d_grid_map'
+require 'actor_view'
 
+class FogView < ActorView
+  def draw(target, x_off, y_off)
+    target.screen.draw_box_s [0,0],[1024,800],[120,120,120,120]
+  end
+end
+class Fog < Actor
+  has_behavior :layered
+end
 class Mappy < Actor
   attr_reader :major_ruby, :tw, :th, :width, :height, :actors
 
@@ -13,6 +22,8 @@ class Mappy < Actor
     filenames.each_with_index do |fn,i|
       @maps << load_map(fn,i)
     end
+
+    @fog = spawn :fog
     self.z_level=0
 
     @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
@@ -36,17 +47,22 @@ class Mappy < Actor
   end
 
   def z_level=(new_z)
+    
     if @actors[@z]
       @actors[@z].each do |a|
-        a.hide
+        a.layer = @z+1
       end
     end
+
+    @fog.layer = @z+2
     @z = new_z
+
     if @actors[@z]
       @actors[@z].each do |a|
-        a.show
+        a.layer = @z+3
       end
     end
+    self.pretty_gems.each { |pg| pg.layer=@z+4 }
   end
 
   def pretty_gems
@@ -85,7 +101,8 @@ class Mappy < Actor
           # no overlap yet
           thing = spawn type, :x => x*@tw, :y => y*@tw
           @actors[z] << thing
-          thing.hide
+          thing.layer = 1
+#          thing.hide
           @pretty_gems[z] << thing if type == :pretty_gem
           map.place(TwoDGridLocation.new(x,y), thing)
         end
