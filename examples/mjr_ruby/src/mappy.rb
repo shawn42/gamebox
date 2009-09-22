@@ -75,8 +75,8 @@ class Mappy < Actor
     @width = lines[0].size
     @pretty_gems[z] ||= []
     @actors[z] ||= []
-    @tw = 50
-    @th = 50
+    @tw = 44
+    @th = 44
 
 
     map = TwoDGridMap.new @width, @height

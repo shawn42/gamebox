@@ -2,7 +2,7 @@ require 'actor'
 
 class MajorRuby < Actor
 
-  has_behavior :animated, :updatable, :layered => {:layer => 4}
+  has_behavior :animated, :updatable, :layered => {:layer => 10}
   attr_accessor :move_left, :move_right, :jump
   def setup
     @speed = 8
@@ -51,9 +51,12 @@ class MajorRuby < Actor
     if @vy > 0 
       (@vy).times do 
         if would_fit?(0, 1) 
-          if (move_left and !would_fit?(-1,0)) || 
-            (move_right and !would_fit?(1,0)) 
+          if (move_left and !would_fit?(-1,0))
+            self.action = :slide_left
             fall_rate = 0.2
+          elsif (move_right and !would_fit?(1,0)) 
+            self.action = :slide_right
+            fall_rate = 0.2            
           else
             fall_rate = 1
           end
@@ -69,7 +72,7 @@ class MajorRuby < Actor
     if !would_fit?(0, 1) || (move_left and !would_fit?(-1,0)) || 
       (move_right and !would_fit?(1,0)) 
 #      play_sound :jump
-      @vy = -20
+      @vy = -12
     end
   end
 
@@ -83,17 +86,17 @@ class MajorRuby < Actor
   end
 
   def would_fit?(x_off, y_off)
-    not @map.solid? @x.floor+x_off+10, @y.floor+y_off+5 and
-    not @map.solid? @x.floor+x_off+40, @y.floor+y_off+5 and
-    not @map.solid? @x.floor+x_off+10, @y.floor+y_off+45 and
-      not @map.solid? @x.floor+x_off+40, @y.floor+y_off+45 
+    not @map.solid? @x.floor+x_off+5, @y.floor+y_off+2 and
+    not @map.solid? @x.floor+x_off+31, @y.floor+y_off+2 and
+    not @map.solid? @x.floor+x_off+5, @y.floor+y_off+34 and
+      not @map.solid? @x.floor+x_off+31, @y.floor+y_off+34 
   end
 
   def collect_gems(gems)
     collected = []
     gems.each do |pg|
       matched = false
-      if (pg.x+25 - @x).abs < 50 and (pg.y+25 - @y).abs < 50
+      if (pg.x+18 - @x).abs < 36 and (pg.y+18 - @y).abs < 36
         matched = true
         play_sound :pretty
         pg.remove_self

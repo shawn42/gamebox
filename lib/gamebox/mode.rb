@@ -111,9 +111,9 @@ class Mode
     for parallax_layer in @drawables.keys.sort.reverse
       drawables_on_parallax_layer = @drawables[parallax_layer]
       for layer in drawables_on_parallax_layer.keys.sort
+        trans_x = @viewport.x_offset parallax_layer
+        trans_y = @viewport.y_offset parallax_layer
         for drawable in drawables_on_parallax_layer[layer]
-          trans_x = @viewport.x_offset parallax_layer
-          trans_y = @viewport.y_offset parallax_layer
           drawable.draw target, trans_x, trans_y 
         end
       end
