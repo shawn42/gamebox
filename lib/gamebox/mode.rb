@@ -109,12 +109,12 @@ class Mode
     @level.draw target, @viewport.x_offset, @viewport.y_offset
 
     for parallax_layer in @drawables.keys.sort.reverse
-      pd = @drawables[parallax_layer]
-      for layer in pd.keys.sort
-        for d in pd[layer]
+      drawables_on_parallax_layer = @drawables[parallax_layer]
+      for layer in drawables_on_parallax_layer.keys.sort
+        for drawable in drawables_on_parallax_layer[layer]
           trans_x = @viewport.x_offset parallax_layer
           trans_y = @viewport.y_offset parallax_layer
-          d.draw target, trans_x, trans_y 
+          drawable.draw target, trans_x, trans_y 
         end
       end
     end
