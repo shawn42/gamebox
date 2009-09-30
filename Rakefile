@@ -34,8 +34,7 @@ end
 require 'spec/rake/spectask'
 desc "Run all specs"
 Spec::Rake::SpecTask.new('specs') do |t|
-  t.spec_opts = ["-r", "./test/helper"]
-  t.spec_files = FileList['test/test_*.rb']
+  t.spec_files = FileList['test/*_spec.rb']
 end
 task :test => :specs
 

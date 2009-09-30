@@ -11,6 +11,9 @@ class Behavior
   def setup
   end
 
+  def removed
+  end
+
   def update(time)
   end
 end

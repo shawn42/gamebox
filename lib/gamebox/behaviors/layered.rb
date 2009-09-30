@@ -22,6 +22,9 @@ class Layered < Behavior
         define_method :layer= do |new_layer|
           layered_obj.layer = new_layer
         end
+        define_method :parallax= do |new_parallax|
+          layered_obj.parallax = new_parallax
+        end
         define_method :layer do 
           layered_obj.layer
         end
@@ -35,9 +38,11 @@ class Layered < Behavior
     end
   end
 
+  def parallax=(new_parallax)
+    @parallax = new_parallax
+  end
+
   def layer=(new_layer)
     @layer = new_layer
-    @actor.hide
-    @actor.show
   end
 end

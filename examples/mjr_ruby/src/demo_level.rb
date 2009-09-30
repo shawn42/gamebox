@@ -3,6 +3,10 @@ require 'ftor'
 class DemoLevel < Level
   def setup
     @map = create_actor :mappy, :map_filenames => 'map.txt,map2.txt'
+    @map.when :move_layer do |*args|
+      fire :move_layer, *args
+    end
+
     create_actor :background, :x => -100, :y => -100, :map => @map
     @major_ruby = @map.major_ruby
 

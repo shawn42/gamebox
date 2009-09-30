@@ -75,7 +75,8 @@ class Actor
 
   # removed the behavior from the actor.
   def is_no_longer(behavior_sym)
-    @behaviors.delete behavior_sym
+    behavior = @behaviors.delete behavior_sym
+    behavior.removed if behavior
   end
 
   # Calls update on all the actor's behaviors.

@@ -1,4 +1,4 @@
-require 'helper'
+require File.join(File.dirname(__FILE__),'helper')
 require 'ai/line_of_site'
 require 'ai/two_d_grid_map'
 

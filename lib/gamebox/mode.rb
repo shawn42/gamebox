@@ -88,9 +88,13 @@ class Mode
       fire :fade_out, dur
     end
 
+    level.when :move_layer do |*args|
+      move_layer *args
+    end
+
     level.start
     level
-  end
+    end
 
   def faded_in
     @level.faded_in if @level
@@ -108,9 +112,12 @@ class Mode
   def draw(target)
     @level.draw target, @viewport.x_offset, @viewport.y_offset
 
+#    puts "drawing................."
     for parallax_layer in @drawables.keys.sort.reverse
+#      puts "drawing pl #{parallax_layer}"
       drawables_on_parallax_layer = @drawables[parallax_layer]
       for layer in drawables_on_parallax_layer.keys.sort
+#        puts "drawing l #{layer}"
         trans_x = @viewport.x_offset parallax_layer
         trans_y = @viewport.y_offset parallax_layer
         for drawable in drawables_on_parallax_layer[layer]
@@ -134,6 +141,23 @@ class Mode
     @drawables[parallax] ||= {}
     @drawables[parallax][layer] ||= []
     @drawables[parallax][layer] << drawable
+  end
+
+  # move all actors from one layer to another
+  # note, this will remove all actors in that layer!
+  def move_layer(from_parallax, from_layer, to_parallax, to_layer)
+    drawable_list = @drawables[from_parallax].delete from_layer
+
+    if drawable_list
+      prev_drawable_list = @drawables[to_parallax].delete to_layer
+      @drawables[to_parallax][to_layer] = drawable_list
+      drawable_list.each do |drawable|
+        drawable.parallax = to_parallax
+        drawable.layer = to_layer
+      end
+    end
+    prev_drawable_list
+
   end
 end
 

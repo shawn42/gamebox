@@ -13,18 +13,23 @@ end
 class Mappy < Actor
   attr_reader :major_ruby, :tw, :th, :width, :height, :actors
 
+  LAYER_OFFSET = 3
+
   def setup
     @maps = []
     @pretty_gems = []
     @actors = []
-    @z = 0
+    @z = 1
     filenames = @opts[:map_filenames].split ','
     filenames.each_with_index do |fn,i|
       @maps << load_map(fn,i)
     end
 
-    @fog = spawn :fog
-    self.z_level=0
+    @fog = spawn :fog, :visible => false
+    @fog.layer = 1000#@actors.size*LAYER_OFFSET-1
+    @fog.show
+#    @z = 1
+#    self.z_level=0
 
     @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
     input_manager.reg KeyDownEvent, :space do
@@ -47,22 +52,12 @@ class Mappy < Actor
   end
 
   def z_level=(new_z)
-    
-    if @actors[@z]
-      @actors[@z].each do |a|
-        a.layer = @z+1
-      end
-    end
+    fire :move_layer, 1, @actors.size*LAYER_OFFSET, 1, 900
 
-    @fog.layer = @z+2
     @z = new_z
 
-    if @actors[@z]
-      @actors[@z].each do |a|
-        a.layer = @z+3
-      end
-    end
-    self.pretty_gems.each { |pg| pg.layer=@z+4 }
+    fire :move_layer, 1, @z*LAYER_OFFSET, 1, @actors.size*LAYER_OFFSET
+    fire :move_layer, 1, 900, 1, @z*LAYER_OFFSET
   end
 
   def pretty_gems
@@ -99,10 +94,11 @@ class Mappy < Actor
           end
         unless type.nil?
           # no overlap yet
-          thing = spawn type, :x => x*@tw, :y => y*@tw
+          thing = spawn type, :x => x*@tw, :y => y*@tw, :visible=>false
           @actors[z] << thing
-          thing.layer = 1
-#          thing.hide
+          thing.layer = z*LAYER_OFFSET
+          thing.show
+
           @pretty_gems[z] << thing if type == :pretty_gem
           map.place(TwoDGridLocation.new(x,y), thing)
         end
