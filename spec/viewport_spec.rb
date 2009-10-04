@@ -86,26 +86,36 @@ describe 'A new viewport' do
   end
   
   it 'should follow a target if target has gone left;up of its buffer' do
+    STDERR.puts "HERE"
     actor = Vec.new 900, 200
+    @viewport.should_receive(:fire).with(:scrolled).exactly(3).times
+    STDERR.puts "FOLLOW"
     @viewport.follow actor, [0,0], [100,200] 
     
+    STDERR.puts "UPDATE 1"
     @viewport.update 100
     actor.x = 810
     actor.y = 10
     
+    STDERR.puts "UPDATE 2"
     @viewport.update 100
     @viewport.x_offset.should equal(-500)
     @viewport.y_offset.should equal(100)
     
     actor.x = 799
     actor.y = -1
+    STDERR.puts "UPDATE 2"
     @viewport.update 100
     
     @viewport.x_offset.should equal(-499)
     @viewport.y_offset.should equal(101)
   end
   
-  it 'should fire :scrolled event when targeting an actor' 
+  it 'should fire :scrolled event when targeting an actor' do
+    actor = Vec.new 900, 200
+    @viewport.should_receive(:fire).with(:scrolled)
+    @viewport.follow actor, [0,0], [100,200] 
+  end
   
   it 'should fire :scrolled event from update when the actor moves'
 

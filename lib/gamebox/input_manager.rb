@@ -27,10 +27,11 @@ class InputManager
     MOUSE_RIGHT  => :right,
   }
 
+  constructor :config_manager
 
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by diy.
-  def initialize
+  def setup
     @queue = EventQueue.new
     @queue.enable_new_style_events
     @queue.ignore = [
@@ -55,6 +56,8 @@ class InputManager
         c.granularity = 2 if c.granularity < 2
       end
     end
+
+    @auto_quit = @config_manager[:auto_quit]
 
     @hooks = {}
     @non_id_hooks = {}
@@ -82,8 +85,8 @@ class InputManager
             case event.key
             when :f
               puts "Framerate:#{@clock.framerate}"
-            when :escape
-              throw :rubygame_quit
+            when @auto_quit
+              throw :rubygame_quit 
             end
           when QuitRequested
             throw :rubygame_quit

@@ -1,5 +1,6 @@
 --- 
 :sound: true
+:auto_quit: :escape
 :debug_server: true
 :fullscreen: false
 :screen_resolution: 

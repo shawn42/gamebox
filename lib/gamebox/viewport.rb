@@ -48,6 +48,7 @@ class Viewport
         y = @y_offset_range.max if @y_offset_range.max < y 
       end
       x_diff = @width/2 + @follow_offset_x - x - @x_offset
+      STDERR.puts x_diff
       if x_diff.abs > @buffer_x
         # move screen 
         if x_diff > 0
@@ -59,6 +60,7 @@ class Viewport
         end
       end
 
+      STDERR.puts x_diff
       y_diff = @height/2 + @follow_offset_y - y - @y_offset
       if y_diff.abs > @buffer_y
         # move screen

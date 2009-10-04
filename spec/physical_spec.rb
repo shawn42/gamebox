@@ -1,7 +1,6 @@
 require File.join(File.dirname(__FILE__),'helper')
 require 'physical'
 require 'actor'
-require 'mocha'
 
 class CircleActor < Actor
   has_behaviors :physical => {:shape => :circle, 

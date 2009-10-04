@@ -17,6 +17,8 @@ sound_manager:
     - resource_manager
     - config_manager
 input_manager:
+  compose:
+    - config_manager
 wrapped_screen:
   compose:
     - config_manager

@@ -1,6 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
 require 'animated'
-require 'mocha'
 
 describe 'A new animated behavior' do
   before do
