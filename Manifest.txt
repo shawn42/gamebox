@@ -4,7 +4,6 @@ README.txt
 Rakefile
 TODO.txt
 bin/gamebox
-docs/gamebox04_big.png
 docs/getting_started.rdoc
 docs/logo.png
 lib/gamebox.rb
@@ -87,10 +86,10 @@ lib/gamebox/viewport.rb
 lib/gamebox/views/graphical_actor_view.rb
 lib/gamebox/wrapped_screen.rb
 script/perf_polaris.rb
-test/helper.rb
-test/test_actor.rb
-test/test_animated.rb
-test/test_line_of_site.rb
-test/test_physical.rb
-test/test_polaris.rb
-test/test_viewport.rb
+spec/helper.rb
+spec/actor_spec.rb
+spec/animated_spec.rb
+spec/line_of_site_spec.rb
+spec/physical_spec.rb
+spec/polaris_spec.rb
+spec/viewport_spec.rb
