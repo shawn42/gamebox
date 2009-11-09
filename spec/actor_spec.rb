@@ -31,6 +31,17 @@ describe 'A new actor' do
     }.should_not raise_error
   end
 
-  it 'should setup behaviors; hard to test'
+  it 'should inherit parents behaviors' do
+    @shawn = Shawn.new {}
+    @shawn.is?(:smart).should be_true
+  end
 
+end
+require 'behavior'
+class Smart < Behavior
+end
+class Coder < Actor
+  has_behavior :smart
+end
+class Shawn < Coder
 end

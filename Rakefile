@@ -5,7 +5,8 @@ require 'hoe'
 require File.dirname(__FILE__)+'/lib/gamebox/version'
 Hoe.spec 'gamebox' do
   developer('Shawn Anderson', 'shawn42@gmail.com')
-  author = "Shawn Anderson"
+  developer('Jason Roelofs', 'jameskilton@gmail.com')
+  developer('Karlin Fox', 'karlin.fox@gmail.com')
   description = "Framework for building and distributing games using Rubygame"
   email = 'shawn42@gmail.com'
   summary = "Framework for building and distributing games using Rubygame"

@@ -1,4 +1,7 @@
 planned features:
+add network manager stub
+highscore upload system (use from chingu)
+FIX:add some kind of fade in/out for actors w/ smooth interpolation
 add basic generator for things like actors/levels/etc with tests
 add while key down K_UP callback?
 
@@ -19,7 +22,6 @@ SVGS
 	create a DynamicPhysicalActor that can be built from external verts
 add nice actor debugging
 add Extra; actor with a short time to live (TTL); useful for special effects (maybe as a behavior)
-add some kind of fade in/out for actors w/ smooth interpolation
 	
 static deployment bundles (crate, love-clone; custom C project)
 	ruby
@@ -31,6 +33,4 @@ AI
 	 rule based
 optional GUI via rubygoo
 particle system? ParticleGroupActor?
-network manager
-highscore upload system
 gamebox server (content server?)

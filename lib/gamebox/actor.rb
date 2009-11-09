@@ -25,9 +25,28 @@ class Actor
     @alive = true
 
     @behaviors = {}
-    # add our classes behaviors
-    class_behaviors = self.class.behaviors.dup
-    for behavior in class_behaviors
+
+    # add our classes behaviors and parents behaviors
+    klass = self.class
+    actor_klasses = []
+    while klass != Actor
+      actor_klasses << klass
+      klass = klass.superclass
+    end
+
+    behavior_defs = {}
+    
+    actor_klasses.each do |actor_klass|
+      actor_behaviors = actor_klass.behaviors.dup
+      actor_behaviors.each do |behavior|
+
+        behavior_sym = behavior.is_a?(Hash) ? behavior.keys.first : behavior
+
+        behavior_defs[behavior_sym] = behavior
+      end
+    end
+
+    for behavior in behavior_defs.values
       is behavior
     end
     setup
