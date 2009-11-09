@@ -36,6 +36,12 @@ describe 'A new actor' do
     @shawn.is?(:smart).should be_true
   end
 
+  it 'should be able to override parents behaviors' do
+    @james = JamesKilton.new {}
+    @james.is?(:smart).should be_true
+    @james.instance_variable_get('@behaviors')[:smart].instance_variable_get('@opts').should == {:really=>true}
+  end
+
 end
 require 'behavior'
 class Smart < Behavior
@@ -44,4 +50,7 @@ class Coder < Actor
   has_behavior :smart
 end
 class Shawn < Coder
+end
+class JamesKilton < Coder
+  has_behavior :smart => {:really => true}
 end

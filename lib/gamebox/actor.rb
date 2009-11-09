@@ -36,7 +36,7 @@ class Actor
 
     behavior_defs = {}
     
-    actor_klasses.each do |actor_klass|
+    actor_klasses.reverse.each do |actor_klass|
       actor_behaviors = actor_klass.behaviors.dup
       actor_behaviors.each do |behavior|
 
