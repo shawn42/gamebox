@@ -25,7 +25,16 @@ class GameboxApp
   end
 
   def initialize
-    @context = DIY::Context.from_file(APP_ROOT + '/config/objects.yml')
+    gamebox_objects = YAML.load(File.read(GAMEBOX_PATH + 'data/config/objects.yml'))
+
+    game_objects_file = APP_ROOT + '/config/objects.yml'
+    game_specific_objects = {}
+    if File.exist? game_objects_file
+      game_specific_objects = YAML.load(File.read(game_objects_file))
+    end
+    objects = gamebox_objects.merge! game_specific_objects
+
+    @context = DIY::Context.from_yaml(YAML.dump(objects))
   end
   
   def setup
