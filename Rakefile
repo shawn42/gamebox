@@ -33,9 +33,10 @@ task :stats do
 end
 
 require 'spec/rake/spectask'
-desc "Run all specs"
-Spec::Rake::SpecTask.new('spec') do |t|
+desc "Run all rspecs"
+Spec::Rake::SpecTask.new('rspec') do |t|
   t.spec_files = FileList['spec/*_spec.rb']
 end
+task :default => :rspec
 
 # vim: syntax=Ruby
