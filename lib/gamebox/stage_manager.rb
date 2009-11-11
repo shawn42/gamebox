@@ -1,6 +1,6 @@
 require 'inflector'
 require 'mode'
-class ModeManager
+class StageManager
 
   constructor :resource_manager, :actor_factory, :input_manager,
     :sound_manager, :config_manager
@@ -11,7 +11,7 @@ class ModeManager
     @fade_out_ttl = 0
     @fade_in_ttl = 0
 
-    @actor_factory.mode_manager = self
+    @actor_factory.stage_manager = self
     modes = @resource_manager.load_config('mode_level_config')[:modes]
 
     @mode_names = []

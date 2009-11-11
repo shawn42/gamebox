@@ -35,6 +35,7 @@ class Actor
     end
 
     behavior_defs = {}
+    ordered_behaviors = []
     
     actor_klasses.reverse.each do |actor_klass|
       actor_behaviors = actor_klass.behaviors.dup
@@ -42,12 +43,13 @@ class Actor
 
         behavior_sym = behavior.is_a?(Hash) ? behavior.keys.first : behavior
 
+        ordered_behaviors << behavior_sym unless ordered_behaviors.include? behavior_sym
         behavior_defs[behavior_sym] = behavior
       end
     end
 
-    for behavior in behavior_defs.values
-      is behavior
+    ordered_behaviors.each do |behavior|
+      is behavior_defs[behavior]
     end
     setup
   end

@@ -3,9 +3,9 @@ game:
     - wrapped_screen
     - input_manager
     - sound_manager
-    - mode_manager
+    - stage_manager
 resource_manager:
-mode_manager:
+stage_manager:
   compose:
     - input_manager
     - resource_manager

@@ -2,6 +2,8 @@ require File.join(File.dirname(__FILE__),'helper')
 require 'mode'
 
 describe 'A new mode' do
+  FakeDrawable = Struct.new :layer, :parallax
+
   before do
     @config = {:screen_resolution => [800,600] }
     @mode = Mode.new :input_manager, :actor_factory, 
@@ -15,8 +17,6 @@ describe 'A new mode' do
   it 'should register drawables by parallax and layer'
   it 'should unregister drawables by parallax and layer'
   it 'should draw drawables by parallax and layers' do
-    FakeDrawable = Struct.new :layer, :parallax
-
     a = FakeDrawable.new
     b = FakeDrawable.new
     c = FakeDrawable.new
@@ -37,7 +37,6 @@ describe 'A new mode' do
     @mode.drawables[2][3].should be_nil
   end
   it 'should move drawables layers' do 
-    FakeDrawable = Struct.new :layer, :parallax
 
     a = FakeDrawable.new
     b = FakeDrawable.new

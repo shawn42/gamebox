@@ -7,7 +7,7 @@ require 'graphical_actor_view'
 class ActorFactory
   constructor :input_manager, :sound_manager
 
-  attr_accessor :mode_manager, :director
+  attr_accessor :stage_manager, :director
   
   # Returns a hash of actor params {:model_klass=>k, :view_klass=>v}. This is for performance reasons.
   def cached_actor_def(actor)
@@ -66,7 +66,7 @@ class ActorFactory
     if model.is? :animated or model.is? :graphical or model.is? :physical
       view_klass ||= GraphicalActorView
     end
-    view_klass.new @mode_manager.current_mode, model if view_klass
+    view_klass.new @stage_manager.current_mode, model if view_klass
     
     model.show unless opts[:hide]
 
