@@ -29,9 +29,6 @@ class Level
   def start
   end
 
-  def faded_out;end
-  def faded_in;end
-
   def create_actor(type, args={})
     @actor_factory.build type, self, args
   end

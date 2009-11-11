@@ -41,7 +41,6 @@ class DemoLevel < PhysicalLevel
         if shippy.alive?
           explosion = create_actor :particle_system, :x => shippy.x, :y => shippy.y
           explosion.when :remove_me do
-            fire :fade_out, 1000
             fire :prev_level
           end
           shippy.remove_self 
@@ -76,10 +75,6 @@ class DemoLevel < PhysicalLevel
   end
 
   def start
-    fire :fade_in, 1000
-  end
-
-  def faded_in
     @running = true
   end
 

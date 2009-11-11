@@ -81,27 +81,12 @@ class Stage
       end
     end
 
-    level.when :fade_in do |dur|
-      fire :fade_in, dur
-    end
-    level.when :fade_out do |dur|
-      fire :fade_out, dur
-    end
-
     level.when :move_layer do |*args|
       move_layer *args
     end
 
     level.start
     level
-    end
-
-  def faded_in
-    @level.faded_in if @level
-  end
-
-  def faded_out
-    @level.faded_out if @level
   end
 
   def update(time)
