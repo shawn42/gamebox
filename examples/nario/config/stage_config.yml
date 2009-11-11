@@ -1,4 +1,4 @@
-:modes: 
+:stages: 
   - :default:  
     - :demo:
         :file: level_1

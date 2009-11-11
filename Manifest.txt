@@ -49,7 +49,7 @@ lib/gamebox/lib/platform.rb
 lib/gamebox/lib/publisher_ext.rb
 lib/gamebox/lib/sorted_list.rb
 lib/gamebox/lib/surface_ext.rb
-lib/gamebox/mode.rb
+lib/gamebox/stage.rb
 lib/gamebox/stage_manager.rb
 lib/gamebox/physical_director.rb
 lib/gamebox/physical_level.rb
@@ -64,7 +64,7 @@ lib/gamebox/templates/template_app/Rakefile
 lib/gamebox/templates/template_app/config/boot.rb
 lib/gamebox/templates/template_app/config/environment.rb
 lib/gamebox/templates/template_app/config/game.yml
-lib/gamebox/templates/template_app/config/mode_level_config.yml
+lib/gamebox/templates/template_app/config/stage_config.yml
 lib/gamebox/templates/template_app/config/objects.yml
 lib/gamebox/templates/template_app/data/fonts/FONTS_GO_HERE
 lib/gamebox/templates/template_app/data/graphics/GRAPHICS_GO_HERE

@@ -1,8 +1,8 @@
 require 'inflector'
 require 'viewport'
-# Mode is a state that the game is in.  (ie intro mode, multiplayer mode,
-# single player mode).
-class Mode
+# Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
+# single player stage).
+class Stage
   extend Publisher
   can_fire_anything
 
@@ -68,14 +68,14 @@ class Mode
     end
     level.when :next_level do
       if @level_number == @levels.size-1
-        fire :next_mode
+        fire :next_stage
       else
         next_level
       end
     end
     level.when :prev_level do
       if @level_number == 0
-        fire :prev_mode
+        fire :prev_stage
       else
         prev_level
       end

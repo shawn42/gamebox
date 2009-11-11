@@ -33,7 +33,7 @@ class Nario < Actor
 
   attr_accessor :jump_timer
   def setup
-    mass = nario_body.mass
+    mass = nario_body.m
     @speed = mass * 0.6
     @jump_speed = 47*@speed
     @jump_timer = 0

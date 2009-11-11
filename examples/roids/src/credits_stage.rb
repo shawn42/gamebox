@@ -1,10 +1,10 @@
-require 'mode'
-class CreditsMode < Mode
+require 'stage'
+class CreditsStage < Stage
   def start
     @image = @resource_manager.load_image 'credits.png'
     i = @input_manager
     i.reg KeyPressed, :space do
-      fire :next_mode
+      fire :next_stage
     end
   end
 

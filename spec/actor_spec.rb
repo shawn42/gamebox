@@ -1,5 +1,6 @@
 require File.join(File.dirname(__FILE__),'helper')
 require 'actor'
+require 'behavior'
 
 describe 'A new actor' do
   before do
@@ -42,15 +43,15 @@ describe 'A new actor' do
     @james.instance_variable_get('@behaviors')[:smart].instance_variable_get('@opts').should == {:really=>true}
   end
 
+  it 'should maintain order of behaviors'
+
 end
-require 'behavior'
-class Smart < Behavior
-end
+class Cool < Behavior; end
+class Smart < Behavior; end
 class Coder < Actor
-  has_behavior :smart
+  has_behavior :smart, :cool
 end
-class Shawn < Coder
-end
+class Shawn < Coder; end
 class JamesKilton < Coder
   has_behavior :smart => {:really => true}
 end

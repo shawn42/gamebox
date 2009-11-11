@@ -200,7 +200,7 @@ module Inflector
     class_name_in_module.to_s.gsub(/^.*::/, '')
   end
 
-  # Create the name of a table like Rails does for models to table names. This method
+  # Create the name of a table like Rails does for stagels to table names. This method
   # uses the pluralize method on the last word in the string.
   #
   # Examples
@@ -211,7 +211,7 @@ module Inflector
     pluralize(underscore(class_name))
   end
 
-  # Create a class name from a table name like Rails does for table names to models.
+  # Create a class name from a table name like Rails does for table names to stagels.
   # Note that this returns a string and not a Class. (To convert to an actual class
   # follow classify with constantize.)
   #

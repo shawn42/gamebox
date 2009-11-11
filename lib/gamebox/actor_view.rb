@@ -1,7 +1,7 @@
 class ActorView
-  attr_accessor :actor, :mode, :layer, :parallax
-  def initialize(mode,actor)
-    @mode = mode
+  attr_accessor :actor, :stage, :layer, :parallax
+  def initialize(stage,actor)
+    @stage = stage
     @actor = actor
 
     @layer = 0
@@ -12,15 +12,15 @@ class ActorView
     end
 
     actor.when :remove_me do
-      @mode.unregister_drawable self
+      @stage.unregister_drawable self
     end
     
     actor.when :hide_me do
-      @mode.unregister_drawable self
+      @stage.unregister_drawable self
     end
     
     actor.when :show_me do
-      @mode.register_drawable self
+      @stage.register_drawable self
     end
     
     setup

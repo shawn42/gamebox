@@ -11,7 +11,7 @@ class Goomba < Actor
     :layered => {:layer => 2, :parallax => 1}
 
   def setup
-    mass = goomba_body.mass
+    mass = goomba_body.m
     @speed = mass * 0.6
 
     @max_speed = 299

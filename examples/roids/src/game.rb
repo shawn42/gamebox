@@ -4,7 +4,7 @@ class Game
     :stage_manager
 
   def setup
-    @stage_manager.change_mode_to :intro
+    @stage_manager.change_stage_to :intro
   end
 
   def update(time)

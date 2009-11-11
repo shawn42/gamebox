@@ -3,22 +3,22 @@ require 'graphical_actor_view'
 
 # ActorFactory is responsible for loading all Actors. It passes along required params such as 
 # level, input_manager, sound_manager, director, resource_manager. It also creates the ActorView 
-# associated with the Actor and registers it to the Mode be drawn. 
+# associated with the Actor and registers it to the Stage be drawn. 
 class ActorFactory
   constructor :input_manager, :sound_manager
 
   attr_accessor :stage_manager, :director
   
-  # Returns a hash of actor params {:model_klass=>k, :view_klass=>v}. This is for performance reasons.
+  # Returns a hash of actor params {:stagel_klass=>k, :view_klass=>v}. This is for performance reasons.
   def cached_actor_def(actor)
     @actor_cache ||= {}
     cached_actor = @actor_cache[actor]
     return cached_actor if cached_actor
 
     
-    model_klass_name = Inflector.camelize actor
+    stagel_klass_name = Inflector.camelize actor
     begin
-      model_klass = Object.const_get model_klass_name
+      stagel_klass = Object.const_get stagel_klass_name
     rescue NameError
       # not there yet
       begin
@@ -27,18 +27,18 @@ class ActorFactory
       rescue LoadError => ex
         # maybe its included somewhere else
       ensure
-        model_klass = Object.const_get model_klass_name
+        stagel_klass = Object.const_get stagel_klass_name
       end
     end
     
     begin
-      view_klass = Object.const_get model_klass_name+"View"
+      view_klass = Object.const_get stagel_klass_name+"View"
     rescue Exception => ex
       # hrm...
     end
     
     actor_def = {
-      :model_klass => model_klass,
+      :stagel_klass => stagel_klass,
       :view_klass => view_klass
     }
     @actor_cache[actor] = actor_def
@@ -58,18 +58,18 @@ class ActorFactory
     }
     merged_opts = basic_opts.merge(opts)
 
-    model = actor_def[:model_klass].new merged_opts 
+    stagel = actor_def[:stagel_klass].new merged_opts 
 
     view_klass = opts[:view]
     view_klass ||= actor_def[:view_klass]
     
-    if model.is? :animated or model.is? :graphical or model.is? :physical
+    if stagel.is? :animated or stagel.is? :graphical or stagel.is? :physical
       view_klass ||= GraphicalActorView
     end
-    view_klass.new @stage_manager.current_mode, model if view_klass
+    view_klass.new @stage_manager.current_stage, stagel if view_klass
     
-    model.show unless opts[:hide]
+    stagel.show unless opts[:hide]
 
-    return model
+    return stagel
   end
 end

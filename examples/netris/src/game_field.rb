@@ -32,7 +32,7 @@ class GameField < Actor
     @grid.when(:game_over) do
       puts "Game over man!"
       # TODO nice way to quit a game, or
-      # a menu system so we jump back into the menu mode
+      # a menu system so we jump back into the menu stage
       exit(0)
     end
 

@@ -31,8 +31,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 	|   |-- boot.rb
 	|   |-- environment.rb
 	|   |-- game.yml
-	|   |-- mode_level_config.yml
-	|   `-- objects.yml
+	|   `-- stage_config.yml
 	|-- data
 	|   |-- fonts
 	|   |   `-- FONTS_GO_HERE
@@ -40,14 +39,12 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 	|   |   `-- GRAPHICS_GO_HERE
 	|   |-- music
 	|   |   `-- MUSIC_GOES_HERE
-	|   |-- sound
 	|   `-- sounds
 	|       `-- SOUND_FX_GO_HERE
 	|-- doc
 	|   `-- README_FOR_APP
 	|-- lib
 	|   |-- code_statistics.rb
-	|   |-- diy.rb
 	|   `-- platform.rb
 	|-- script
 	|-- src
@@ -135,6 +132,6 @@ The animation will cycle through all the numbered png files for the current acti
 Animated and Updatable are just two behaviors available in Gamebox. Other include	graphical, layered, and physical. You can easily add your own game specific behaviors by extending Behavior. (see Wanderer in rague example).
 
 == Levels
-== Modes
+== Stages
 == Physics
 == SVG Levels

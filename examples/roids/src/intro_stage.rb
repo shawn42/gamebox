@@ -1,10 +1,10 @@
-require 'mode'
-class IntroMode < Mode
+require 'stage'
+class IntroStage < Stage
   def start
     @image = @resource_manager.load_image 'intro.png'
     i = @input_manager
     i.reg KeyPressed, :space do
-      fire :next_mode
+      fire :next_stage
     end
   end
 
