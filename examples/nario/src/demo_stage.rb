@@ -1,11 +1,12 @@
-require 'physical_level'
+require 'physical_stage'
 
-class DemoLevel < PhysicalLevel
+class DemoStage < PhysicalStage
   
   def setup
+    super
     sound_manager.play_music :overworld
 
-    @svg_doc = resource_manager.load_svg opts[:file]
+    @svg_doc = resource_manager.load_svg @opts[:file]
       
     space.gravity = vec2(0,1800)
     space.iterations = 10
@@ -13,7 +14,7 @@ class DemoLevel < PhysicalLevel
     @score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 10, :y => 660
 
-    dynamic_actors = create_actors_from_svg
+    dynamic_actors = create_actors_from_svg @svg_doc
 
     create_actor :svg_actor, :name => :ground, :svg_doc => @svg_doc
     create_actor :svg_actor, :name => :death_zone, :svg_doc => @svg_doc, :hide => true
@@ -37,7 +38,7 @@ class DemoLevel < PhysicalLevel
         pause_physics
         Thread.new do
           sleep 4
-          fire :restart_level
+          fire :restart_stage
         end
       end
     end
@@ -51,7 +52,7 @@ class DemoLevel < PhysicalLevel
           pause_physics
           Thread.new do
             sleep 4
-            fire :restart_level
+            fire :restart_stage
           end
         end
       end
@@ -77,10 +78,10 @@ class DemoLevel < PhysicalLevel
       @score += @score.score if @nario.y < flag.y
       puts "YOU WIN! #{@score.score}"
       sound_manager.stop_music :overworld
-      sound_manager.play_sound :finish_level
+      sound_manager.play_sound :finish_stage
       # maybe pause phsyics and game loop?
       sleep 6
-      fire :next_level
+      fire :next_stage
     end
 
     space.add_collision_func([:ground,:power_up_block], :nario_feet) do |ground_like_obj,nf|
@@ -96,15 +97,21 @@ class DemoLevel < PhysicalLevel
       end
     end
 
-    @nario.instance_variable_get('@input_manager').reg KeyPressed, :p do
+    input_manager.reg KeyPressed, :p do
       p viewport.debug
       p @nario.debug
     end
 
+    restart_physics
   end
 
-  def draw(target,x_off,y_off)
+  def stop(*args)
+    input_manager.unreg KeyPressed, :p
+  end
+
+  def draw(target)
     target.fill [25,25,25,255]
+    super
   end
 end
 

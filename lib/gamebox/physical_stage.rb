@@ -1,29 +1,26 @@
-# Levels represent on level of game play.  Some games will likely have only one
-# level. Level is responsible for loading its background, props, and directors.
-# PhysicalLevel adds a physics space to the Level
-require 'level'
+# Stage represent on level of game play.  Some games will likely have only one
+# stage. Stage is responsible for loading its background, props, and directors.
+# PhysicalStage adds a physics space to the Stage
+require 'stage'
 require 'physics'
 require 'physical_director'
-class PhysicalLevel < Level
+class PhysicalStage < Stage
   
   attr_accessor :space
 
-  def initialize(actor_factory, resource_manager, sound_manager, input_manager, viewport, opts={}) 
-    @actor_factory = actor_factory
-    @director = PhysicalDirector.new
-    @actor_factory.director = @director
-
-    @resource_manager = resource_manager
-    @sound_manager = sound_manager
-    @input_manager = input_manager
-    @viewport = viewport
-    @opts = opts
-
+  def setup
+    super
+    setup_space
+  end
+  
+  def setup_space
     @space = Space.new
     @space.iterations = 20
     @space.elastic_iterations = 5
+  end
 
-    setup
+  def create_director
+    PhysicalDirector.new
   end
 
   PHYSICS_STEP = 25.0

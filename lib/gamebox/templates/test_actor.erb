@@ -3,7 +3,7 @@ require '<%= Inflector.underscore @actor_name %>'
 
 describe 'a new <%= @actor_name %>' do
   before do 
-    opts = {:level=>"level", :input=>"input", :resources=>"resource"}
+    opts = {:stage=>"stage", :input=>"input", :resources=>"resource"}
     @test_me = <%= @actor_name %>.new opts
   end
 

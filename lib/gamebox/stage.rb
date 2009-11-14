@@ -1,4 +1,6 @@
 require 'inflector'
+require 'publisher'
+require 'director'
 require 'viewport'
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
@@ -6,107 +8,101 @@ class Stage
   extend Publisher
   can_fire_anything
 
-  attr_accessor :level, :drawables, :resource_manager, :sound_manager
-  def initialize(input_manager, actor_factory, resource_manager, sound_manager, config_manager, levels)
+  attr_accessor :drawables, :resource_manager, :sound_manager,
+    :director, :opts, :viewport, :input_manager
+
+  def initialize(input_manager, actor_factory, resource_manager, sound_manager, config_manager, opts)
     @input_manager = input_manager
-    @actor_factory = actor_factory
+
     @resource_manager = resource_manager
     @sound_manager = sound_manager
+
     @config_manager = config_manager
     res = @config_manager[:screen_resolution]
-
     @viewport = Viewport.new res[0], res[1]
-    @drawables = {}
-    @levels = levels
+
+    @actor_factory = actor_factory
+    @director = create_director
+    @actor_factory.director = @director
+
+    @opts = opts
+
     setup
   end
 
+  def create_director
+    Director.new
+  end
+
   def setup
-  end
-
-  def start
-    @level_number = 0
     clear_drawables
-    @level = build_level @levels[@level_number], nil
   end
 
-  def next_level
-    @level_number += 1
-    clear_drawables
-    @level = build_level @levels[@level_number], @level
+  def create_actor(type, args={})
+    @actor_factory.build type, self, args
   end
+  alias :spawn :create_actor 
 
-  def prev_level
-    @level_number -= 1
-    clear_drawables
-    @level = build_level @levels[@level_number], @level
-  end
+  # extract all the params from a node that are needed to construct an actor
+  def create_actors_from_svg svg_doc
+    float_keys = ["x","y"]
+    dynamic_actors ||= {}
+    layer = svg_doc.find_group_by_label("actors")
 
-  def restart_level
-    clear_drawables
-    @level = build_level @levels[@level_number], @level
-  end
+    unless layer.nil?
+      # each image in the layer is an actor
+      layer.images.each do |actor_def|
+        klass = actor_def.game_class.to_sym
+        handle = actor_def.game_handle
+        new_opts = {}
+        actor_def.node.attributes.each do |k,v|
+          v = v.to_f if float_keys.include? k
+          new_opts[k.to_sym] = v
+        end
 
-  def stop
-  end
-
-  def build_level(level_def, prev_level_instance)
-    level_sym = level_def.keys.first
-    begin
-      require level_sym.to_s+"_level"
-    rescue LoadError => ex
-      puts "Load error: #{ex.inspect}"
-      puts ex.backtrace.join("\n")
-      # maybe we have included it elsewhere
-    end
-    level_klass = ObjectSpace.const_get(Inflector.camelize(level_sym.to_s+"_level"))
-    full_level_def = { :prev_level => prev_level_instance }
-    full_level_def.merge! level_def[level_sym] if level_def[level_sym].is_a? Hash
-    level = level_klass.new @actor_factory, @resource_manager, @sound_manager, @input_manager, @viewport, full_level_def
-    level.when :restart_level do
-      restart_level
-    end
-    level.when :next_level do
-      if @level_number == @levels.size-1
-        fire :next_stage
-      else
-        next_level
+        actor = create_actor klass, new_opts
+        dynamic_actors[handle.to_sym] = actor if handle
       end
     end
-    level.when :prev_level do
-      if @level_number == 0
-        fire :prev_stage
-      else
-        prev_level
-      end
-    end
+    alias :spawn_from_svg :create_actors_from_svg
 
-    level.when :move_layer do |*args|
-      move_layer *args
-    end
-
-    level.start
-    level
+    dynamic_actors
   end
 
   def update(time)
-    @level.update time if @level
+    @director.update time
     @viewport.update time
   end
 
-  def draw(target)
-    @level.draw target, @viewport.x_offset, @viewport.y_offset
+  def start(*args)
+  end
 
-#    puts "drawing................."
-    for parallax_layer in @drawables.keys.sort.reverse
-#      puts "drawing pl #{parallax_layer}"
+  def stop(*args)
+  end
+
+  def restart(*args)
+    stop *args
+
+    setup
+
+    start *args
+  end
+
+
+  def draw(target)
+    @drawables.keys.sort.reverse.each do |parallax_layer|
+
       drawables_on_parallax_layer = @drawables[parallax_layer]
-      for layer in drawables_on_parallax_layer.keys.sort
-#        puts "drawing l #{layer}"
-        trans_x = @viewport.x_offset parallax_layer
-        trans_y = @viewport.y_offset parallax_layer
-        for drawable in drawables_on_parallax_layer[layer]
-          drawable.draw target, trans_x, trans_y 
+
+      unless drawables_on_parallax_layer.nil?
+        drawables_on_parallax_layer.keys.sort.each do |layer|
+
+          trans_x = @viewport.x_offset parallax_layer
+          trans_y = @viewport.y_offset parallax_layer
+
+          drawables_on_parallax_layer[layer].each do |drawable|
+            drawable.draw target, trans_x, trans_y 
+          end
         end
       end
     end

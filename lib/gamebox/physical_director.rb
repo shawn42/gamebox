@@ -12,6 +12,6 @@ class PhysicalDirector < Director
   end
 
   def actor_removed(act)
-    act.level.unregister_physical_object act if act.is? :physical
+    act.stage.unregister_physical_object act if act.is? :physical
   end
 end

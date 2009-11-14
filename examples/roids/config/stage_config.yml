@@ -1,10 +1,12 @@
 :stages: 
   - :intro: 
-  - :default: 
-    - :demo:
-       :rocks: 3
-    - :demo:
-       :rocks: 5
-    - :demo:
-       :rocks: 7
+  - :demo1:
+     :class: :demo
+     :rocks: 3
+  - :demo2:
+     :class: :demo
+     :rocks: 5
+  - :demo3:
+     :class: :demo
+     :rocks: 7
   - :credits: 

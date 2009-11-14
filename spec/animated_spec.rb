@@ -5,7 +5,7 @@ describe 'A new animated behavior' do
   before do
     @rm = stub(:load_animation_set => ['1.png_img_obj','2.png_img_obj'])
 
-    opts = {:level=>"level", :input=>"input", :resources=>@rm}
+    opts = {:stage=>"stage", :input=>"input", :resources=>@rm}
     @actor = Actor.new opts
     @animated = Animated.new @actor
   end

@@ -1,6 +1,6 @@
 class ActorView
   attr_accessor :actor, :stage, :layer, :parallax
-  def initialize(stage,actor)
+  def initialize(stage, actor)
     @stage = stage
     @actor = actor
 

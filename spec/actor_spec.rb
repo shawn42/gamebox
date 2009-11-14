@@ -4,7 +4,7 @@ require 'behavior'
 
 describe 'A new actor' do
   before do
-    opts = {:level=>"level", :input=>"input", :resources=>"resource"}
+    opts = {:stage=>"stage", :input=>"input", :resources=>"resource"}
     @actor = Actor.new opts
   end
 
@@ -18,7 +18,7 @@ describe 'A new actor' do
   end
 
   it 'should have atts set' do
-    @actor.level.should == "level" 
+    @actor.stage.should == "stage" 
     @actor.input_manager.should == "input" 
     @actor.resource_manager.should == "resource" 
     @actor.behaviors.size.should equal(0)

@@ -1,8 +1,9 @@
-require 'physical_level'
+require 'physical_stage'
 require 'walls'
 
-class PlaygroundLevel < PhysicalLevel
+class PlaygroundStage < PhysicalStage
   def setup
+    super
     i = @input_manager
     @shooter = create_actor :box_shooter, :x => 30, :y => 700
 
@@ -57,8 +58,9 @@ class PlaygroundLevel < PhysicalLevel
     space.elastic_iterations = 3
   end
 
-  def draw(target, x_off, y_off)
+  def draw(target)
     target.fill [25,25,25,255]
+    super
   end
 
   def update(delta)

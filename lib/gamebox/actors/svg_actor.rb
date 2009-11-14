@@ -32,7 +32,7 @@ class SvgActor < Actor
       seg.u = friction
       seg.group = :terrain
       @segments << [a,b]
-      @level.space.add_static_shape(seg)
+      @stage.space.add_static_shape(seg)
     end
   end
 end

@@ -1,7 +1,8 @@
-require 'level'
+require 'stage'
 require 'ftor'
-class DemoLevel < Level
+class DemoStage < Stage
   def setup
+    super
     @map = create_actor :mappy, :map_filenames => 'map.txt,map2.txt'
     @map.when :move_layer do |*args|
       fire :move_layer, *args
@@ -26,7 +27,7 @@ class DemoLevel < Level
   end
 
   def update(time_delta)
-    super time_delta
+    super 
 
     collected = @major_ruby.collect_gems @map.pretty_gems
     @map.remove collected
@@ -36,8 +37,9 @@ class DemoLevel < Level
     fire :next_level if @map.finished?
   end
 
-  def draw(target, x_off, y_off)
+  def draw(target)
     target.fill [25,25,25,255]
+    super
   end
 end
 

@@ -1,3 +1,2 @@
 :stages: 
-  - :default: 
-    - :playground:
+  - :playground:

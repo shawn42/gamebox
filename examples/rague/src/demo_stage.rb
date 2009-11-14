@@ -1,9 +1,10 @@
-require 'level'
+require 'stage'
 require 'map'
 require 'map_loader'
 require 'tile'
-class DemoLevel < Level
+class DemoStage < Stage
   def setup
+    super
     @map = create_actor :map
     map_defs = resource_manager.load_config 'map_defs'
     map_loader = MapLoader.new map_defs
@@ -59,8 +60,9 @@ class DemoLevel < Level
     
   end
 
-  def draw(target, x_off, y_off)
+  def draw(target)
     target.fill [0,0,0,255]
+    super
   end
   
   def give_everyone_their_turn

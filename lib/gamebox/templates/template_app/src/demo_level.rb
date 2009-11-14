@@ -1,6 +1,6 @@
-require 'level'
+require 'stage'
 require 'ftor'
-class DemoLevel < Level
+class DemoStage < Stage
   def setup
     @my_actor = create_actor :my_actor
     @my_actor.x = 10

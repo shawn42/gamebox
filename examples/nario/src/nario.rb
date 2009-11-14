@@ -77,7 +77,7 @@ class Nario < Actor
 
   def moving_left?;@moving_left;end
   def moving_right?;@moving_right;end
-  def jumping?;@jump_timer > 0;end
+  def jumping?;@jump_timer && @jump_timer > 0;end
   def grounded?;@grounded;end
   def update(time)
     move_left time if moving_left? and not jumping?

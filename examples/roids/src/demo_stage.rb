@@ -1,8 +1,9 @@
-require 'physical_level'
+require 'physical_stage'
 
-class DemoLevel < PhysicalLevel
+class DemoStage < PhysicalStage
   attr_accessor :score
   def setup
+    super
     @sound_manager.play_music :roids
 
     space.elastic_iterations = 4
@@ -15,8 +16,8 @@ class DemoLevel < PhysicalLevel
     @score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600
 
-    prev_level = @opts[:prev_level]
-    @score += prev_level.score.score if prev_level
+    prev_stage = @opts[:prev_stage]
+    @score += prev_stage.score.score if prev_stage
 
     @rocks = []
     opts[:rocks].times do
@@ -41,7 +42,7 @@ class DemoLevel < PhysicalLevel
         if shippy.alive?
           explosion = create_actor :particle_system, :x => shippy.x, :y => shippy.y
           explosion.when :remove_me do
-            fire :prev_level
+            fire :prev_stage
           end
           shippy.remove_self 
         end
@@ -83,24 +84,27 @@ class DemoLevel < PhysicalLevel
   end
 
   def update(time)
+    super
     return unless running?
     update_physics time
     director.update time
 
     if @rocks.empty?
       @ship.when :remove_me do
-        fire :next_level
+        fire :next_stage
       end
       @ship.remove_self
     end
   end
 
-  def draw(target,x_off,y_off)
+  def draw(target)
 #    target.fill_gradient
     target.fill [25,25,25,255]
-    for star in @stars
-      target.draw_circle_s([star.x+x_off,star.y+y_off],1,[255,255,255,255])
-    end
+    #    TODO make stars an Actor
+#    for star in @stars
+#      target.draw_circle_s([star.x+x_off,star.y+y_off],1,[255,255,255,255])
+#    end
+    super
   end
 end
 

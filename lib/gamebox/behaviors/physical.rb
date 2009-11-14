@@ -94,14 +94,14 @@ class Physical < Behavior
 
     physical_obj = self
 
-    if @actor.level.respond_to? :register_physical_object
+    if @actor.stage.respond_to? :register_physical_object
       if @opts[:fixed]
-        @actor.level.register_physical_object physical_obj, true
+        @actor.stage.register_physical_object physical_obj, true
       else
-        @actor.level.register_physical_object physical_obj
+        @actor.stage.register_physical_object physical_obj
       end
     else
-      raise "physical actor in a non-physical level!"
+      raise "physical actor in a non-physical stage!"
     end
 
     # write code here to keep physics and x,y of actor in sync
@@ -138,7 +138,7 @@ class Physical < Behavior
         end
         define_method :warp do |new_p|
           physical_obj.body.p = new_p
-          @level.space.rehash_static if physical_obj.opts[:fixed]
+          @stage.space.rehash_static if physical_obj.opts[:fixed]
         end
         define_method :segment_groups do 
           physical_obj.segments_groups

@@ -12,29 +12,48 @@ class StageManager
     stages = @resource_manager.load_config('stage_config')[:stages]
 
     @stage_names = []
-    for stage_hash in stages
-      for stage, levels in stage_hash
-        @stage_names << stage
-        stage_klass_name = "Stage"
-        unless stage == :default
-          stage_klass_name = Inflector.camelize stage.to_s+"Stage"
-        end
-        begin
-          require stage.to_s+"_stage"
-        rescue LoadError
-          # hope it's defined somewhere else
-        end
-        stage_klass = ObjectSpace.const_get stage_klass_name
-        stage_instance = stage_klass.new(@input_manager, @actor_factory, @resource_manager, @sound_manager, @config_manager, levels)
-        stage_instance.when :next_stage do
-          next_stage
-        end
-        stage_instance.when :prev_stage do
-          prev_stage
-        end
-        add_stage stage, stage_instance
-      end
+    @stage_opts = []
+    stages.each do |stage|
+      stage_name = stage.keys.first
+      opts = stage.values.first
+      @stage_names << stage_name
+      opts ||= {}
+      @stage_opts << opts
     end
+  end
+  
+  def lookup_stage_class(stage_name)
+    index = @stage_names.index stage_name
+    opts = @stage_opts[index]
+
+    name = opts[:class]
+    name ||= stage_name
+    stage_klass_name ||= Inflector.camelize name.to_s+"Stage"
+
+    begin
+      require name.to_s+"_stage"
+    rescue LoadError => ex
+      STDERR.puts ex
+      # TODO hrm.. should this get logged
+      # hope it's defined somewhere else
+    end
+    stage_klass = ObjectSpace.const_get stage_klass_name
+  end
+
+  def create_stage(name, opts)
+    stage_instance = lookup_stage_class(name).new(@input_manager, @actor_factory, @resource_manager, @sound_manager, @config_manager, opts)
+
+    stage_instance.when :next_stage do |*args|
+      next_stage *args
+    end
+    stage_instance.when :prev_stage do |*args|
+      prev_stage *args
+    end
+    stage_instance.when :restart_stage do |*args|
+      restart_stage *args
+    end
+    
+    stage_instance
   end
 
   def next_stage
@@ -43,6 +62,7 @@ class StageManager
       puts "last stage, exiting"
       exit
     end
+    @stages.delete @stage_names[index+1]
     change_stage_to @stage_names[index+1]
   end
 
@@ -52,13 +72,15 @@ class StageManager
       puts "first stage, exiting"
       exit
     end
+    @stages.delete @stage_names[index-1]
     change_stage_to @stage_names[index-1]
   end
 
-  def add_stage(stage_sym, stage_instance)
-    @stages[stage_sym] = stage_instance
-    @stage = stage_sym unless @stage
-    stage_instance
+  def restart_stage(*args)
+    current_stage.stop *args
+    index = @stage_names.index @stage
+    @stages.delete @stage_names[index]
+    change_stage_to @stage, *args
   end
 
   def change_stage_to(stage, *args)
@@ -67,6 +89,10 @@ class StageManager
       @prev_stage.stop 
     end
     @stage = stage
+    @stage_args = args
+    unless @stages[@stage]
+      @stages[@stage] = create_stage(@stage, @stage_opts[@stage_names.index(@stage)])
+    end
     @stages[@stage].start *args
   end
 

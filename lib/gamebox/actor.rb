@@ -1,12 +1,12 @@
 require 'publisher'
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them. Such as :physical or :animated.
-# They are created and hooked up to their optional View class in Level#create_actor.
+# They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
   extend Publisher
   can_fire_anything
   
-  attr_accessor :behaviors, :x, :y, :level, :input_manager,
+  attr_accessor :behaviors, :x, :y, :stage, :input_manager,
     :resource_manager, :alive, :opts, :sound_manager, :visible,
     :director
 
@@ -17,7 +17,7 @@ class Actor
     @y = @opts[:y]
     @x ||= 0
     @y ||= 0
-    @level = opts[:level]
+    @stage = opts[:stage]
     @input_manager = opts[:input]
     @sound_manager = opts[:sound]
     @resource_manager = opts[:resources]
@@ -109,7 +109,7 @@ class Actor
 
   # Creates a new actor and returns it. (This actor will automatically be added to the Director.
   def spawn(type, args={})
-    @level.create_actor type, args
+    @stage.create_actor type, args
   end
 
   # Plays a sound via the SoundManager.  See SoundManager for

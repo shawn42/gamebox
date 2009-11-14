@@ -10,9 +10,9 @@ end
 
 describe 'A new physical behavior' do
   before do
-    @level = stub(:load_animation_set => ['1.png_img_obj','2.png_img_obj'],:register_physical_object => true)
+    @stage = stub(:load_animation_set => ['1.png_img_obj','2.png_img_obj'],:register_physical_object => true)
 
-    opts = {:level=>@level, :input=>"input", :resources=>"rm"}
+    opts = {:stage=>@stage, :input=>"input", :resources=>"rm"}
     @actor = CircleActor.new opts
     @physical = @actor.physical
   end

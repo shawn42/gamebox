@@ -13,8 +13,8 @@ require 'publisher'
 #   ...
 # end
 #
-# Don't forget to unreg for these things between levels and stages, 
-# since the InputManager is shared across levels and stages.
+# Don't forget to unreg for these things between stages, 
+# since the InputManager is shared across stages.
 class InputManager
   extend Publisher
   can_fire :key_up, :event_received

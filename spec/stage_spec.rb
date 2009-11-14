@@ -6,8 +6,9 @@ describe 'A new stage' do
 
   before do
     @config = {:screen_resolution => [800,600] }
-    @stage = Stage.new :input_manager, :actor_factory, 
-      :resource_manager, :sound_manager, @config, :levels
+    @actor_factory = stub(:actor_factory, :director= => nil)
+    @stage = Stage.new :input_manager, @actor_factory, 
+      :resource_manager, :sound_manager, @config, {}
   end
 
   it 'should construct' do

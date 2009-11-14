@@ -4,7 +4,7 @@ class Game
     :stage_manager
 
   def setup
-    @stage_manager.change_stage_to :default
+    @stage_manager.change_stage_to :demo
     @input_manager.framerate = 20
   end
 
