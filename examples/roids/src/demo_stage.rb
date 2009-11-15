@@ -73,9 +73,17 @@ class DemoStage < PhysicalStage
 
     @stars = []
     20.times { @stars << vec2(rand(@width),rand(@height)) }
+
+    @curtain = create_actor :curtain, :dir => :up, 
+      :duration => 4000
+
+    @curtain.when :curtain_up do
+      curtain_up
+    end
+
   end
 
-  def start
+  def curtain_up
     @running = true
   end
 
@@ -84,6 +92,12 @@ class DemoStage < PhysicalStage
   end
 
   def update(time)
+    # TODO where to put this?
+    # actors can be :pausable 
+    # directors have two lists and not update the pausable list
+    # if paused
+    @curtain.update time if @curtain
+
     super
     return unless running?
     update_physics time

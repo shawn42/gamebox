@@ -74,20 +74,19 @@ class Stage
     @viewport.update time
   end
 
-  def start(*args)
+  def curtain_raising(*args)
+    curtain_up *args
   end
 
-  def stop(*args)
+  def curtain_dropping(*args)
+    curtain_down *args
   end
 
-  def restart(*args)
-    stop *args
-
-    setup
-
-    start *args
+  def curtain_up(*args)
   end
 
+  def curtain_down(*args)
+  end
 
   def draw(target)
     @drawables.keys.sort.reverse.each do |parallax_layer|

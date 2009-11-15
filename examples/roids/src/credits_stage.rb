@@ -1,6 +1,6 @@
 require 'stage'
 class CreditsStage < Stage
-  def start
+  def curtain_up
     @image = @resource_manager.load_image 'credits.png'
     i = @input_manager
     i.reg KeyPressed, :space do
@@ -8,7 +8,7 @@ class CreditsStage < Stage
     end
   end
 
-  def stop
+  def curtain_down
     fire :remove_me
   end
 

@@ -77,7 +77,7 @@ class StageManager
   end
 
   def restart_stage(*args)
-    current_stage.stop *args
+    current_stage.curtain_dropping *args
     index = @stage_names.index @stage
     @stages.delete @stage_names[index]
     change_stage_to @stage, *args
@@ -86,14 +86,14 @@ class StageManager
   def change_stage_to(stage, *args)
     @prev_stage = @stages[@stage]
     unless @prev_stage.nil?
-      @prev_stage.stop 
+      @prev_stage.curtain_dropping *args
     end
     @stage = stage
     @stage_args = args
     unless @stages[@stage]
       @stages[@stage] = create_stage(@stage, @stage_opts[@stage_names.index(@stage)])
     end
-    @stages[@stage].start *args
+    @stages[@stage].curtain_raising *args
   end
 
   def current_stage

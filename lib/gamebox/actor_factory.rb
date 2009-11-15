@@ -36,7 +36,6 @@ class ActorFactory
     rescue Exception => ex
       # hrm...
     end
-    
     actor_def = {
       :model_klass => model_klass,
       :view_klass => view_klass
@@ -66,6 +65,7 @@ class ActorFactory
     if model.is? :animated or model.is? :graphical or model.is? :physical
       view_klass ||= GraphicalActorView
     end
+    
     view_klass.new stage, model if view_klass
     
     model.show unless opts[:hide]

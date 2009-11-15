@@ -1,14 +1,19 @@
 require 'stage'
 class IntroStage < Stage
-  def start
+  def curtain_up
+    # TODO change to use actor
     @image = @resource_manager.load_image 'intro.png'
     i = @input_manager
     i.reg KeyPressed, :space do
       fire :next_stage
     end
+
+    i.reg MousePressed do
+      fire :next_stage
+    end
   end
 
-  def stop
+  def curtain_down
     fire :remove_me
   end
 
