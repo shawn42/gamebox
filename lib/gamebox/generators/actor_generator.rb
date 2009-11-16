@@ -28,13 +28,13 @@ class ActorGenerator
   end
 
   def build_test_actor
-    template_file = File.open(File.join(GAMEBOX_PATH,'templates','test_actor.erb'))
+    template_file = File.open(File.join(GAMEBOX_PATH,'templates','actor_spec.erb'))
     template_contents = template_file.readlines.join
     actor_template = ERB.new(template_contents)
 
     result = actor_template.result @bind
 
-    out_file = File.join(APP_ROOT,'test','test_'+Inflector.underscore(@actor_name)+".rb")
+    out_file = File.join(APP_ROOT,'spec',Inflector.underscore(@actor_name)+"_spec.rb")
     raise "File exists [#{out_file}]" if File.exists? out_file
     File.open(out_file,"w+") do |f|
       f.write result
