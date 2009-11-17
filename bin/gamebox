@@ -7,6 +7,7 @@ require File.dirname(__FILE__) + '/../lib/gamebox/version'
 def print_version
   puts "Gamebox #{Gamebox::VERSION::STRING}"
 end
+
 def print_usage
   print_version
   puts "Usage:"
@@ -69,5 +70,10 @@ Dir.glob("**/*").each do |file|
     fklass.install file, new_file
     fklass.chmod 0755, new_file if file =~ /script/
   end
+end
+
+new_file = TARGET_DIR + "/config/gamebox_generator_version.yml"
+File.open(new_file,"w+") do |f|
+  f.write Gamebox::VERSION::ARRAY.to_yaml
 end
 

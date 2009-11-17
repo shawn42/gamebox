@@ -4,7 +4,8 @@ module Gamebox
     MINOR = 0
     TINY  = 7
 
-    STRING = [MAJOR, MINOR, TINY].join('.')
+    ARRAY = [MAJOR, MINOR, TINY]
+    STRING = ARRAY.join('.')
   end
 end
 
