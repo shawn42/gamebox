@@ -4,5 +4,6 @@ require 'rubygems'
 
 app_root = File.join(File.dirname(__FILE__),'..')
 $: << app_root
-require 'config/environment'
+$: << File.join(app_root,'config')
+require 'environment'
 require 'gamebox_generator'
