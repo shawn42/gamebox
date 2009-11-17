@@ -4,9 +4,7 @@ class Game
     :stage_manager
 
   def setup
-#    @sound_manager.play :current_rider
-
-    @stage_manager.change_stage_to :default
+    @stage_manager.change_stage_to :demo
   end
 
   def update(time)
