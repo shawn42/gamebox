@@ -38,6 +38,7 @@ lib/gamebox/ftor.rb
 lib/gamebox/gamebox_application.rb
 lib/gamebox/gamebox_generator.rb
 lib/gamebox/generators/actor_generator.rb
+lib/gamebox/generators/view_generator.rb
 lib/gamebox/input_manager.rb
 lib/gamebox/lib/aliasing.rb
 lib/gamebox/lib/diy.rb
@@ -60,6 +61,9 @@ lib/gamebox/sound_manager.rb
 lib/gamebox/svg_document.rb
 lib/gamebox/tasks/gamebox_tasks.rb
 lib/gamebox/templates/actor.erb
+lib/gamebox/templates/actor_spec.erb
+lib/gamebox/templates/actor_view.erb
+lib/gamebox/templates/actor_view_spec.erb
 lib/gamebox/templates/template_app/README
 lib/gamebox/templates/template_app/Rakefile
 lib/gamebox/templates/template_app/config/boot.rb
@@ -79,7 +83,6 @@ lib/gamebox/templates/template_app/src/demo_stage.rb
 lib/gamebox/templates/template_app/src/game.rb
 lib/gamebox/templates/template_app/src/my_actor.rb
 lib/gamebox/templates/template_app/spec/helper.rb
-lib/gamebox/templates/actor_spec.erb
 lib/gamebox/version.rb
 lib/gamebox/viewport.rb
 lib/gamebox/views/graphical_actor_view.rb
