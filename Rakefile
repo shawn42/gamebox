@@ -1,25 +1,26 @@
-require 'rubygems'
-gem 'hoe', '>= 2.3.0'
-require 'hoe'
-
-require File.dirname(__FILE__)+'/lib/gamebox/version'
-Hoe.spec 'gamebox' do
-  developer('Shawn Anderson', 'shawn42@gmail.com')
-  developer('Jason Roelofs', 'jameskilton@gmail.com')
-  developer('Karlin Fox', 'karlin.fox@gmail.com')
-  description = "Framework for building and distributing games using Rubygame"
-  email = 'shawn42@gmail.com'
-  summary = "Framework for building and distributing games using Rubygame"
-  url = "http://shawn42.github.com/gamebox"
-  self.version = Gamebox::VERSION::STRING
-  changes = paragraphs_of('History.txt', 12..13).join("\n\n")
-  extra_deps << ['constructor']
-  extra_deps << ['publisher']
-  extra_deps << ['rspec']
-  if extra_rdoc_files
-    extra_rdoc_files << 'docs/getting_started.rdoc' 
+begin
+  require 'jeweler'
+  require File.dirname(__FILE__)+'/lib/gamebox/version'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "gamebox"
+    gem.executables = "gamebox"
+    gem.rubyforge_project = "gamebox"
+    gem.summary = %Q{Framework for building and distributing games using Rubygame}
+    gem.description = %Q{Framework for building and distributing games using Rubygame}
+    gem.email = "shawn42@gmail.com"
+    gem.homepage = "http://shawn42.github.com/gamebox"
+    gem.authors = ["Shawn Anderson","Jason Roelofs","Karlin Fox"]
+    gem.add_development_dependency "rspec"
+    gem.add_development_dependency "jeweler"
+    gem.add_dependency 'constructor'
+    gem.add_dependency 'publisher'
+    gem.files.exclude 'examples'
+    gem.test_files = FileList['{spec,test}/**/*.rb']
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
-  remote_rdoc_dir = ' ' # Release to root
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
 STATS_DIRECTORIES = [
@@ -34,9 +35,10 @@ end
 
 require 'spec/rake/spectask'
 desc "Run all rspecs"
-Spec::Rake::SpecTask.new('rspec') do |t|
+Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList['spec/*_spec.rb']
 end
+task :default => :spec
 
 desc "Run rcov rspecs"
 Spec::Rake::SpecTask.new('rcov_rspec') do |t|
@@ -44,6 +46,5 @@ Spec::Rake::SpecTask.new('rcov_rspec') do |t|
   t.rcov = true
   t.rcov_opts = ['--exclude', 'examples']
 end
-task :default => :rspec
 
 # vim: syntax=Ruby
