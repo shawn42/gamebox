@@ -2,3 +2,4 @@ pkg
 *.swp
 *.log
 doc
+coverage

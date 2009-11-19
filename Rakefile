@@ -37,6 +37,13 @@ desc "Run all rspecs"
 Spec::Rake::SpecTask.new('rspec') do |t|
   t.spec_files = FileList['spec/*_spec.rb']
 end
+
+desc "Run rcov rspecs"
+Spec::Rake::SpecTask.new('rcov_rspec') do |t|
+  t.spec_files = FileList['spec/*_spec.rb']
+  t.rcov = true
+  t.rcov_opts = ['--exclude', 'examples']
+end
 task :default => :rspec
 
 # vim: syntax=Ruby
