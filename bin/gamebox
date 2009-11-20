@@ -57,7 +57,7 @@ Dir.mkdir(TARGET_DIR + "/doc")
 Dir.mkdir(TARGET_DIR + "/lib")
 Dir.mkdir(TARGET_DIR + "/script")
 Dir.mkdir(TARGET_DIR + "/src")
-Dir.mkdir(TARGET_DIR + "/test")
+Dir.mkdir(TARGET_DIR + "/spec")
 
 Dir.chdir(SOURCE_DIR + "/template_app")
 Dir.glob("**/*").each do |file|
