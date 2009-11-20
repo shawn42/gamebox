@@ -12,6 +12,7 @@ begin
     gem.authors = ["Shawn Anderson","Jason Roelofs","Karlin Fox"]
     gem.add_development_dependency "rspec"
     gem.add_development_dependency "jeweler"
+    gem.add_dependency 'rubygame'
     gem.add_dependency 'constructor'
     gem.add_dependency 'publisher'
     gem.files.exclude 'examples'
