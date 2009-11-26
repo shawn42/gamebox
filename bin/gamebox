@@ -51,7 +51,7 @@ Dir.mkdir(TARGET_DIR) unless File.exist?(TARGET_DIR) && File.directory?(TARGET_D
 Dir.mkdir(TARGET_DIR + "/config")
 Dir.mkdir(TARGET_DIR + "/data")
 Dir.mkdir(TARGET_DIR + "/data/graphics")
-Dir.mkdir(TARGET_DIR + "/data/sound")
+Dir.mkdir(TARGET_DIR + "/data/sounds")
 Dir.mkdir(TARGET_DIR + "/data/music")
 Dir.mkdir(TARGET_DIR + "/doc")
 Dir.mkdir(TARGET_DIR + "/lib")
