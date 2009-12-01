@@ -4,7 +4,9 @@ class DemoStage < PhysicalStage
   attr_accessor :score
   def setup
     super
-    @sound_manager.play_music :roids
+    sound_manager.play_music :roids
+
+    create_actor :starry_night, :width => viewport.width, :height => viewport.height
 
     space.elastic_iterations = 4
 
@@ -37,7 +39,7 @@ class DemoStage < PhysicalStage
     space.add_collision_func(:rock, :ship) do |rock, ship|
       shippy = director.find_physical_obj ship
       unless shippy.invincible?
-        @sound_manager.play_sound :implosion
+        sound_manager.play_sound :implosion
 
         if shippy.alive?
           explosion = create_actor :particle_system, :x => shippy.x, :y => shippy.y
