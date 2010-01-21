@@ -42,10 +42,8 @@ describe 'A new actor' do
     @james.is?(:smart).should be_true
     @james.instance_variable_get('@behaviors')[:smart].instance_variable_get('@opts').should == {:really=>true}
   end
-
-  it 'should maintain order of behaviors'
-
 end
+
 class Cool < Behavior; end
 class Smart < Behavior; end
 class Coder < Actor
