@@ -16,7 +16,9 @@ require 'publisher_ext'
 require 'inflector'
 require 'constructor'
 require 'diy'
+require 'class_finder'
 require 'actor_factory'
+require 'input_manager'
 
 class GameboxApp
   attr_reader :context, :game

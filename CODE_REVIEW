@@ -1,0 +1,50 @@
+1) Lots more documentation. All public methods and All classes need rdoc, including example usage where applicable
+
+2) Other non-code documentation:
+  - Gamebox convensions (data dir is the big one)
+  - High level: what is a Stage, Actor, Director, etc, the description of the concepts Gamebox uses
+  - update / render loop
+  - Parallax and view layers
+  - Publisher usage. how why and where
+
+actor.rb
+ * sound methods should be a behavior
+ * visibility should be a part of graphical
+
+behavior.rb
+ * To reiterate the documentation point, given that Behaviors are the core of Gamebox, this class will need a
+    lot of documentation on what they are, why it's done this way, how to make your own, etc.
+
+physics.rb
+ * Potential confusion with #add_collision_func. The comment implies that :foo and :bar won't be registerd to collide, nor will :baz or :yar. Would it make more sense to change the signature to:
+
+     add_collision_func(*these_things, *can_collide_with) 
+  
+   or make it just a straight *args and Gamebox will register all permutations of the given arguments?
+
+resource_manager.rb
+ * Potentially doing too much? Split out font, sound, image loading into seperate manager subclasses?
+
+stage.rb
+ * create_actors_from_svg sounds more like a resource manager job than the stage
+
+views/graphical_actor_view.rb
+ * seems to handle too much. This class shouldn't care about physics, possibly have a PhysicalActorView instead for rendering according to Chipmunk?
+
+
+notes:
+
+ - Pull sound out of Actor
+ - Auto dependency detection and resolution for behaviors
+
+ - Possible implementation for dynamic behavior parameters (see mjr_ruby background.rb)
+   * In line w/ procs that get evaluated later:
+      has_behaviors :graphical => {:tiled => true, :num_x_tiles => proc{|alksjdfla| alkdjfasd }
+   * Can set later
+      has_behaviors :graphical => {:tiled => true}
+
+      def setup
+         self.graphical.num_x_tiles = ...
+          ...
+      end
+

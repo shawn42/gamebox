@@ -80,46 +80,50 @@ class InputManager
       loop do
         # add magic hooks
         @queue.each do |event|
-          case event
-          when KeyPressed
-            case event.key
-            when :f
-              puts "Framerate:#{@clock.framerate}"
-            when @auto_quit
-              throw :rubygame_quit 
-            end
-          when QuitRequested
-            throw :rubygame_quit
-          end
-          fire :event_received, event
-
-          event_hooks = @hooks[event.class] 
-          id = event.key if event.respond_to? :key
-
-          if event.respond_to? :button
-            id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
-          end
-
-          unless id.nil?
-            event_action_hooks = event_hooks[id] if event_hooks
-            if event_action_hooks
-              for callback in event_action_hooks
-                callback.call event
-              end
-            end
-          end
-          
-          non_id_event_hooks = @non_id_hooks[event.class]
-          if non_id_event_hooks
-            for callback in non_id_event_hooks
-              callback.call event
-            end
-          end          
+          _handle_event(event)
         end
 
         game.update @clock.tick
       end
     end
+  end
+
+  def _handle_event(event) #:nodoc:
+    case event
+    when KeyPressed
+      case event.key
+      when :f
+        puts "Framerate:#{@clock.framerate}"
+      when @auto_quit
+        throw :rubygame_quit 
+      end
+    when QuitRequested
+      throw :rubygame_quit
+    end
+    fire :event_received, event
+
+    event_hooks = @hooks[event.class] 
+    id = event.key if event.respond_to? :key
+
+    if event.respond_to? :button
+      id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
+    end
+
+    unless id.nil?
+      event_action_hooks = event_hooks[id] if event_hooks
+      if event_action_hooks
+        for callback in event_action_hooks
+          callback.call event
+        end
+      end
+    end
+    
+    non_id_event_hooks = @non_id_hooks[event.class]
+    if non_id_event_hooks
+      for callback in non_id_event_hooks
+        callback.call event
+      end
+    end          
   end
 
   # registers a block to be called when matching events are pulled from the SDL queue.
