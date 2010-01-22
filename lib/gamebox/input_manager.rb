@@ -197,10 +197,10 @@ class InputManager
   # autohook a boolean to be set to true while a key is pressed
   def while_key_pressed(key, target, accessor)
     _register_hook target, KeyPressed, key do
-      target.send accessor.to_s+"=", true
+      target.send "#{accessor}=", true
     end
     _register_hook target, KeyReleased, key do
-      target.send accessor.to_s+"=", false
+      target.send "#{accessor}=", false
     end
   end
 
