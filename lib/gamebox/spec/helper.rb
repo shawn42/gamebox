@@ -2,9 +2,10 @@
 module GameboxSpecHelpers
 
   def create_actor(type, args = {})
+    InputManager.stub :setup
     basic_opts = {
       :stage => @stage = stub.as_null_object,
-      :input => @input_manager = InputManager.new("config_manager"),
+      :input => @input_manager = InputManager.new(:config_manager => "config_manager"),
       :sound => @sound_manager = stub.as_null_object,
       :director => @director = stub.as_null_object,
       :resources => @resource_manager = stub.as_null_object
