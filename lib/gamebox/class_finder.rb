@@ -14,7 +14,11 @@ module ClassFinder
       rescue LoadError => ex
         # maybe its included somewhere else
       ensure
-        klass = Object.const_get(klass_name)
+        begin
+          klass = Object.const_get(klass_name)
+        rescue
+          # leave this alone.. maybe there isnt a NameView
+        end
       end
     end
     

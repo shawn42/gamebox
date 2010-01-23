@@ -22,6 +22,10 @@ describe "Ship" do
     @ship.is?(:physical).should be_true
   end
 
+  it "should be audible" do
+    @ship.is?(:audible).should be_true
+  end
+
   it "should be updatable" do
     @ship.is?(:updatable).should be_true
     @ship.respond_to?(:update).should be_true

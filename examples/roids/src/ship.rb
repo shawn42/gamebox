@@ -19,7 +19,7 @@ class Ship < Actor
 
   can_fire :shoot
 
-  has_behavior :animated, :updatable, :physical => {:shape => :circle, 
+  has_behavior :audible, :animated, :updatable, :physical => {:shape => :circle, 
     :mass => 10,
     :friction => 1.7,
     :elasticity => 0.4,

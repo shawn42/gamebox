@@ -7,8 +7,7 @@ class Actor
   can_fire_anything
   
   attr_accessor :behaviors, :x, :y, :stage, :input_manager,
-    :resource_manager, :alive, :opts, :sound_manager, :visible,
-    :director
+    :resource_manager, :alive, :opts, :visible, :director
 
 
   def initialize(opts={}) # :nodoc:
@@ -19,7 +18,6 @@ class Actor
     @y ||= 0
     @stage = opts[:stage]
     @input_manager = opts[:input]
-    @sound_manager = opts[:sound]
     @resource_manager = opts[:resources]
     @director = opts[:director]
     @alive = true
@@ -110,17 +108,6 @@ class Actor
   # Creates a new actor and returns it. (This actor will automatically be added to the Director.
   def spawn(type, args={})
     @stage.create_actor type, args
-  end
-
-  # Plays a sound via the SoundManager.  See SoundManager for
-  # details on how to "define" sounds.
-  def play_sound(*args)
-    @sound_manager.play_sound *args
-  end
-
-  # Stops a sound via the SoundManager.
-  def stop_sound(*args)
-    @sound_manager.stop_sound *args
   end
 
   # to be defined in child class

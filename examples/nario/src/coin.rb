@@ -1,7 +1,7 @@
 require 'actor'
 
 class Coin < Actor
-  has_behaviors :animated, :updatable, {:physical => {
+  has_behaviors :audible, :animated, :updatable, {:physical => {
       :shape => :circle,
       :mass => 1,
       :radius => 15,

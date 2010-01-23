@@ -2,7 +2,7 @@ require 'actor'
 
 class MajorRuby < Actor
 
-  has_behavior :animated, :updatable, :layered => {:layer => 10}
+  has_behavior :audible, :animated, :updatable, :layered => {:layer => 10}
   attr_accessor :move_left, :move_right, :jump
   def setup
     @speed = 8

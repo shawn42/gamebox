@@ -2,10 +2,10 @@ require 'actor'
 require 'graphical_actor_view'
 
 # ActorFactory is responsible for loading all Actors. It passes along required params such as 
-# stage, input_manager, sound_manager, director, resource_manager. It also creates the ActorView 
+# stage, input_manager, director, resource_manager. It also creates the ActorView 
 # associated with the Actor and registers it to the Stage be drawn. 
 class ActorFactory
-  constructor :input_manager, :sound_manager
+  constructor :input_manager
 
   attr_accessor :stage_manager, :director
   
@@ -33,7 +33,6 @@ class ActorFactory
     basic_opts = {
       :stage => stage,
       :input => @input_manager,
-      :sound => @sound_manager,
       :director => @director,
       :resources => stage.resource_manager
     }
