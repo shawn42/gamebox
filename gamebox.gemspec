@@ -19,13 +19,13 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
-     "CODE_REVIEW",
      "History.txt",
      "README.txt",
      "Rakefile",
      "TODO.txt",
      "VERSION",
      "bin/gamebox",
+     "docs/CODE_REVIEW",
      "docs/getting_started.rdoc",
      "docs/logo.png",
      "gamebox.gemspec",
