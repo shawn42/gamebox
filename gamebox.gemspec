@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2009-11-20}
+  s.date = %q{2010-01-24}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "CODE_REVIEW",
      "History.txt",
      "README.txt",
      "Rakefile",
@@ -42,10 +43,12 @@ Gem::Specification.new do |s|
      "lib/gamebox/ai/two_d_grid_map.rb",
      "lib/gamebox/behavior.rb",
      "lib/gamebox/behaviors/animated.rb",
+     "lib/gamebox/behaviors/audible.rb",
      "lib/gamebox/behaviors/graphical.rb",
      "lib/gamebox/behaviors/layered.rb",
      "lib/gamebox/behaviors/physical.rb",
      "lib/gamebox/behaviors/updatable.rb",
+     "lib/gamebox/class_finder.rb",
      "lib/gamebox/config_manager.rb",
      "lib/gamebox/console_app.rb",
      "lib/gamebox/data/config/objects.yml",
@@ -79,6 +82,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/physics.rb",
      "lib/gamebox/resource_manager.rb",
      "lib/gamebox/sound_manager.rb",
+     "lib/gamebox/spec/helper.rb",
      "lib/gamebox/stage.rb",
      "lib/gamebox/stage_manager.rb",
      "lib/gamebox/svg_document.rb",
@@ -113,6 +117,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/wrapped_screen.rb",
      "script/perf_polaris.rb",
      "spec/actor_spec.rb",
+     "spec/actor_view_spec.rb",
      "spec/animated_spec.rb",
      "spec/helper.rb",
      "spec/line_of_site_spec.rb",
@@ -129,15 +134,16 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Framework for building and distributing games using Rubygame}
   s.test_files = [
-    "spec/actor_spec.rb",
-     "spec/animated_spec.rb",
-     "spec/helper.rb",
-     "spec/line_of_site_spec.rb",
-     "spec/physical_spec.rb",
-     "spec/polaris_spec.rb",
+    "spec/viewport_spec.rb",
+     "spec/actor_spec.rb",
      "spec/resource_manager_spec.rb",
+     "spec/actor_view_spec.rb",
+     "spec/polaris_spec.rb",
+     "spec/line_of_site_spec.rb",
+     "spec/helper.rb",
+     "spec/physical_spec.rb",
      "spec/stage_spec.rb",
-     "spec/viewport_spec.rb"
+     "spec/animated_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

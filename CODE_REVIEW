@@ -8,7 +8,6 @@
   - Publisher usage. how why and where
 
 actor.rb
- * sound methods should be a behavior
  * visibility should be a part of graphical
 
 behavior.rb
@@ -34,7 +33,6 @@ views/graphical_actor_view.rb
 
 notes:
 
- - Pull sound out of Actor
  - Auto dependency detection and resolution for behaviors
 
  - Possible implementation for dynamic behavior parameters (see mjr_ruby background.rb)

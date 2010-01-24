@@ -18,7 +18,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
   - rubygame (all of its dependencies)
   - constructor
   - publisher
-  - bacon for unit tests
+  - rspec for unit tests
 
 == Game Creation
 
