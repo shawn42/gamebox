@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-02-01}
+  s.date = %q{2010-02-04}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/ai/polaris.rb",
      "lib/gamebox/ai/two_d_grid_location.rb",
      "lib/gamebox/ai/two_d_grid_map.rb",
+     "lib/gamebox/backstage.rb",
      "lib/gamebox/behavior.rb",
      "lib/gamebox/behaviors/animated.rb",
      "lib/gamebox/behaviors/audible.rb",
@@ -119,6 +120,7 @@ Gem::Specification.new do |s|
      "spec/actor_spec.rb",
      "spec/actor_view_spec.rb",
      "spec/animated_spec.rb",
+     "spec/backstage_spec.rb",
      "spec/helper.rb",
      "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
@@ -137,6 +139,7 @@ Gem::Specification.new do |s|
     "spec/actor_spec.rb",
      "spec/actor_view_spec.rb",
      "spec/animated_spec.rb",
+     "spec/backstage_spec.rb",
      "spec/helper.rb",
      "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
