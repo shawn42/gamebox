@@ -2,6 +2,8 @@ require 'inflector'
 require 'publisher'
 require 'director'
 require 'viewport'
+require 'backstage'
+
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
@@ -9,9 +11,9 @@ class Stage
   can_fire_anything
 
   attr_accessor :drawables, :resource_manager, :sound_manager,
-    :director, :opts, :viewport, :input_manager
+    :director, :opts, :viewport, :input_manager, :backstage
 
-  def initialize(input_manager, actor_factory, resource_manager, sound_manager, config_manager, opts)
+  def initialize(input_manager, actor_factory, resource_manager, sound_manager, config_manager, backstage, opts)
     @input_manager = input_manager
 
     @resource_manager = resource_manager
@@ -24,6 +26,7 @@ class Stage
     @actor_factory = actor_factory
     @director = create_director
     @actor_factory.director = @director
+    @backstage = backstage
 
     @opts = opts
 

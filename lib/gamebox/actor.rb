@@ -9,7 +9,6 @@ class Actor
   attr_accessor :behaviors, :x, :y, :stage, :input_manager,
     :resource_manager, :alive, :opts, :visible, :director
 
-
   def initialize(opts={}) # :nodoc:
     @opts = opts
     @x = @opts[:x]
@@ -108,6 +107,11 @@ class Actor
   # Creates a new actor and returns it. (This actor will automatically be added to the Director.
   def spawn(type, args={})
     @stage.create_actor type, args
+  end
+
+  # Access to backstage for storage
+  def backstage
+    @stage.backstage
   end
 
   # to be defined in child class

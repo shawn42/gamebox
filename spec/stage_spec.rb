@@ -8,11 +8,15 @@ describe 'A new stage' do
     @config = {:screen_resolution => [800,600] }
     @actor_factory = stub(:actor_factory, :director= => nil)
     @stage = Stage.new :input_manager, @actor_factory, 
-      :resource_manager, :sound_manager, @config, {}
+      :resource_manager, :sound_manager, @config, :backstage, {}
   end
 
   it 'should construct' do
     @stage.should_not be_nil
+  end
+
+  it 'should have access to backstage' do
+    @stage.backstage.should == :backstage
   end
 
   it 'should register drawables by parallax and layer'

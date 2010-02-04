@@ -17,6 +17,11 @@ describe 'A new actor' do
     @actor.y.should equal(0)
   end
 
+  it 'should have access to backstage' do
+    @actor.stage = mock(:backstage => :stuff)
+    @actor.backstage.should == :stuff
+  end
+
   it 'should have atts set' do
     @actor.stage.should == "stage" 
     @actor.input_manager.should == "input" 

@@ -1,7 +1,7 @@
 require 'physical_stage'
 
 class DemoStage < PhysicalStage
-  attr_accessor :score
+
   def setup
     super
     sound_manager.play_music :roids
@@ -15,11 +15,8 @@ class DemoStage < PhysicalStage
     input_manager.reg KeyDownEvent, K_S do |evt|
       @ship.action = :exploding
     end
-    @score = create_actor :score, :x => 10, :y => 10
+    score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600
-
-    prev_stage = @opts[:prev_stage]
-    @score += prev_stage.score.score if prev_stage
 
     @rocks = []
     opts[:rocks].times do
@@ -56,7 +53,7 @@ class DemoStage < PhysicalStage
 
       rocky = director.find_physical_obj rock
       rocky.when :remove_me do
-        @score += 10
+        score += 10
       end
 
       if rocky.alive?

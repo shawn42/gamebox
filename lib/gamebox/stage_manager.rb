@@ -7,6 +7,7 @@ class StageManager
 
   def setup
     @stages = {}
+    @backstage = Backstage.new
 
     @actor_factory.stage_manager = self
     stages = @resource_manager.load_config('stage_config')[:stages]
@@ -41,7 +42,7 @@ class StageManager
   end
 
   def create_stage(name, opts)
-    stage_instance = lookup_stage_class(name).new(@input_manager, @actor_factory, @resource_manager, @sound_manager, @config_manager, opts)
+    stage_instance = lookup_stage_class(name).new(@input_manager, @actor_factory, @resource_manager, @sound_manager, @config_manager, @backstage, opts)
 
     stage_instance.when :next_stage do |*args|
       next_stage *args

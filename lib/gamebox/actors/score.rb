@@ -13,24 +13,28 @@ class ScoreView < ActorView
   end
 end
 class Score < Actor
+
   has_behavior :layered => {:layer => 999}
-  attr_accessor :score
 
   def setup
-    clear
+    clear if backstage[:score].nil?
+  end
+
+  def score
+    backstage[:score]
   end
 
   def clear
-    @score = 0
+    backstage[:score] = 0
   end
 
   def +(amount)
-    @score += amount
+    backstage[:score] += amount
     self
   end
 
   def -(amount)
-    @score -= amount
+    backstage[:score] -= amount
     self
   end
 end
