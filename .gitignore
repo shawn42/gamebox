@@ -3,3 +3,4 @@ pkg
 *.log
 doc
 coverage
+.DS_Store

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-01-24}
+  s.date = %q{2010-02-01}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -134,16 +134,16 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Framework for building and distributing games using Rubygame}
   s.test_files = [
-    "spec/viewport_spec.rb",
-     "spec/actor_spec.rb",
-     "spec/resource_manager_spec.rb",
+    "spec/actor_spec.rb",
      "spec/actor_view_spec.rb",
-     "spec/polaris_spec.rb",
-     "spec/line_of_site_spec.rb",
+     "spec/animated_spec.rb",
      "spec/helper.rb",
+     "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
+     "spec/polaris_spec.rb",
+     "spec/resource_manager_spec.rb",
      "spec/stage_spec.rb",
-     "spec/animated_spec.rb"
+     "spec/viewport_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
