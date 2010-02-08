@@ -7,18 +7,20 @@ class Actor
   can_fire_anything
   
   attr_accessor :behaviors, :x, :y, :stage, :input_manager,
-    :resource_manager, :alive, :opts, :visible, :director
+    :resource_manager, :alive, :opts, :visible, :director, 
+    :actor_type
 
   def initialize(opts={}) # :nodoc:
     @opts = opts
-    @x = @opts[:x]
-    @y = @opts[:y]
+    @x = opts[:x]
+    @y = opts[:y]
     @x ||= 0
     @y ||= 0
     @stage = opts[:stage]
     @input_manager = opts[:input]
     @resource_manager = opts[:resources]
     @director = opts[:director]
+    @actor_type = opts[:actor_type]
     @alive = true
 
     @behaviors = {}
@@ -106,7 +108,7 @@ class Actor
 
   # Creates a new actor and returns it. (This actor will automatically be added to the Director.
   def spawn(type, args={})
-    @stage.create_actor type, args
+    @stage.spawn type, args
   end
 
   # Access to backstage for storage
@@ -133,7 +135,7 @@ class Actor
   def visible?
     @visible
   end
-  
+
   # magic
   metaclass.instance_eval do
     define_method( :behaviors ) do

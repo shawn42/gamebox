@@ -3,10 +3,12 @@ require 'publisher'
 require 'director'
 require 'viewport'
 require 'backstage'
+require 'arbiter'
 
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
+  include Arbiter
   extend Publisher
   can_fire_anything
 

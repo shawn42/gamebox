@@ -4,12 +4,17 @@ require 'behavior'
 
 describe 'A new actor' do
   before do
-    opts = {:stage=>"stage", :input=>"input", :resources=>"resource"}
+    opts = {:stage=>"stage", :input=>"input", 
+      :resources=>"resource", :actor_type => :actor}
     @actor = Actor.new opts
   end
 
   it 'should be alive' do
     @actor.alive?.should be_true
+  end
+
+  it 'should be the correct type' do
+    @actor.actor_type.should == :actor
   end
 
   it 'should be at (0,0)' do
