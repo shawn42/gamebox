@@ -61,3 +61,8 @@
 * new major ruby platformer example
 * merged Mode/Level into Stage
 * added curtain transitions
+
+=== 0.0.8 / 2010-02-05
+
+* Cleaning up APIs
+* Adding basic collision detection system
