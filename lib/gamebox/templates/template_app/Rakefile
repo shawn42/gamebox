@@ -13,16 +13,3 @@ STATS_DIRECTORIES = [
   %w(Libraries         lib/),
 ].collect { |name, dir| [ name, "#{APP_ROOT}/#{dir}" ] }.select { |name, dir| File.directory?(dir) }
 
-desc "Report code statistics (KLOCs, etc) from the application"
-task :stats do
-  require 'code_statistics'
-  CodeStatistics.new(*STATS_DIRECTORIES).to_s
-end
-
-require 'spec/rake/spectask'
-desc "Run all specs"
-Spec::Rake::SpecTask.new('rspec') do |t|
-  t.spec_opts = ["-r", "./spec/helper"]
-  t.spec_files = FileList['spec//*_spec.rb']
-end
-task :test => :rspec
