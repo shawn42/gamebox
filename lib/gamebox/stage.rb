@@ -77,6 +77,7 @@ class Stage
   def update(time)
     @director.update time
     @viewport.update time
+    find_collisions unless @collidable_actors.nil?
   end
 
   def curtain_raising(*args)
