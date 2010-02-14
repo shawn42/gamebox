@@ -4,6 +4,8 @@ require 'behavior'
 # by default it expects images to be:
 # data/graphics/classname/action/01..n.png
 class Animated < Behavior
+  requires_behavior :updatable
+  
   attr_accessor :frame_time, :frame_num, :animating, :frame_update_time
   def setup
     @images = {}

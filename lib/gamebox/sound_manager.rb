@@ -48,23 +48,26 @@ class SoundManager
 
   # plays the sound based on the name with the specified volume level.
   # play_sound :foo # play sound at 100% volume
-  def play_sound(what, volume=nil)
+  def play_sound(what, opts={})
     if @enabled && @sounds[what]
+      volume = opts.delete :volume
       @sound_thread = Thread.new do
         @sounds[what].volume = volume if volume
-        @sounds[what].play
+        @sounds[what].play opts
       end
     end
   end
 
   # plays the music based on the name with the specified volume level.
   # will loop until SoundManager#stop_music is called.
-  # play_music :foo, 0.8  # play music at 80% volumne
-  def play_music(what, volume=nil)
+  # play_music :foo, :volume => 0.8  # play music at 80% volumne
+  def play_music(what, opts={})
     if @enabled && @music[what]
+      volume = opts.delete :volume
+      opts[:repeats] = -1 unless opts[:repeat]
       @music_thread = Thread.new do
         @music[what].volume = volume if volume
-        @music[what].play :repeats => -1
+        @music[what].play opts
       end
     end
   end

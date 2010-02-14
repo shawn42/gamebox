@@ -14,7 +14,7 @@ require 'actor'
 ],
 =end
 class Nario < Actor
-  has_behaviors :audible, :updatable, 
+  has_behaviors :audible,
     :physical => {
         :shape => :poly,
         :moment => Float::INFINITY,

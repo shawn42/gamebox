@@ -78,6 +78,7 @@ class Stage
     @director.update time
     @viewport.update time
     find_collisions unless @collidable_actors.nil?
+    update_timers time
   end
 
   def curtain_raising(*args)
@@ -144,6 +145,36 @@ class Stage
     end
     prev_drawable_list
 
+  end
+
+  def remove_timer(name)
+    @timers ||= {}
+    @timers.delete name
+  end
+
+  def timer(name)
+    @timers ||= {}
+    @timers[name]
+  end
+
+  # add block to be executed every interval_ms millis
+  def add_timer(name, interval_ms, &block)
+    @timers ||= {}
+    @timers[name] = {:count => 0,
+      :interval_ms => interval_ms, :callback => block}
+  end
+
+  # update each timers counts, call any blocks that are over their interval
+  def update_timers(time_delta)
+    unless @timers.nil?
+      @timers.each do |name, timer_hash|
+        timer_hash[:count] += time_delta
+        if timer_hash[:count] > timer_hash[:interval_ms]
+          timer_hash[:count] -= timer_hash[:interval_ms]
+          timer_hash[:callback].call
+        end
+      end
+    end
   end
 end
 

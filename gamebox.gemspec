@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-02-08}
+  s.date = %q{2010-02-13}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -63,12 +63,12 @@ Gem::Specification.new do |s|
      "lib/gamebox/data/sounds/GAMEBOX_SOUND_FX_GO_HERE",
      "lib/gamebox/director.rb",
      "lib/gamebox/event_compat.rb",
-     "lib/gamebox/ftor.rb",
      "lib/gamebox/gamebox_application.rb",
      "lib/gamebox/gamebox_generator.rb",
      "lib/gamebox/generators/actor_generator.rb",
      "lib/gamebox/generators/view_generator.rb",
      "lib/gamebox/input_manager.rb",
+     "lib/gamebox/label.rb",
      "lib/gamebox/lib/aliasing.rb",
      "lib/gamebox/lib/code_statistics.rb",
      "lib/gamebox/lib/diy.rb",
@@ -122,8 +122,10 @@ Gem::Specification.new do |s|
      "spec/actor_view_spec.rb",
      "spec/animated_spec.rb",
      "spec/backstage_spec.rb",
+     "spec/behavior_spec.rb",
      "spec/collidable_spec.rb",
      "spec/helper.rb",
+     "spec/label_spec.rb",
      "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
      "spec/polaris_spec.rb",
@@ -142,8 +144,10 @@ Gem::Specification.new do |s|
      "spec/actor_view_spec.rb",
      "spec/animated_spec.rb",
      "spec/backstage_spec.rb",
+     "spec/behavior_spec.rb",
      "spec/collidable_spec.rb",
      "spec/helper.rb",
+     "spec/label_spec.rb",
      "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
      "spec/polaris_spec.rb",

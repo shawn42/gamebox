@@ -1,9 +1,11 @@
 planned features:
 add network manager stub
 highscore upload system (use from chingu)
-FIX:add some kind of fade in/out for actors w/ smooth interpolation
-add basic generator for things like actors/levels/etc with tests
-add while key down K_UP callback?
+
+change update system to 
+on_update do |time|
+  # do stuff?
+end
 
 allow easy pausing of game and physics
   - fire :pause event w/ a new Director of actors? 

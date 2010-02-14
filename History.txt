@@ -66,3 +66,4 @@
 
 * Cleaning up APIs
 * Adding basic collision detection system
+* added timers to stage for calling blocks on an interval
