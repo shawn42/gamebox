@@ -57,24 +57,24 @@ class StageManager
     stage_instance
   end
 
-  def next_stage
+  def next_stage(*args)
     index = @stage_names.index @stage
     if index == @stage_names.size-1
       puts "last stage, exiting"
       exit
     end
     @stages.delete @stage_names[index+1]
-    change_stage_to @stage_names[index+1]
+    change_stage_to @stage_names[index+1], *args
   end
 
-  def prev_stage
+  def prev_stage(*args)
     index = @stage_names.index @stage
     if index == 0
       puts "first stage, exiting"
       exit
     end
     @stages.delete @stage_names[index-1]
-    change_stage_to @stage_names[index-1]
+    change_stage_to @stage_names[index-1], *args
   end
 
   def restart_stage(*args)
