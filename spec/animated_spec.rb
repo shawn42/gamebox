@@ -7,6 +7,7 @@ describe 'A new animated behavior' do
 
     opts = {:stage=>"stage", :input=>"input", :resources=>@rm}
     @actor = Actor.new opts
+    @actor.should_receive(:is?).with(:updatable).and_return(true)
     @animated = Animated.new @actor
   end
 
