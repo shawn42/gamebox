@@ -1,6 +1,6 @@
 require 'actor'
 require 'actor_view'
-require 'ftor'
+require 'rubygame/ftor'
 class ParticleSystemView < ActorView
   def draw(target, x_off, y_off)
     ax = @actor.x + x_off

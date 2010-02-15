@@ -1,5 +1,5 @@
 require 'stage'
-require 'ftor'
+require 'rubygame/ftor'
 class DemoStage < Stage
   def setup
     super

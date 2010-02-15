@@ -1,5 +1,5 @@
 require 'stage'
-require 'ftor'
+require 'rubygame/ftor'
 class DemoStage < Stage
   def setup
     super
@@ -31,7 +31,7 @@ class DemoStage < Stage
 
     collected = @major_ruby.collect_gems @map.pretty_gems
     @map.remove collected
-    @score.score += collected.size*10
+    @score += collected.size*10
 
 
     fire :next_level if @map.finished?

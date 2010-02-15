@@ -35,13 +35,14 @@ class Director
   end
 
   def pause
+    puts "PAUSE"
     @paused_actors = @actors
     @actors = []
   end
 
   def unpause
     unless @paused_actors.nil?
-      @actors.each{|actor| remove_actor actor}
+      @actors.each{|actor| actor.remove_self }
       @actors = @paused_actors
       @paused_actors = nil
     end

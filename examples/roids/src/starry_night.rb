@@ -1,4 +1,4 @@
-require 'ftor'
+require 'rubygame/ftor'
 class StarryNightView < ActorView
   def draw(target, x_off, y_off)
     for star in actor.stars

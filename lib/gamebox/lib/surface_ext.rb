@@ -1,4 +1,4 @@
-require 'ftor'
+require 'rubygame/ftor'
 include Rubygame::Color
 module Rubygame
   class Surface
