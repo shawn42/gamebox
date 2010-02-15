@@ -35,7 +35,6 @@ class Director
   end
 
   def pause
-    puts "PAUSE"
     @paused_actors = @actors
     @actors = []
   end
