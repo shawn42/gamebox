@@ -208,4 +208,18 @@ class InputManager
     end
   end
 
+  def pause
+    @paused_hooks = @hooks
+    @paused_non_id_hooks = @non_id_hooks
+    @hooks = {}
+    @non_id_hooks = {}
+  end
+
+  def unpause
+    @hooks = @paused_hooks
+    @non_id_hooks = @paused_non_id_hooks
+    @paused_hooks = nil
+    @paused_non_id_hooks = nil
+  end
+
 end

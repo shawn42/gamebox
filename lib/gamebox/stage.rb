@@ -176,5 +176,35 @@ class Stage
       end
     end
   end
+
+  def on_pause(&block)
+    @pause_listeners ||= []
+    @pause_listeners << block if block_given?
+  end
+
+  def on_unpause(&block)
+    @unpause_listeners ||= []
+    @unpause_listeners << block if block_given?
+  end
+
+  def pause
+    @director.pause
+    @input_manager.pause
+    @paused_timers = @timers
+    @timers = nil
+    @pause_listeners.each do |listener|
+      listener.call
+    end
+  end
+
+  def unpause
+    @director.unpause
+    @input_manager.unpause
+    @timers = @paused_timers
+    @paused_timers = nil
+    @unpause_listeners.each do |listener|
+      listener.call
+    end
+  end
 end
 

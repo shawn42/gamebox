@@ -34,6 +34,19 @@ class Director
     @actors.empty?
   end
 
+  def pause
+    @paused_actors = @actors
+    @actors = []
+  end
+
+  def unpause
+    unless @paused_actors.nil?
+      @actors.each{|actor| remove_actor actor}
+      @actors = @paused_actors
+      @paused_actors = nil
+    end
+  end
+
   def update(time)
     for act in @dead_actors
       @actors.delete act

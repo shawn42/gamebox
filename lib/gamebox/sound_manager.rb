@@ -88,4 +88,7 @@ class SoundManager
     end
   end
 
+  # TODO
+  # def pause_all_sounds;end
+
 end
