@@ -1,16 +1,15 @@
 # Helper functions for determining platform
 
-# TODO how do I do this in ruby 1.9, since PLATFORM doesn't exist?
 class Platform
 	def self.mac?
-	  return PLATFORM =~ /darwin/
+	  return RUBY_PLATFORM =~ /darwin/
 	end
 	
 	def self.windows?
-	  return PLATFORM =~ /mswin/
+	  return RUBY_PLATFORM =~ /mswin/
 	end
 	
 	def self.linux?
-		return PLATFORM =~ /linux/
+		return RUBY_PLATFORM =~ /linux/
 	end
 end
