@@ -102,6 +102,10 @@ class InputManager
     end
     fire :event_received, event
 
+    # fix for pause bug?
+    @hooks ||= {}
+    @non_id_hooks ||= {}
+
     event_hooks = @hooks[event.class] 
     id = event.key if event.respond_to? :key
 
