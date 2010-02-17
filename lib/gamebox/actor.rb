@@ -136,28 +136,27 @@ class Actor
     @visible
   end
 
-  # magic
-  metaclass.instance_eval do
-    define_method( :behaviors ) do
-      @behaviors ||= []
-    end
-    define_method( :has_behaviors ) do |*args|
-      @behaviors ||= []
-      for a in args
-        if a.is_a? Hash
-          for k,v in a 
-            h = {}
-            h[k]=v
-            @behaviors << h
-          end
-        else
-          @behaviors << a
+  def self.behaviors
+    @behaviors ||= []
+  end
+
+  def self.has_behaviors(*args)
+    @behaviors ||= []
+    for a in args
+      if a.is_a? Hash
+        for k,v in a 
+          h = {}
+          h[k]=v
+          @behaviors << h
         end
+      else
+        @behaviors << a
       end
-      @behaviors
     end
-    define_method( :has_behavior ) do |*args|
-      has_behaviors *args
-    end
+    @behaviors
+  end
+
+  def self.has_behavior(*args)
+    has_behaviors *args
   end
 end

@@ -23,20 +23,20 @@ class Behavior
   def update(time)
   end
 
-  # magic
-  metaclass.instance_eval do
-    define_method( :required_behaviors ) do
-      @required_behaviors ||= []
-    end
-    define_method( :requires_behaviors ) do |*args|
-      @required_behaviors ||= []
-      for a in args
-        @required_behaviors << a
-      end
-      @behaviors
-    end
-    define_method( :requires_behavior ) do |*args|
-      requires_behaviors *args
-    end
+  def self.required_behaviors
+    @required_behaviors ||= []
   end
+
+  def self.requires_behaviors(*args)
+    @required_behaviors ||= []
+    for a in args
+      @required_behaviors << a
+    end
+    @behaviors
+  end
+
+  def self.requires_behavior(*args)
+    requires_behaviors(*args)
+  end
+
 end
