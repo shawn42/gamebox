@@ -19,7 +19,7 @@
 * Rubygame (its dependancies, SDL)
 * constructor gem
 * publisher gem
-* rsepec (for gamebox tests)
+* rspec (for gamebox tests)
 * algorithms gem (optional for line of site and A*)
 
 == INSTALL:
