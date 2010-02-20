@@ -31,8 +31,8 @@ module Arbiter
     end
   end
 
-  # TODO how is this going to get called?, method chaining update?
   def find_collisions
+    @collidable_actors ||= []
     collisions = []
     @collidable_actors.size.times do |i|
       first = @collidable_actors[i]
