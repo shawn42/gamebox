@@ -26,7 +26,9 @@ module Arbiter
       second_objs.each do |sobj|
 #        puts "registering #{fobj} and #{sobj}"
         @collision_handlers[fobj] ||= {}
+        @collision_handlers[sobj] ||= {}
         @collision_handlers[fobj][sobj] = block
+        @collision_handlers[sobj][fobj] = block
       end
     end
   end
@@ -34,20 +36,24 @@ module Arbiter
   def find_collisions
     @collidable_actors ||= []
     collisions = []
-    @collidable_actors.size.times do |i|
-      first = @collidable_actors[i]
-      (@collidable_actors.size).times do |j|
-        second = @collidable_actors[i-j]
+    tmp_collidable_actors = @collidable_actors.dup
 
+    @collidable_actors.each do |first|
+
+      tmp_collidable_actors.delete first
+
+      tmp_collidable_actors.each do |second|
         if collide?(first, second)
           collisions << [first,second]
         end
       end
+
     end
 
     collisions.each do |collision|
       first = collision.first
       second = collision.last
+
       colliders = @collision_handlers[first.actor_type]
       callback = colliders[second.actor_type] unless colliders.nil?
       callback.call first, second unless callback.nil?

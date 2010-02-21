@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gamebox}
-  s.version = "0.0.8"
+  s.version = "0.0.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-02-18}
+  s.date = %q{2010-02-21}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
