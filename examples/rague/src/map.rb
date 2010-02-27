@@ -1,5 +1,6 @@
-require 'ai/two_d_grid_map'
-require 'ai/line_of_site'
+require 'polaris'
+require 'two_d_grid_map'
+require 'line_of_site'
 require 'algorithms'
 include Containers
 

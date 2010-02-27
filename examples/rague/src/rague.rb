@@ -1,5 +1,3 @@
-require 'actor'
-
 class Rague < Actor
   has_behaviors :graphical, :updatable, :layered => 3
   

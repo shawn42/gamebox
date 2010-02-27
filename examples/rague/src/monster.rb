@@ -24,6 +24,7 @@ class Monster < Actor
         is b
       end
     end
+    is_no_longer :updatable
   end
   
   def move_up
