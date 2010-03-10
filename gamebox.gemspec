@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-02-21}
+  s.date = %q{2010-03-01}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -38,10 +38,6 @@ Gem::Specification.new do |s|
      "lib/gamebox/actors/logo.rb",
      "lib/gamebox/actors/score.rb",
      "lib/gamebox/actors/svg_actor.rb",
-     "lib/gamebox/ai/line_of_site.rb",
-     "lib/gamebox/ai/polaris.rb",
-     "lib/gamebox/ai/two_d_grid_location.rb",
-     "lib/gamebox/ai/two_d_grid_map.rb",
      "lib/gamebox/arbiter.rb",
      "lib/gamebox/backstage.rb",
      "lib/gamebox/behavior.rb",
@@ -126,9 +122,7 @@ Gem::Specification.new do |s|
      "spec/collidable_spec.rb",
      "spec/helper.rb",
      "spec/label_spec.rb",
-     "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
-     "spec/polaris_spec.rb",
      "spec/resource_manager_spec.rb",
      "spec/stage_spec.rb",
      "spec/viewport_spec.rb"
@@ -137,7 +131,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{gamebox}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Framework for building and distributing games using Rubygame}
   s.test_files = [
     "spec/actor_spec.rb",
@@ -148,9 +142,7 @@ Gem::Specification.new do |s|
      "spec/collidable_spec.rb",
      "spec/helper.rb",
      "spec/label_spec.rb",
-     "spec/line_of_site_spec.rb",
      "spec/physical_spec.rb",
-     "spec/polaris_spec.rb",
      "spec/resource_manager_spec.rb",
      "spec/stage_spec.rb",
      "spec/viewport_spec.rb"
