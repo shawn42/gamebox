@@ -2,6 +2,14 @@
 require 'inflector'
 $: << File.join(File.dirname(__FILE__),'generators')
 
+unless "".respond_to? :end_with?
+  class String
+    def end_with?(ending)
+      self[size-ending.size..-1] == ending
+    end
+  end
+end
+
 def print_usage
   puts "generate what *opts"
   puts "TODO list all generators here"
