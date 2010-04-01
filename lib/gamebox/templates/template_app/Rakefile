@@ -3,6 +3,7 @@ $: << libdir
 confdir = File.dirname(__FILE__)+"/config"
 $: << confdir
 
+ENV["RUBYGAME_NOINIT"]="1"
 require 'environment'
 require 'gamebox/tasks/gamebox_tasks'
 STATS_DIRECTORIES = [

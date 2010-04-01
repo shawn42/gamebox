@@ -2,6 +2,7 @@
 
 Signal.trap("INT") { puts; exit }
 
+require 'yaml'
 require File.dirname(__FILE__) + '/../lib/gamebox/version'
 
 def print_version

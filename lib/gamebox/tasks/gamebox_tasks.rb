@@ -1,5 +1,4 @@
 require 'gamebox/lib/platform'
-require 'spec/rake/spectask'
 
 task :default => :run
 desc "Run the game"
@@ -27,11 +26,16 @@ task :debug do |t|
   end
 end
 
-require 'spec/rake/spectask'
-desc "Run all specs"
-Spec::Rake::SpecTask.new('spec') do |t|
-  t.spec_opts = ["-r", "./spec/helper"]
-  t.spec_files = FileList['spec//*_spec.rb']
+begin
+  require 'spec/rake/spectask'
+  desc "Run all specs"
+  Spec::Rake::SpecTask.new('spec') do |t|
+    t.spec_opts = ["-r", "./spec/helper"]
+    t.spec_files = FileList['spec//*_spec.rb']
+  end
+  task :rspec => :spec
+  task :test => :spec
+rescue LoadError
+  puts "warning: rspec not installed"
+  puts "install with gem install rspec"
 end
-task :rspec => :spec
-task :test => :spec
