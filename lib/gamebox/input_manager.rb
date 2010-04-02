@@ -92,8 +92,6 @@ class InputManager
     case event
     when KeyPressed
       case event.key
-      when :f
-        puts "Framerate:#{@clock.framerate}"
       when @auto_quit
         throw :rubygame_quit 
       end
