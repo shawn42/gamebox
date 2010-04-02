@@ -3,6 +3,7 @@ $: << libdir
 confdir = File.dirname(__FILE__)+"/config"
 $: << confdir
 
+ENV["RUBYGAME_NOINIT"]="1"
 require 'environment'
 require 'gamebox/tasks/gamebox_tasks'
 STATS_DIRECTORIES = [
@@ -12,5 +13,4 @@ STATS_DIRECTORIES = [
   %w(Unit\ tests       specs/),
   %w(Libraries         lib/),
 ].collect { |name, dir| [ name, "#{APP_ROOT}/#{dir}" ] }.select { |name, dir| File.directory?(dir) }
-
 

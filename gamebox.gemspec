@@ -102,7 +102,6 @@ Gem::Specification.new do |s|
      "lib/gamebox/templates/template_app/data/graphics/GRAPHICS_GO_HERE",
      "lib/gamebox/templates/template_app/data/music/MUSIC_GOES_HERE",
      "lib/gamebox/templates/template_app/data/sounds/SOUND_FX_GO_HERE",
-     "lib/gamebox/templates/template_app/doc/README_FOR_APP",
      "lib/gamebox/templates/template_app/script/generate",
      "lib/gamebox/templates/template_app/spec/helper.rb",
      "lib/gamebox/templates/template_app/src/app.rb",
