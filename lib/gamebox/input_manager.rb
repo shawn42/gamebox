@@ -154,8 +154,10 @@ class InputManager
     if event_ids.empty?
       @non_id_hooks[event_class] << block
     end
-    listener.when :remove_me do
-      unregister_hook event_class, *event_ids, &block
+    if listener.respond_to?(:can_fire?) && listener.can_fire?(:remove_me)
+      listener.when :remove_me do
+        unregister_hook event_class, *event_ids, &block
+      end
     end
   end
 

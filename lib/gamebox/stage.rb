@@ -206,5 +206,21 @@ class Stage
       listener.call
     end
   end
+
+  def stagehand(stagehand_sym, opts={})
+    @stagehands ||= {}
+    @stagehands[stagehand_sym] ||= create_stagehand(stagehand_sym, opts)
+  end
+
+  def create_stagehand(name, opts)
+    underscored_class = "#{name}_stagehand"
+    begin
+      require underscored_class
+    rescue LoadError
+      # TODO log this?
+    end
+    klass = ClassFinder.find underscored_class
+    klass.new self, opts
+  end
 end
 

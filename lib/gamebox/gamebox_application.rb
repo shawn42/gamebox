@@ -20,6 +20,8 @@ require 'class_finder'
 require 'actor_factory'
 require 'input_manager'
 
+require 'stagehand'
+
 class GameboxApp
   attr_reader :context, :game
   def self.run(argv,env)
