@@ -5,6 +5,16 @@ class SpatialHash
   def initialize(cell_size)
     @cell_size = cell_size.to_f
     @buckets = {}
+    @items = []
+  end
+
+  def rehash
+    items = @items
+    @items = []
+    @buckets = {}
+    items.each do |item|
+      add item
+    end
   end
 
   def add(item)
@@ -14,7 +24,10 @@ class SpatialHash
       @buckets[x] ||= {}
       @buckets[x][y] ||= []
       target_bucket = @buckets[x][y]
-      target_bucket << item unless target_bucket.include? item
+      unless target_bucket.include? item
+        target_bucket << item 
+        @items << item
+      end
     end
   end
 
@@ -56,6 +69,7 @@ class SpatialHash
       return if @buckets[x].nil? || @buckets[x][y].nil?
       @buckets[x][y].delete item
     end
+    @items.delete item
   end
   
   def items_at(x,y)

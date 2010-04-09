@@ -70,6 +70,18 @@ describe 'a new SpacialHash' do
 
     @hash.items_at(5, 7).include?(box).should be_true
   end
+
+  it 'can rehash all the items' do
+    box = Item.new 2, 3, 12, 13
+    @hash.add box
+    @hash.rehash
+
+    buckets = @hash.instance_variable_get('@buckets')
+    buckets[0][0].first.should == box
+    buckets[0][1].first.should == box
+    buckets[1][0].first.should == box
+    buckets[1][1].first.should == box
+  end
 end
 
 class Point
