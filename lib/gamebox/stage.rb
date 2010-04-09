@@ -30,6 +30,7 @@ class Stage
     @actor_factory.director = @director
     @backstage = backstage
 
+    @stagehands = {}
     @opts = opts
 
     setup
@@ -77,6 +78,10 @@ class Stage
   def update(time)
     @director.update time
     @viewport.update time
+    @stagehand.each do |name, stagehand|
+      stagehand.update time
+    end
+    # TODO can we change collisions to be a stagehand
     find_collisions unless @collidable_actors.nil?
     update_timers time
   end
@@ -208,7 +213,6 @@ class Stage
   end
 
   def stagehand(stagehand_sym, opts={})
-    @stagehands ||= {}
     @stagehands[stagehand_sym] ||= create_stagehand(stagehand_sym, opts)
   end
 
