@@ -78,8 +78,8 @@ class Stage
   def update(time)
     @director.update time
     @viewport.update time
-    @stagehand.each do |name, stagehand|
-      stagehand.update time
+    @stagehands.each do |name, stagehand|
+      stagehand.update time if stagehand.respond_to? :update
     end
     # TODO can we change collisions to be a stagehand
     find_collisions unless @collidable_actors.nil?
