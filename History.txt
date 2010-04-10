@@ -72,3 +72,4 @@
 
 * bug fixes for rspec requires
 * cleaning up docs
+* added support for stagehands
