@@ -53,7 +53,7 @@ class SoundManager
       volume = opts.delete :volume
       @sound_thread = Thread.new do
         @sounds[what].volume = volume if volume
-        @sounds[what].dup.play opts
+        @sounds[what].play opts
       end
     end
   end
