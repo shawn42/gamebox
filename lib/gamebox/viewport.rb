@@ -22,6 +22,13 @@ class Viewport
     @height = height
   end
 
+  def scroll(x_delta,y_delta)
+    @x_offset += x_delta
+    @y_offset += y_delta
+
+    fire :scrolled
+  end
+
   def x_offset(layer=1)
     return 0 if layer == Float::INFINITY
     return @x_offset if layer == 1

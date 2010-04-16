@@ -32,10 +32,12 @@ class SpatialHash
   end
 
   def lookup(item)
-    w = 1
-    h = 1
     w = item.width if item.respond_to? :width
     h = item.height if item.respond_to? :height
+
+    w ||= 1
+    h ||= 1
+
     x = item.x
     y = item.y
     min_x, min_y = bucket_for x, y
