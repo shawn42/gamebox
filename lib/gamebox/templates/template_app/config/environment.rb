@@ -1,4 +1,10 @@
 require 'rubygems'
+begin
+  require "bundler"
+  Bundler.setup
+rescue LoadError
+end
+
 ADDITIONAL_LOAD_PATHS = []
 ADDITIONAL_LOAD_PATHS.concat %w(
   src 

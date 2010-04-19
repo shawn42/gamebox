@@ -96,6 +96,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/templates/actor_view.erb",
      "lib/gamebox/templates/actor_view_spec.erb",
      "lib/gamebox/templates/template_app/.gitignore",
+     "lib/gamebox/templates/template_app/Gemfile",
      "lib/gamebox/templates/template_app/README",
      "lib/gamebox/templates/template_app/Rakefile",
      "lib/gamebox/templates/template_app/config/boot.rb",
