@@ -18,6 +18,7 @@ ADDITIONAL_LOAD_PATHS.each do |path|
 end
 
 APP_ROOT = File.dirname(__FILE__) + "/../"
+Dir.chdir(APP_ROOT)
 CONFIG_PATH = APP_ROOT + "config/"
 DATA_PATH =  APP_ROOT + "data/"
 SOUND_PATH =  APP_ROOT + "data/sounds/"
