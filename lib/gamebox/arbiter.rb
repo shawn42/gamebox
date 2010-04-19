@@ -36,25 +36,6 @@ module Arbiter
     end
   end
 
-  def find_collisions
-    @collidable_actors ||= []
-    collisions = []
-    tmp_collidable_actors = @collidable_actors.dup
-
-    @collidable_actors.each do |first|
-
-      tmp_collidable_actors.delete first
-
-      tmp_collidable_actors.each do |second|
-        if collide?(first, second)
-          collisions << [first,second]
-        end
-      end
-
-    end
-    run_callbacks collisions
-  end
-
   def run_callbacks(collisions)
     collisions.each do |collision|
       first = collision.first
