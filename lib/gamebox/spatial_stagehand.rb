@@ -2,8 +2,12 @@ require 'spatial_hash'
 
 class SpatialStagehand < Stagehand
 
+  DEFAULT_PARAMS = {
+    :cell_size = 50
+  }
   def setup
-    @spatial_actors = SpatialHash.new 50
+    merged_opts = DEFAULT_PARAMS.merge opts
+    @spatial_actors = SpatialHash.new merged_opts[:cell_size]
   end
 
   def cell_size

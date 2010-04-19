@@ -1,11 +1,16 @@
 class SpatialHash
 
-  attr_accessor :cell_size
+  attr_reader :cell_size
 
   def initialize(cell_size)
     @cell_size = cell_size.to_f
     @buckets = {}
     @items = []
+  end
+
+  def cell_size=(new_size)
+    @cell_size = new_size
+    rehash
   end
 
   def rehash
