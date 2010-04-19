@@ -20,5 +20,6 @@ require 'spec'
 end
 
 require 'metaclass'
+require 'constructor'
 require 'actor'
 

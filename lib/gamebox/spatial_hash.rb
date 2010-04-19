@@ -84,5 +84,29 @@ class SpatialHash
     end
   end
 
+  def items_in(x,y,w,h)
+    return items_at x, y if ((w.nil? || w == 1) && (h.nil? || w == 1))
+
+    min_x, min_y = bucket_for x, y
+    if w == 1 && h == 1
+      max_x = min_x
+      max_y = min_y
+    else
+      max_x, max_y = bucket_for x+w-1, y+h-1
+    end
+
+    items = []
+    (max_x-min_x+1).times do |i|
+      (max_y-min_y+1).times do |j|
+        bucket_x = min_x + i
+        bucket_y = min_y + j
+        unless @buckets[bucket_x].nil? || @buckets[bucket_x][bucket_y].nil?
+          items << @buckets[bucket_x][bucket_y]
+        end
+      end
+    end
+    items.flatten
+  end
+
 end
 

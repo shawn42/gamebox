@@ -82,6 +82,8 @@ describe 'a new SpacialHash' do
     buckets[1][0].first.should == box
     buckets[1][1].first.should == box
   end
+
+  it 'can find items in a box'
 end
 
 class Point

@@ -74,6 +74,11 @@ class InputManager
     @clock.target_framerate
   end
 
+  # Returns the current framerate.
+  def current_framerate
+    @clock.framerate
+  end
+
   # This is where the queue gets pumped. This gets called from your game application.
   def main_loop(game)
     catch(:rubygame_quit) do

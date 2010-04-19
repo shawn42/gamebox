@@ -63,7 +63,9 @@ class StageManager
       puts "last stage, exiting"
       exit
     end
-    @stages.delete @stage_names[index+1]
+    stage = @stages.delete @stage_names[index+1]
+    @input_manager.clear_hooks stage
+
     change_stage_to @stage_names[index+1], *args
   end
 
@@ -73,14 +75,18 @@ class StageManager
       puts "first stage, exiting"
       exit
     end
-    @stages.delete @stage_names[index-1]
+    stage = @stages.delete @stage_names[index-1]
+    @input_manager.clear_hooks stage
     change_stage_to @stage_names[index-1], *args
   end
 
   def restart_stage(*args)
     current_stage.curtain_dropping *args
     index = @stage_names.index @stage
-    @stages.delete @stage_names[index]
+
+    stage = @stages.delete @stage_names[index]
+    @input_manager.clear_hooks stage
+
     change_stage_to @stage, *args
   end
 

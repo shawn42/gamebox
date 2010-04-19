@@ -11,5 +11,5 @@ describe 'A new collidable behavior' do
 
   it 'should define methods on actor' do
     @actor.respond_to?(:shape).should be_true
- end
+  end
 end

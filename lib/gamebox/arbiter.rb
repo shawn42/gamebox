@@ -2,18 +2,21 @@
 module Arbiter
 
   def register_collidable(actor)
+    @spatial_hash = stagehand(:spatial)
     @collidable_actors ||= []
     unless @collidable_actors.include? actor
       actor.when :remove_me do 
         unregister_collidable actor
       end
       @collidable_actors << actor 
+      @spatial_hash.add(actor)
     end
   end
 
   def unregister_collidable(actor)
     @collidable_actors ||= []
     @collidable_actors.delete actor
+    @spatial_hash.remove(actor)
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -49,7 +52,10 @@ module Arbiter
       end
 
     end
+    run_callbacks collisions
+  end
 
+  def run_callbacks(collisions)
     collisions.each do |collision|
       first = collision.first
       second = collision.last
@@ -58,6 +64,37 @@ module Arbiter
       callback = colliders[second.actor_type] unless colliders.nil?
       callback.call first, second unless callback.nil?
     end
+  end
+
+  def find_collisions
+    @collidable_actors ||= []
+    tmp_collidable_actors = @collidable_actors.dup
+    collisions = {}
+
+    @collidable_actors.each do |first|
+      x = first.x - @spatial_hash.cell_size
+      y = first.y - @spatial_hash.cell_size
+      w = @spatial_hash.cell_size * 3
+      h = w
+      tmp_collidable_actors = @spatial_hash.items_in(x,y,w,h)
+
+      tmp_collidable_actors.each do |second|
+        if first != second && collide?(first, second)
+          collisions[second] ||= []
+          if !collisions[second].include?(first)
+            collisions[first] ||= []
+            collisions[first] << second
+          end
+        end
+      end
+    end
+    unique_collisions = []
+    collisions.each do |first,seconds|
+      seconds.each do |second|
+        unique_collisions << [first,second]
+      end
+    end
+    run_callbacks unique_collisions
   end
 
   def collide?(object, other)

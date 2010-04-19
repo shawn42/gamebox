@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-04-13}
+  s.date = %q{2010-04-19}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/actor_factory.rb",
      "lib/gamebox/actor_view.rb",
      "lib/gamebox/actors/curtain.rb",
+     "lib/gamebox/actors/fps.rb",
      "lib/gamebox/actors/label.rb",
      "lib/gamebox/actors/logo.rb",
      "lib/gamebox/actors/score.rb",
@@ -83,6 +84,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/resource_manager.rb",
      "lib/gamebox/sound_manager.rb",
      "lib/gamebox/spatial_hash.rb",
+     "lib/gamebox/spatial_stagehand.rb",
      "lib/gamebox/spec/helper.rb",
      "lib/gamebox/stage.rb",
      "lib/gamebox/stage_manager.rb",
@@ -126,6 +128,7 @@ Gem::Specification.new do |s|
      "spec/physical_spec.rb",
      "spec/resource_manager_spec.rb",
      "spec/spatial_hash_spec.rb",
+     "spec/stage_manager_spec.rb",
      "spec/stage_spec.rb",
      "spec/viewport_spec.rb"
   ]
@@ -147,6 +150,7 @@ Gem::Specification.new do |s|
      "spec/physical_spec.rb",
      "spec/resource_manager_spec.rb",
      "spec/spatial_hash_spec.rb",
+     "spec/stage_manager_spec.rb",
      "spec/stage_spec.rb",
      "spec/viewport_spec.rb"
   ]

@@ -75,7 +75,6 @@ class ParticleSystem < Actor
         @particles << create_particle
       end
     end
-    remove_self if @particles.empty?
   end
 
 end

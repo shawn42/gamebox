@@ -8,7 +8,8 @@ class CreditsStage < Stage
     end
   end
 
-  def curtain_down
+  def curtain_down(*args)
+    # TODO change to use actor
     fire :remove_me
   end
 

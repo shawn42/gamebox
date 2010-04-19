@@ -82,7 +82,7 @@ class DemoStage < PhysicalStage
 
   end
 
-  def curtain_up
+  def curtain_up(*args)
     @running = true
   end
 
@@ -91,10 +91,6 @@ class DemoStage < PhysicalStage
   end
 
   def update(time)
-    # TODO where to put this?
-    # actors can be :pausable 
-    # directors have two lists and not update the pausable list
-    # if paused
     @curtain.update time if @curtain
 
     super

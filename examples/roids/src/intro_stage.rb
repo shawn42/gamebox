@@ -13,7 +13,7 @@ class IntroStage < Stage
     end
   end
 
-  def curtain_down
+  def curtain_down(*args)
     fire :remove_me
   end
 

@@ -1,5 +1,12 @@
 module Publisher
   module InstanceMethods
+    def can_fire?(event) 
+      events = self.class.class_eval { @published_events }
+      events = self.class.published_events
+      return true if events == :any_event_is_ok
+      return false unless events and events.include?(event)
+      return true
+    end
     def unsubscribe_all(listener)
       if @subscriptions
         for event in @subscriptions.keys
