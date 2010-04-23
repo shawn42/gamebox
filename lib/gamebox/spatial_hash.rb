@@ -110,7 +110,7 @@ class SpatialHash
         end
       end
     end
-    items.flatten
+    items.flatten.uniq
   end
 
 end
