@@ -26,6 +26,12 @@ task :debug do |t|
   end
 end
 
+desc "Bundle in all required gems"
+task :bundle do |t|
+  sh "bundle package"
+  sh "bundle install vendor/bundle --disable-shared-gems"
+end
+
 begin
   require 'spec/rake/spectask'
   desc "Run all specs"
@@ -39,3 +45,5 @@ rescue LoadError
   puts "warning: rspec not installed"
   puts "install with gem install rspec"
 end
+
+

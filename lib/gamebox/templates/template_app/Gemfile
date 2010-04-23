@@ -1,0 +1,5 @@
+source "http://rubygems.org"
+gem "gamebox"
+gem "publisher"
+gem "diy"
+gem "rubygame"

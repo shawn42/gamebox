@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-04-19}
+  s.date = %q{2010-04-23}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -26,7 +26,9 @@ Gem::Specification.new do |s|
      "VERSION",
      "bin/gamebox",
      "docs/CODE_REVIEW",
+     "docs/gamebox.bat",
      "docs/getting_started.rdoc",
+     "docs/logo.ico",
      "docs/logo.png",
      "gamebox.gemspec",
      "lib/gamebox.rb",
@@ -96,6 +98,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/templates/actor_view.erb",
      "lib/gamebox/templates/actor_view_spec.erb",
      "lib/gamebox/templates/template_app/.gitignore",
+     "lib/gamebox/templates/template_app/Gemfile",
      "lib/gamebox/templates/template_app/README",
      "lib/gamebox/templates/template_app/Rakefile",
      "lib/gamebox/templates/template_app/config/boot.rb",
