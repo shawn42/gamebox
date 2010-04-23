@@ -14,3 +14,20 @@ STATS_DIRECTORIES = [
   %w(Libraries         lib/),
 ].collect { |name, dir| [ name, "#{APP_ROOT}/#{dir}" ] }.select { |name, dir| File.directory?(dir) }
 
+namespace :dist do
+  task :win do
+    # create dist dir
+    FileUtils.mkdir "dist" unless File.exist? "dist"
+    # pull down windows app shell
+    # expand into place
+    sh 'cd dist; wget http://github.com/downloads/shawn42/gamebox/gamebox_app.zip; unzip gamebox_app.zip; mv gamebox_app/* .; rm gamebox_app.zip; rm -rf gamebox_app'
+
+    # copy config/src/lib/data into dist/src
+    %w{config data }.each do |dir|
+      FileUtils.cp_r dir, File.join('dist','src', dir)
+    end
+    FileUtils.cp_r 'src', File.join('dist', 'src')
+
+    # create zip of dist?
+  end
+end
