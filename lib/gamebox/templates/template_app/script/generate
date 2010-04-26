@@ -2,6 +2,7 @@
 
 require 'rubygems'
 
+ENV["RUBYGAME_NOINIT"]="1"
 app_root = File.join(File.dirname(__FILE__),'..')
 $: << app_root
 $: << File.join(app_root,'config')

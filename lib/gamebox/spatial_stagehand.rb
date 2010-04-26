@@ -3,7 +3,7 @@ require 'spatial_hash'
 class SpatialStagehand < Stagehand
 
   DEFAULT_PARAMS = {
-    :cell_size = 50
+    :cell_size => 50
   }
   def setup
     merged_opts = DEFAULT_PARAMS.merge opts
