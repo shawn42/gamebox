@@ -44,7 +44,7 @@ class PhysicalStage < Stage
   end
 
   def update(time)
-    update_physics time
+    update_physics time 
     super
   end
 
@@ -95,6 +95,16 @@ class PhysicalStage < Stage
       actor = @director.find_physical_obj(found)
       block.call(actor)
     end
+  end
+
+  def pause
+    pause_physics
+    super
+  end
+
+  def unpause
+    super
+    restart_physics
   end
 
 end

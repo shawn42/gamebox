@@ -192,7 +192,12 @@ class Stage
     @unpause_listeners << block if block_given?
   end
 
+  def paused?
+    @pause
+  end
+
   def pause
+    @paused = true
     @director.pause
     @input_manager.pause
     @paused_timers = @timers
@@ -210,6 +215,7 @@ class Stage
     @unpause_listeners.each do |listener|
       listener.call
     end
+    @paused = true
   end
 
   def stagehand(stagehand_sym, opts={})
