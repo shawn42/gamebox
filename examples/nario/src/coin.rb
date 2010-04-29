@@ -1,12 +1,13 @@
 require 'actor'
 
 class Coin < Actor
-  has_behaviors :audible, :animated, :updatable, {:physical => {
-      :shape => :circle,
-      :mass => 1,
-      :radius => 15,
-      :angle => -1.57079633 # -90 degrees
-    }},
+  has_behaviors :audible, :animated, :updatable, {:collidable => {:shape => :circle, :radius => 15} },
+#  has_behaviors :audible, :animated, :updatable, {:physical => {
+#      :shape => :circle,
+#      :mass => 1,
+#      :radius => 15,
+#      :angle => -1.57079633 # -90 degrees
+#    }},
     :layered => {:layer => 2, :parallax => 1}
   
   def setup
@@ -23,7 +24,8 @@ class Coin < Actor
   
   def die(ttl=0)
     @ttl = ttl
-    body.apply_impulse(vec2(0,-400), ZERO_VEC_2)
+    @y -= 10
+#    body.apply_impulse(vec2(0,-400), ZERO_VEC_2)
   end
   
   def dying?;@ttl;end

@@ -37,6 +37,7 @@ module Arbiter
   end
 
   def run_callbacks(collisions)
+    @collision_handlers ||= {}
     collisions.each do |collision|
       first = collision.first
       second = collision.last

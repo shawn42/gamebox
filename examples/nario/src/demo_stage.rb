@@ -22,6 +22,14 @@ class DemoStage < PhysicalStage
     @nario = dynamic_actors[:nario]
     viewport.follow @nario, [0,70], [200,100]
 
+    on_collision_of :nario, :coin do |nario, coin|
+      unless coin.dying?
+        coin.collect
+        @score += 10
+        spawn :coin, :x => (200+rand(400)), :y => nario.y
+      end
+    end
+
     space.add_collision_func(:coin, [:nario,:nario_feet,:nario_hat]) do |c,n|
       coin = director.find_physical_obj c
       unless coin.dying?

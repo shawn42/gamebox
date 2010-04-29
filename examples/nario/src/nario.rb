@@ -26,7 +26,8 @@ class Nario < Actor
         :friction => 0.4,
         :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]},
     :layered => {:layer => 2, :parallax => 1},
-    :animated => {:frame_update_time=>120}
+    :animated => {:frame_update_time=>120},
+    :collidable => {:shape => :circle, :radius => 20}
 
   # how long to apply the jump force for
   JUMP_TIME = 10
