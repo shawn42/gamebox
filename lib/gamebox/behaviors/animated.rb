@@ -25,6 +25,12 @@ class Animated < Behavior
         define_method :image do 
           animated_obj.image
         end
+        define_method :width do 
+          animated_obj.image.size[0]
+        end
+        define_method :height do 
+          animated_obj.image.size[1]
+        end
         define_method :start_animating do
           animated_obj.start_animating
         end

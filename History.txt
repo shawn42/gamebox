@@ -73,3 +73,8 @@
 * bug fixes for rspec requires
 * cleaning up docs
 * added support for stagehands
+
+=== 0.1.2 / 2010-04-28
+
+* added dist tasks to package up windows executables
+* added spatial hash and updated collision detection

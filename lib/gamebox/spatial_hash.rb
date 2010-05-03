@@ -1,11 +1,14 @@
 class SpatialHash
 
-  attr_reader :cell_size
+  attr_reader :cell_size, :buckets 
+  attr_accessor :auto_resize
 
   def initialize(cell_size)
     @cell_size = cell_size.to_f
-    @buckets = {}
     @items = []
+    @total_w = 0
+    @total_h = 0
+    rehash
   end
 
   def cell_size=(new_size)
@@ -15,6 +18,19 @@ class SpatialHash
 
   def rehash
     items = @items
+
+    if @auto_resize
+      # recommeded cell size == 2 x avg obj size
+      if @total_w > 0 && items.size > 0
+        avg_w = @total_w / items.size
+        avg_h = @total_h / items.size
+
+        @cell_size = (avg_w+avg_h)
+      end
+    end
+
+    @total_w = 0
+    @total_h = 0
     @items = []
     @buckets = {}
     items.each do |item|
@@ -32,6 +48,12 @@ class SpatialHash
       unless target_bucket.include? item
         target_bucket << item 
         @items << item
+        w = item.width if item.respond_to? :width
+        h = item.height if item.respond_to? :height
+        w ||= 1
+        h ||= 1
+        @total_w += w 
+        @total_h += h 
       end
     end
   end

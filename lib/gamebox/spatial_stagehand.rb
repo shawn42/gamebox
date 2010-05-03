@@ -14,6 +14,18 @@ class SpatialStagehand < Stagehand
     @spatial_actors.cell_size
   end
 
+  def cell_size=(new_size)
+    @spatial_actors.cell_size = new_size
+  end
+
+  def auto_resize=(val)
+    @spatial_actors.auto_resize = val
+  end
+
+  def buckets
+    @spatial_actors.buckets
+  end
+
   def add(actor)
     @spatial_actors.add actor
   end

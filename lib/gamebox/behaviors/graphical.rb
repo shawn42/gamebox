@@ -23,6 +23,12 @@ class Graphical < Behavior
         define_method :graphical do 
           graphical_obj
         end
+        define_method :width do 
+          graphical_obj.image.size[0]
+        end
+        define_method :height do 
+          graphical_obj.image.size[1]
+        end
       end
     end
   end

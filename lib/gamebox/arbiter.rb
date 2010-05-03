@@ -1,5 +1,6 @@
 # this module gets mixed into a stage to allow it to handle collision detection
 module Arbiter
+  attr_reader :checks, :collisions
 
   def register_collidable(actor)
     @spatial_hash = stagehand(:spatial)
@@ -50,6 +51,8 @@ module Arbiter
 
   def find_collisions
     @collidable_actors ||= []
+    @checks = 0
+    @collisions = 0
     tmp_collidable_actors = @collidable_actors.dup
     collisions = {}
 
@@ -58,12 +61,16 @@ module Arbiter
       y = first.y - @spatial_hash.cell_size
       w = @spatial_hash.cell_size * 3
       h = w
-      tmp_collidable_actors = @spatial_hash.items_in(x,y,w,h)
+
+      # TODO fix this to use all buckets
+      tmp_collidable_actors = @spatial_hash.items_in(x,y,w,h)-[first]
 
       tmp_collidable_actors.each do |second|
+        @checks += 1
         if first != second && collide?(first, second)
           collisions[second] ||= []
           if !collisions[second].include?(first)
+            @collisions += 1
             collisions[first] ||= []
             collisions[first] << second
           end
