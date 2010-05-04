@@ -28,7 +28,6 @@ module Arbiter
 
     first_objs.each do |fobj|
       second_objs.each do |sobj|
-#        puts "registering #{fobj} and #{sobj}"
         @collision_handlers[fobj] ||= {}
         @collision_handlers[sobj] ||= {}
         @collision_handlers[fobj][sobj] = block
