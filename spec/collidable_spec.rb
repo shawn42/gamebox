@@ -10,6 +10,6 @@ describe 'A new collidable behavior' do
   end
 
   it 'should define methods on actor' do
-    @actor.respond_to?(:shape).should be_true
+    @actor.respond_to?(:collidable_shape).should be_true
   end
 end

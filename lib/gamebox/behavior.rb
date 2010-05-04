@@ -39,4 +39,17 @@ class Behavior
     requires_behaviors(*args)
   end
 
+  def relegates(*methods)
+    target = self
+    @actor.instance_eval do
+      (class << self; self; end).class_eval do
+        methods.each do |meth|
+          define_method meth do |*args|
+            target.send meth, *args
+          end
+        end
+      end
+    end
+  end
+
 end

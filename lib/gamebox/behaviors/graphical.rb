@@ -15,22 +15,19 @@ class Graphical < Behavior
     @num_y_tiles ||= 1
 
     graphical_obj = self
-    @actor.instance_eval do
-      (class << self; self; end).class_eval do
-        define_method :image do 
-          graphical_obj.image
-        end
-        define_method :graphical do 
-          graphical_obj
-        end
-        define_method :width do 
-          graphical_obj.image.size[0]
-        end
-        define_method :height do 
-          graphical_obj.image.size[1]
-        end
-      end
-    end
+    relegates :image, :graphical, :width, :height
+  end
+
+  def graphical
+    self
+  end
+
+  def width
+    image.size[0]
+  end
+
+  def height
+    image.size[1]
   end
 
   def tiled?

@@ -1,4 +1,5 @@
 require 'publisher'
+
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them. Such as :physical or :animated.
 # They are created and hooked up to their optional View class in Stage#create_actor.
@@ -48,7 +49,7 @@ class Actor
     end
 
     ordered_behaviors.each do |behavior|
-      is behavior_defs[behavior]
+      is behavior_defs[behavior] unless is? behavior
     end
     setup
   end

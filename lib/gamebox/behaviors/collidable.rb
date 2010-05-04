@@ -2,26 +2,14 @@ require 'behavior'
 
 class Collidable < Behavior
 
-  attr_accessor :shape, :radius, :width
+  attr_accessor :collidable_shape, :radius, :width
 
   def setup
-    @shape = opts[:shape]
+    @collidable_shape = opts[:shape]
     @radius = opts[:radius]
     @width = opts[:width]
 
-    collidable_obj = self
-
-    @actor.instance_eval do
-      (class << self; self; end).class_eval do
-        define_method :shape do |*args|
-          collidable_obj.shape *args
-        end
-        define_method :radius do |*args|
-          collidable_obj.radius *args
-        end
-      end
-    end
-
+    relegates :collidable_shape, :radius
     register_actor
   end
 

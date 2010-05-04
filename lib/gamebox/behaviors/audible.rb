@@ -6,18 +6,7 @@ class Audible < Behavior
     @sound_manager = @actor.stage.sound_manager
 
     audible_obj = self
-    @actor.instance_eval do
-      (class << self; self; end).class_eval do
-        define_method :play_sound do |*args|
-          audible_obj.play_sound *args
-        end
-        define_method :stop_sound do |*args|
-          audible_obj.stop_sound *args
-        end
-      end
-  end
-
-
+    relegates :play_sound, :stop_sound
   end
 
   # Plays a sound via the SoundManager.  See SoundManager for

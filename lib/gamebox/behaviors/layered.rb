@@ -16,26 +16,12 @@ class Layered < Behavior
     @layer ||= 0
     @parallax ||= 1
 
-    layered_obj = self
-    @actor.instance_eval do
-      (class << self; self; end).class_eval do
-        define_method :layer= do |new_layer|
-          layered_obj.layer = new_layer
-        end
-        define_method :parallax= do |new_parallax|
-          layered_obj.parallax = new_parallax
-        end
-        define_method :layer do 
-          layered_obj.layer
-        end
-        define_method :parallax do 
-          layered_obj.parallax
-        end
-        define_method :layered do 
-          layered_obj
-        end
-      end
-    end
+    relegates :layer=, :layer, :parallax=, :parallax, 
+      :layered
+  end
+
+  def layered
+    self
   end
 
   def parallax=(new_parallax)

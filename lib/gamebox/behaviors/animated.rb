@@ -18,37 +18,22 @@ class Animated < Behavior
     @frame_num = 0
     self.action = :idle
 
-    animated_obj = self
+    relegates :image, :width, :height, 
+      :start_animating, :stop_animating, :animated,
+      :action, :action=
 
-    @actor.instance_eval do
-      (class << self; self; end).class_eval do
-        define_method :image do 
-          animated_obj.image
-        end
-        define_method :width do 
-          animated_obj.image.size[0]
-        end
-        define_method :height do 
-          animated_obj.image.size[1]
-        end
-        define_method :start_animating do
-          animated_obj.start_animating
-        end
-        define_method :stop_animating do
-          animated_obj.stop_animating
-        end
-        define_method :action do
-          animated_obj.action
-        end
-        define_method :action= do |action_sym|
-          animated_obj.action = action_sym
-        end
-        define_method :animated do 
-          animated_obj
-        end
-      end
-    end
+  end
 
+  def animated
+    self
+  end
+
+  def width
+    image.size[0]
+  end
+
+  def height
+    image.size[1]
   end
 
   def update(time)

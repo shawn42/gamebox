@@ -87,7 +87,7 @@ module Arbiter
   end
 
   def collide?(object, other)
-    self.send "collide_#{object.shape}_#{object.shape}?", object, other
+    self.send "collide_#{object.collidable_shape}_#{other.collidable_shape}?", object, other
   end
 
   def collide_circle_circle?(object, other)

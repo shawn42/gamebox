@@ -105,62 +105,57 @@ class Physical < Behavior
     end
 
     # write code here to keep physics and x,y of actor in sync
-    @actor.instance_eval do
-      (class << self; self; end).class_eval do
-        define_method :x do 
-          physical_obj.body.p.x
-        end
-        define_method :y do 
-          physical_obj.body.p.y
-        end
-        define_method :x= do |new_x|
-          raise "I am physical, you should apply forces"
-        end
-        define_method :y= do |new_y|
-          raise "I am physical, you should apply forces"
-        end
-        define_method :shape do 
-          physical_obj.shape
-        end
-        define_method :body do 
-          physical_obj.body
-        end
-        define_method :parts do 
-          physical_obj.parts
-        end
-        define_method :deg do 
-          # TODO hack!! why do poly's not work the same?
-          if physical_obj.opts[:shape] == :poly
-            -((physical_obj.body.a-1.57) * 180.0 / Math::PI + 90)
-          else
-            -((physical_obj.body.a) * 180.0 / Math::PI + 90)
-          end
-        end
-        define_method :warp do |new_p|
-          physical_obj.body.p = new_p
-          @stage.space.rehash_static if physical_obj.opts[:fixed]
-        end
-        define_method :segment_groups do 
-          physical_obj.segments_groups
-        end
-        define_method :physical do 
-          physical_obj
-        end
-        define_method :image do 
-          old_image = nil
-          rot_deg = deg.round % 360
+    relegates :x, :y, :x=, :y=, :shape, :body, :parts,
+      :deg, :warp, :segment_groups, :physical, :image
 
-          if is? :animated
-            old_image = animated.image
-          elsif is? :graphical
-            old_image = graphical.image
-          end
+  end
 
-          if old_image
-            old_image.rotozoom(rot_deg,1,true)
-          end
-        end
-      end
+  def x
+    body.p.x
+  end
+
+  def y
+    body.p.y
+  end
+
+  def x=(new_x)
+    body.p = vec2(new_x, y)
+  end
+
+  def y=(new_y)
+    body.p = vec2(x, new_y)
+  end
+
+  def deg
+    # TODO hack!! why do poly's not work the same?
+    if opts[:shape] == :poly
+      -((body.a-1.57) * 180.0 / Math::PI + 90)
+    else
+      -((body.a) * 180.0 / Math::PI + 90)
+    end
+  end
+
+  def warp(new_p)
+    body.p = new_p
+    @actor.stage.space.rehash_static if opts[:fixed]
+  end
+
+  def physical
+    self
+  end
+
+  def image
+    old_image = nil
+    rot_deg = deg.round % 360
+
+    if @actor.is? :animated
+      old_image = @actor.animated.image
+    elsif @actor.is? :graphical
+      old_image = @actor.graphical.image
+    end
+
+    if old_image
+      old_image.rotozoom(rot_deg,1,true)
     end
   end
 end
