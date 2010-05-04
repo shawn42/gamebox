@@ -122,6 +122,10 @@ class SpatialHash
       max_x, max_y = bucket_for x+w-1, y+h-1
     end
 
+    items_in_bucket_range min_x, min_y, max_x, max_y
+  end
+
+  def items_in_bucket_range(min_x,min_y,max_x,max_y)
     items = []
     (max_x-min_x+1).times do |i|
       (max_y-min_y+1).times do |j|
@@ -133,6 +137,23 @@ class SpatialHash
       end
     end
     items.flatten.uniq
+  end
+
+  # will look dist number of cells around all the cells
+  # occupied by the item
+  def neighbors_of(item, dist=1)
+    buckets = lookup(item)
+    min_bucket_x, min_bucket_y = *buckets.first
+    max_bucket_x, max_bucket_y = *buckets.last
+
+    min_bucket_x = min_bucket_x-1
+    min_bucket_y = min_bucket_y-1
+
+    max_bucket_x = max_bucket_x+1
+    max_bucket_y = max_bucket_y+1
+
+    items = items_in_bucket_range min_bucket_x, min_bucket_y, max_bucket_x, max_bucket_y
+    items-[item]
   end
 
 end

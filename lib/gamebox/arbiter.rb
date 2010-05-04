@@ -28,10 +28,13 @@ module Arbiter
 
     first_objs.each do |fobj|
       second_objs.each do |sobj|
-        @collision_handlers[fobj] ||= {}
-        @collision_handlers[sobj] ||= {}
-        @collision_handlers[fobj][sobj] = block
-        @collision_handlers[sobj][fobj] = block
+        if fobj.to_i < sobj.to_i
+          @collision_handlers[fobj] ||= {}
+          @collision_handlers[fobj][sobj] = block
+        else
+          @collision_handlers[sobj] ||= {}
+          @collision_handlers[sobj][fobj] = block
+        end
       end
     end
   end
@@ -41,10 +44,22 @@ module Arbiter
     collisions.each do |collision|
       first = collision.first
       second = collision.last
+      unless first.actor_type.to_i < second.actor_type.to_i
+        tmp = first
+        first = second
+        second = tmp
+        swapped = true
+      end
 
       colliders = @collision_handlers[first.actor_type]
       callback = colliders[second.actor_type] unless colliders.nil?
-      callback.call first, second unless callback.nil?
+      unless callback.nil?
+        if swapped
+          callback.call second, first 
+        else
+          callback.call first, second 
+        end
+      end
     end
   end
 
@@ -61,8 +76,7 @@ module Arbiter
       w = @spatial_hash.cell_size * 3
       h = w
 
-      # TODO fix this to use all buckets
-      tmp_collidable_actors = @spatial_hash.items_in(x,y,w,h)-[first]
+      tmp_collidable_actors = @spatial_hash.neighbors_of(first)
 
       tmp_collidable_actors.each do |second|
         @checks += 1

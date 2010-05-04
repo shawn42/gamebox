@@ -46,4 +46,8 @@ class SpatialStagehand < Stagehand
     @spatial_actors.items_in x, y, w, h
   end
 
+  def neighbors_of(item, dist=1)
+    @spatial_actors.neighbors_of item, dist
+  end
+
 end
