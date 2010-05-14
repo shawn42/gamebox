@@ -31,7 +31,8 @@ rescue LoadError
 end
 
 STATS_DIRECTORIES = [
-  %w(Source         lib/)
+  %w(Source         lib/),
+  %w(Unit\ tests         spec/)
 ].collect { |name, dir| [ name, "#{dir}" ] }.select { |name, dir| File.directory?(dir) }
 
 desc "Report code statistics (KLOCs, etc) from the application"
