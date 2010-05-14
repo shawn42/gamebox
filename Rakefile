@@ -24,6 +24,12 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
+begin
+  require 'metric_fu'
+rescue LoadError
+  puts "metric_fu (or a dependency) not available. Install it with: sudo gem install metric_fu"
+end
+
 STATS_DIRECTORIES = [
   %w(Source         lib/)
 ].collect { |name, dir| [ name, "#{dir}" ] }.select { |name, dir| File.directory?(dir) }
