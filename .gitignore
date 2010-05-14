@@ -5,3 +5,4 @@ doc
 coverage
 .DS_Store
 .yardoc
+tmp
