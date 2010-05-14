@@ -100,21 +100,93 @@ module Arbiter
   end
 
   def collide?(object, other)
+    # TODO perf analysis of this
     self.send "collide_#{object.collidable_shape}_#{other.collidable_shape}?", object, other
   end
 
   def collide_circle_circle?(object, other)
-#    puts "comparing #{object.actor_type}[#{object.object_id}] to #{other.actor_type}[#{other.object_id}]"
-    x = object.x + object.radius
-    y = object.y + object.radius
-    x_prime = other.x + other.radius
-    y_prime = other.y + other.radius
+    x = object.center_x + object.radius
+    y = object.center_y + object.radius
+    x_prime = other.center_x + other.radius
+    y_prime = other.center_y + other.radius
 
     x_dist  = (x_prime - x) * (x_prime - x)
     y_dist  = (y_prime - y) * (y_prime - y)
 
     total_radius = object.radius + other.radius
-    x_dist + y_dist < (total_radius) * (total_radius)
+    x_dist + y_dist <= (total_radius * total_radius)
   end
 
+  # Idea from:
+  # http://gpwiki.org/index.php/Polygon_Collision
+  # and http://www.gamedev.net/community/forums/topic.asp?topic_id=540755&whichpage=1&#3488866
+  def collide_polygon_polygon?(object, other)
+    if collide_circle_circle? object, other
+      # collect vector's perp
+      potential_sep_axis = 
+        (object.cw_world_normals | other.cw_world_normals).uniq
+      potential_sep_axis.each do |axis|
+        return false unless project_and_detect(axis, object, other)           
+      end 
+    else
+      return false
+    end
+    true
+  end
+  alias collide_aabb_aabb? collide_polygon_polygon?
+
+  # returns true if the projections overlap
+  def project_and_detect(axis, a, b)
+    a_min, a_max = send("#{a.collidable_shape}_interval", axis, a)
+    b_min, b_max = send("#{b.collidable_shape}_interval", axis, b)
+
+    a_min <= b_max && b_min <= a_max
+  end
+
+  def polygon_interval(axis, object)
+    min = max = nil
+    object.cw_world_points.each do |edge|
+      # vector dot product
+      d = edge[0] * axis[0] + edge[1] * axis[1]
+      min ||= d
+      max ||= d
+      min = d if d < min
+      max = d if d > max
+    end
+    [min,max]
+  end
+  alias aabb_interval polygon_interval
+
+  def circle_interval(axis, object)
+    axis_x = axis[0]
+    axis_y = axis[1]
+
+    obj_x = object.center_x
+    obj_y = object.center_y
+
+    length = Math.sqrt(axis_x * axis_x + axis_y * axis_y)
+    cn = axis_x*obj_x + axis_y*obj_y
+    rlength = object.radius*length
+    min = cn - rlength
+    max = cn + rlength
+    [min,max]
+  end
+
+  def collide_polygon_circle?(object, other)
+    collide_circle_polygon?(other, object)
+  end
+  alias collide_aabb_circle?  collide_polygon_circle?
+
+  def collide_circle_polygon?(object, other)
+    if collide_circle_circle? object, other
+      potential_sep_axis = other.cw_world_normals
+      potential_sep_axis.each do |axis|
+        return false unless project_and_detect(axis, object, other)           
+      end 
+      true 
+    else
+      false
+    end
+  end
+  alias collide_circle_aabb? collide_circle_polygon?
 end
