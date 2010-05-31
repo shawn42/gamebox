@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-05-14}
+  s.date = %q{2010-05-28}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/actor.rb",
      "lib/gamebox/actor_factory.rb",
      "lib/gamebox/actor_view.rb",
+     "lib/gamebox/actors/collidable_debugger.rb",
      "lib/gamebox/actors/curtain.rb",
      "lib/gamebox/actors/fps.rb",
      "lib/gamebox/actors/label.rb",
@@ -48,6 +49,10 @@ Gem::Specification.new do |s|
      "lib/gamebox/behaviors/animated.rb",
      "lib/gamebox/behaviors/audible.rb",
      "lib/gamebox/behaviors/collidable.rb",
+     "lib/gamebox/behaviors/collidable/aabb_collidable.rb",
+     "lib/gamebox/behaviors/collidable/circle_collidable.rb",
+     "lib/gamebox/behaviors/collidable/collidable_shape.rb",
+     "lib/gamebox/behaviors/collidable/polygon_collidable.rb",
      "lib/gamebox/behaviors/graphical.rb",
      "lib/gamebox/behaviors/layered.rb",
      "lib/gamebox/behaviors/physical.rb",

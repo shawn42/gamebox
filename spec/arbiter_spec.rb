@@ -90,7 +90,7 @@ describe 'Arbiter' do
                  [0,30],[30,0],
                  [30,0],[0,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [-30,0],
                  [30,30],
                  [0,-30]
@@ -106,7 +106,7 @@ describe 'Arbiter' do
                  [60,30],[90,0],
                  [90,0],[60,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [-30,0],
                  [30,30],
                  [0,-30]
@@ -125,7 +125,7 @@ describe 'Arbiter' do
                  [0,30],[30,0],
                  [30,0],[0,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [30,0],
                  [30,30],
                  [0,-30]
@@ -140,7 +140,7 @@ describe 'Arbiter' do
                  [29,30],[59,0],
                  [59,0],[29,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [-30,0],
                  [30,30],
                  [0,-30]
@@ -159,7 +159,7 @@ describe 'Arbiter' do
                  [0,30],[30,0],
                  [30,0],[0,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [30,0],
                  [30,30],
                  [0,-30]
@@ -172,7 +172,7 @@ describe 'Arbiter' do
                  [10,20],[20,0],
                  [20,0],[10,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [-20,0],
                  [-10,-20],
                  [0,-10]
@@ -192,7 +192,7 @@ describe 'Arbiter' do
                  [10,20],[20,0],
                  [20,0],[10,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [-20,0],
                  [-10,-20],
                  [0,-10]
@@ -210,7 +210,7 @@ describe 'Arbiter' do
                  [208,20],[218,0],
                  [218,0],[208,0]
                ],
-               :cw_world_normals => [
+               :cw_world_edge_normals => [
                  [-20,0],
                  [-10,-20],
                  [0,-10]
@@ -234,7 +234,7 @@ describe 'Arbiter' do
             [[15,-10],[-15,10]],
             [[-15,10],[-15,10]]
           ],
-          :cw_world_normals => [[1,0],[0,1]])
+          :cw_world_edge_normals => [[1,0],[0,1]])
       b = stub(:center_x => 5, :center_y => 5, :width => 10, :height => 2, 
           :collidable_shape => :aabb, :radius => 10,
           :cw_world_points => [
@@ -247,7 +247,7 @@ describe 'Arbiter' do
             [[10,4],[0,6]],
             [[0,6],[0,6]]
           ],
-          :cw_world_normals => [[1,0],[0,1]])
+          :cw_world_edge_normals => [[1,0],[0,1]])
 
       @arbiter.collide_aabb_aabb?(a,b).should be_true
     end

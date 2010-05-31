@@ -83,8 +83,13 @@ class Actor
   #  :range=>3 to it
   #  Actor#is does try to require 'shootable' but will not throw an error if shootable cannot be required.
   def is(behavior_def)
-    behavior_sym = behavior_def.is_a?(Hash) ? behavior_def.keys.first : behavior_def
-    behavior_opts = behavior_def.is_a?(Hash) ? behavior_def.values.first : {}
+    if behavior_def.is_a?(Hash)
+      behavior_sym = behavior_def.keys.first
+      behavior_opts = behavior_def.values.first
+    else
+      behavior_sym = behavior_def
+      behavior_opts = {}
+    end
     begin
       require behavior_sym.to_s;
     rescue LoadError

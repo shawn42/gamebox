@@ -124,7 +124,7 @@ module Arbiter
     if collide_circle_circle? object, other
       # collect vector's perp
       potential_sep_axis = 
-        (object.cw_world_normals | other.cw_world_normals).uniq
+        (object.cw_world_edge_normals | other.cw_world_edge_normals).uniq
       potential_sep_axis.each do |axis|
         return false unless project_and_detect(axis, object, other)           
       end 
@@ -179,7 +179,7 @@ module Arbiter
 
   def collide_circle_polygon?(object, other)
     if collide_circle_circle? object, other
-      potential_sep_axis = other.cw_world_normals
+      potential_sep_axis = other.cw_world_edge_normals
       potential_sep_axis.each do |axis|
         return false unless project_and_detect(axis, object, other)           
       end 

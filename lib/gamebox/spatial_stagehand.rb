@@ -28,6 +28,9 @@ class SpatialStagehand < Stagehand
 
   def add(actor)
     @spatial_actors.add actor
+    actor.when :remove_me do 
+      @spatial_actors.remove actor
+    end
   end
 
   def remove(actor)

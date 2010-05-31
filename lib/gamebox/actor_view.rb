@@ -11,19 +11,21 @@ class ActorView
       @parallax = @actor.parallax
     end
 
-    actor.when :remove_me do
-      @stage.unregister_drawable self
-    end
+    actor.when :remove_me do unregister end
     
-    actor.when :hide_me do
-      @stage.unregister_drawable self
-    end
+    actor.when :hide_me do unregister  end
     
-    actor.when :show_me do
-      @stage.register_drawable self
-    end
+    actor.when :show_me do register end
     
     setup
+  end
+  
+  def register
+    @stage.register_drawable self
+  end
+  
+  def unregister
+    @stage.unregister_drawable self
   end
 
   def setup
