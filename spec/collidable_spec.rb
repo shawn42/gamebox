@@ -15,8 +15,8 @@ describe 'A new collidable behavior' do
       @collidable = Collidable.new @actor, @behavior_opts
     end
 
-    it 'should recalculate_collibable_cache on update' do
-      @collidable.shape.should_receive(:recalculate_collibable_cache)
+    it 'should recalculate_collidable_cache on update' do
+      @collidable.shape.should_receive(:recalculate_collidable_cache)
       @collidable.update 4
     end
 

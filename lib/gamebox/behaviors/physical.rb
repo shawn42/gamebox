@@ -19,18 +19,68 @@ class Physical < Behavior
   attr_accessor :shapes, :body, :opts, :parts, :segments_groups
 
   def shape
-    @shapes.first if @shapes
+    if @shapes
+      @shapes.first 
+    else
+      @shape
+    end
   end
   
   def setup
-    # TODO add defaults?
-    @mass = @opts[:mass]
-    @mass ||= Float::INFINITY
     @parts = {}
     @shapes = []
     @segments_groups = []
 
     moment_of_inertia = @opts[:moment]
+
+    build_main_shape
+    setup_main_collisions
+    setup_position
+    setup_elasticity
+    setup_friction
+
+    build_secondary_shapes
+
+    register
+
+    # write code here to keep physics and x,y of actor in sync
+    relegates :x, :y, :x=, :y=, :shape, :body, :parts,
+      :deg, :warp, :segment_groups, :physical, :image
+
+  end
+
+  def setup_friction
+    friction = @opts[:friction]
+    friction ||= 0.4
+    @shape.u = friction
+  end
+
+  def setup_elasticity
+    elasticity = @opts[:elasticity]
+    elasticity ||= 0.1
+    @shape.e = elasticity
+  end
+
+  def setup_main_collisions
+    collision_type = @opts[:collision_group]
+    collision_type ||= 
+      Inflector.underscore(@actor.class).to_sym
+    @shape.collision_type = collision_type
+  end
+
+  def setup_position
+    @body.a = @opts[:angle] if @opts[:angle]
+    start_x = @opts[:x]
+    start_y = @opts[:y]
+    start_x ||= @actor.x
+    start_y ||= @actor.y
+    @shape.body.p = vec2(start_x,start_y)
+
+  end
+
+  def build_main_shape
+    @mass = @opts[:mass]
+    @mass ||= Float::INFINITY
 
     case @opts[:shape]
     when :circle
@@ -51,28 +101,10 @@ class Physical < Behavior
       @segments_groups << verts
     end
 
-    collision_type = @opts[:collision_group]
-    collision_type ||= 
-      Inflector.underscore(@actor.class).to_sym
-      
-    @body.a = @opts[:angle] if @opts[:angle]
-
-    @shape.collision_type = collision_type
-    start_x = @opts[:x]
-    start_y = @opts[:y]
-    start_x ||= @actor.x
-    start_y ||= @actor.y
-    @shape.body.p = vec2(start_x,start_y)
-
-    elasticity = @opts[:elasticity]
-    elasticity ||= 0.1
-    @shape.e = elasticity
-
-    friction = @opts[:friction]
-    friction ||= 0.4
-    @shape.u = friction
-    
     @shapes << @shape
+  end
+
+  def build_secondary_shapes
 
     if @opts[:shapes]
       for obj in @opts[:shapes]
@@ -90,10 +122,10 @@ class Physical < Behavior
         end
       end
     end
+  end
 
-
+  def register
     physical_obj = self
-
     if @actor.stage.respond_to? :register_physical_object
       if @opts[:fixed]
         @actor.stage.register_physical_object physical_obj, true
@@ -103,11 +135,6 @@ class Physical < Behavior
     else
       raise "physical actor in a non-physical stage!"
     end
-
-    # write code here to keep physics and x,y of actor in sync
-    relegates :x, :y, :x=, :y=, :shape, :body, :parts,
-      :deg, :warp, :segment_groups, :physical, :image
-
   end
 
   def x

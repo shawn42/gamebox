@@ -105,10 +105,10 @@ module Arbiter
   end
 
   def collide_circle_circle?(object, other)
-    x = object.center_x + object.radius
-    y = object.center_y + object.radius
-    x_prime = other.center_x + other.radius
-    y_prime = other.center_y + other.radius
+    x = object.center_x
+    y = object.center_y
+    x_prime = other.center_x
+    y_prime = other.center_y
 
     x_dist  = (x_prime - x) * (x_prime - x)
     y_dist  = (y_prime - y) * (y_prime - y)

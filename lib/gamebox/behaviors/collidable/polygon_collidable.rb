@@ -68,7 +68,7 @@ class PolygonCollidable < CollidableShape
     @cached_normals
   end
 
-  def recalculate_collibable_cache
+  def recalculate_collidable_cache
     unless @old_x == @actor.x && @old_y == @actor.y
       clear_collidable_cache
       @old_x = @actor.x
