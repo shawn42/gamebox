@@ -1,0 +1,29 @@
+require 'publisher'
+
+class HookedGosuWindow < Window
+  extend Publisher
+  can_fire :update, :draw, :button_down, :button_up
+
+  def initialize(width, height, fullscreen)
+
+    super(640, 480, fullscreen)
+    self.caption = "Gamebox in Gosu!!"
+  end
+
+  def update
+    fire :update, Gosu::milliseconds 
+  end
+
+  def draw
+    fire :draw
+  end
+
+  # in gosu this captures mouse and keyboard events
+  def button_down(id)
+    fire :button_down, id
+  end
+
+  def button_up(id)
+    fire :button_up, id
+  end
+end

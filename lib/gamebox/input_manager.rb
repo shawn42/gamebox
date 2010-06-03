@@ -1,6 +1,7 @@
 require 'publisher'
+require 'hooked_gosu_window'
 
-# InputManager handles the pumping of SDL for events and distributing of said events.
+# InputManager handles the pumping for events and distributing of said events.
 # You can gain access to these events by registering for all events, 
 # or just the ones you care about.
 # All events:
@@ -15,122 +16,97 @@ require 'publisher'
 #
 # Don't forget to unreg for these things between stages, 
 # since the InputManager is shared across stages.
-class InputManager
+class InputManager 
   extend Publisher
   can_fire :key_up, :event_received
 
+  attr_accessor :window
 
   # lookup map for mouse button clicks
   MOUSE_BUTTON_LOOKUP = {
-    MOUSE_LEFT   => :left,
-    MOUSE_MIDDLE => :middle,
-    MOUSE_RIGHT  => :right,
+    MsLeft   => :left,
+    MsMiddle => :middle,
+    MsRight  => :right,
   }
+
+  MOUSE_IDS = [
+    MsLeft, MsMiddle, MsRight, MsWheelUp, MsWheelDown
+  ]
 
   constructor :config_manager
 
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by diy.
   def setup
-    @queue = EventQueue.new
-    @queue.enable_new_style_events
-    @queue.ignore = [
-      InputFocusGained,
-      InputFocusLost,
-      MouseFocusGained,
-      MouseFocusLost,
-      WindowMinimized,
-      WindowUnminimized,
-      JoystickAxisMoved,
-      JoystickBallMoved,
-      JoystickButtonPressed,
-      JoystickButtonReleased,
-      JoystickHatMoved,
-      WindowResized
-    ]
-    
-    @clock = Clock.new do |c|
-      c.target_framerate = 40
-      if c.respond_to? :calibrate
-        c.calibrate 
-        c.granularity = 2 if c.granularity < 2
-      end
-    end
+    width, height = @config_manager[:screen_resolution]
+    fullscreen = @config_manager[:fullscreen]
+    @window = HookedGosuWindow.new width, height, fullscreen
 
-    @auto_quit = @config_manager[:auto_quit]
+    @auto_quit = instance_eval(@config_manager[:auto_quit])
 
     @hooks = {}
     @non_id_hooks = {}
   end
-  
-  # Sets the target framerate for the game. 
-  # This setting controls how lock Clock#tick will delay.
-  def framerate=(frame_rate)
-    @clock.target_framerate = frame_rate
-  end
-  
-  # Returns the target framerate.
-  def framerate
-    @clock.target_framerate
-  end
 
-  # Returns the current framerate.
-  def current_framerate
-    @clock.framerate
-  end
-
-  # This is where the queue gets pumped. This gets called from your game application.
+  # This gets called from game app and sets up all the
+  # events. (also shows the window)
   def main_loop(game)
-    catch(:rubygame_quit) do
-      loop do
-        # add magic hooks
-        @queue.each do |event|
-          _handle_event(event)
-        end
 
-        game.update @clock.tick
-      end
+    @window.when :button_up do |button_id|
+      _handle_event button_id
     end
+    @window.when :button_down do |button_id|
+      _handle_event button_id
+    end
+    @window.when :update do |millis|
+      # TODO if mouse has moved, fire mouse motion?
+      game.update millis
+    end
+    @window.when :draw do 
+      game.draw 
+    end
+
+    @window.show
   end
 
-  def _handle_event(event) #:nodoc:
-    case event
-    when KeyPressed
-      case event.key
-      when @auto_quit
-        throw :rubygame_quit 
-      end
-    when QuitRequested
-      throw :rubygame_quit
-    end
-    fire :event_received, event
-
-    # fix for pause bug?
-    @hooks ||= {}
-    @non_id_hooks ||= {}
-
-    event_hooks = @hooks[event.class] 
-    id = event.key if event.respond_to? :key
-
-    if event.respond_to? :button
-      id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
-    end
-
-    unless id.nil?
-      event_action_hooks = event_hooks[id] if event_hooks
-      if event_action_hooks
-        for callback in event_action_hooks
-          callback.call event
-        end
-      end
-    end
-    
-    non_id_event_hooks = @non_id_hooks[event.class]
-    if non_id_event_hooks
-      for callback in non_id_event_hooks
-        callback.call event
-      end
-    end          
+  def _handle_event(gosu_id) #:nodoc:
+    @window.close if gosu_id == @auto_quit
+    return
+#    case event
+#    when KeyPressed
+#      case event.key
+#      when @auto_quit
+#        @window.close
+#      end
+#    end
+#    fire :event_received, event
+#
+#    # fix for pause bug?
+#    @hooks ||= {}
+#    @non_id_hooks ||= {}
+#
+#    event_hooks = @hooks[event.class] 
+#    id = event.key if event.respond_to? :key
+#
+#    if event.respond_to? :button
+#      id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
+#    end
+#
+#    unless id.nil?
+#      event_action_hooks = event_hooks[id] if event_hooks
+#      if event_action_hooks
+#        for callback in event_action_hooks
+#          callback.call event
+#        end
+#      end
+#    end
+#    
+#    non_id_event_hooks = @non_id_hooks[event.class]
+#    if non_id_event_hooks
+#      for callback in non_id_event_hooks
+#        callback.call event
+#      end
+#    end          
   end
 
   # registers a block to be called when matching events are pulled from the SDL queue.

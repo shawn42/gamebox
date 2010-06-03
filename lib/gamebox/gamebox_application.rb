@@ -2,11 +2,8 @@
 $: << "#{File.dirname(__FILE__)}/../config"
 
 require 'rubygems'
-require 'rubygame'
-include Rubygame
-include Rubygame::Events
-require 'event_compat'
-require 'surface_ext'
+require 'gosu'
+include Gosu
 
 require "environment"
 
@@ -42,7 +39,6 @@ class GameboxApp
   end
   
   def setup
-    Rubygame.init
     @game = @context[:game]
     
     @config_manager = @context[:config_manager]
@@ -65,7 +61,6 @@ class GameboxApp
   end
 
   def shutdown
-    Rubygame.quit
   end
   
   def debug_eval(eval_str)

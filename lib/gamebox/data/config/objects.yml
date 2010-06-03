@@ -21,7 +21,7 @@ input_manager:
     - config_manager
 wrapped_screen:
   compose:
-    - config_manager
+    - input_manager
 actor_factory:
   compose:
     - input_manager

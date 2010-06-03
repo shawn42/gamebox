@@ -9,8 +9,7 @@ class SoundManager
   # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
   def setup
 
-    puts 'Warning, sound disabled' unless
-      (@enabled = (Rubygame::VERSIONS[:sdl_mixer] != nil))
+    puts 'CHANGE TO LOG:Warning, sound disabled' unless
     @enabled = (@enabled and (@config_manager.settings[:sound].nil? or @config_manager.settings[:sound] == true))
 
     if @enabled
