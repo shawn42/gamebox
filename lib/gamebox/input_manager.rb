@@ -22,17 +22,6 @@ class InputManager
 
   attr_accessor :window
 
-  # lookup map for mouse button clicks
-  MOUSE_BUTTON_LOOKUP = {
-    MsLeft   => :left,
-    MsMiddle => :middle,
-    MsRight  => :right,
-  }
-
-  MOUSE_IDS = [
-    MsLeft, MsMiddle, MsRight, MsWheelUp, MsWheelDown
-  ]
-
   constructor :config_manager
 
   # Sets up the clock and main event loop. You should never call this method, 
@@ -53,13 +42,26 @@ class InputManager
   def main_loop(game)
 
     @window.when :button_up do |button_id|
-      _handle_event button_id
+      _handle_event button_id, :up
     end
     @window.when :button_down do |button_id|
-      _handle_event button_id
+      _handle_event button_id, :down
     end
     @window.when :update do |millis|
-      # TODO if mouse has moved, fire mouse motion?
+
+      @last_mouse_x ||= @window.mouse_x
+      @last_mouse_y ||= @window.mouse_y
+
+      x_diff = @last_mouse_x - @window.mouse_x
+      y_diff = @last_mouse_y - @window.mouse_y
+
+      unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
+        _handle_event nil, :motion
+
+        @last_mouse_x = @window.mouse_x
+        @last_mouse_y = @window.mouse_y
+      end
+
       game.update millis
     end
     @window.when :draw do 
@@ -69,44 +71,68 @@ class InputManager
     @window.show
   end
 
-  def _handle_event(gosu_id) #:nodoc:
+  def _handle_event(gosu_id, action) #:nodoc:
     @window.close if gosu_id == @auto_quit
-    return
-#    case event
-#    when KeyPressed
-#      case event.key
-#      when @auto_quit
-#        @window.close
-#      end
-#    end
-#    fire :event_received, event
-#
-#    # fix for pause bug?
-#    @hooks ||= {}
-#    @non_id_hooks ||= {}
-#
-#    event_hooks = @hooks[event.class] 
-#    id = event.key if event.respond_to? :key
-#
-#    if event.respond_to? :button
-#      id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
-#    end
-#
-#    unless id.nil?
-#      event_action_hooks = event_hooks[id] if event_hooks
-#      if event_action_hooks
-#        for callback in event_action_hooks
-#          callback.call event
-#        end
-#      end
-#    end
-#    
-#    non_id_event_hooks = @non_id_hooks[event.class]
-#    if non_id_event_hooks
-#      for callback in non_id_event_hooks
-#        callback.call event
-#      end
-#    end          
+    event_data = nil
+
+    if gosu_id.nil?
+      event_type = :mouse_motion
+      callback_key = :mouse_motion
+      event_data = [@window.mouse_x, @window.mouse_y]
+    elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
+      event_type = :mouse
+      if action == :up
+        callback_key = :mouse_up
+      else
+        callback_key = :mouse_down
+      end
+    elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
+      event_type = :keyboard
+      if action == :up
+        callback_key = :keyboard_up
+      else
+        callback_key = :keyboard_down
+      end
+    elsif gosu_id >= GpRangeBegin && gosu_id <= GpRangeEnd
+      event_type = :game_pad
+      if action == :up
+        callback_key = :game_pad_up
+      else
+        callback_key = :game_pad_down
+      end
+    end
+
+    event = {
+      :type => event_type, 
+      :id => gosu_id,
+      :action => action,
+      :callback_key => event_type,
+      :data => event_data
+    }
+
+    fire :event_received, event
+
+    # fix for pause bug?
+    @hooks ||= {}
+    @non_id_hooks ||= {}
+
+    event_hooks = @hooks[callback_key] 
+
+    unless gosu_id.nil?
+      event_action_hooks = event_hooks[gosu_id] if event_hooks
+      if event_action_hooks
+        for callback in event_action_hooks
+          callback.call event
+        end
+      end
+    end
+    
+    non_id_event_hooks = @non_id_hooks[callback_key]
+    if non_id_event_hooks
+      for callback in non_id_event_hooks
+        callback.call event
+      end
+    end          
   end
 
   # registers a block to be called when matching events are pulled from the SDL queue.
@@ -185,10 +211,10 @@ class InputManager
 
   # autohook a boolean to be set to true while a key is pressed
   def while_key_pressed(key, target, accessor)
-    _register_hook target, KeyPressed, key do
+    _register_hook target, :keyboard_down, key do
       target.send "#{accessor}=", true
     end
-    _register_hook target, KeyReleased, key do
+    _register_hook target, :keyboard_up, key do
       target.send "#{accessor}=", false
     end
   end
