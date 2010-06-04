@@ -1,8 +1,10 @@
 class WrappedScreen
-  constructor :input_manager
+  constructor :config_manager
   attr_accessor :screen
   def setup
-    @screen = @input_manager.window
+    width, height = @config_manager[:screen_resolution]
+    fullscreen = @config_manager[:fullscreen]
+    @screen = HookedGosuWindow.new width, height, fullscreen
   end
 
   def method_missing(name,*args)

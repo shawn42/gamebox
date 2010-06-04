@@ -1,21 +1,21 @@
 require 'actor'
 require 'actor_view'
 
-class MyActorView < ActorView
-  def draw(target, x_off, y_off)
-    x = @actor.x
-    y = @actor.y
-    target.draw_box x,y, x+20,y+20, [240,45,45,255]
-  end
-end
+#class MyActorView < ActorView
+#  def draw(target, x_off, y_off)
+#    x = @actor.x
+#    y = @actor.y
+#    target.draw_box x,y, x+20,y+20, [240,45,45,255]
+#  end
+#end
 
 class MyActor < Actor
 
-  has_behavior :updatable
+  has_behavior :updatable, :graphical
   attr_accessor :move_left, :move_right, :move_up, :move_down
   def setup
     input_manager.reg :mouse_motion do |evt|
-#      puts evt[:data]
+      puts evt[:data]
     end
     input_manager.while_key_pressed KbLeft, self, :move_left
     input_manager.while_key_pressed KbRight, self, :move_right

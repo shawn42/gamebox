@@ -22,14 +22,18 @@ class GraphicalActorView < ActorView
       if graphical_behavior && graphical_behavior.tiled?
         x_tiles = graphical_behavior.num_x_tiles
         y_tiles = graphical_behavior.num_y_tiles
-        img_w, img_h = *img.size
+#        img_w, img_h = *img.size
+        img_w = img.width
+        img_h = img.height
         x_tiles.times do |col|
           y_tiles.times do |row|
-            img.blit target.screen, [offset_x+col*img_w,offset_y+row*img_h]
+#            img.blit target.screen, [offset_x+col*img_w,offset_y+row*img_h]
+            img.draw offset_x+col*img_w, offset_y+row*img_h, 1
           end
         end
       else
-        img.blit target.screen, [offset_x,offset_y]
+#        img.blit target.screen, [offset_x,offset_y]
+        img.draw offset_x, offset_y, 1
       end
 
     end

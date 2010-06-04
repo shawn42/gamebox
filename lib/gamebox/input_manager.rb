@@ -21,15 +21,12 @@ class InputManager
   can_fire :key_up, :event_received
 
   attr_accessor :window
-
-  constructor :config_manager
+  constructor :config_manager, :wrapped_screen
 
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by diy.
   def setup
-    width, height = @config_manager[:screen_resolution]
-    fullscreen = @config_manager[:fullscreen]
-    @window = HookedGosuWindow.new width, height, fullscreen
+    @window = @wrapped_screen.screen
 
     @auto_quit = instance_eval(@config_manager[:auto_quit])
 

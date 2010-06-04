@@ -5,10 +5,14 @@ require 'inflector'
 require 'svg_document'
 
 class ResourceManager
-  def initialize
+
+  constructor :wrapped_screen
+
+  def setup
     @loaded_images = {}
     @loaded_fonts = {}
     @loaded_svgs = {}
+    @window = @wrapped_screen.screen
   end
 
   def load_actor_image(actor)
@@ -101,11 +105,11 @@ class ResourceManager
     if cached_img.nil?
       begin
         #cached_img = Rubygame::Surface.load(File.expand_path(GFX_PATH + file_name))
-        cached_img = Rubygame::Surface.load(GFX_PATH + file_name)
+        cached_img = Image.new(@window, GFX_PATH + file_name)
       rescue Exception => ex
         #check global gamebox location
         #cached_img = Rubygame::Surface.load(File.expand_path(GAMEBOX_GFX_PATH + file_name))
-        cached_img = Rubygame::Surface.load(GAMEBOX_GFX_PATH + file_name)
+        cached_img = Image.new(@window, GAMEBOX_GFX_PATH + file_name)
       end
       @loaded_images[file_name] = cached_img
     end
@@ -155,26 +159,6 @@ class ResourceManager
       puts "Cannot load font #{full_name}:#{ex}"
     end
     return nil
-  end
-
-  # TODO make this path include that app name?
-  def load_config(name)
-    conf = YAML::load_file(CONFIG_PATH + name + ".yml")
-    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
-    if File.exist? user_file
-      user_conf = YAML::load_file user_file
-      conf = conf.merge user_conf
-    end
-    conf
-  end
-
-  def save_settings(name, settings)
-    user_gamebox_dir = "#{ENV['HOME']}/.gamebox"
-    FileUtils.mkdir_p user_gamebox_dir
-    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
-    File.open user_file, "w" do |f|
-      f.write settings.to_yaml
-    end
   end
 
   def load_svg(file_name)
