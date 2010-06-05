@@ -46,40 +46,21 @@ class ResourceManager
   #
   def load_tile_set(actor, action)
     actor_dir = Inflector.underscore(actor.class)
-    tileset = load_image "#{actor_dir}/#{action}.png"
+    tileset_name = "#{actor_dir}/#{action}.png"
+    tileset = load_image tileset_name
 
     action_imgs = []
-    w,h = *tileset.size
-    color = tileset.get_at 0, 0
+    w = tileset.width
+    h = tileset.height
 
     if h > w
       # down
       num_frames = h/w
-      clip_from = Rubygame::Rect.new(0, 0, w, w)
-      clip_to = Rubygame::Rect.new(0, 0, w, w)
-      num_frames.times do
-        surface = Rubygame::Surface.new(clip_to.size)
-        surface.fill color
-        tileset.blit surface, clip_to, clip_from
-        surface.set_colorkey color
-        surface = surface.to_display_alpha
-        action_imgs << surface
-        clip_from.y += w
-      end
+      action_imgs = Image.load_tiles @window, GFX_PATH+tileset_name, -1, -num_frames, true
     else
       # right
       num_frames = w/h
-      clip_from = Rubygame::Rect.new(0, 0, h, h)
-      clip_to = Rubygame::Rect.new(0, 0, h, h)
-      num_frames.times do
-        surface = Rubygame::Surface.new(clip_to.size)
-        surface.fill color
-        tileset.blit surface, clip_to, clip_from
-        surface.set_colorkey color
-        surface = surface.to_display_alpha
-        action_imgs << surface
-        clip_from.x += h
-      end
+      action_imgs = Image.load_tiles @window, GFX_PATH+tileset_name, -num_frames, -1, true
     end
 
     action_imgs
@@ -113,23 +94,23 @@ class ResourceManager
       end
       @loaded_images[file_name] = cached_img
     end
-    cached_img
+#    cached_img
   end
 
   def load_music(full_name)
     begin
-      sound = Rubygame::Music.load(full_name)
-      return sound
-    rescue Rubygame::SDLError => ex
+      music = Song.new(@window, full_name)
+      return music
+    rescue Excpetion => ex
       puts "Cannot load music " + full_name + " : " + ex
     end
   end
 
   def load_sound(full_name)
     begin
-      sound = Rubygame::Sound.load(full_name)
+      sound = Sample.new(@window, full_name)
       return sound
-    rescue Rubygame::SDLError => ex
+    rescue Excpetion => ex
       puts "Cannot load sound " + full_name + " : " + ex
     end
   end

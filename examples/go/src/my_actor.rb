@@ -11,11 +11,14 @@ require 'actor_view'
 
 class MyActor < Actor
 
-  has_behavior :updatable, :graphical
+  has_behavior :updatable, :graphical, :audible
   attr_accessor :move_left, :move_right, :move_up, :move_down
   def setup
     input_manager.reg :mouse_motion do |evt|
       puts evt[:data]
+    end
+    input_manager.reg :mouse_down do 
+      play_sound :laser
     end
     input_manager.while_key_pressed KbLeft, self, :move_left
     input_manager.while_key_pressed KbRight, self, :move_right
