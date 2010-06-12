@@ -13,10 +13,12 @@ class GraphicalActorView < ActorView
 
     #if @actor.is? :animated or 
     if @actor.is? :physical
-      w,h = *img.size
-      offset_x = x-w/2 + x_off
-      offset_y = y-h/2 + y_off
-      img.blit target.screen, [offset_x,offset_y]
+      img_w = img.width
+      img_h = img.height
+
+      offset_x = x-img_w/2 + x_off
+      offset_y = y-img_h/2 + y_off
+      img.draw_rot offset_x, offset_y, 1, @actor.rotation
     else
       graphical_behavior = @actor.graphical if @actor.is? :graphical
       if graphical_behavior && graphical_behavior.tiled?

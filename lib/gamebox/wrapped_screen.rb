@@ -55,37 +55,7 @@ class WrappedScreen
 
   def convert_color(color)
     a = color.size == 4 ? color[3] : 255
-    Gosu::Color.new a, *color[0..2]
-  end
-
-  def start_drawing(); end
-
-  def finish_drawing(); end
-
-  def draw_image(img, x, y, color=nil)
-    # z is unused here
-    if color
-      img.draw x, y, 0,1,1,convert_color(color)
-    else
-      img.draw x, y, 0
-    end
-  end
-
-  # untested in Gosu
-  def draw_partial_image(img, to_x, to_y,
-     from_x=nil,from_y=nil,from_w=nil,from_h=nil, color=nil)
-
-    if from_x
-      if from_w
-        from = [from_x,from_y,from_w,from_h]
-        image = Image.new @screen, img, false, from
-      else
-        raise "not supported in gosu"
-      end
-      image.draw x, y, 0
-    else
-      draw_image img,to_x,to_y,color
-    end
+    Gosu::Color.new a.round, *color[0..2].map{|value|value.round}
   end
 
   def size_text(text, font_file, font_size)

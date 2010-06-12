@@ -4,7 +4,7 @@ require 'actor_view'
 
 class CurtainView < ActorView
   def draw(target,x_off,y_off)
-    target.draw_box_s [0,0],[1024,800], [0,0,0,@actor.height]
+    target.fill 0,0,1024,800, [0,0,0,@actor.height]
   end
 end
 

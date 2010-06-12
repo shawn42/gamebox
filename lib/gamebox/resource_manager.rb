@@ -115,24 +115,20 @@ class ResourceManager
     end
   end
 
-  # loads TTF fonts from the fonts dir and caches them for later
+  # loads fonts from the fonts dir and caches them for later
   def load_font(name, size)
     @loaded_fonts[name] ||= {}
     return @loaded_fonts[name][size] if @loaded_fonts[name][size]
     begin
-      unless @ttf_loaded
-        TTF.setup
-        @ttf_loaded = true
-      end
       #full_name = File.expand_path(FONTS_PATH + name)
       full_name = FONTS_PATH + name
       begin
-        font = TTF.new(full_name, size)
+        font = Font.new(@window, full_name, size)
         @loaded_fonts[name][size] = font
       rescue Exception => ex
         #full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
         full_name = GAMEBOX_FONTS_PATH + name
-        font = TTF.new(full_name, size)
+        font = Font.new(@window, full_name, size)
         @loaded_fonts[name][size] = font
       end
       return font

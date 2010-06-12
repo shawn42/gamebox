@@ -1,14 +1,10 @@
 require 'gamebox/lib/platform'
 
-task :default => :run
 desc "Run the game"
 task :run do |t|
-  if Platform.mac?                                               
-    sh "rsdl src/app.rb"                                          
-  else
-    sh "ruby src/app.rb"                                         
-  end
+  sh "ruby src/app.rb"
 end 
+task :default => :run
 
 desc "Report code statistics (KLOCs, etc) from the application"
 task :stats do
@@ -19,11 +15,7 @@ end
 
 desc "Run the game with debug server"
 task :debug do |t|
-  if Platform.mac?                                               
-    sh "rsdl src/app.rb -debug-server"                                          
-  else
-    sh "ruby src/app.rb -debug-server"                                         
-  end
+  sh "ruby src/app.rb -debug-server"                                         
 end
 
 desc "Bundle in all required gems"

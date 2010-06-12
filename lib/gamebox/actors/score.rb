@@ -4,12 +4,13 @@ class ScoreView < ActorView
     text = '0'*(6-text.size)+text
 
     font = @stage.resource_manager.load_font 'Asimov.ttf', 30
-    text_image = font.render text, true, [250,250,250,255]
+#    text_image = font.render text, true, [250,250,250,255]
+#    text_image = Image.from_text target.screen, text, 'data/fonts/Asimov.ttf', 30
 
     x = @actor.x
     y = @actor.y
 
-    text_image.blit target.screen, [x,y]
+    font.draw text, x,y,1#, 1,1,target.convert_color([250,250,250,255])
   end
 end
 class Score < Actor

@@ -45,7 +45,7 @@ class Physical < Behavior
 
     # write code here to keep physics and x,y of actor in sync
     relegates :x, :y, :x=, :y=, :shape, :body, :parts,
-      :deg, :warp, :segment_groups, :physical, :image
+      :rotation, :warp, :segment_groups, :physical
 
   end
 
@@ -153,13 +153,14 @@ class Physical < Behavior
     body.p = vec2(x, new_y)
   end
 
-  def deg
+  def rotation
     # TODO hack!! why do poly's not work the same?
     if opts[:shape] == :poly
-      -((body.a-1.57) * 180.0 / Math::PI + 90)
+      ((body.a-1.57) * 180.0 / Math::PI + 90) % 360
     else
-      -((body.a) * 180.0 / Math::PI + 90)
+      ((body.a) * 180.0 / Math::PI + 90) % 360
     end
+#    rot_deg = rotation.round % 360
   end
 
   def warp(new_p)
@@ -171,18 +172,19 @@ class Physical < Behavior
     self
   end
 
-  def image
-    old_image = nil
-    rot_deg = deg.round % 360
-
-    if @actor.is? :animated
-      old_image = @actor.animated.image
-    elsif @actor.is? :graphical
-      old_image = @actor.graphical.image
-    end
-
-    if old_image
-      old_image.rotozoom(rot_deg,1,true)
-    end
-  end
+#  def image
+#    old_image = nil
+#    rot_deg = rotation.round % 360
+#
+#    if @actor.is? :animated
+#      old_image = @actor.animated.image
+#    elsif @actor.is? :graphical
+#      old_image = @actor.graphical.image
+#    end
+#
+#    if old_image
+#      # XXX rotate when drawing, not when getting image
+#      old_image.rotozoom(rot_deg,1,true)
+#    end
+#  end
 end

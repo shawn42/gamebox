@@ -9,7 +9,7 @@ class ShipView < GraphicalActorView
       x = @actor.x + x_off
       y = @actor.y + y_off
 
-      target.draw_circle [x,y], 25, [200,200,255,140]
+      target.draw_circle x,y, 25, [200,200,255,140]
     end
     super target, x_off, y_off
   end
@@ -36,29 +36,29 @@ class Ship < Actor
     @max_speed = 500
 
     i = input_manager
-    i.reg KeyPressed, :space do
+    i.reg :keyboard_down, KbSpace do
       shoot
     end
-    i.reg KeyPressed, :right_ctrl, :left_ctrl do
+    i.reg :keyboard_down, KbRightControl, KbLeftControl do
       warp vec2(rand(400)+100,rand(400)+100)
     end
-    i.reg KeyPressed, :left do
+    i.reg :keyboard_down, KbLeft do
       @moving_left = true
     end
-    i.reg KeyPressed, :right do
+    i.reg :keyboard_down, KbRight do
       @moving_right = true
     end
-    i.reg KeyPressed, :up do
+    i.reg :keyboard_down, KbUp do
       @moving_forward = true
       self.action = :thrust
     end
-    i.reg KeyReleased, :left do
+    i.reg :keyboard_up, KbLeft do
       @moving_left = false
     end
-    i.reg KeyReleased, :right do
+    i.reg :keyboard_up, KbRight do
       @moving_right = false
     end
-    i.reg KeyReleased, :up do
+    i.reg :keyboard_up, KbUp do
       @moving_forward = false
       self.action = :idle
     end
