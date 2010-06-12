@@ -13,15 +13,15 @@ class AaBbCollidable < CollidableShape
   end
 
   def center_x
-    @actor.x + @actor.width * 0.5
+    actor_x + @actor.width * 0.5
   end
 
   def center_y
-    @actor.y + @actor.height * 0.5
+    actor_y + @actor.height * 0.5
   end
 
   def cw_world_points
-    @cached_points ||= @cw_local_points.map{|lp| [lp[0]+@actor.x,lp[1]+@actor.y]}
+    @cached_points ||= @cw_local_points.map{|lp| [lp[0]+actor_x,lp[1]+actor_y]}
   end
 
   def cw_world_lines
@@ -31,10 +31,10 @@ class AaBbCollidable < CollidableShape
     hw = @actor.width * 0.5
     hh = @actor.height * 0.5
     lines = [
-      [[@actor.x-hw,@actor.y+hh], [@actor.x+hw,@actor.y+hh]],
-      [[@actor.x+hw,@actor.y+hh], [@actor.x+hw,@actor.y-hh]],
-      [[@actor.x+hw,@actor.y-hh], [@actor.x-hw,@actor.y-hh]],
-      [[@actor.x-hw,@actor.y-hh], [@actor.x-hw,@actor.y+hh]]
+      [[actor_x-hw,actor_y+hh], [actor_x+hw,actor_y+hh]],
+      [[actor_x+hw,actor_y+hh], [actor_x+hw,actor_y-hh]],
+      [[actor_x+hw,actor_y-hh], [actor_x-hw,actor_y-hh]],
+      [[actor_x-hw,actor_y-hh], [actor_x-hw,actor_y+hh]]
     ]
 
     @cached_lines = lines
@@ -45,10 +45,10 @@ class AaBbCollidable < CollidableShape
   end
 
   def recalculate_collidable_cache
-    unless @old_x == @actor.x && @old_y == @actor.y
+    unless @old_x == actor_x && @old_y == actor_y
       clear_collidable_cache
-      @old_x = @actor.x
-      @old_y = @actor.y
+      @old_x = actor_x
+      @old_y = actor_y
     end
   end
 
