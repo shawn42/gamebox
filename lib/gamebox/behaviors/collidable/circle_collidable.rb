@@ -7,11 +7,11 @@ class CircleCollidable < CollidableShape
   end
 
   def center_x
-    @actor.x + radius
+    actor_x + radius
   end
 
   def center_y
-    @actor.y + radius
+    actor_y + radius
   end
 
 end

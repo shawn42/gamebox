@@ -12,8 +12,8 @@ class PolygonCollidable < CollidableShape
     @radius = opts[:radius]
     @radius ||= calculate_radius
 
-    @old_x = @actor.x
-    @old_y = @actor.y
+    @old_x = actor_x
+    @old_y = actor_y
   end
 
   def calculate_radius
@@ -41,7 +41,7 @@ class PolygonCollidable < CollidableShape
   end
 
   def cw_world_points
-    @cached_points ||= @cw_local_points.map{|lp| [lp[0]+@actor.x,lp[1]+@actor.y]}
+    @cached_points ||= @cw_local_points.map{|lp| [lp[0]+actor_x,lp[1]+actor_y]}
   end
 
   def cw_world_lines
@@ -69,10 +69,10 @@ class PolygonCollidable < CollidableShape
   end
 
   def recalculate_collidable_cache
-    unless @old_x == @actor.x && @old_y == @actor.y
+    unless @old_x == actor_x && @old_y == actor_y
       clear_collidable_cache
-      @old_x = @actor.x
-      @old_y = @actor.y
+      @old_x = actor_x
+      @old_y = actor_y
     end
   end
 
