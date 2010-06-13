@@ -197,6 +197,7 @@ class Stage
   end
 
   def pause
+    @pause_listeners ||= []
     @paused = true
     @director.pause
     @input_manager.pause
@@ -208,6 +209,7 @@ class Stage
   end
 
   def unpause
+    @unpause_listeners ||= []
     @director.unpause
     @input_manager.unpause
     @timers = @paused_timers
