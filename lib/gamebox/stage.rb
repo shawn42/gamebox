@@ -101,6 +101,7 @@ class Stage
   end
 
   def draw(target)
+    z = 0
     @drawables.keys.sort.reverse.each do |parallax_layer|
 
       drawables_on_parallax_layer = @drawables[parallax_layer]
@@ -111,8 +112,14 @@ class Stage
           trans_x = @viewport.x_offset parallax_layer
           trans_y = @viewport.y_offset parallax_layer
 
+          z += 1
           drawables_on_parallax_layer[layer].each do |drawable|
-            drawable.draw target, trans_x, trans_y 
+            begin
+              drawable.draw target, trans_x, trans_y, z
+            rescue Exception => ex
+              p drawable.class
+              p ex
+            end
           end
         end
       end

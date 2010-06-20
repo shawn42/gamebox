@@ -6,7 +6,7 @@ class HookedGosuWindow < Window
 
   def initialize(width, height, fullscreen)
 
-    super(640, 480, fullscreen)
+    super(width, height, fullscreen)
     self.caption = "Gamebox in Gosu!!"
   end
 

@@ -3,15 +3,16 @@ require 'publisher'
 require 'graphical_actor_view'
 
 class ShipView < GraphicalActorView
-  def draw(target, x_off, y_off)
+  def draw(target, x_off, y_off, z)
     # draw a shield
     if @actor.invincible?
-      x = @actor.x + x_off
-      y = @actor.y + y_off
+      radius = 25
+      x = @actor.x + x_off - radius
+      y = @actor.y + y_off - radius
 
-      target.draw_circle x,y, 25, [200,200,255,140]
+      target.draw_circle x,y, radius, [200,200,255,140]
     end
-    super target, x_off, y_off
+    super target, x_off, y_off, z
   end
 end
 

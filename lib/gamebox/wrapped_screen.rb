@@ -2,7 +2,7 @@ class WrappedScreen
   constructor :config_manager
   attr_accessor :screen
   def setup
-    width, height = @config_manager[:screen_resolution]
+    width, height = *@config_manager[:screen_resolution]
     fullscreen = @config_manager[:fullscreen]
     @screen = HookedGosuWindow.new width, height, fullscreen
   end

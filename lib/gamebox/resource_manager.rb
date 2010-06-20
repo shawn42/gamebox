@@ -94,7 +94,7 @@ class ResourceManager
       end
       @loaded_images[file_name] = cached_img
     end
-#    cached_img
+    cached_img
   end
 
   def load_music(full_name)

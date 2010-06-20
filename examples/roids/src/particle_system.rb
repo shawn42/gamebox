@@ -3,7 +3,7 @@ require 'actor_view'
 require 'ftor'
 
 class ParticleSystemView < ActorView
-  def draw(target, x_off, y_off)
+  def draw(target, x_off, y_off, z)
     ax = @actor.x + x_off
     ay = @actor.y + y_off
     @actor.particles.each do |part|

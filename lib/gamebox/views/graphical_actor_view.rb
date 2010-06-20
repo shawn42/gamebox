@@ -1,7 +1,7 @@
 require 'actor_view'
 
 class GraphicalActorView < ActorView
-  def draw(target, x_off, y_off)
+  def draw(target, x_off, y_off, z)
     x = @actor.x
     y = @actor.y
 
@@ -18,7 +18,7 @@ class GraphicalActorView < ActorView
 
       offset_x = x-img_w/2 + x_off
       offset_y = y-img_h/2 + y_off
-      img.draw_rot offset_x, offset_y, 1, @actor.rotation
+      img.draw_rot offset_x, offset_y, z, @actor.rotation
     else
       graphical_behavior = @actor.graphical if @actor.is? :graphical
       if graphical_behavior && graphical_behavior.tiled?
@@ -30,12 +30,12 @@ class GraphicalActorView < ActorView
         x_tiles.times do |col|
           y_tiles.times do |row|
 #            img.blit target.screen, [offset_x+col*img_w,offset_y+row*img_h]
-            img.draw offset_x+col*img_w, offset_y+row*img_h, 1
+            img.draw offset_x+col*img_w, offset_y+row*img_h, z
           end
         end
       else
 #        img.blit target.screen, [offset_x,offset_y]
-        img.draw offset_x, offset_y, 1
+        img.draw offset_x, offset_y, z
       end
 
     end

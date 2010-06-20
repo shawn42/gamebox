@@ -1,7 +1,7 @@
 require 'ftor'
 
 class StarryNightView < ActorView
-  def draw(target, x_off, y_off)
+  def draw(target, x_off, y_off, z)
     for star in actor.stars
       target.draw_circle_filled(star.x,star.y,1,[255,255,255,255])
     end
