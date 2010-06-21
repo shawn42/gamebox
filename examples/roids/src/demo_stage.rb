@@ -18,6 +18,10 @@ class DemoStage < PhysicalStage
     score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600
 
+    input_manager.reg :keyboard_down, KbR do
+      fire :next_stage
+    end
+
     @rocks = []
     opts[:rocks].times do
       rock = create_actor :rock

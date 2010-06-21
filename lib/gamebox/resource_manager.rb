@@ -122,10 +122,10 @@ class ResourceManager
     begin
       #full_name = File.expand_path(FONTS_PATH + name)
       full_name = FONTS_PATH + name
-      begin
+      if File.exist? full_name
         font = Font.new(@window, full_name, size)
         @loaded_fonts[name][size] = font
-      rescue Exception => ex
+      else
         #full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
         full_name = GAMEBOX_FONTS_PATH + name
         font = Font.new(@window, full_name, size)

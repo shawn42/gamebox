@@ -3,7 +3,7 @@ class CreditsStage < Stage
   def curtain_up
     @image = @resource_manager.load_image 'credits.png'
     i = @input_manager
-    i.reg KeyPressed, :space do
+    i.reg :keyboard_down, KbSpace do
       fire :next_stage
     end
   end
@@ -14,6 +14,6 @@ class CreditsStage < Stage
   end
 
   def draw(target)
-    @image.blit target.screen, [0,0] if @image
+    @image.draw 0,0,1 if @image
   end
 end
