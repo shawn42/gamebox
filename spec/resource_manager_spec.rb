@@ -3,7 +3,7 @@ require 'resource_manager'
 
 describe 'A new resource manager' do
   before do
-    @res_man = ResourceManager.new
+    @res_man = ResourceManager.new :wrapped_screen => stub(:screen => :fake_gosu)
   end
 
   it 'should load an actor image' do
