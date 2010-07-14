@@ -5,9 +5,7 @@ class HookedGosuWindow < Window
   can_fire :update, :draw, :button_down, :button_up
 
   def initialize(width, height, fullscreen)
-
     super(width, height, fullscreen)
-    self.caption = "Gamebox in Gosu!!"
   end
 
   def update

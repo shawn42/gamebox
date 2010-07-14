@@ -5,6 +5,7 @@ class WrappedScreen
     width, height = *@config_manager[:screen_resolution]
     fullscreen = @config_manager[:fullscreen]
     @screen = HookedGosuWindow.new width, height, fullscreen
+    @screen.caption = @config_manager[:title]
   end
 
   def method_missing(name,*args)
@@ -25,6 +26,8 @@ class WrappedScreen
   end
 
   CIRCLE_STEP = 10
+  # is very expensive
+  # cache it if you can somehow
   def draw_circle(cx,cy,r,color)
     c_color = convert_color(color)
     
@@ -34,6 +37,8 @@ class WrappedScreen
     }
   end
 
+  # is very expensive
+  # cache it if you can somehow
   def draw_circle_filled(cx,cy,r,color)
     c_color = convert_color(color)
 
@@ -54,8 +59,14 @@ class WrappedScreen
   end
 
   def convert_color(color)
-    a = color.size == 4 ? color[3] : 255
-    Gosu::Color.new a.round, *color[0..2].map{|value|value.round}
+    @colors ||= {}
+    c = @colors[color]
+    if c.nil?
+      a = color.size == 4 ? color[3] : 255
+      c = Gosu::Color.new a.round, *color[0..2].map{|value|value.round}
+      @colors[color] = c
+    end
+    c
   end
 
   def size_text(text, font_file, font_size)

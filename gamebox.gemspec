@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-06-04}
+  s.date = %q{2010-06-28}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Rubygame}
   s.email = %q{shawn42@gmail.com}
@@ -69,6 +69,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/data/sounds/GAMEBOX_SOUND_FX_GO_HERE",
      "lib/gamebox/director.rb",
      "lib/gamebox/event_compat.rb",
+     "lib/gamebox/ftor.rb",
      "lib/gamebox/gamebox_application.rb",
      "lib/gamebox/gamebox_generator.rb",
      "lib/gamebox/generators/actor_generator.rb",
@@ -147,7 +148,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{gamebox}
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Framework for building and distributing games using Rubygame}
   s.test_files = [
     "spec/actor_spec.rb",
@@ -171,7 +172,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_runtime_dependency(%q<rubygame>, [">= 0"])

@@ -14,7 +14,6 @@ class Game
 
   def draw
     @stage_manager.draw @wrapped_screen
-    @wrapped_screen.flip
   end
 
 end
