@@ -31,10 +31,16 @@ class WrappedScreen
   def draw_circle(cx,cy,r,color)
     c_color = convert_color(color)
     
-    0.step(360, CIRCLE_STEP) { |a1| 
-      a2 = a1 + CIRCLE_STEP
-      @screen.draw_line cx + offset_x(a1, r), cy + offset_y(a1, r), c_color, cx + offset_x(a2, r), cy + offset_y(a2, r), c_color, 0 
+    x0, y0 = cx + offset_x(0, r), cy + offset_y(0, r)
+    x1, y1 = x0, y0
+    circ = 2 * Math::PI * r
+    step = 360 / circ
+    step.step(360, step) { |a|
+      x2, y2 = cx + offset_x(a, r), cy + offset_y(a, r)
+      @screen.draw_line x1, y1, c_color, x2, y2, c_color, 0
+      x1, y1 = x2, y2
     }
+    @screen.draw_line x1, y1, c_color, x0, y0, c_color, 0
   end
 
   # is very expensive
