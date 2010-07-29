@@ -57,10 +57,31 @@ class WrappedScreen
   def draw_circle_filled(cx,cy,r,color)
     c_color = convert_color(color)
 
-    0.step(360, CIRCLE_STEP) { |a1| 
-      a2 = a1 + CIRCLE_STEP
-      @screen.draw_triangle cx + offset_x(a1, r), cy + offset_y(a1, r), c_color, cx + offset_x(a2, r), cy + offset_y(a2, r), c_color, cx, cy, c_color, 0 
+    x1, y1 = 0, -r
+    circ = 2 * Math::PI * r
+    step = 360 / circ
+    step.step(45, step) { |a|
+      x2, y2 = offset_x(a, r), offset_y(a, r)
+      @screen.draw_quad \
+        cx + x1, cy + y1, c_color, cx + x2, cy + y2, c_color,
+        cx - x2, cy + y2, c_color, cx - x1, cy + y1, c_color, 0
+      @screen.draw_quad \
+        cx - x1, cy - y1, c_color, cx - x2, cy - y2, c_color,
+        cx + x2, cy - y2, c_color, cx + x1, cy - y1, c_color, 0
+      @screen.draw_quad \
+        cx + y1, cy + x1, c_color, cx + y2, cy + x2, c_color,
+        cx - y2, cy + x2, c_color, cx - y1, cy + x1, c_color, 0
+      @screen.draw_quad \
+        cx - y1, cy - x1, c_color, cx - y2, cy - x2, c_color,
+        cx + y2, cy - x2, c_color, cx + y1, cy - x1, c_color, 0
+      x1, y1 = x2, y2
     }
+    @screen.draw_quad \
+      cx + x1, cy + y1, c_color, cx - y1, cy - x1, c_color,
+      cx + y1, cy - x1, c_color, cx - x1, cy + y1, c_color, 0
+    @screen.draw_quad \
+      cx - x1, cy - y1, c_color, cx + y1, cy + x1, c_color,
+      cx - y1, cy + x1, c_color, cx + x1, cy - y1, c_color, 0
   end
 
   def fill_screen(color)
