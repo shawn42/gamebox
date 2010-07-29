@@ -31,16 +31,25 @@ class WrappedScreen
   def draw_circle(cx,cy,r,color)
     c_color = convert_color(color)
     
-    x0, y0 = cx + offset_x(0, r), cy + offset_y(0, r)
-    x1, y1 = x0, y0
+    x1, y1 = 0, -r
     circ = 2 * Math::PI * r
     step = 360 / circ
-    step.step(360, step) { |a|
-      x2, y2 = cx + offset_x(a, r), cy + offset_y(a, r)
-      @screen.draw_line x1, y1, c_color, x2, y2, c_color, 0
+    step.step(45, step) { |a|
+      x2, y2 = offset_x(a, r), offset_y(a, r)
+      @screen.draw_line cx + x1, cy + y1, c_color, cx + x2, cy + y2, c_color, 0
+      @screen.draw_line cx - x1, cy + y1, c_color, cx - x2, cy + y2, c_color, 0
+      @screen.draw_line cx - x1, cy - y1, c_color, cx - x2, cy - y2, c_color, 0
+      @screen.draw_line cx + x1, cy - y1, c_color, cx + x2, cy - y2, c_color, 0
+      @screen.draw_line cx + y1, cy + x1, c_color, cx + y2, cy + x2, c_color, 0
+      @screen.draw_line cx - y1, cy + x1, c_color, cx - y2, cy + x2, c_color, 0
+      @screen.draw_line cx - y1, cy - x1, c_color, cx - y2, cy - x2, c_color, 0
+      @screen.draw_line cx + y1, cy - x1, c_color, cx + y2, cy - x2, c_color, 0
       x1, y1 = x2, y2
     }
-    @screen.draw_line x1, y1, c_color, x0, y0, c_color, 0
+    @screen.draw_line cx + x1, cy + y1, c_color, cx - y1, cy - x1, c_color, 0
+    @screen.draw_line cx - x1, cy + y1, c_color, cx + y1, cy - x1, c_color, 0
+    @screen.draw_line cx - x1, cy - y1, c_color, cx + y1, cy + x1, c_color, 0
+    @screen.draw_line cx + x1, cy - y1, c_color, cx - y1, cy + x1, c_color, 0
   end
 
   # is very expensive
