@@ -85,12 +85,15 @@ class ResourceManager
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
       begin
-        #cached_img = Rubygame::Surface.load(File.expand_path(GFX_PATH + file_name))
-        cached_img = Image.new(@window, GFX_PATH + file_name)
+        full_name = GFX_PATH + file_name
+        if ! File.exist? full_name
+          #check global gamebox location
+          full_name = GAMEBOX_GFX_PATH + file_name
+        end
+        #cached_img = Rubygame::Surface.load(File.expand_path(full_name))
+        cached_img = Image.new(@window, full_name)
       rescue Exception => ex
-        #check global gamebox location
-        #cached_img = Rubygame::Surface.load(File.expand_path(GAMEBOX_GFX_PATH + file_name))
-        cached_img = Image.new(@window, GAMEBOX_GFX_PATH + file_name)
+        puts "Cannot load image #{file_name}"
       end
       @loaded_images[file_name] = cached_img
     end
