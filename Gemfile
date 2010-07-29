@@ -1,0 +1,8 @@
+source "http://rubygems.org"
+gem "rspec"
+gem "jeweler"
+gem "rubygame"
+gem "constructor"
+gem "publisher"
+gem "gosu"
+gem "chipmunk"
