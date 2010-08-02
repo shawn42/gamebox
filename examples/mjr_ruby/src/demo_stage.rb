@@ -38,7 +38,7 @@ class DemoStage < Stage
   end
 
   def draw(target)
-    target.fill [25,25,25,255]
+    target.fill_screen [25,25,25,255]
     super
   end
 end
