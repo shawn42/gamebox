@@ -22,8 +22,7 @@ add Extra; actor with a short time to live (TTL); useful for special effects (ma
 	
 static deployment bundles (crate, love-clone; custom C project)
 	ruby
-	SDL
-	rubygame
+	gosu
 possible features:
 AI
 	 state machine

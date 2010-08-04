@@ -14,8 +14,8 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 - or tar from http://shawn42.github.com/gamebox
 - or git pull from git://github.com/shawn42/gamebox.git
 - required gems
-  - hoe
-  - rubygame (all of its dependencies)
+  - bundler
+  - gosu 
   - constructor
   - publisher
   - rspec for unit tests

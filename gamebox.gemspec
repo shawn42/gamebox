@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
   s.date = %q{2010-06-28}
   s.default_executable = %q{gamebox}
-  s.description = %q{Framework for building and distributing games using Rubygame}
+  s.description = %q{Framework for building and distributing games using Gosu}
   s.email = %q{shawn42@gmail.com}
   s.executables = ["gamebox"]
   s.extra_rdoc_files = [
@@ -87,7 +87,6 @@ Gem::Specification.new do |s|
      "lib/gamebox/lib/platform.rb",
      "lib/gamebox/lib/publisher_ext.rb",
      "lib/gamebox/lib/sorted_list.rb",
-     "lib/gamebox/lib/surface_ext.rb",
      "lib/gamebox/physical_director.rb",
      "lib/gamebox/physical_stage.rb",
      "lib/gamebox/physics.rb",
@@ -149,7 +148,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{gamebox}
   s.rubygems_version = %q{1.3.6}
-  s.summary = %q{Framework for building and distributing games using Rubygame}
+  s.summary = %q{Framework for building and distributing games using Gosu}
   s.test_files = [
     "spec/actor_spec.rb",
      "spec/actor_view_spec.rb",
@@ -175,20 +174,20 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<rubygame>, [">= 0"])
+      s.add_runtime_dependency(%q<gosu>, [">= 0"])
       s.add_runtime_dependency(%q<constructor>, [">= 0"])
       s.add_runtime_dependency(%q<publisher>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<rubygame>, [">= 0"])
+      s.add_dependency(%q<gosu>, [">= 0"])
       s.add_dependency(%q<constructor>, [">= 0"])
       s.add_dependency(%q<publisher>, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<rubygame>, [">= 0"])
+    s.add_dependency(%q<gosu>, [">= 0"])
     s.add_dependency(%q<constructor>, [">= 0"])
     s.add_dependency(%q<publisher>, [">= 0"])
   end

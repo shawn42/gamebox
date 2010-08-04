@@ -1,8 +1,6 @@
 require 'actor'
 require 'actor_view'
 
-# unfortunately, we need a custom view because rubygame's
-# rotozoom resizes the image
 class PrettyGemView < ActorView
   def draw(target, x_off, y_off, z)
     x = @actor.x
