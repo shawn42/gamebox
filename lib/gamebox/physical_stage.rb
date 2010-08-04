@@ -14,7 +14,7 @@ class PhysicalStage < Stage
   end
   
   def setup_space
-    @space = Space.new
+    @space = CP::Space.new
     @space.iterations = 20
     @space.elastic_iterations = 5
   end
