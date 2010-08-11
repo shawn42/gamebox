@@ -1,10 +1,6 @@
 #!/usr/bin/env ruby
 $: << "#{File.dirname(__FILE__)}/../config"
 
-require 'rubygems'
-require 'bundler'
-Bundler.setup
-
 require 'gosu'
 include Gosu
 

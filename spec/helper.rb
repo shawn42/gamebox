@@ -2,7 +2,7 @@ here = File.dirname(__FILE__)
 gamebox_root = File.expand_path(File.join(here, '..', 'lib'))
 
 #$LOAD_PATH.unshift File.expand_path(gamebox_root, 'gamebox')
-require 'rubygems'
+require File.expand_path(File.join(here, '..', 'load_paths'))
 require 'spec'
 
 # TODO this lives in both gamebox.rb and here... seems strange

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-06-28}
+  s.date = %q{2010-08-11}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Gosu}
   s.email = %q{shawn42@gmail.com}
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "Gemfile",
      "History.txt",
      "README.txt",
      "Rakefile",
@@ -147,40 +148,42 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{gamebox}
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Framework for building and distributing games using Gosu}
   s.test_files = [
-    "spec/actor_spec.rb",
-     "spec/actor_view_spec.rb",
-     "spec/animated_spec.rb",
-     "spec/arbiter_spec.rb",
-     "spec/backstage_spec.rb",
-     "spec/behavior_spec.rb",
-     "spec/collidable_spec.rb",
+    "spec/backstage_spec.rb",
      "spec/helper.rb",
-     "spec/label_spec.rb",
+     "spec/viewport_spec.rb",
      "spec/physical_spec.rb",
+     "spec/stage_manager_spec.rb",
+     "spec/actor_view_spec.rb",
+     "spec/label_spec.rb",
+     "spec/actor_spec.rb",
+     "spec/collidable_spec.rb",
+     "spec/stage_spec.rb",
+     "spec/animated_spec.rb",
      "spec/resource_manager_spec.rb",
      "spec/spatial_hash_spec.rb",
-     "spec/stage_manager_spec.rb",
-     "spec/stage_spec.rb",
-     "spec/viewport_spec.rb"
+     "spec/arbiter_spec.rb",
+     "spec/behavior_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_runtime_dependency(%q<gosu>, [">= 0"])
+      s.add_runtime_dependency(%q<bundler>, [">= 0"])
       s.add_runtime_dependency(%q<constructor>, [">= 0"])
       s.add_runtime_dependency(%q<publisher>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<gosu>, [">= 0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<constructor>, [">= 0"])
       s.add_dependency(%q<publisher>, [">= 0"])
     end
@@ -188,6 +191,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<gosu>, [">= 0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<constructor>, [">= 0"])
     s.add_dependency(%q<publisher>, [">= 0"])
   end
