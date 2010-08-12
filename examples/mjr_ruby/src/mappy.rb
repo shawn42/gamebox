@@ -3,8 +3,8 @@ require 'two_d_grid_map'
 require 'actor_view'
 
 class FogView < ActorView
-  def draw(target, x_off, y_off)
-    target.screen.draw_box_s [0,0],[1024,800],[120,120,120,120]
+  def draw(target, x_off, y_off, z)
+    target.fill_screen [120,120,120,120]
   end
 end
 class Fog < Actor
@@ -32,7 +32,7 @@ class Mappy < Actor
 #    self.z_level=0
 
     @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
-    input_manager.reg KeyDownEvent, :space do
+    input_manager.reg :keyboard_down, KbSpace do
       rotate_layers
     end
   end

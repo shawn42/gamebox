@@ -1,5 +1,5 @@
 require 'stage'
-require 'rubygame/ftor'
+require 'ftor'
 class DemoStage < Stage
   def setup
     super
@@ -38,7 +38,7 @@ class DemoStage < Stage
   end
 
   def draw(target)
-    target.fill [25,25,25,255]
+    target.fill_screen [25,25,25,255]
     super
   end
 end

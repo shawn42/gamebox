@@ -5,10 +5,14 @@ require 'inflector'
 require 'svg_document'
 
 class ResourceManager
-  def initialize
+
+  constructor :wrapped_screen
+
+  def setup
     @loaded_images = {}
     @loaded_fonts = {}
     @loaded_svgs = {}
+    @window = @wrapped_screen.screen
   end
 
   def load_actor_image(actor)
@@ -42,40 +46,21 @@ class ResourceManager
   #
   def load_tile_set(actor, action)
     actor_dir = Inflector.underscore(actor.class)
-    tileset = load_image "#{actor_dir}/#{action}.png"
+    tileset_name = "#{actor_dir}/#{action}.png"
+    tileset = load_image tileset_name
 
     action_imgs = []
-    w,h = *tileset.size
-    color = tileset.get_at 0, 0
+    w = tileset.width
+    h = tileset.height
 
     if h > w
       # down
       num_frames = h/w
-      clip_from = Rubygame::Rect.new(0, 0, w, w)
-      clip_to = Rubygame::Rect.new(0, 0, w, w)
-      num_frames.times do
-        surface = Rubygame::Surface.new(clip_to.size)
-        surface.fill color
-        tileset.blit surface, clip_to, clip_from
-        surface.set_colorkey color
-        surface = surface.to_display_alpha
-        action_imgs << surface
-        clip_from.y += w
-      end
+      action_imgs = Image.load_tiles @window, GFX_PATH+tileset_name, -1, -num_frames, true
     else
       # right
       num_frames = w/h
-      clip_from = Rubygame::Rect.new(0, 0, h, h)
-      clip_to = Rubygame::Rect.new(0, 0, h, h)
-      num_frames.times do
-        surface = Rubygame::Surface.new(clip_to.size)
-        surface.fill color
-        tileset.blit surface, clip_to, clip_from
-        surface.set_colorkey color
-        surface = surface.to_display_alpha
-        action_imgs << surface
-        clip_from.x += h
-      end
+      action_imgs = Image.load_tiles @window, GFX_PATH+tileset_name, -num_frames, -1, true
     end
 
     action_imgs
@@ -100,12 +85,14 @@ class ResourceManager
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
       begin
-        #cached_img = Rubygame::Surface.load(File.expand_path(GFX_PATH + file_name))
-        cached_img = Rubygame::Surface.load(GFX_PATH + file_name)
+        full_name = GFX_PATH + file_name
+        if ! File.exist? full_name
+          #check global gamebox location
+          full_name = GAMEBOX_GFX_PATH + file_name
+        end
+        cached_img = Image.new(@window, full_name)
       rescue Exception => ex
-        #check global gamebox location
-        #cached_img = Rubygame::Surface.load(File.expand_path(GAMEBOX_GFX_PATH + file_name))
-        cached_img = Rubygame::Surface.load(GAMEBOX_GFX_PATH + file_name)
+        puts "Cannot load image #{file_name}"
       end
       @loaded_images[file_name] = cached_img
     end
@@ -114,40 +101,36 @@ class ResourceManager
 
   def load_music(full_name)
     begin
-      sound = Rubygame::Music.load(full_name)
-      return sound
-    rescue Rubygame::SDLError => ex
+      music = Song.new(@window, full_name)
+      return music
+    rescue Excpetion => ex
       puts "Cannot load music " + full_name + " : " + ex
     end
   end
 
   def load_sound(full_name)
     begin
-      sound = Rubygame::Sound.load(full_name)
+      sound = Sample.new(@window, full_name)
       return sound
-    rescue Rubygame::SDLError => ex
+    rescue Excpetion => ex
       puts "Cannot load sound " + full_name + " : " + ex
     end
   end
 
-  # loads TTF fonts from the fonts dir and caches them for later
+  # loads fonts from the fonts dir and caches them for later
   def load_font(name, size)
     @loaded_fonts[name] ||= {}
     return @loaded_fonts[name][size] if @loaded_fonts[name][size]
     begin
-      unless @ttf_loaded
-        TTF.setup
-        @ttf_loaded = true
-      end
       #full_name = File.expand_path(FONTS_PATH + name)
       full_name = FONTS_PATH + name
-      begin
-        font = TTF.new(full_name, size)
+      if File.exist? full_name
+        font = Font.new(@window, full_name, size)
         @loaded_fonts[name][size] = font
-      rescue Exception => ex
+      else
         #full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
         full_name = GAMEBOX_FONTS_PATH + name
-        font = TTF.new(full_name, size)
+        font = Font.new(@window, full_name, size)
         @loaded_fonts[name][size] = font
       end
       return font
@@ -155,26 +138,6 @@ class ResourceManager
       puts "Cannot load font #{full_name}:#{ex}"
     end
     return nil
-  end
-
-  # TODO make this path include that app name?
-  def load_config(name)
-    conf = YAML::load_file(CONFIG_PATH + name + ".yml")
-    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
-    if File.exist? user_file
-      user_conf = YAML::load_file user_file
-      conf = conf.merge user_conf
-    end
-    conf
-  end
-
-  def save_settings(name, settings)
-    user_gamebox_dir = "#{ENV['HOME']}/.gamebox"
-    FileUtils.mkdir_p user_gamebox_dir
-    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
-    File.open user_file, "w" do |f|
-      f.write settings.to_yaml
-    end
   end
 
   def load_svg(file_name)

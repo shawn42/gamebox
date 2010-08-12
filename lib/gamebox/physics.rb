@@ -1,10 +1,17 @@
 require 'chipmunk'
 
-#require 'numbers_ext'
-include CP
+
+def vec2(*args)
+  CP::Vec2.new *args
+end
+
+def moment_for_circle(*args)
+  CP.moment_for_circle(*args)
+end
+
 ZERO_VEC_2 = vec2(0,0)
 
-class Space
+class CP::Space
   alias :add_collision_func_old :add_collision_func
   
   # allows for passing arrays of collision types not just single ones

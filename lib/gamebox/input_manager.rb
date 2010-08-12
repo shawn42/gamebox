@@ -1,6 +1,7 @@
 require 'publisher'
+require 'hooked_gosu_window'
 
-# InputManager handles the pumping of SDL for events and distributing of said events.
+# InputManager handles the pumping for events and distributing of said events.
 # You can gain access to these events by registering for all events, 
 # or just the ones you care about.
 # All events:
@@ -15,109 +16,107 @@ require 'publisher'
 #
 # Don't forget to unreg for these things between stages, 
 # since the InputManager is shared across stages.
-class InputManager
+class InputManager 
   extend Publisher
   can_fire :key_up, :event_received
 
-
-  # lookup map for mouse button clicks
-  MOUSE_BUTTON_LOOKUP = {
-    MOUSE_LEFT   => :left,
-    MOUSE_MIDDLE => :middle,
-    MOUSE_RIGHT  => :right,
-  }
-
-  constructor :config_manager
+  attr_accessor :window
+  constructor :config_manager, :wrapped_screen
 
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by diy.
   def setup
-    @queue = EventQueue.new
-    @queue.enable_new_style_events
-    @queue.ignore = [
-      InputFocusGained,
-      InputFocusLost,
-      MouseFocusGained,
-      MouseFocusLost,
-      WindowMinimized,
-      WindowUnminimized,
-      JoystickAxisMoved,
-      JoystickBallMoved,
-      JoystickButtonPressed,
-      JoystickButtonReleased,
-      JoystickHatMoved,
-      WindowResized
-    ]
-    
-    @clock = Clock.new do |c|
-      c.target_framerate = 40
-      if c.respond_to? :calibrate
-        c.calibrate 
-        c.granularity = 2 if c.granularity < 2
-      end
-    end
+    @window = @wrapped_screen.screen
 
-    @auto_quit = @config_manager[:auto_quit]
+    @auto_quit = instance_eval(@config_manager[:auto_quit])
 
     @hooks = {}
     @non_id_hooks = {}
   end
-  
-  # Sets the target framerate for the game. 
-  # This setting controls how lock Clock#tick will delay.
-  def framerate=(frame_rate)
-    @clock.target_framerate = frame_rate
-  end
-  
-  # Returns the target framerate.
-  def framerate
-    @clock.target_framerate
-  end
 
-  # Returns the current framerate.
-  def current_framerate
-    @clock.framerate
-  end
-
-  # This is where the queue gets pumped. This gets called from your game application.
+  # This gets called from game app and sets up all the
+  # events. (also shows the window)
   def main_loop(game)
-    catch(:rubygame_quit) do
-      loop do
-        # add magic hooks
-        @queue.each do |event|
-          _handle_event(event)
-        end
 
-        game.update @clock.tick
-      end
+    @window.when :button_up do |button_id|
+      _handle_event button_id, :up
     end
+    @window.when :button_down do |button_id|
+      _handle_event button_id, :down
+    end
+    @window.when :update do |millis|
+
+      @last_mouse_x ||= @window.mouse_x
+      @last_mouse_y ||= @window.mouse_y
+
+      x_diff = @last_mouse_x - @window.mouse_x
+      y_diff = @last_mouse_y - @window.mouse_y
+
+      unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
+        _handle_event nil, :motion
+
+        @last_mouse_x = @window.mouse_x
+        @last_mouse_y = @window.mouse_y
+      end
+
+      game.update millis
+    end
+    @window.when :draw do 
+      game.draw 
+    end
+
+    @window.show
   end
 
-  def _handle_event(event) #:nodoc:
-    case event
-    when KeyPressed
-      case event.key
-      when @auto_quit
-        throw :rubygame_quit 
+  def _handle_event(gosu_id, action) #:nodoc:
+    @window.close if gosu_id == @auto_quit
+    event_data = nil
+
+    if gosu_id.nil?
+      event_type = :mouse_motion
+      callback_key = :mouse_motion
+      event_data = [@window.mouse_x, @window.mouse_y]
+    elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
+      event_type = :mouse
+      if action == :up
+        callback_key = :mouse_up
+      else
+        callback_key = :mouse_down
       end
-    when QuitRequested
-      throw :rubygame_quit
+    elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
+      event_type = :keyboard
+      if action == :up
+        callback_key = :keyboard_up
+      else
+        callback_key = :keyboard_down
+      end
+    elsif gosu_id >= GpRangeBegin && gosu_id <= GpRangeEnd
+      event_type = :game_pad
+      if action == :up
+        callback_key = :game_pad_up
+      else
+        callback_key = :game_pad_down
+      end
     end
+
+    event = {
+      :type => event_type, 
+      :id => gosu_id,
+      :action => action,
+      :callback_key => event_type,
+      :data => event_data
+    }
+
     fire :event_received, event
 
     # fix for pause bug?
     @hooks ||= {}
     @non_id_hooks ||= {}
 
-    event_hooks = @hooks[event.class] 
-    id = event.key if event.respond_to? :key
+    event_hooks = @hooks[callback_key] 
 
-    if event.respond_to? :button
-      id ||= (MOUSE_BUTTON_LOOKUP[event.button] or event.button)
-    end
-
-    unless id.nil?
-      event_action_hooks = event_hooks[id] if event_hooks
+    unless gosu_id.nil?
+      event_action_hooks = event_hooks[gosu_id] if event_hooks
       if event_action_hooks
         for callback in event_action_hooks
           callback.call event
@@ -125,7 +124,7 @@ class InputManager
       end
     end
     
-    non_id_event_hooks = @non_id_hooks[event.class]
+    non_id_event_hooks = @non_id_hooks[callback_key]
     if non_id_event_hooks
       for callback in non_id_event_hooks
         callback.call event
@@ -209,10 +208,10 @@ class InputManager
 
   # autohook a boolean to be set to true while a key is pressed
   def while_key_pressed(key, target, accessor)
-    _register_hook target, KeyPressed, key do
+    _register_hook target, :keyboard_down, key do
       target.send "#{accessor}=", true
     end
-    _register_hook target, KeyReleased, key do
+    _register_hook target, :keyboard_up, key do
       target.send "#{accessor}=", false
     end
   end

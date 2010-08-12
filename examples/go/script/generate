@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+app_root = File.join(File.dirname(__FILE__),'..')
+$: << app_root
+$: << File.join(app_root,'config')
+require 'environment'
+require 'gamebox_generator'

@@ -5,7 +5,7 @@ class Dancing < Behavior
 
   attr_accessor :rotation, :orig_x, :orig_y, :orig_w
   def setup
-    @orig_w, @orig_y = *@actor.image.size
+    @orig_w, @orig_y = @actor.image.width, @actor.image.height
     dist = 20
     @rot_array = [*-dist..dist]
     @rot_array += @rot_array.reverse

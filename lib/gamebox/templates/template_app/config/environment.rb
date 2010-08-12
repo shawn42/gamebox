@@ -32,6 +32,20 @@ MUSIC_PATH =  APP_ROOT + "data/music/"
 GFX_PATH =  APP_ROOT + "data/graphics/"
 FONTS_PATH =  APP_ROOT + "data/fonts/"
 
+require 'rubygems'
+
+# Set up gems listed in the Gemfile.
+gemfile = File.expand_path('../../Gemfile', __FILE__)
+begin
+  ENV['BUNDLE_GEMFILE'] = gemfile
+  require 'bundler'
+  Bundler.setup
+rescue Bundler::GemNotFound => e
+  STDERR.puts e.message
+  STDERR.puts "Try running `bundle install`."
+  exit!
+end if File.exist?(gemfile)
+
 require 'gamebox'
 
 GAMEBOX_DATA_PATH =  GAMEBOX_PATH + "data/"

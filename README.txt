@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-  A game template for building and distributing Rubygame games. See docs/getting_started.rdoc for help getting started.
+  A game template for building and distributing Gosu games. See docs/getting_started.rdoc for help getting started.
 
 == FEATURES/PROBLEMS:
 
@@ -12,13 +12,14 @@
 
 == SYNOPSIS:
 
-  A game template for building and distributing Rubygame games.
+  A game template for building and distributing Gosu games.
 
 == REQUIREMENTS:
 
-* Rubygame (its dependancies, SDL)
+* Gosu
 * constructor gem
 * publisher gem
+* bundler
 * rspec (for gamebox tests)
 * algorithms gem (optional for line of site and A*)
 

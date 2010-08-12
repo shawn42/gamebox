@@ -5,14 +5,15 @@ begin
     gem.name = "gamebox"
     gem.executables = "gamebox"
     gem.rubyforge_project = "gamebox"
-    gem.summary = %Q{Framework for building and distributing games using Rubygame}
-    gem.description = %Q{Framework for building and distributing games using Rubygame}
+    gem.summary = %Q{Framework for building and distributing games using Gosu}
+    gem.description = %Q{Framework for building and distributing games using Gosu}
     gem.email = "shawn42@gmail.com"
     gem.homepage = "http://shawn42.github.com/gamebox"
     gem.authors = ["Shawn Anderson","Jason Roelofs","Karlin Fox"]
     gem.add_development_dependency "rspec"
     gem.add_development_dependency "jeweler"
-    gem.add_dependency 'rubygame'
+    gem.add_dependency 'gosu'
+    gem.add_dependency 'bundler'
     gem.add_dependency 'constructor'
     gem.add_dependency 'publisher'
     gem.files.exclude 'examples'

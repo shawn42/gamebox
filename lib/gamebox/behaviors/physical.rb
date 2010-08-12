@@ -45,7 +45,7 @@ class Physical < Behavior
 
     # write code here to keep physics and x,y of actor in sync
     relegates :x, :y, :x=, :y=, :shape, :body, :parts,
-      :deg, :warp, :segment_groups, :physical, :image
+      :rotation, :warp, :segment_groups, :physical
 
   end
 
@@ -87,15 +87,15 @@ class Physical < Behavior
       @radius = @opts[:radius]
 
       moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_circle(@mass, @radius, 0, ZERO_VEC_2)
-      @body = Body.new(@mass, moment_of_inertia)
-      @shape = Shape::Circle.new(@body, @radius, ZERO_VEC_2)
+      @body = CP::Body.new(@mass, moment_of_inertia)
+      @shape = CP::Shape::Circle.new(@body, @radius, ZERO_VEC_2)
 
     when :poly
       shape_array = @opts[:verts].collect{|v| vec2(v[0],v[1])}
 
       moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_poly(@mass, shape_array, ZERO_VEC_2)
-      @body = Body.new(@mass, moment_of_inertia)
-      @shape = Shape::Poly.new(@body, shape_array, ZERO_VEC_2)
+      @body = CP::Body.new(@mass, moment_of_inertia)
+      @shape = CP::Shape::Poly.new(@body, shape_array, ZERO_VEC_2)
       verts = @opts[:verts].dup
       verts << @opts[:verts][0]
       @segments_groups << verts
@@ -111,7 +111,7 @@ class Physical < Behavior
         for part_name, part_def in obj
           # add another shape here
           part_shape_array = part_def[:verts].collect{|v| vec2(v[0],v[1])}
-          part_shape = Shape::Poly.new(@body, part_shape_array, part_def[:offset])
+          part_shape = CP::Shape::Poly.new(@body, part_shape_array, part_def[:offset])
           part_shape.collision_type = part_name.to_sym
           # TODO pass all physics params to parts (ie u and e)
           part_shape.u = friction
@@ -153,13 +153,14 @@ class Physical < Behavior
     body.p = vec2(x, new_y)
   end
 
-  def deg
+  def rotation
     # TODO hack!! why do poly's not work the same?
     if opts[:shape] == :poly
-      -((body.a-1.57) * 180.0 / Math::PI + 90)
+      ((body.a-1.57) * 180.0 / Math::PI + 90) % 360
     else
-      -((body.a) * 180.0 / Math::PI + 90)
+      ((body.a) * 180.0 / Math::PI + 90) % 360
     end
+#    rot_deg = rotation.round % 360
   end
 
   def warp(new_p)
@@ -171,18 +172,19 @@ class Physical < Behavior
     self
   end
 
-  def image
-    old_image = nil
-    rot_deg = deg.round % 360
-
-    if @actor.is? :animated
-      old_image = @actor.animated.image
-    elsif @actor.is? :graphical
-      old_image = @actor.graphical.image
-    end
-
-    if old_image
-      old_image.rotozoom(rot_deg,1,true)
-    end
-  end
+#  def image
+#    old_image = nil
+#    rot_deg = rotation.round % 360
+#
+#    if @actor.is? :animated
+#      old_image = @actor.animated.image
+#    elsif @actor.is? :graphical
+#      old_image = @actor.graphical.image
+#    end
+#
+#    if old_image
+#      # XXX rotate when drawing, not when getting image
+#      old_image.rotozoom(rot_deg,1,true)
+#    end
+#  end
 end

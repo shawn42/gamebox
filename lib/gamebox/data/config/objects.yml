@@ -5,6 +5,8 @@ game:
     - sound_manager
     - stage_manager
 resource_manager:
+  compose:
+    - wrapped_screen
 stage_manager:
   compose:
     - input_manager
@@ -18,13 +20,13 @@ sound_manager:
     - config_manager
 input_manager:
   compose:
+    - wrapped_screen
     - config_manager
 wrapped_screen:
   compose:
     - config_manager
+config_manager:
 actor_factory:
   compose:
     - input_manager
-config_manager:
-  compose:
-    - resource_manager
+    - wrapped_screen

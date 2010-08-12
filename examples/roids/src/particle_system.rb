@@ -1,12 +1,13 @@
 require 'actor'
 require 'actor_view'
-require 'rubygame/ftor'
+require 'ftor'
+
 class ParticleSystemView < ActorView
-  def draw(target, x_off, y_off)
+  def draw(target, x_off, y_off, z)
     ax = @actor.x + x_off
     ay = @actor.y + y_off
     @actor.particles.each do |part|
-      target.draw_circle_s [part.x,part.y], 3, [part.r,part.g,part.b,part.a]
+      target.draw_circle_filled part.x,part.y, 3, [part.r,part.g,part.b,part.a]
 
     end
 #    target.draw_circle [ax,ay], 20, [200,200,255,140]

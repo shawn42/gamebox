@@ -10,7 +10,7 @@ class StageManager
     @backstage = Backstage.new
 
     @actor_factory.stage_manager = self
-    stages = @resource_manager.load_config('stage_config')[:stages]
+    stages = @config_manager.load_config('stage_config')[:stages]
 
     @stage_names = []
     @stage_opts = []

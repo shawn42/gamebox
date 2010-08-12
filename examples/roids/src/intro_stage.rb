@@ -4,11 +4,11 @@ class IntroStage < Stage
     # TODO change to use actor
     @image = @resource_manager.load_image 'intro.png'
     i = @input_manager
-    i.reg KeyPressed, :space do
+    i.reg :keyboard_down, KbSpace do
       fire :next_stage
     end
 
-    i.reg MousePressed do
+    i.reg :mouse_down do
       fire :next_stage
     end
   end
@@ -18,6 +18,6 @@ class IntroStage < Stage
   end
 
   def draw(target)
-    @image.blit target.screen, [0,0] if @image
+    @image.draw 0, 0, 1 if @image
   end
 end

@@ -9,9 +9,8 @@ class SoundManager
   # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
   def setup
 
-    puts 'Warning, sound disabled' unless
-      (@enabled = (Rubygame::VERSIONS[:sdl_mixer] != nil))
-    @enabled = (@enabled and (@config_manager.settings[:sound].nil? or @config_manager.settings[:sound] == true))
+    puts 'CHANGE TO LOG:Warning, sound disabled' unless
+    @enabled = (@config_manager.settings[:sound].nil? or @config_manager.settings[:sound] == true)
 
     if @enabled
       @music = {}
@@ -50,11 +49,7 @@ class SoundManager
   # play_sound :foo # play sound at 100% volume
   def play_sound(what, opts={})
     if @enabled && @sounds[what]
-      volume = opts.delete :volume
-      @sound_thread = Thread.new do
-        @sounds[what].volume = volume if volume
-        @sounds[what].play opts
-      end
+      @sounds[what].play #opts
     end
   end
 
@@ -64,11 +59,10 @@ class SoundManager
   def play_music(what, opts={})
     if @enabled && @music[what]
       volume = opts.delete :volume
-      opts[:repeats] = -1 unless opts[:repeat]
-      @music_thread = Thread.new do
-        @music[what].volume = volume if volume
-        @music[what].play opts
-      end
+      repeat = opts[:repeat]
+      repeat ||= false
+      @music[what].volume = volume if volume
+      @music[what].play repeat
     end
   end
 

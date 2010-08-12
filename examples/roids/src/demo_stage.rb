@@ -12,11 +12,15 @@ class DemoStage < PhysicalStage
 
     @ship = create_actor :ship, :x => 300, :y => 300
 
-    input_manager.reg KeyDownEvent, K_S do |evt|
+    input_manager.reg :keyboard_down, KbS do |evt|
       @ship.action = :exploding
     end
     score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600
+
+    input_manager.reg :keyboard_down, KbR do
+      fire :next_stage
+    end
 
     @rocks = []
     opts[:rocks].times do
@@ -107,7 +111,6 @@ class DemoStage < PhysicalStage
   end
 
   def draw(target)
-    target.fill [25,25,25,255]
     super
   end
 end

@@ -1,4 +1,5 @@
 require 'publisher'
+require 'inflector'
 
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them. Such as :physical or :animated.

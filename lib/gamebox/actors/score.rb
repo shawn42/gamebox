@@ -1,15 +1,12 @@
 class ScoreView < ActorView
-  def draw(target,x_off,y_off)
+  def draw(target,x_off,y_off,z)
     text = @actor.score.to_s
     text = '0'*(6-text.size)+text
 
     font = @stage.resource_manager.load_font 'Asimov.ttf', 30
-    text_image = font.render text, true, [250,250,250,255]
-
     x = @actor.x
     y = @actor.y
-
-    text_image.blit target.screen, [x,y]
+    font.draw text, x,y,z#, 1,1,target.convert_color([250,250,250,255])
   end
 end
 class Score < Actor
