@@ -5,7 +5,7 @@ require 'graphical_actor_view'
 # stage, input_manager, director, resource_manager. It also creates the ActorView 
 # associated with the Actor and registers it to the Stage be drawn. 
 class ActorFactory
-  constructor :input_manager
+  constructor :input_manager, :wrapped_screen
 
   attr_accessor :stage_manager, :director
   
@@ -49,7 +49,7 @@ class ActorFactory
       view_klass ||= GraphicalActorView
     end
     
-    view_klass.new stage, model if view_klass
+    view_klass.new stage, model, @wrapped_screen if view_klass
     
     model.show unless opts[:hide]
 

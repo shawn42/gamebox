@@ -29,3 +29,4 @@ config_manager:
 actor_factory:
   compose:
     - input_manager
+    - wrapped_screen
