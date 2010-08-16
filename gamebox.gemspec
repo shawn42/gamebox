@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-08-11}
+  s.date = %q{2010-08-13}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Gosu}
   s.email = %q{shawn42@gmail.com}
@@ -127,6 +127,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/viewport.rb",
      "lib/gamebox/views/graphical_actor_view.rb",
      "lib/gamebox/wrapped_screen.rb",
+     "load_paths.rb",
      "script/perf_polaris.rb",
      "spec/actor_spec.rb",
      "spec/actor_view_spec.rb",
@@ -151,21 +152,21 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Framework for building and distributing games using Gosu}
   s.test_files = [
-    "spec/backstage_spec.rb",
-     "spec/helper.rb",
-     "spec/viewport_spec.rb",
-     "spec/physical_spec.rb",
-     "spec/stage_manager_spec.rb",
+    "spec/actor_spec.rb",
      "spec/actor_view_spec.rb",
-     "spec/label_spec.rb",
-     "spec/actor_spec.rb",
-     "spec/collidable_spec.rb",
-     "spec/stage_spec.rb",
      "spec/animated_spec.rb",
+     "spec/arbiter_spec.rb",
+     "spec/backstage_spec.rb",
+     "spec/behavior_spec.rb",
+     "spec/collidable_spec.rb",
+     "spec/helper.rb",
+     "spec/label_spec.rb",
+     "spec/physical_spec.rb",
      "spec/resource_manager_spec.rb",
      "spec/spatial_hash_spec.rb",
-     "spec/arbiter_spec.rb",
-     "spec/behavior_spec.rb"
+     "spec/stage_manager_spec.rb",
+     "spec/stage_spec.rb",
+     "spec/viewport_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -196,6 +197,4 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<publisher>, [">= 0"])
   end
 end
-
-
 

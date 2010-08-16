@@ -4,7 +4,7 @@ require 'actor_view'
 describe 'A new actor view' do
 
   it 'should be layered 0/1 by default' do
-    @test_me = ActorView.new :stage, Actor.new({})
+    @test_me = ActorView.new :stage, Actor.new({}), :wrapped_screen
     @test_me.layer.should == 0
     @test_me.parallax.should == 1
   end
