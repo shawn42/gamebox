@@ -1,10 +1,12 @@
 # Behavior is any type of behavior an actor can exibit.
 class Behavior
-  attr_accessor :actor, :opts
+  attr_accessor :actor, :opts, :relegated_methods
 
   def initialize(actor,opts={})
     @actor = actor
     @opts = opts
+    @relegated_methods = []
+
     req_behs = self.class.required_behaviors
     req_behs.each do |beh|
       unless @actor.is? beh
@@ -18,6 +20,15 @@ class Behavior
   end
 
   def removed
+    target = self
+
+    @actor.instance_eval do
+      (class << self; self; end).class_eval do
+        target.relegated_methods.each do |meth|
+          remove_method meth
+        end
+      end
+    end
   end
 
   def update(time)
@@ -41,9 +52,13 @@ class Behavior
 
   def relegates(*methods)
     target = self
+
     @actor.instance_eval do
       (class << self; self; end).class_eval do
         methods.each do |meth|
+          log("redefining #{meth} for #{@actor.class}") if @actor.respond_to? meth
+          target.relegated_methods << meth
+
           define_method meth do |*args|
             target.send meth, *args
           end
