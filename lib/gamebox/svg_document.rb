@@ -1,5 +1,6 @@
 require 'rexml/document'
 require 'strscan'
+require 'rect'
 
 class SvgDocument
 

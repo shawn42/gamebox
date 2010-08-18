@@ -31,7 +31,7 @@ class Physical < Behavior
     @shapes = []
     @segments_groups = []
 
-    moment_of_inertia = @opts[:moment]
+    @moment_of_inertia = @opts[:moment]
 
     build_main_shape
     setup_main_collisions
@@ -46,26 +46,25 @@ class Physical < Behavior
     # write code here to keep physics and x,y of actor in sync
     relegates :x, :y, :x=, :y=, :shape, :body, :parts,
       :rotation, :warp, :segment_groups, :physical
-
   end
 
   def setup_friction
-    friction = @opts[:friction]
-    friction ||= 0.4
-    @shape.u = friction
+    @friction = @opts[:friction]
+    @friction ||= 0.4
+    @shape.u = @friction
   end
 
   def setup_elasticity
-    elasticity = @opts[:elasticity]
-    elasticity ||= 0.1
-    @shape.e = elasticity
+    @elasticity = @opts[:elasticity]
+    @elasticity ||= 0.1
+    @shape.e = @elasticity
   end
 
   def setup_main_collisions
-    collision_type = @opts[:collision_group]
-    collision_type ||= 
+    @collision_type = @opts[:collision_group]
+    @collision_type ||= 
       Inflector.underscore(@actor.class).to_sym
-    @shape.collision_type = collision_type
+    @shape.collision_type = @collision_type
   end
 
   def setup_position
@@ -86,15 +85,15 @@ class Physical < Behavior
     when :circle
       @radius = @opts[:radius]
 
-      moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_circle(@mass, @radius, 0, ZERO_VEC_2)
-      @body = CP::Body.new(@mass, moment_of_inertia)
+      @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_circle(@mass, @radius, 0, ZERO_VEC_2)
+      @body = CP::Body.new(@mass, @moment_of_inertia)
       @shape = CP::Shape::Circle.new(@body, @radius, ZERO_VEC_2)
 
     when :poly
       shape_array = @opts[:verts].collect{|v| vec2(v[0],v[1])}
 
-      moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_poly(@mass, shape_array, ZERO_VEC_2)
-      @body = CP::Body.new(@mass, moment_of_inertia)
+      @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_poly(@mass, shape_array, ZERO_VEC_2)
+      @body = CP::Body.new(@mass, @moment_of_inertia)
       @shape = CP::Shape::Poly.new(@body, shape_array, ZERO_VEC_2)
       verts = @opts[:verts].dup
       verts << @opts[:verts][0]
@@ -114,7 +113,7 @@ class Physical < Behavior
           part_shape = CP::Shape::Poly.new(@body, part_shape_array, part_def[:offset])
           part_shape.collision_type = part_name.to_sym
           # TODO pass all physics params to parts (ie u and e)
-          part_shape.u = friction
+          part_shape.u = @friction
           @shapes << part_shape
           verts = part_def[:verts].dup
           verts << part_def[:verts][0]

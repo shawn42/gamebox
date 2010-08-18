@@ -11,13 +11,13 @@ class DemoStage < PhysicalStage
     space.gravity = vec2(0,1800)
     space.iterations = 10
 
-    @score = create_actor :score, :x => 10, :y => 10
-    create_actor :logo, :x => 10, :y => 660
+    @score = spawn :score, :x => 10, :y => 10
+    spawn :logo, :x => 10, :y => 660
 
     dynamic_actors = create_actors_from_svg @svg_doc
 
-    create_actor :svg_actor, :name => :ground, :svg_doc => @svg_doc
-    create_actor :svg_actor, :name => :death_zone, :svg_doc => @svg_doc, :hide => true
+    spawn :svg_actor, :name => :ground, :svg_doc => @svg_doc
+    spawn :svg_actor, :name => :death_zone, :svg_doc => @svg_doc, :hide => true
 
     @nario = dynamic_actors[:nario]
     viewport.follow @nario, [0,70], [200,100]
@@ -35,7 +35,7 @@ class DemoStage < PhysicalStage
       unless coin.dying?
         coin.collect
         @score += 10
-        create_actor :coin, :x => (200+rand(400)), :y => 100
+        spawn :coin, :x => (200+rand(400)), :y => 100
       end
     end
     
@@ -105,7 +105,7 @@ class DemoStage < PhysicalStage
       end
     end
 
-    input_manager.reg KeyPressed, :p do
+    input_manager.reg :keyboard_down, KbP do
       p viewport.debug
       p @nario.debug
     end
@@ -114,11 +114,10 @@ class DemoStage < PhysicalStage
   end
 
   def stop(*args)
-    input_manager.unreg KeyPressed, :p
+    input_manager.unreg :keyboard_down, KbP
   end
 
   def draw(target)
-    target.fill [25,25,25,255]
     super
   end
 end

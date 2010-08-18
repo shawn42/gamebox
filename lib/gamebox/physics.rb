@@ -9,6 +9,10 @@ def moment_for_circle(*args)
   CP.moment_for_circle(*args)
 end
 
+def moment_for_poly(*args)
+  CP.moment_for_poly(*args)
+end
+
 ZERO_VEC_2 = vec2(0,0)
 
 class CP::Space

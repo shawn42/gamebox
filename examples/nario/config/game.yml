@@ -1,6 +1,6 @@
 --- 
 :sound: true
-:auto_quit: :escape
+:auto_quit: KbEscape
 :debug_server: true
 :fullscreen: false
 :screen_resolution: 

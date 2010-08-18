@@ -1,8 +1,4 @@
-require 'actor'
-require 'actor_view'
-
 require "enumerator"
-
 
 # SvgActor knows how to build himself based on an svg document based on the :name 
 # passed in being the group name in the doc (layer).
@@ -38,11 +34,13 @@ class SvgActor < Actor
 end
 
 class SvgActorView < ActorView
-  def draw(target,x_off,y_off)
+  def draw(target, x_off, y_off, z)
     @actor.segments.each do |seg|
       p1 = seg[0]
       p2 = seg[1]
-      target.draw_line_s [p1.x+x_off,p1.y+y_off], [p2.x+x_off,p2.y+y_off], [25,255,25,255], 6
+      # TODO pull in draw_line_s?
+      target.draw_line p1.x+x_off, p1.y+y_off, p2.x+x_off, p2.y+y_off, [25,255,25,255]
+      #target.draw_line_s [p1.x+x_off,p1.y+y_off], [p2.x+x_off,p2.y+y_off], [25,255,25,255], 6
     end
   end
 end
