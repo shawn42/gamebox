@@ -39,7 +39,7 @@ class SvgActorView < ActorView
       p1 = seg[0]
       p2 = seg[1]
       # TODO pull in draw_line_s?
-      target.draw_line p1.x+x_off, p1.y+y_off, p2.x+x_off, p2.y+y_off, [25,255,25,255]
+      target.draw_line p1.x+x_off, p1.y+y_off, p2.x+x_off, p2.y+y_off, [25,255,25,255], z
       #target.draw_line_s [p1.x+x_off,p1.y+y_off], [p2.x+x_off,p2.y+y_off], [25,255,25,255], 6
     end
   end

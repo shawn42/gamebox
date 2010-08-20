@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shawn Anderson", "Jason Roelofs", "Karlin Fox"]
-  s.date = %q{2010-08-13}
+  s.date = %q{2010-08-20}
   s.default_executable = %q{gamebox}
   s.description = %q{Framework for building and distributing games using Gosu}
   s.email = %q{shawn42@gmail.com}
@@ -87,6 +87,7 @@ Gem::Specification.new do |s|
      "lib/gamebox/lib/numbers_ext.rb",
      "lib/gamebox/lib/platform.rb",
      "lib/gamebox/lib/publisher_ext.rb",
+     "lib/gamebox/lib/rect.rb",
      "lib/gamebox/lib/sorted_list.rb",
      "lib/gamebox/physical_director.rb",
      "lib/gamebox/physical_stage.rb",

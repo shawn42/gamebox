@@ -18,7 +18,7 @@ class PowerUpBlock < Actor
 
   # the block can only be hit onces every HIT_RATE ms
   def hit
-    coin = spawn :coin, :x => x, :y => y-20
+    coin = spawn :coin, :x => x, :y => y-40
     coin.collect
 
     @active = false
