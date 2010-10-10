@@ -23,11 +23,11 @@ class Graphical < Behavior
   end
 
   def width
-    image.size[0]
+    image.width
   end
 
   def height
-    image.size[1]
+    image.height
   end
 
   def tiled?

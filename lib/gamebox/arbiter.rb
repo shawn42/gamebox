@@ -73,6 +73,7 @@ module Arbiter
     @collidable_actors.each do |first|
       x = first.x - @spatial_hash.cell_size
       y = first.y - @spatial_hash.cell_size
+      # TODO base this on size of object
       w = @spatial_hash.cell_size * 3
       h = w
 

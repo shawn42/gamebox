@@ -1,13 +1,14 @@
-class SpatialHash
+class NewSpatialHash
 
   attr_reader :cell_size, :buckets 
   attr_accessor :auto_resize
 
-  def initialize(cell_size)
+  def initialize(cell_size, resize = false)
     @cell_size = cell_size.to_f
-    @items = []
+    @items = {}
     @total_w = 0
     @total_h = 0
+    @auto_resize = resize
     rehash
   end
 
@@ -31,9 +32,9 @@ class SpatialHash
 
     @total_w = 0
     @total_h = 0
-    @items = []
+    @items = {}
     @buckets = {}
-    items.each do |item|
+    items.values.each do |item|
       add item
     end
   end
@@ -45,16 +46,14 @@ class SpatialHash
       @buckets[x] ||= {}
       @buckets[x][y] ||= []
       target_bucket = @buckets[x][y]
-      unless target_bucket.include? item
-        target_bucket << item 
-        @items << item
-        w = item.width if item.respond_to? :width
-        h = item.height if item.respond_to? :height
-        w ||= 1
-        h ||= 1
-        @total_w += w 
-        @total_h += h 
-      end
+      target_bucket << item 
+      @items[item] = item
+      w = item.width if item.respond_to? :width
+      h = item.height if item.respond_to? :height
+      w ||= 1
+      h ||= 1
+      @total_w += w 
+      @total_h += h 
     end
   end
 
@@ -77,8 +76,9 @@ class SpatialHash
 
     buckets = []
     (max_x-min_x+1).times do |i|
+      bucket_x = min_x + i
       (max_y-min_y+1).times do |j|
-        buckets << [min_x+i,min_y+j] 
+        buckets << [bucket_x,min_y+j] 
       end
     end
 
@@ -128,11 +128,14 @@ class SpatialHash
   def items_in_bucket_range(min_x,min_y,max_x,max_y)
     items = []
     (max_x-min_x+1).times do |i|
+      bucket_x = min_x + i
+      x_bucket = @buckets[bucket_x]
+      have_bucket_x = x_bucket.nil?
+
       (max_y-min_y+1).times do |j|
-        bucket_x = min_x + i
         bucket_y = min_y + j
-        unless @buckets[bucket_x].nil? || @buckets[bucket_x][bucket_y].nil?
-          items << @buckets[bucket_x][bucket_y]
+        unless !have_bucket_x || x_bucket[bucket_y].nil?
+          items << x_bucket[bucket_y]
         end
       end
     end
