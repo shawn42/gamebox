@@ -134,7 +134,7 @@ class SpatialHash
 
       (max_y-min_y+1).times do |j|
         bucket_y = min_y + j
-        unless !have_bucket_x || x_bucket[bucket_y].nil?
+        unless have_bucket_x || x_bucket[bucket_y].nil?
           items << x_bucket[bucket_y]
         end
       end
