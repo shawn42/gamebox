@@ -1,4 +1,4 @@
-class NewSpatialHash
+class SpatialHash
 
   attr_reader :cell_size, :buckets 
   attr_accessor :auto_resize
