@@ -257,5 +257,8 @@ describe 'Arbiter' do
     it 'should collide overlapping box and circle' 
   end
 
+  describe "#find_collisions" do
+    it "runs callbacks w/ unique collisions"
+  end
 
 end

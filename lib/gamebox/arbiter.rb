@@ -30,10 +30,10 @@ module Arbiter
       second_objs.each do |sobj|
         if fobj.to_i < sobj.to_i
           @collision_handlers[fobj] ||= {}
-          @collision_handlers[fobj][sobj] = block
+          @collision_handlers[fobj][sobj] = [false,block]
         else
           @collision_handlers[sobj] ||= {}
-          @collision_handlers[sobj][fobj] = block
+          @collision_handlers[sobj][fobj] = [true,block]
         end
       end
     end
@@ -48,11 +48,10 @@ module Arbiter
         tmp = first
         first = second
         second = tmp
-        swapped = true
       end
 
       colliders = @collision_handlers[first.actor_type]
-      callback = colliders[second.actor_type] unless colliders.nil?
+      swapped, callback = colliders[second.actor_type] unless colliders.nil?
       unless callback.nil?
         if swapped
           callback.call second, first 
