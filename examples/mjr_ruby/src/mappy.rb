@@ -4,7 +4,7 @@ require 'actor_view'
 
 class FogView < ActorView
   def draw(target, x_off, y_off, z)
-    target.fill_screen [120,120,120,120]
+    target.fill_screen [120,120,120,120], z
   end
 end
 class Fog < Actor
@@ -26,7 +26,7 @@ class Mappy < Actor
     end
 
     @fog = spawn :fog, :visible => false
-    @fog.layer = 1000#@actors.size*LAYER_OFFSET-1
+    @fog.layer = @actors.size*LAYER_OFFSET-1
     @fog.show
 #    @z = 1
 #    self.z_level=0

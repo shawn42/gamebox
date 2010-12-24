@@ -37,9 +37,5 @@ class DemoStage < Stage
     fire :next_level if @map.finished?
   end
 
-  def draw(target)
-    target.fill_screen [25,25,25,255]
-    super
-  end
 end
 

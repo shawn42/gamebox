@@ -38,6 +38,5 @@ class GraphicalActorView < ActorView
         img.draw offset_x, offset_y, z
       end
     end
-    target.draw_line(offset_x,offset_y,offset_x+1,offset_y+1,[255,10,10],z)
   end
 end
