@@ -1,9 +1,2 @@
 source "http://rubygems.org"
-gem "rake"
-gem "rspec"
-gem "jeweler"
-gem "constructor"
-gem "publisher"
-gem "gosu"
-gem "chipmunk"
-gem "polaris"
+gemspec
