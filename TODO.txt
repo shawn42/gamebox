@@ -27,5 +27,5 @@ possible features:
 AI
 	 state machine
 	 rule based
-optional GUI via rubygoo
+optional GUI via Fidgit?
 gamebox server (content server?)
