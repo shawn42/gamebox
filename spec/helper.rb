@@ -1,8 +1,6 @@
 here = File.dirname(__FILE__)
 gamebox_root = File.expand_path(File.join(here, '..', 'lib'))
 
-require 'spec'
-
 # TODO this lives in both gamebox.rb and here... seems strange
 [
 "gamebox",

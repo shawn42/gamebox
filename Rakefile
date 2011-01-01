@@ -18,10 +18,10 @@ task :stats do
 end
 
 begin
-  require 'spec/rake/spectask'
+  require 'rspec/core/rake_task'
   desc "Run all rspecs"
-  Spec::Rake::SpecTask.new(:spec) do |t|
-    t.spec_files = FileList['spec/*_spec.rb']
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.pattern = 'spec/**/*_spec.rb'
   end
   task :default => :spec
 rescue LoadError

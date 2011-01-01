@@ -34,16 +34,16 @@ describe 'A new collidable behavior' do
       @actor.x = 3
       @actor.y = 6
       @collidable = Collidable.new @actor, :shape => :circle, :radius => 20
-      @collidable.center_x.should be_close(23, 0.001)
-      @collidable.center_y.should be_close(26, 0.001)
+      @collidable.center_x.should be_within(0.001).of(23)
+      @collidable.center_y.should be_within(0.001).of(26)
     end
   end
 
   describe "polygon shape" do
     it 'should calculate center point for polygon' do
       @collidable = Collidable.new @actor, :shape => :polygon, :points => [[0,0],[10,7],[20,10]]
-      @collidable.center_x.should be_close(10, 0.001)
-      @collidable.center_y.should be_close(5, 0.001)
+      @collidable.center_x.should be_within(0.001).of(10)
+      @collidable.center_y.should be_within(0.001).of(5)
     end
 
     it 'should translate points to world coords for poly' do

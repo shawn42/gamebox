@@ -22,6 +22,9 @@ Gem::Specification.new do |s|
   s.add_dependency "constructor"
   s.add_dependency "publisher"
 
+  s.add_development_dependency "rspec-core"
+  s.add_development_dependency "rspec-mocks"
+  s.add_development_dependency "rspec-expectations"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rake"
   s.add_development_dependency "chipmunk"
