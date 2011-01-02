@@ -7,10 +7,8 @@ class ParticleSystemView < ActorView
     ax = @actor.x + x_off
     ay = @actor.y + y_off
     @actor.particles.each do |part|
-      target.draw_circle_filled part.x,part.y, 3, [part.r,part.g,part.b,part.a]
-
+      target.draw_circle_filled part.x,part.y, 3, [part.r,part.g,part.b,part.a], z
     end
-#    target.draw_circle [ax,ay], 20, [200,200,255,140]
   end
 end
 

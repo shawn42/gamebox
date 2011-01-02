@@ -2,7 +2,7 @@ require 'gamebox/lib/platform'
 
 desc "Run the game"
 task :run do |t|
-  sh "ruby src/app.rb"
+  sh "bundle exec ruby src/app.rb"
 end 
 task :default => :run
 

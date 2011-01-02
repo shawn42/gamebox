@@ -10,7 +10,7 @@ class ShipView < GraphicalActorView
       x = @actor.x + x_off - radius
       y = @actor.y + y_off - radius
 
-      target.draw_circle x,y, radius, [200,200,255,140]
+      target.draw_circle x,y, radius, [200,200,255,140], z
     end
     super target, x_off, y_off, z
   end
