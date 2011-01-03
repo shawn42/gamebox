@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class MajorRuby < Actor
 

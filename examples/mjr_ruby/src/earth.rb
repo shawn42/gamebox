@@ -1,4 +1,4 @@
-require 'actor'
+
 require 'graphical_actor_view'
 
 class EarthView < GraphicalActorView

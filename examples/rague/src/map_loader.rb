@@ -1,4 +1,4 @@
-require 'inflector'
+
 require 'map'
 require 'dungeon_generator'
 require 'publisher'

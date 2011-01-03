@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'backstage'
+
 
 describe 'A new backstage' do
 

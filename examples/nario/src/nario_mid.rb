@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class NarioMid < Actor
   has_behaviors :graphical,

@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class PowerUpBlock < Actor
   HIT_RATE = 500

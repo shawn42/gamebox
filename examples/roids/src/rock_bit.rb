@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class RockBit < Actor
   has_behaviors :animated, :updatable, :physical => {:shape => :circle, 

@@ -1,4 +1,4 @@
-require 'actor'
+
 require 'publisher'
 
 class Monster < Actor

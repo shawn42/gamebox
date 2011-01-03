@@ -5,9 +5,11 @@ game:
     - sound_manager
     - stage_manager
 resource_manager:
+  auto_require: false
   compose:
     - wrapped_screen
 stage_manager:
+  auto_require: false
   compose:
     - input_manager
     - resource_manager
@@ -15,18 +17,23 @@ stage_manager:
     - config_manager
     - actor_factory
 sound_manager:
+  auto_require: false
   compose:
     - resource_manager
     - config_manager
 input_manager:
+  auto_require: false
   compose:
     - wrapped_screen
     - config_manager
 wrapped_screen:
+  auto_require: false
   compose:
     - config_manager
 config_manager:
+  auto_require: false
 actor_factory:
+  auto_require: false
   compose:
     - input_manager
     - wrapped_screen

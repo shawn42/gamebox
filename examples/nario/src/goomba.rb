@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class Goomba < Actor
   has_behaviors :audible, :animated, :updatable, 

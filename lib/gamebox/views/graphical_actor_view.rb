@@ -1,4 +1,4 @@
-require 'actor_view'
+
 
 class GraphicalActorView < ActorView
   def draw(target, x_off, y_off, z)

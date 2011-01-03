@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 $: << "#{File.dirname(__FILE__)}/../config"
 require "fileutils"
-require 'inflector'
-require 'svg_document'
+
+
 
 class ResourceManager
 

@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'behavior'
+
 
 describe 'A new behavior' do
   before do

@@ -24,7 +24,6 @@ ADDITIONAL_LOAD_PATHS.each do |path|
 end
 
 
-
 CONFIG_PATH = APP_ROOT + "config/"
 DATA_PATH =  APP_ROOT + "data/"
 SOUND_PATH =  APP_ROOT + "data/sounds/"
@@ -53,3 +52,8 @@ GAMEBOX_SOUND_PATH =  GAMEBOX_PATH + "data/sounds/"
 GAMEBOX_MUSIC_PATH =  GAMEBOX_PATH + "data/music/"
 GAMEBOX_GFX_PATH =  GAMEBOX_PATH + "data/graphics/"
 GAMEBOX_FONTS_PATH =  GAMEBOX_PATH + "data/fonts/"
+
+ADDITIONAL_LOAD_PATHS.each do |path|
+	require_all Dir.glob("#{path}/**/*.rb").reject{|f|f.match("app.rb")}
+end
+

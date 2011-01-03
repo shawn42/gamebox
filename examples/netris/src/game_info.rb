@@ -1,5 +1,5 @@
-require 'actor'
-require 'actor_view'
+
+
 
 class GameInfoView < ActorView
 

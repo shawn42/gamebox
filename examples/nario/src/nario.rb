@@ -1,5 +1,5 @@
-require 'numbers_ext'
-require 'actor'
+
+
 =begin
 :bodies => [ # TODO make physical read multiple bodies
   :shape => :poly,

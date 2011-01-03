@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'collidable'
 
 describe 'A new collidable behavior' do
   before do

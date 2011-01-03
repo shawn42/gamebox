@@ -1,6 +1,6 @@
-require 'actor'
+
 require 'two_d_grid_map'
-require 'actor_view'
+
 
 class FogView < ActorView
   def draw(target, x_off, y_off, z)

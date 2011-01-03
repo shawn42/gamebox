@@ -1,4 +1,4 @@
-require 'behavior'
+
 class Wanderer < Behavior
   def setup
     @dirs = [:up,:down,:left,:right,nil]

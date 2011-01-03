@@ -1,9 +1,9 @@
-require 'inflector'
+
 require 'publisher'
-require 'director'
-require 'viewport'
-require 'backstage'
-require 'arbiter'
+
+
+
+
 
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).

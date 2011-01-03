@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'stage_manager'
 
 describe 'A new stage manager' do
   before do

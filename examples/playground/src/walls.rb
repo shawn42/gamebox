@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class LeftWall < Actor
   has_behaviors :physical => {:shape => :poly, 

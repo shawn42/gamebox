@@ -1,5 +1,5 @@
-require 'inflector'
-require 'stage'
+
+
 class StageManager
 
   constructor :resource_manager, :actor_factory, :input_manager,

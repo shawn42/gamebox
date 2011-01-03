@@ -275,4 +275,4 @@ module Inflector
   end
 end
 
-require 'inflections'
+

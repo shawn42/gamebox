@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'viewport'
+
 
 class Vec
   attr_accessor :x, :y

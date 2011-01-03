@@ -1,4 +1,4 @@
-require 'behavior'
+
 # keeps track of an image for you based on the actor's class
 # by default it expects images to be:
 # data/graphics/classname.png

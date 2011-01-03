@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'stage'
+
 
 describe 'A new stage' do
   FakeDrawable = Struct.new :layer, :parallax

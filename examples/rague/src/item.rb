@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class Item < Actor
   attr_accessor :location

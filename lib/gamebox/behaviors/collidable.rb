@@ -1,7 +1,7 @@
-require 'behavior'
-require 'collidable/circle_collidable'
-require 'collidable/aabb_collidable'
-require 'collidable/polygon_collidable'
+
+
+
+
 
 # available collidable_shapes are :circle, :polygon, :aabb
 class Collidable < Behavior

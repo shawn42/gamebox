@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'resource_manager'
 
 describe 'A new resource manager' do
   before do

@@ -1,4 +1,4 @@
-require 'stage'
+
 require 'ftor'
 class DemoStage < Stage
   def setup

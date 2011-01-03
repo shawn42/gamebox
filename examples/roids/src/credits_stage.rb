@@ -1,4 +1,4 @@
-require 'stage'
+
 class CreditsStage < Stage
   def curtain_up
     @image = @resource_manager.load_image 'credits.png'

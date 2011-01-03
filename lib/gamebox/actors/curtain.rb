@@ -1,6 +1,6 @@
-require 'actor'
+
 require 'publisher'
-require 'actor_view'
+
 
 class CurtainView < ActorView
   def draw(target,x_off,y_off,z)

@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class Bullet < Actor
   has_behaviors :animated, :updatable, :physical => {:shape => :circle, 

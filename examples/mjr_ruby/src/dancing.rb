@@ -1,4 +1,4 @@
-require 'behavior'
+
 
 # makes the actor 'dance' in place
 class Dancing < Behavior

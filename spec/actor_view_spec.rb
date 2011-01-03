@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'actor_view'
+
 
 describe 'A new actor view' do
 

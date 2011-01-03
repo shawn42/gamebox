@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class GroundView < ActorView
   def draw(target, x_off, y_off)

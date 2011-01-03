@@ -1,4 +1,4 @@
-require 'collidable/collidable_shape'
+
 
 class CircleCollidable < CollidableShape
 

@@ -1,4 +1,4 @@
-require 'behavior'
+
 # keeps track of an image for you based on the actor's class, and
 # current action, and frame num
 # by default it expects images to be:

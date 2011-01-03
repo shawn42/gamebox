@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class Background < Actor
   has_behaviors :graphical, :layered => {:layer => 0, :parallax => 10}

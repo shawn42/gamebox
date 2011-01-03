@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'spatial_hash'
+
 
 describe 'a new SpacialHash' do
   before do

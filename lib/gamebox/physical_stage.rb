@@ -1,9 +1,9 @@
 # Stage represent on level of game play.  Some games will likely have only one
 # stage. Stage is responsible for loading its background, props, and directors.
 # PhysicalStage adds a physics space to the Stage
-require 'stage'
-require 'physics'
-require 'physical_director'
+
+
+
 class PhysicalStage < Stage
   
   attr_accessor :space

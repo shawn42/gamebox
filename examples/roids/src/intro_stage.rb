@@ -1,4 +1,4 @@
-require 'stage'
+
 class IntroStage < Stage
   def curtain_up
     # TODO change to use actor

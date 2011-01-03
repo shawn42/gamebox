@@ -1,4 +1,4 @@
-require 'linked_list'
+
 
 # Keeps a list of items sorted. Elements must be comparable
 class SortedList

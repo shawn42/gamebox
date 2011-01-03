@@ -1,5 +1,3 @@
-require 'actor'
-require 'graphical_actor_view'
 
 # ActorFactory is responsible for loading all Actors. It passes along required params such as 
 # stage, input_manager, director, resource_manager. It also creates the ActorView 

@@ -1,4 +1,4 @@
-require 'behavior'
+
 # Keeps track of the layer that something is to be drawn on.
 # By default it sets everything to layer 0 and parallax layer of
 # 1.

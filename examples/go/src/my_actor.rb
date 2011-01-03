@@ -1,5 +1,5 @@
-require 'actor'
-require 'actor_view'
+
+
 
 #class MyActorView < ActorView
 #  def draw(target, x_off, y_off)

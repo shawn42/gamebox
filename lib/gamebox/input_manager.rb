@@ -1,5 +1,5 @@
 require 'publisher'
-require 'hooked_gosu_window'
+
 
 # InputManager handles the pumping for events and distributing of said events.
 # You can gain access to these events by registering for all events, 

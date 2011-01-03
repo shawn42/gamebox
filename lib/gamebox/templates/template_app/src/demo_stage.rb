@@ -1,4 +1,4 @@
-require 'stage'
+
 class DemoStage < Stage
   def setup
     super

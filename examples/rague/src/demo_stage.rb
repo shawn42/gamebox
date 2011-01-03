@@ -1,4 +1,4 @@
-require 'stage'
+
 require 'map'
 require 'map_loader'
 require 'tile'

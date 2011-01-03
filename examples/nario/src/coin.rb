@@ -1,4 +1,4 @@
-require 'actor'
+
 
 class Coin < Actor
   has_behaviors :audible, :animated, :updatable, {:collidable => {:shape => :circle, :radius => 15} },

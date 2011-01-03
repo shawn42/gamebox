@@ -4,19 +4,11 @@ $: << "#{File.dirname(__FILE__)}/../config"
 require 'gosu'
 include Gosu
 
-require "environment"
-
-require 'metaclass'
-require 'publisher'
-require 'publisher_ext'
-require 'inflector'
-require 'constructor'
-require 'diy'
-require 'class_finder'
-require 'actor_factory'
-require 'input_manager'
-
-require 'stagehand'
+begin
+  # optional file
+  require "environment" 
+rescue LoadError => err
+end
 
 class GameboxApp
   attr_reader :context, :game

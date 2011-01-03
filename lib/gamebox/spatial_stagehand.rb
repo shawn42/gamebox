@@ -1,4 +1,4 @@
-require 'spatial_hash'
+
 
 class SpatialStagehand < Stagehand
 

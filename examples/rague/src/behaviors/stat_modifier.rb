@@ -1,4 +1,4 @@
-require 'behavior'
+
 class StatModifier < Behavior
   attr_reader :stats
   def setup

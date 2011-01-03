@@ -1,4 +1,4 @@
-require 'actor'
+
 require 'publisher'
 require 'graphical_actor_view'
 

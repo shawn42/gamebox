@@ -1,5 +1,5 @@
-require 'actor'
-require 'actor_view'
+
+
 require 'ftor'
 
 class ParticleSystemView < ActorView

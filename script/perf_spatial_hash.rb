@@ -1,6 +1,6 @@
 $: << File.dirname(__FILE__)+"/../lib/gamebox"
 
-require 'spatial_hash'
+
 require 'new_spatial_hash'
 require 'benchmark'
 

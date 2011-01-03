@@ -1,7 +1,4 @@
 require File.join(File.dirname(__FILE__),'helper')
-require 'actor'
-require 'behavior'
-
 describe 'A new actor' do
   before do
     opts = {:stage=>"stage", :input=>"input", 

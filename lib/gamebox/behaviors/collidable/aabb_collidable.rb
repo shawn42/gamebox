@@ -1,4 +1,4 @@
-require 'collidable/collidable_shape'
+
 
 class AaBbCollidable < CollidableShape
   attr_accessor :cw_local_points

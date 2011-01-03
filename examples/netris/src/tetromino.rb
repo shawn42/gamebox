@@ -1,5 +1,5 @@
-require 'actor'
-require 'actor_view'
+
+
 
 BLOCK_SIZE = 24
 

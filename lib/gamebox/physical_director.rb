@@ -1,4 +1,4 @@
-require 'director'
+
 
 class PhysicalDirector < Director
   def find_physical_obj(shape)
