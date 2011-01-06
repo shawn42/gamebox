@@ -14,6 +14,8 @@ class ActorFactory
     return cached_actor if cached_actor
 
     model_klass = ClassFinder.find(actor)
+    raise "#{actor} not found" unless model_klass
+    
     view_klass = ClassFinder.find("#{actor}_view")
     
     actor_def = {
@@ -37,7 +39,6 @@ class ActorFactory
       :actor_type => actor
     }
     merged_opts = basic_opts.merge(opts)
-
     model = actor_def[:model_klass].new merged_opts 
 
     view_klass = opts[:view]
