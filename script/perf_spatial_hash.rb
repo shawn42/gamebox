@@ -1,35 +1,53 @@
-$: << File.dirname(__FILE__)+"/../lib/gamebox"
+require 'bundler'
+Bundler.setup
 
-
-require 'new_spatial_hash'
+require 'constructor'
+require 'publisher'
+require 'gamebox'
 require 'benchmark'
 
-Shape = Struct.new(:x,:y,:width,:height)
+class Arb 
+  include Arbiter
+  extend Publisher
+  can_fire_anything
 
-def do_it(hash, num_times, obj_size)
-  num_times.times do |i|
-    hash.add(Shape.new(i,i,obj_size,obj_size))
+  def initialize(spatial)
+    @spatial = spatial
+    on_collision_of 5, 6 do |f,b|
+      puts "collide"
+    end
+  end
+  def stagehand(name)
+    @spatial
   end
 
-  num_times.times do |i|
-    hash.items_at i, i
-  end
-
-  hash.rehash
-  hash.rehash
-  hash.rehash
-  hash.rehash
-
-  num_times.times do |i|
-    hash.items_at i, i
-  end
 end
 
-OldSpatialHash = SpatialHash
+StructShape = Struct.new(:x,:y,:width,:height,:collidable_shape,:radius)
+class Shape < StructShape
+  extend Publisher
+  can_fire_anything
+  def center_x;self.x;end
+  def center_y;self.y;end
+  def actor_type;6;end
+end
+
+def do_it(hash, num_times, obj_size)
+  arb = Arb.new hash
+  rands = [1, 3, 5, 7, 13, 17]
+  num_times.times do |i|
+    arb.register_collidable Shape.new(i+rands[-(i%6)],
+                                      i+rands[-(i%6)],obj_size,obj_size,:circle,obj_size)
+  end
+
+  hash.rehash
+
+  arb.find_collisions
+end
 
 Benchmark.bm(60) do|b|
-  
-  @lots = 1_000
+
+  @lots = 5000
   @small_grid = 5
   @medium_grid = 80
 
@@ -37,37 +55,40 @@ Benchmark.bm(60) do|b|
   @medium_object = 20
   @large_object = 100
 
-  impls = %w{old new}
-  impls.each do |impl|
-    klass = ObjectSpace.const_get "#{impl.capitalize}SpatialHash"
-    b.report("#{impl} w/ lots of small objects in small size grid") do
-      hash = klass.new @small_grid, true
-      do_it(hash,@lots, @small_object)
-    end
+  puts "DEFS: "
+  puts "lots: #{@lots}"
+  puts "small_grid: #{@small_grid} medium_grid: #{@medium_grid} large_grid: #{@large_grid}"
+  puts "small_object: #{@small_object} medium_object: #{@medium_object} large_object: #{@large_object}"
 
-    b.report("#{impl} w/ lots of medium objects in small size grid") do
-      hash = klass.new @small_grid, true
-      do_it(hash,@lots, @medium_object)
-    end
 
-    b.report("#{impl} w/ lots of small objects in medium size grid") do
-      hash = klass.new @medium_grid, true
-      do_it(hash,@lots, @small_object)
-    end
+  klass = SpatialHash
+  # b.report("w/ lots of small objects in small size grid") do
+  #   hash = klass.new @small_grid, true
+  #   do_it(hash,@lots, @small_object)
+  # end
 
-    b.report("#{impl} w/ lots of medium objects in medium size grid") do
-      hash = klass.new @medium_grid, true
-      do_it(hash,@lots, @medium_object)
-    end
+  # b.report("w/ lots of medium objects in small size grid") do
+  #   hash = klass.new @small_grid, true
+  #   do_it(hash,@lots, @medium_object)
+  # end
 
-    b.report("#{impl} w/ lots of large objects in small size grid") do
-      hash = klass.new @small_grid, true
-      do_it(hash,@lots, @large_object)
-    end
-    b.report("#{impl} w/ lots of large objects in small size grid no resize") do
-      hash = klass.new @small_grid, false
-      do_it(hash,@lots, @large_object)
-    end
+  b.report("w/ lots of small objects in medium size grid") do
+    hash = klass.new @medium_grid, true
+    do_it(hash,@lots, @small_object)
   end
-
+# 
+#   b.report("w/ lots of medium objects in medium size grid") do
+#     hash = klass.new @medium_grid, true
+#     do_it(hash,@lots, @medium_object)
+#   end
+# 
+#   b.report("w/ lots of large objects in small size grid") do
+#     hash = klass.new @small_grid, true
+#     do_it(hash,@lots, @large_object)
+#   end
+#   b.report("w/ lots of large objects in small size grid no resize") do
+#     hash = klass.new @small_grid, false
+#     do_it(hash,@lots, @large_object)
+#   end
 end
+
