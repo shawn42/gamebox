@@ -9,7 +9,10 @@ describe 'A new actor view' do
     @test_me.parallax.should == 1
   end
 
-  it 'should call setup on creation; tests that require subclassing seem wrong...'
+  it 'should call setup on creation' do
+    ActorView.any_instance.expects :setup
+    @test_me = ActorView.new :stage, Actor.new({}), :wrapped_screen
+  end
   it 'should accept layered behavior params from actor'
   it 'should register for show/hide/remove events'
   it 'should manage a cached surface for drawing'

@@ -31,7 +31,7 @@ describe 'Arbiter' do
     it 'should call the correct circle circle collision method' do
       a = stub(:collidable_shape => :circle)
       b = stub(:collidable_shape => :circle)
-      @arbiter.should_receive(:collide_circle_circle?).with(a,b).and_return(true)
+      @arbiter.expects(:collide_circle_circle?).with(a,b).returns(true)
 
       @arbiter.collide?(a,b).should be_true
     end
@@ -39,7 +39,7 @@ describe 'Arbiter' do
     it 'should call the correct circle polygon collision method' do
       a = stub(:collidable_shape => :circle)
       b = stub(:collidable_shape => :polygon)
-      @arbiter.should_receive(:collide_circle_polygon?).with(a,b).and_return(true)
+      @arbiter.expects(:collide_circle_polygon?).with(a,b).returns(true)
 
       @arbiter.collide?(a,b).should be_true
     end
@@ -47,7 +47,7 @@ describe 'Arbiter' do
     it 'should call the correct polygon circle collision method' do
       a = stub(:collidable_shape => :polygon)
       b = stub(:collidable_shape => :circle)
-      @arbiter.should_receive(:collide_circle_polygon?).with(b,a).and_return(true)
+      @arbiter.expects(:collide_circle_polygon?).with(b,a).returns(true)
 
       @arbiter.collide?(a,b).should be_true
     end

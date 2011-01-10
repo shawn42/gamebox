@@ -66,11 +66,11 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 
 An Actor is the base class for any game object. A building, the player, the score, the bullet are all examples of actors. Actors can even be invisible. Any number of Behavior s can be added to an Actor to define how it will react to the world via the Actor.has_behaviors method.
 
-So Actors sound fun, how do I get one? That's where the ActorFactory comes in. In your Level class (demo_level.rb by default) you can use the create_actor helper method as shown below.
+So Actors sound fun, how do I get one? That's where the ActorFactory comes in. In your Stage class (demo_stage.rb by default) you can use the spawn helper method as shown below.
 
 	@score = spawn :score, :x => 10, :y => 10
 	
-This call will return an instance of the Score class (the first arg is the symbolized version of the classname). The ActorFactory will try to require the symbolized class name for you.  It will also create the view for the actor and register it to be drawn.  Which view is instantiated depends on the actor requested.  The factory will always look for a class named the same as the actor with View on the end. So the actor Score will look for ScoreView.  If ScoreView does not exist, a generic view class will be used based on the behaviors of the actor. Each ActorView class is constructed with a reference to the actor it is displaying. See ActorFactor#build for more details.
+This call will return an instance of the Score class (the first arg is the symbolized version of the classname).  It will also create the view for the actor and register it to be drawn.  Which view is instantiated depends on the actor requested.  The factory will always look for a class named the same as the actor with View on the end. So the actor Score will look for ScoreView.  If ScoreView does not exist, a generic view class will be used based on the behaviors of the actor. Each ActorView class is constructed with a reference to the actor it is displaying. See ActorFactor#build for more details.
 
 That's great, but how do I tell my actors what to do?  They can register for events of course! A common place for this is in your actor's setup method. Here is an example from the roids example.
 

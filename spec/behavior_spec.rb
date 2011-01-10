@@ -9,14 +9,14 @@ describe 'A new behavior' do
 
   it 'should auto-require behaviors that it depends on' 
   it 'should relegate properly' do
-    @target.should_receive(:foo).and_return(:bar)
+    @target.expects(:foo).returns(:bar)
     @target.relegates :foo
 
     @actor.foo.should == :bar
   end
 
   it 'should un-relegate properly' do
-    @target.should_receive(:foo).and_return(:bar)
+    @target.expects(:foo).returns(:bar)
     @target.relegates :foo
     @actor.foo.should == :bar
     

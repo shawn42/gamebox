@@ -6,7 +6,7 @@ describe 'A new resource manager' do
   end
 
   it 'should load an actor image' do
-    @res_man.should_receive(:load_image).with("string.png").and_return(:surf)
+    @res_man.expects(:load_image).with("string.png").returns(:surf)
     @res_man.load_actor_image("FoopyPants").should == :surf
   end
 

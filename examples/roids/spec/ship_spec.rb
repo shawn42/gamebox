@@ -4,9 +4,9 @@ describe "Ship" do
 
   before do
     @stage = mock
-    @stage.should_receive(:sound_manager)
-    @stage.should_receive(:respond_to?).with(:register_physical_object).and_return(true)
-    @stage.should_receive(:register_physical_object).with(any_args)
+    @stage.expects(:sound_manager)
+    @stage.expects(:respond_to?).with(:register_physical_object).returns(true)
+    @stage.expects(:register_physical_object).with(any_args)
 
     @ship = create_actor :ship, {:stage => @stage}
   end
@@ -35,12 +35,12 @@ describe "Ship" do
   describe "KeyBindings" do
 
     it "should hook space to shoot" do
-      @ship.should_receive(:shoot)
+      @ship.expects(:shoot)
       @input_manager._handle_event(KeyPressed.new(:space))
     end
 
     it "should hook space to shoot" do
-      @ship.should_receive(:shoot)
+      @ship.expects(:shoot)
       @input_manager._handle_event(KeyPressed.new(:space))
     end
 

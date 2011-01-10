@@ -6,7 +6,7 @@ describe ActorFactory do
     @stage = mock
     @resource_manager = mock
     @stage = mock
-    @stage.stub(:resource_manager).and_return(@resource_manager)
+    @stage.stubs(:resource_manager).returns(@resource_manager)
     @director = mock
     params = {:input_manager => @input_manager, :wrapped_screen => @screen}
     @target = ActorFactory.new params
@@ -26,7 +26,7 @@ describe ActorFactory do
     it "creates an Actor instance and registers the view" do
 
       view_actor = nil
-      @stage.should_receive(:register_drawable) do |view|
+      @stage.expects(:register_drawable).with() do |view|
         view.class.should == ActorView
         view.stage.should == @stage
         view.wrapped_screen.should == @screen

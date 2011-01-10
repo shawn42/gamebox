@@ -6,7 +6,7 @@ describe 'A new stage' do
 
   before do
     @config = {:screen_resolution => [800,600] }
-    @actor_factory = stub(:actor_factory, :director= => nil)
+    @actor_factory = stub(:director= => nil)
     @stage = Stage.new :input_manager, @actor_factory, 
       :resource_manager, :sound_manager, @config, :backstage, {}
   end

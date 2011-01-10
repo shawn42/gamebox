@@ -20,6 +20,6 @@ module GameboxSpecHelpers
 
 end
 
-Spec::Runner.configure do |configuration|
+RSpec.configure do |configuration|
   configuration.include GameboxSpecHelpers
 end

@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__),'helper')
 
 describe 'A new collidable behavior' do
   before do
-    @stage = mock(:register_collidable => nil)
+    @stage = stub(:register_collidable => nil)
     @actor_opts = {:actor_type => :actor, :stage=>@stage, :input=>"input", :resources=> :rm}
     @actor = Actor.new @actor_opts
   end
@@ -15,17 +15,17 @@ describe 'A new collidable behavior' do
     end
 
     it 'should recalculate_collidable_cache on update' do
-      @collidable.shape.should_receive(:recalculate_collidable_cache)
+      @collidable.shape.expects(:recalculate_collidable_cache)
       @collidable.update 4
     end
 
     it 'should relegate methods on actor' do
-      @collidable.should_receive(:width).and_return(44)
+      @collidable.expects(:width).returns(44)
       @actor.width.should == 44
-      @collidable.should_receive(:height).and_return(45)
+      @collidable.expects(:height).returns(45)
       @actor.height.should == 45
 
-      @collidable.should_receive(:collidable_shape).and_return(:circlez)
+      @collidable.expects(:collidable_shape).returns(:circlez)
       @actor.collidable_shape.should == :circlez
     end
 
