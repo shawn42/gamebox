@@ -3,21 +3,7 @@ module Arbiter
   attr_reader :checks, :collisions
 
   def register_collidable(actor)
-    @spatial_hash = stagehand(:spatial)
-    @collidable_actors ||= []
-    unless @collidable_actors.include? actor
-      actor.when :remove_me do 
-        unregister_collidable actor
-      end
-      @collidable_actors << actor 
-      @spatial_hash.add(actor)
-    end
-  end
-
-  def unregister_collidable(actor)
-    @collidable_actors ||= []
-    @collidable_actors.delete actor
-    @spatial_hash.remove(actor)
+    stagehand(:spatial).add(actor) if stagehand(:spatial).items[actor].nil?
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -63,20 +49,21 @@ module Arbiter
   end
 
   def find_collisions
-    @collidable_actors ||= []
+    spatial_hash = stagehand(:spatial)
+    @collidable_actors = spatial_hash.items.values
     @checks = 0
     @collisions = 0
     tmp_collidable_actors = @collidable_actors.dup
     collisions = {}
 
     @collidable_actors.each do |first|
-      x = first.x - @spatial_hash.cell_size
-      y = first.y - @spatial_hash.cell_size
+      x = first.x - spatial_hash.cell_size
+      y = first.y - spatial_hash.cell_size
       # TODO base this on size of object
-      w = @spatial_hash.cell_size * 3
+      w = spatial_hash.cell_size * 3
       h = w
 
-      tmp_collidable_actors = @spatial_hash.neighbors_of(first)
+      tmp_collidable_actors = spatial_hash.neighbors_of(first)
 
       tmp_collidable_actors.each do |second|
         @checks += 1

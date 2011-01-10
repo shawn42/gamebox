@@ -23,10 +23,14 @@ class Arb
 
 end
 
-StructShape = Struct.new(:x,:y,:width,:height,:collidable_shape,:radius)
-class Shape < StructShape
+class Shape 
   extend Publisher
   can_fire_anything
+  attr_accessor :x,:y,:width,:height,:collidable_shape,:radius
+  def initialize(*args)
+    @x,@y,@width,@height,@collidable_shape,@radius = *args
+  end
+    
   def center_x;self.x;end
   def center_y;self.y;end
   def actor_type;6;end
@@ -36,8 +40,8 @@ def do_it(hash, num_times, obj_size)
   arb = Arb.new hash
   rands = [1, 3, 5, 7, 13, 17]
   num_times.times do |i|
-    arb.register_collidable Shape.new(i+rands[-(i%6)],
-                                      i+rands[-(i%6)],obj_size,obj_size,:circle,obj_size)
+    shape = Shape.new(i+rands[-(i%6)], i+rands[-(i%6)],obj_size,obj_size,:circle,obj_size)
+    arb.register_collidable shape
   end
 
   hash.rehash

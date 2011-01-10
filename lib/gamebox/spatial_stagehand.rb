@@ -21,6 +21,10 @@ class SpatialStagehand < Stagehand
   def auto_resize=(val)
     @spatial_actors.auto_resize = val
   end
+  
+  def items
+    @spatial_actors.items
+  end
 
   def buckets
     @spatial_actors.buckets

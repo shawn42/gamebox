@@ -1,6 +1,6 @@
 class SpatialHash
 
-  attr_reader :cell_size, :buckets 
+  attr_reader :cell_size, :buckets , :items
   attr_accessor :auto_resize
 
   def initialize(cell_size, resize = false)
