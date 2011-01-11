@@ -13,7 +13,7 @@ class Arb
 
   def initialize(spatial)
     @spatial = spatial
-    on_collision_of 5, 6 do |f,b|
+    on_collision_of :otherthingy, :thingy do |f,b|
       puts "collide"
     end
   end
@@ -33,7 +33,7 @@ class Shape
     
   def center_x;self.x;end
   def center_y;self.y;end
-  def actor_type;6;end
+  def actor_type;:thingy;end
 end
 
 actor_count = 100

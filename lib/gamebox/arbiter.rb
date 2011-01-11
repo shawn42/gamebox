@@ -14,7 +14,7 @@ module Arbiter
 
     first_objs.each do |fobj|
       second_objs.each do |sobj|
-        if fobj.to_i < sobj.to_i
+        if fobj < sobj
           @collision_handlers[fobj] ||= {}
           @collision_handlers[fobj][sobj] = [false,block]
         else
@@ -30,7 +30,7 @@ module Arbiter
     collisions.each do |collision|
       first = collision.first
       second = collision.last
-      unless first.actor_type.to_i < second.actor_type.to_i
+      unless first.actor_type < second.actor_type
         tmp = first
         first = second
         second = tmp
