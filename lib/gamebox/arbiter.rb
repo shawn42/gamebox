@@ -86,9 +86,26 @@ module Arbiter
     run_callbacks unique_collisions
   end
 
+  COLLISION_METHODS = {
+    :circle => {
+      :circle => :collide_circle_circle?,
+      :aabb => :collide_circle_aabb?,
+      :polygon => :collide_circle_polygon?
+    },
+    :aabb => {
+      :circle => :collide_aabb_circle?,
+      :aabb => :collide_aabb_aabb?,
+      :polygon => :collide_aabb_polygon?
+    },
+    :polygon => {
+      :circle => :collide_polygon_circle?,
+      :aabb => :collide_polygon_aabb?,
+      :polygon => :collide_polygon_polygon?
+    }
+  }.freeze
+
   def collide?(object, other)
-    # TODO perf analysis of this
-    self.send "collide_#{object.collidable_shape}_#{other.collidable_shape}?", object, other
+    self.send COLLISION_METHODS[object.collidable_shape][other.collidable_shape], object, other
   end
 
   def collide_circle_circle?(object, other)
