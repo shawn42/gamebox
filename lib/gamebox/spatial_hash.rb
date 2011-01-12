@@ -1,14 +1,17 @@
 class SpatialHash
 
-  attr_reader :cell_size, :buckets , :items
+  attr_reader :cell_size, :buckets, :items
   attr_accessor :auto_resize
 
   def initialize(cell_size, resize = false)
     @cell_size = cell_size.to_f
     @items = {}
-    @total_w = 0
-    @total_h = 0
     @auto_resize = resize
+
+    if @auto_resize
+      @total_w = 0
+      @total_h = 0
+    end
     rehash
   end
 
@@ -28,10 +31,11 @@ class SpatialHash
 
         @cell_size = (avg_w+avg_h)
       end
+
+      @total_w = 0
+      @total_h = 0
     end
 
-    @total_w = 0
-    @total_h = 0
     @items = {}
     @buckets = {}
     items.values.each do |item|
@@ -48,12 +52,15 @@ class SpatialHash
       target_bucket = @buckets[x][y]
       target_bucket << item 
       @items[item] = item
-      w = item.width if item.respond_to? :width
-      h = item.height if item.respond_to? :height
-      w ||= 1
-      h ||= 1
-      @total_w += w 
-      @total_h += h 
+
+      if @auto_resize
+        w = item.width if item.respond_to? :width
+        h = item.height if item.respond_to? :height
+        w ||= 1
+        h ||= 1
+        @total_w += w 
+        @total_h += h 
+      end
     end
   end
 
@@ -75,10 +82,10 @@ class SpatialHash
     end
 
     buckets = []
-    (max_x-min_x+1).times do |i|
-      bucket_x = min_x + i
-      (max_y-min_y+1).times do |j|
-        buckets << [bucket_x,min_y+j] 
+    # TODO while loops?
+    (min_x+1..(max_x+1)).each do |bucket_x|
+      (min_y+1..(max_y+1)).each do |bucket_y|
+        buckets << [bucket_x,bucket_y] 
       end
     end
 
@@ -126,20 +133,22 @@ class SpatialHash
   end
 
   def items_in_bucket_range(min_x,min_y,max_x,max_y)
-    items = []
-    (max_x-min_x+1).times do |i|
-      bucket_x = min_x + i
+    items = {}
+    (min_x+1..(max_x+1)).each do |bucket_x|
       x_bucket = @buckets[bucket_x]
-      have_bucket_x = x_bucket.nil?
 
-      (max_y-min_y+1).times do |j|
-        bucket_y = min_y + j
-        unless have_bucket_x || x_bucket[bucket_y].nil?
-          items << x_bucket[bucket_y]
+      if x_bucket
+        (min_y+1..(max_y+1)).each do |bucket_y|
+          objects = x_bucket[bucket_y]
+          if objects
+            objects.each do |item|
+              items[item] = item
+            end
+          end
         end
       end
     end
-    items.flatten.uniq
+    items.values
   end
 
   # will look dist number of cells around all the cells

@@ -39,7 +39,7 @@ end
 actor_count = 100
 loop_count = 100
 obj_size = 40
-cell_size = 100
+cell_size = 80
 
 hash = SpatialHash.new cell_size#, true
 arb = Arb.new hash
@@ -48,14 +48,17 @@ actor_count.times do |i|
   arb.register_collidable shape
 end
 
-Benchmark.bm(60) do|b|
-  b.report("#{actor_count} actors w/ size #{obj_size} for #{loop_count} update loops") do
+ Benchmark.bm(60) do|b|
+ #30.times do |i|
+   hash_cell_size = cell_size #+ 5*i
+   hash.cell_size = hash_cell_size
+   b.report("#{actor_count} actors w/ size #{obj_size} cell size #{hash_cell_size} for #{loop_count} update loops") do
     loop_count.times do
       hash.rehash
       arb.find_collisions
     end
-  end
-
-end
+   end
+  end 
+ #end
 
 puts "hash auto-size:#{hash.cell_size}"

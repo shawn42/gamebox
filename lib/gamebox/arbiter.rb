@@ -86,26 +86,36 @@ module Arbiter
     run_callbacks unique_collisions
   end
 
-  COLLISION_METHODS = {
-    :circle => {
-      :circle => :collide_circle_circle?,
-      :aabb => :collide_circle_aabb?,
-      :polygon => :collide_circle_polygon?
-    },
-    :aabb => {
-      :circle => :collide_aabb_circle?,
-      :aabb => :collide_aabb_aabb?,
-      :polygon => :collide_aabb_polygon?
-    },
-    :polygon => {
-      :circle => :collide_polygon_circle?,
-      :aabb => :collide_polygon_aabb?,
-      :polygon => :collide_polygon_polygon?
-    }
-  }.freeze
-
   def collide?(object, other)
-    self.send COLLISION_METHODS[object.collidable_shape][other.collidable_shape], object, other
+    case object.collidable_shape
+    when :circle
+      case other.collidable_shape
+      when :circle
+        collide_circle_circle? object, other
+      when :aabb
+        collide_circle_aabb? object, other
+      when :polygon
+        collide_circle_polygon? object, other
+      end
+    when :aabb
+      case other.collidable_shape
+      when :circle
+        collide_aabb_circle? object, other
+      when :aabb
+        collide_aabb_aabb? object, other
+      when :polygon
+        collide_aabb_polygon? object, other
+      end
+    when :polygon
+      case other.collidable_shape
+      when :circle
+        collide_polygon_circle? object, other
+      when :aabb
+        collide_polygon_aabb? object, other
+      when :polygon
+        collide_polygon_polygon? object, other
+      end
+    end
   end
 
   def collide_circle_circle?(object, other)
@@ -114,8 +124,10 @@ module Arbiter
     x_prime = other.center_x
     y_prime = other.center_y
 
-    x_dist  = (x_prime - x) * (x_prime - x)
-    y_dist  = (y_prime - y) * (y_prime - y)
+    x_delta = x_prime - x
+    x_dist  = x_delta * x_delta
+    y_delta = y_prime - y
+    y_dist  = y_delta * y_delta
 
     total_radius = object.radius + other.radius
     x_dist + y_dist <= (total_radius * total_radius)
