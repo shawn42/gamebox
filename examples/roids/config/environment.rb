@@ -1,29 +1,4 @@
-
-unless ENV['OCRA_EXECUTABLE'].nil?
-  APP_ROOT = "#{File.join(File.dirname(__FILE__),"..")}/"
-  Dir.chdir(File.join(File.dirname($0),"..",'src'))
-else
-  APP_ROOT = "#{File.join(File.dirname(__FILE__),"..")}/"
-end
-
-gems = Dir[APP_ROOT+"vendor/gems/*"]
-gems.each do |bundled_gem|
-  $:.unshift bundled_gem+"/lib"
-end
-
-ADDITIONAL_LOAD_PATHS = []
-ADDITIONAL_LOAD_PATHS.concat %w(
-  src
-  lib
-  config 
-  ../../lib
-).map { |dir| File.join(APP_ROOT,dir) }
-
-ADDITIONAL_LOAD_PATHS.each do |path|
-	$:.unshift path
-end
-
-
+APP_ROOT = "#{File.join(File.dirname(__FILE__),"..")}/"
 
 CONFIG_PATH = APP_ROOT + "config/"
 DATA_PATH =  APP_ROOT + "data/"
@@ -34,8 +9,13 @@ FONTS_PATH =  APP_ROOT + "data/fonts/"
 
 require 'gamebox'
 
+require_all Dir.glob("**/*.rb").reject { |f| f.match("spec") }
+
 GAMEBOX_DATA_PATH =  GAMEBOX_PATH + "data/"
 GAMEBOX_SOUND_PATH =  GAMEBOX_PATH + "data/sounds/"
 GAMEBOX_MUSIC_PATH =  GAMEBOX_PATH + "data/music/"
 GAMEBOX_GFX_PATH =  GAMEBOX_PATH + "data/graphics/"
 GAMEBOX_FONTS_PATH =  GAMEBOX_PATH + "data/fonts/"
+
+$: << GAMEBOX_PATH
+require "gamebox_application"

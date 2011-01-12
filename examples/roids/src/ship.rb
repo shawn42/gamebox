@@ -1,7 +1,4 @@
 
-require 'publisher'
-require 'graphical_actor_view'
-
 class ShipView < GraphicalActorView
   def draw(target, x_off, y_off, z)
     # draw a shield

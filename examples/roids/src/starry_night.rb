@@ -1,4 +1,4 @@
-require 'ftor'
+
 
 class StarryNightView < ActorView
   def draw(target, x_off, y_off, z)

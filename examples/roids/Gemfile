@@ -1,3 +1,7 @@
 source "http://rubygems.org"
+gem "rake"
+gem "require_all"
+gem "constructor"
+gem "chipmunk"
 gem "gamebox"
 gem "diy"

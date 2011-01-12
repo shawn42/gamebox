@@ -82,10 +82,10 @@ class SpatialHash
     end
 
     buckets = []
-    # TODO while loops?
-    (min_x+1..(max_x+1)).each do |bucket_x|
-      (min_y+1..(max_y+1)).each do |bucket_y|
-        buckets << [bucket_x,bucket_y] 
+    (max_x-min_x+1).times do |i|
+      bucket_x = min_x + i
+      (max_y-min_y+1).times do |j|
+        buckets << [bucket_x,min_y+j] 
       end
     end
 

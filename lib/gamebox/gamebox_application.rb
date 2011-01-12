@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 $: << "#{File.dirname(__FILE__)}/../config"
 
-require 'gosu'
-include Gosu
-
 begin
   # optional file
   require "environment" 
