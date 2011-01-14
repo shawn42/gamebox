@@ -1,5 +1,4 @@
 game:
-  auto_require: false
   compose:
     - wrapped_screen
     - input_manager

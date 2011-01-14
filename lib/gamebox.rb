@@ -1,7 +1,7 @@
 GAMEBOX_PATH = File.join(File.dirname(__FILE__),"gamebox/")
 require 'diy'
 require 'constructor'
-require 'publisher'
+require 'kvo'
 require 'gosu'
 include Gosu
 

@@ -4,7 +4,6 @@ module ClassFinder
   def find(name)
     klass = nil
     klass_name = Inflector.camelize(name)
-
     klass = Object.const_get(klass_name) rescue
     
     klass

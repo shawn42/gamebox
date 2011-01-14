@@ -1,28 +1,27 @@
-require 'publisher'
-
 # Actor represent a game object.
 # Actors can have behaviors added and removed from them. Such as :physical or :animated.
 # They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
-  extend Publisher
-  can_fire_anything
+  include Kvo
   
-  attr_accessor :behaviors, :x, :y, :stage, :input_manager,
+  attr_accessor :behaviors, :stage, :input_manager,
     :resource_manager, :alive, :opts, :visible, :director, 
     :actor_type
 
+  # TODO change alive and visible to be KVO
+  kvo_attr_accessor :x, :y, :alive, :visible
+
+  can_fire_anything
   def initialize(opts={}) # :nodoc:
     @opts = opts
-    @x = opts[:x]
-    @y = opts[:y]
-    @x ||= 0
-    @y ||= 0
+    self.x = opts[:x] || 0
+    self.y = opts[:y] || 0
     @stage = opts[:stage]
     @input_manager = opts[:input]
     @resource_manager = opts[:resources]
     @director = opts[:director]
     @actor_type = opts[:actor_type]
-    @alive = true
+    self.alive = true
 
     @behaviors = {}
 
@@ -61,13 +60,13 @@ class Actor
 
   # Is the actor still alive?
   def alive?
-    @alive
+    self.alive
   end
 
   # Tells the actor's Director that he wants to be removed; and unsubscribes
   # the actor from all input events.
   def remove_self
-    @alive = false
+    self.alive = false
     fire :remove_me
     @input_manager.unsubscribe_all self
   end
@@ -130,16 +129,16 @@ class Actor
   
   def hide
     fire :hide_me if visible?
-    @visible = false
+    self.visible = false
   end
   
   def show
     fire :show_me unless visible?
-    @visible = true
+    self.visible = true
   end
   
   def visible?
-    @visible
+    self.visible
   end
 
   def self.behaviors

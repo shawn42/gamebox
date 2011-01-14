@@ -9,13 +9,13 @@ FONTS_PATH =  APP_ROOT + "data/fonts/"
 
 require 'gamebox'
 
-require_all Dir.glob("**/*.rb").reject { |f| f.match("spec") }
+[GAMEBOX_PATH, APP_ROOT, File.join(APP_ROOT,'src')].each{|path| $: << path }
+require "gamebox_application"
+
+require_all Dir.glob("**/*.rb").reject{ |f| f.match("spec") || f.match("src/app.rb")}
 
 GAMEBOX_DATA_PATH =  GAMEBOX_PATH + "data/"
 GAMEBOX_SOUND_PATH =  GAMEBOX_PATH + "data/sounds/"
 GAMEBOX_MUSIC_PATH =  GAMEBOX_PATH + "data/music/"
 GAMEBOX_GFX_PATH =  GAMEBOX_PATH + "data/graphics/"
 GAMEBOX_FONTS_PATH =  GAMEBOX_PATH + "data/fonts/"
-
-$: << GAMEBOX_PATH
-require "gamebox_application"

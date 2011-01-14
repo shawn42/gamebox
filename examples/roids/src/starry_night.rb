@@ -1,5 +1,3 @@
-
-
 class StarryNightView < ActorView
   def draw(target, x_off, y_off, z)
     for star in actor.stars
