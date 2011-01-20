@@ -8,6 +8,8 @@ class SpatialStagehand < Stagehand
   def setup
     merged_opts = DEFAULT_PARAMS.merge opts
     @spatial_actors = SpatialHash.new merged_opts[:cell_size]
+    # TODO
+    # delegate :items, :cell_size, :to => @spatial_actors
   end
 
   def cell_size
@@ -20,6 +22,10 @@ class SpatialStagehand < Stagehand
 
   def auto_resize=(val)
     @spatial_actors.auto_resize = val
+  end
+
+  def auto_resize
+    @spatial_actors.auto_resize
   end
   
   def items
@@ -47,10 +53,6 @@ class SpatialStagehand < Stagehand
 
   def remove(actor)
     @spatial_actors.remove actor
-  end
-
-  def update(time)
-    @spatial_actors.rehash
   end
 
   def items_at(x,y)

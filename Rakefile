@@ -23,10 +23,18 @@ begin
   RSpec::Core::RakeTask.new(:spec) do |t|
     t.pattern = 'spec/**/*_spec.rb'
   end
+
+  desc "Run all specs with rcov"
+  RSpec::Core::RakeTask.new(:rcov) do |t|
+      t.rcov = true
+  end
+
   task :default => :spec
 rescue LoadError
   puts "please install rspec to run tests"
   puts "install with gem install rspec"
 end
+
+
 
 # vim: syntax=Ruby

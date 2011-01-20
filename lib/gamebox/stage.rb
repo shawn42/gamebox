@@ -1,10 +1,3 @@
-
-require 'publisher'
-
-
-
-
-
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
@@ -79,7 +72,7 @@ class Stage
     @director.update time
     @viewport.update time
     @stagehands.each do |name, stagehand|
-      stagehand.update time if stagehand.respond_to? :update
+      stagehand.update time 
     end
     # TODO can we change collisions to be a stagehand
     find_collisions unless @collidable_actors.nil?

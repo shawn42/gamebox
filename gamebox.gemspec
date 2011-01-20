@@ -33,5 +33,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "chipmunk"
   s.add_development_dependency "polaris"
+  s.add_development_dependency 'rcov'
+
 end
 

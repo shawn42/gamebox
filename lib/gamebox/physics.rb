@@ -1,6 +1,3 @@
-require 'chipmunk'
-
-
 def vec2(*args)
   CP::Vec2.new *args
 end

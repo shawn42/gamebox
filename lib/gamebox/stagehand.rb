@@ -8,4 +8,7 @@ class Stagehand
 
   def setup
   end
+
+  def update(time)
+  end
 end

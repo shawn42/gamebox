@@ -1,4 +1,5 @@
 GAMEBOX_PATH = File.join(File.dirname(__FILE__),"gamebox/")
+require 'chipmunk'
 require 'diy'
 require 'constructor'
 require 'kvo'
