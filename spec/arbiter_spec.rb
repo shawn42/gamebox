@@ -15,18 +15,6 @@ describe 'Arbiter' do
     @arbiter.should_not be_nil
   end
 
-  describe '#center_x' do
-    it 'should return the center x for circle'
-    it 'should return the center x for aabb'
-    it 'should return the center x for polygon'
-  end
-
-  describe '#center_y' do
-    it 'should return the center y for circle'
-    it 'should return the center y for aabb'
-    it 'should return the center y for polygon'
-  end
-
   describe '#collide?' do
     it 'should call the correct circle circle collision method' do
       a = stub(:collidable_shape => :circle)

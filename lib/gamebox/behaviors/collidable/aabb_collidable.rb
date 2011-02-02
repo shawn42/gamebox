@@ -3,6 +3,31 @@
 class AaBbCollidable < CollidableShape
   attr_accessor :cw_local_points
 
+  def setup
+    @collidable_shape = opts[:shape]
+
+    @cw_local_points = opts[:cw_local_points]
+    @cw_local_points ||= opts[:points]
+    @cw_world_points ||= build_aabb
+
+    @radius = opts[:radius]
+    @radius ||= calculate_radius
+
+    @old_x = actor_x
+    @old_y = actor_y
+  end
+
+  def build_aabb
+    w = @actor.width
+    h = @actor.height
+    [
+      [0,0],
+      [w,0],
+      [w,h],
+      [0,h]
+    ]
+  end
+
   # TODO infinite loop if actor hasn't defined width and it gets relegated to us
   def calculate_radius
     w = @actor.width

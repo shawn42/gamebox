@@ -12,15 +12,21 @@ class Actor
   kvo_attr_accessor :x, :y, :alive, :visible
 
   can_fire_anything
+
+  DEFAULT_PARAMS = {
+    :x => 0,
+    :y => 0,
+  }.freeze
   def initialize(opts={}) # :nodoc:
-    @opts = opts
-    self.x = opts[:x] || 0
-    self.y = opts[:y] || 0
-    @stage = opts[:stage]
-    @input_manager = opts[:input]
-    @resource_manager = opts[:resources]
-    @director = opts[:director]
-    @actor_type = opts[:actor_type]
+    @opts = DEFAULT_PARAMS.merge opts
+    self.x = @opts[:x]
+    self.y = @opts[:y]
+
+    @stage = @opts[:stage]
+    @input_manager = @opts[:input]
+    @resource_manager = @opts[:resources]
+    @director = @opts[:director]
+    @actor_type = @opts[:actor_type]
     self.alive = true
 
     @behaviors = {}

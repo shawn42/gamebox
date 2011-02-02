@@ -11,7 +11,7 @@ describe ActorFactory do
     params = {:input_manager => @input_manager, :wrapped_screen => @screen}
     @target = ActorFactory.new params
     @target.director = @director
-    @opts = {:foo => :bar}
+    @opts = Actor::DEFAULT_PARAMS.merge({:foo => :bar})
     @basic_opts = {
       :stage => @stage,
       :input => @input_manager,

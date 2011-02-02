@@ -1,5 +1,10 @@
 require File.join(File.dirname(__FILE__),'helper')
 
+class SizedActor < Actor
+  def width;12;end
+  def height;10;end
+end
+
 describe 'A new collidable behavior' do
   before do
     @stage = stub(:register_collidable => nil)
@@ -7,6 +12,22 @@ describe 'A new collidable behavior' do
     @actor = Actor.new @actor_opts
   end
 
+
+  describe "aabb shape" do
+    before do
+      @behavior_opts = {:shape => :aabb,
+        :cw_world_points => [
+          [-15,10],[15,10],
+          [15,-10], [-15,10]
+        ]}
+      @actor = SizedActor.new @actor_opts
+      @collidable = Collidable.new @actor, @behavior_opts
+    end
+
+    it "constructs based on points" do
+      @collidable.collidable_shape.should == :aabb
+    end
+  end
 
   describe "circle shape" do
     before do
