@@ -1,4 +1,3 @@
-
 class DemoStage < Stage
   def setup
     super

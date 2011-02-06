@@ -3,8 +3,9 @@ $: << libdir
 confdir = File.dirname(__FILE__)+"/config"
 $: << confdir
 
+require 'rake'
 require 'environment'
-require 'gamebox/tasks/gamebox_tasks.rake'
+import "#{GAMEBOX_PATH}tasks/gamebox_tasks.rake"
 STATS_DIRECTORIES = [
   %w(Source            src/), 
   %w(Config            config/), 
