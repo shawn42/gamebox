@@ -1,5 +1,7 @@
 require 'publisher'
 
+# looks like theres a bug in Gosu
+KbRangeBegin = 0
 
 # InputManager handles the pumping for events and distributing of said events.
 # You can gain access to these events by registering for all events, 
