@@ -3,9 +3,7 @@ $: << libdir
 confdir = File.dirname(__FILE__)+"/config"
 $: << confdir
 
-require 'rake'
 require 'environment'
-import "#{GAMEBOX_PATH}tasks/gamebox_tasks.rake"
 STATS_DIRECTORIES = [
   %w(Source            src/), 
   %w(Config            config/), 
@@ -14,9 +12,4 @@ STATS_DIRECTORIES = [
   %w(Libraries         lib/),
 ].collect { |name, dir| [ name, "#{dir}" ] }.select { |name, dir| File.directory?(dir) }
 
-desc "Report code statistics (KLOCs, etc) from the application"
-task :stats do
-  require 'code_statistics'
-  CodeStatistics.new(*STATS_DIRECTORIES).to_s
-end
-
+import "#{GAMEBOX_PATH}tasks/gamebox_tasks.rake"
