@@ -18,8 +18,6 @@ class GraphicalActorView < ActorView
       img_w = img.width
       img_h = img.height
 
-      offset_x = x-img_w/2 + x_off
-      offset_y = y-img_h/2 + y_off
       img.draw_rot offset_x, offset_y, z, actor.rotation, 0.5, 0.5, scale, scale
     else
       graphical_behavior = actor.graphical if actor.is? :graphical
