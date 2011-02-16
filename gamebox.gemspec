@@ -25,13 +25,15 @@ Gem::Specification.new do |s|
   s.add_dependency "require_all"
   s.add_dependency "kvo"
 
+  # TODO make this optional
+  s.add_dependency "chipmunk"
+
   s.add_development_dependency "rspec-core"
   s.add_development_dependency "rspec-mocks"
   s.add_development_dependency "rspec-expectations"
   s.add_development_dependency "mocha"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rake"
-  s.add_development_dependency "chipmunk"
   s.add_development_dependency "polaris"
   s.add_development_dependency 'rcov'
 

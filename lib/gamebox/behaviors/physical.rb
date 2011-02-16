@@ -1,8 +1,4 @@
 
-
-
-require 'publisher'
-
 # Physical behavior will place your Actor in a physical world.
 # example:
 # :physical => {
