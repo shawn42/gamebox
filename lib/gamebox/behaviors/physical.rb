@@ -25,6 +25,7 @@ class Physical < Behavior
   def setup
     @parts = {}
     @shapes = []
+    @constraints = []
     @segments_groups = []
 
     @moment_of_inertia = @opts[:moment]
@@ -41,7 +42,8 @@ class Physical < Behavior
 
     # write code here to keep physics and x,y of actor in sync
     relegates :x, :y, :x=, :y=, :shape, :body, :parts,
-      :rotation, :warp, :segment_groups, :physical
+      :rotation, :warp, :segment_groups, :physical, 
+      :pivot, :spring
   end
 
   def setup_friction
@@ -120,6 +122,10 @@ class Physical < Behavior
   end
 
   def register
+    @actor.when :remove_me do
+      cleanup_constraints
+    end
+
     physical_obj = self
     if @actor.stage.respond_to? :register_physical_object
       if @opts[:fixed]
@@ -155,7 +161,6 @@ class Physical < Behavior
     else
       ((body.a) * 180.0 / Math::PI + 90) % 360
     end
-#    rot_deg = rotation.round % 360
   end
 
   def warp(new_p)
@@ -167,19 +172,23 @@ class Physical < Behavior
     self
   end
 
-#  def image
-#    old_image = nil
-#    rot_deg = rotation.round % 360
-#
-#    if @actor.is? :animated
-#      old_image = @actor.animated.image
-#    elsif @actor.is? :graphical
-#      old_image = @actor.graphical.image
-#    end
-#
-#    if old_image
-#      # XXX rotate when drawing, not when getting image
-#      old_image.rotozoom(rot_deg,1,true)
-#    end
-#  end
+  def pivot(my_anchor, other_physical, other_anchor)
+    pivot = CP::Constraint::PivotJoint.new(physical.body, other_physical.physical.body, my_anchor, other_anchor)
+    @actor.stage.register_physical_constraint pivot
+    @constraints << pivot
+  end
+
+  def spring(my_anchor, other_physical, other_anchor, rest_length, stiffness, damping)
+    spring = CP::Constraint::DampedSpring.new(physical.body,other_physical.physical.body,
+                                         my_anchor,other_anchor, rest_length, stiffness, damping)
+    @actor.stage.register_physical_constraint spring
+    @constraints << spring
+  end
+
+  def cleanup_constraints
+    @constraints.each do |c|
+      @actor.stage.unregister_physical_constraint c
+    end
+  end
+
 end
