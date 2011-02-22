@@ -44,4 +44,40 @@ describe 'A new physical behavior' do
     end
   end
 
+  describe "#slide_joint" do
+    it 'creates the slide joint and adds it to the space' do
+      other = CircleActor.new @opts
+      v1 = vec2(2,3)
+      v2 = vec2(4,5)
+      min = 2.0
+      max = 3.0
+      CP::Constraint::SlideJoint.expects(:new).with(@physical.body, other.body, v1, v2, min, max).returns(:joint)
+
+      @stage.expects(:register_physical_constraint).with(:joint)
+
+      @actor.slide(v1, other, v2, min, max).should == :joint
+    end
+  end
+  describe "#pivot_joint" do
+    it 'creates the pivot joint and adds it to the space' 
+  end
+  describe "#groove_joint" do
+    it 'creates the groove joint and adds it to the space' 
+  end
+  describe "#rotary_limit_joint" do
+    it 'creates the rotary_limit_joint and adds it to the space' 
+  end
+  describe "#ratchet_joint" do
+    it 'creates the ratchet_joint and adds it to the space' 
+  end
+  describe "#gear_joint" do
+    it 'creates the gear_joint and adds it to the space' 
+  end
+  describe "#simple_motor" do
+    it 'creates the simple_motor and adds it to the space' 
+  end
+  describe "#damped_rotary_spring" do
+    it 'creates the damped_rotary_spring and adds it to the space' 
+  end
+
 end

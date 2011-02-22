@@ -43,7 +43,7 @@ class Physical < Behavior
     # write code here to keep physics and x,y of actor in sync
     relegates :x, :y, :x=, :y=, :shape, :body, :parts,
       :rotation, :warp, :segment_groups, :physical, 
-      :pivot, :spring
+      :pivot, :spring, :slide
   end
 
   def setup_friction
@@ -173,19 +173,35 @@ class Physical < Behavior
   end
 
   def pivot(my_anchor, other_physical, other_anchor)
-    pivot = CP::Constraint::PivotJoint.new(physical.body, other_physical.physical.body, my_anchor, other_anchor)
+    pivot = CP::Constraint::PivotJoint.new(physical.body, other_physical.body, my_anchor, other_anchor)
     @actor.stage.register_physical_constraint pivot
     @constraints << pivot
     pivot
   end
 
   def spring(my_anchor, other_physical, other_anchor, rest_length, stiffness, damping)
-    spring = CP::Constraint::DampedSpring.new(physical.body,other_physical.physical.body,
+    spring = CP::Constraint::DampedSpring.new(physical.body,other_physical.body,
                                          my_anchor,other_anchor, rest_length, stiffness, damping)
     @actor.stage.register_physical_constraint spring
     @constraints << spring
     spring
   end
+
+  def slide(my_anchor, other_physical, other_anchor, min, max)
+    slide = CP::Constraint::SlideJoint.new(physical.body, other_physical.body, my_anchor, other_anchor, min, max)
+    @actor.stage.register_physical_constraint slide
+    @constraints << slide
+    slide
+  end
+
+  # TODO
+  # pivot_joint'
+  # groove_joint'
+  # rotary_limit_joint'
+  # ratchet_joint'
+  # gear_joint'
+  # simple_motor'
+  # damped_rotary_spring
 
   def cleanup_constraints
     @constraints.each do |c|
