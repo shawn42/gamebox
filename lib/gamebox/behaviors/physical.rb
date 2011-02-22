@@ -175,7 +175,7 @@ class Physical < Behavior
   end
 
   def pivot(my_anchor, other_physical, other_anchor)
-    pivot = CP::Constraint::PivotJoint.new(physical.body, other_physical.physical.body, my_anchor, other_anchor)
+    pivot = CP::Constraint::PivotJoint.new(physical.body, other_physical.body, my_anchor, other_anchor)
     @actor.stage.register_physical_constraint pivot
     @constraints << pivot
     pivot
@@ -189,7 +189,7 @@ class Physical < Behavior
   end
 
   def spring(my_anchor, other_physical, other_anchor, rest_length, stiffness, damping)
-    spring = CP::Constraint::DampedSpring.new(physical.body,other_physical.physical.body,
+    spring = CP::Constraint::DampedSpring.new(physical.body,other_physical.body,
                                          my_anchor,other_anchor, rest_length, stiffness, damping)
     @actor.stage.register_physical_constraint spring
     @constraints << spring

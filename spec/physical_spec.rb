@@ -56,17 +56,7 @@ describe 'A new physical behavior' do
     end
   end
 
-  describe "#slide" do
-    it 'creates a new SlideJoint and adds it to the space' do
-      other = CircleActor.new @opts
-      v1 = vec2(2,3)
-      v2 = vec2(4,5)
-      CP::Constraint::SlideJoint.expects(:new).with(@physical.body, other.body, v1, v2, 2,4).returns(:slide)
-      @stage.expects(:register_physical_constraint).with(:slide)
 
-      @actor.slide(v1, other.body, v2, 2, 4).should == :slide
-    end
-  end
 
   describe "#groove" do
     it 'creates a new GrooveJoint and adds it to the space' do
@@ -123,6 +113,21 @@ describe 'A new physical behavior' do
       CP::Constraint::SimpleMotor.expects(:new).with(@physical.body, other.body, 40).returns(:motor)
       @stage.expects(:register_physical_constraint).with(:motor)
       @actor.motor(other.body, 40).should == :motor
+    end
+  end
+
+  describe "#slide" do
+    it 'creates the slide joint and adds it to the space' do
+      other = CircleActor.new @opts
+      v1 = vec2(2,3)
+      v2 = vec2(4,5)
+      min = 2.0
+      max = 3.0
+      CP::Constraint::SlideJoint.expects(:new).with(@physical.body, other.body, v1, v2, min, max).returns(:joint)
+
+      @stage.expects(:register_physical_constraint).with(:joint)
+
+      @actor.slide(v1, other.body, v2, min, max).should == :joint
     end
   end
 
