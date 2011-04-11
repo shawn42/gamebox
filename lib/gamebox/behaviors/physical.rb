@@ -1,4 +1,3 @@
-
 # Physical behavior will place your Actor in a physical world.
 # example:
 # :physical => {
@@ -38,7 +37,9 @@ class Physical < Behavior
 
     build_secondary_shapes
 
+
     register
+    warp(vec2(@actor.x,@actor.y))
 
     # write code here to keep physics and x,y of actor in sync
     relegates :x, :y, :x=, :y=, :shape, :body, :parts,
@@ -101,6 +102,8 @@ class Physical < Behavior
     end
 
     @shapes << @shape
+
+    @body.p = vec2(actor.x,actor.y)
   end
 
   def build_secondary_shapes
@@ -108,16 +111,27 @@ class Physical < Behavior
     if @opts[:shapes]
       for obj in @opts[:shapes]
         for part_name, part_def in obj
-          # add another shape here
-          part_shape_array = part_def[:verts].collect{|v| vec2(v[0],v[1])}
-          part_shape = CP::Shape::Poly.new(@body, part_shape_array, part_def[:offset])
+          # TODO merge this with build main shape
+          part_shape = nil
+          case part_def[:shape]
+          when :poly
+            part_shape_array = part_def[:verts].collect{|v| vec2(v[0],v[1])}
+            part_shape = CP::Shape::Poly.new(@body, part_shape_array, part_def[:offset])
+            part_shape.collision_type = part_name.to_sym
+
+            # TODO pass all physics params to parts (ie u and e)
+            part_shape.u = @friction
+            verts = part_def[:verts].dup
+            verts << part_def[:verts][0]
+            @segments_groups << verts
+          when :circle
+            part_shape = CP::Shape::Circle.new(@body, part_def[:radius], part_def[:offset])
+          else
+            raise "unsupported sub shape type"
+          end
           part_shape.collision_type = part_name.to_sym
-          # TODO pass all physics params to parts (ie u and e)
-          part_shape.u = @friction
           @shapes << part_shape
-          verts = part_def[:verts].dup
-          verts << part_def[:verts][0]
-          @segments_groups << verts
+          # puts @shapes.inspect
         end
       end
     end
