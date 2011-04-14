@@ -4,7 +4,7 @@
 # data/graphics/classname.png
 class Graphical < Behavior
 
-  attr_accessor :image, :num_x_tiles, :num_y_tiles
+  attr_accessor :image, :num_x_tiles, :num_y_tiles, :rotation
   def setup
 
     @image = @actor.resource_manager.load_actor_image @actor
@@ -13,9 +13,10 @@ class Graphical < Behavior
     @num_y_tiles = @opts[:num_y_tiles]
     @num_x_tiles ||= 1
     @num_y_tiles ||= 1
+    @rotation = 0.0
 
     graphical_obj = self
-    relegates :image, :graphical, :width, :height
+    relegates :image, :graphical, :width, :height, :rotation, :rotation=
   end
 
   def graphical

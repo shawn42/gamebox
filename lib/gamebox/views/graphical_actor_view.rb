@@ -28,11 +28,16 @@ class GraphicalActorView < ActorView
         img_h = img.height
         x_tiles.times do |col|
           y_tiles.times do |row|
-            img.draw offset_x+col*img_w, offset_y+row*img_h, z, scale, scale
+            img.draw_rot offset_x+col*img_w, offset_y+row*img_h, z, actor.rotation, scale, scale
           end
         end
       else
-        img.draw offset_x, offset_y, z, scale, scale, Color.new(alpha,0xFF,0xFF,0xFF)
+        if actor.respond_to? :rotation
+          rot = actor.rotation || 0.0
+          img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, scale, scale, Color.new(alpha,0xFF,0xFF,0xFF)
+        else
+          img.draw offset_x, offset_y, z, scale, scale, Color.new(alpha,0xFF,0xFF,0xFF)
+        end
       end
     end
   end
