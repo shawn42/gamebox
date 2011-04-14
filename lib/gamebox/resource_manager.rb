@@ -103,7 +103,7 @@ class ResourceManager
     begin
       music = Song.new(@window, full_name)
       return music
-    rescue Excpetion => ex
+    rescue Exception => ex
       puts "Cannot load music " + full_name + " : " + ex
     end
   end
@@ -112,8 +112,9 @@ class ResourceManager
     begin
       sound = Sample.new(@window, full_name)
       return sound
-    rescue Excpetion => ex
-      puts "Cannot load sound " + full_name + " : " + ex
+    rescue Exception => ex
+      p ex
+      # puts "Cannot load sound " + full_name + " : " + ex
     end
   end
 
