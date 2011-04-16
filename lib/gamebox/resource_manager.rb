@@ -1,8 +1,5 @@
-#!/usr/bin/env ruby
 $: << "#{File.dirname(__FILE__)}/../config"
 require "fileutils"
-
-
 
 class ResourceManager
 
