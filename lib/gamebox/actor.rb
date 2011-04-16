@@ -95,11 +95,6 @@ class Actor
       behavior_sym = behavior_def
       behavior_opts = {}
     end
-    begin
-      require behavior_sym.to_s;
-    rescue LoadError
-      # maybe its included somewhere else
-    end
     klass = Object.const_get Inflector.camelize(behavior_sym)
     @behaviors[behavior_sym] = klass.new self, behavior_opts
   end
