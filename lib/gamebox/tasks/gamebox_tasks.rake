@@ -25,18 +25,21 @@ task :bundle do |t|
 end
 
 begin
-  require 'spec/rake/spectask'
-  desc "Run all specs"
-  Spec::Rake::SpecTask.new('spec') do |t|
-    t.spec_opts = ["-r", "./spec/helper"]
-    t.spec_files = FileList['spec//*_spec.rb']
+  require 'rspec/core/rake_task'
+
+  desc 'Default: run specs.'
+  task :default => :spec
+
+  desc "Run specs"
+  RSpec::Core::RakeTask.new do |t|
+    # t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
+    # Put spec opts in a file named .rspec in root
   end
-  task :rspec => :spec
-  task :test => :spec
 rescue LoadError
   puts "warning: rspec not installed"
   puts "install with gem install rspec"
 end
+
 
 namespace :dist do
   task :vendor do
