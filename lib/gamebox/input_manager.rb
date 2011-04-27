@@ -30,7 +30,8 @@ class InputManager
   def setup
     @window = @wrapped_screen.screen
 
-    @auto_quit = instance_eval(@config_manager[:auto_quit])
+    auto_quit = @config_manager[:auto_quit]
+    @auto_quit = instance_eval(auto_quit) if auto_quit
 
     @hooks = {}
     @non_id_hooks = {}
@@ -48,17 +49,17 @@ class InputManager
     end
     @window.when :update do |millis|
 
-      @last_mouse_x ||= @window.mouse_x
-      @last_mouse_y ||= @window.mouse_y
+      @last_mouse_x ||= mouse_x
+      @last_mouse_y ||= mouse_y
 
-      x_diff = @last_mouse_x - @window.mouse_x
-      y_diff = @last_mouse_y - @window.mouse_y
+      x_diff = @last_mouse_x - mouse_x
+      y_diff = @last_mouse_y - mouse_y
 
       unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
         _handle_event nil, :motion
 
-        @last_mouse_x = @window.mouse_x
-        @last_mouse_y = @window.mouse_y
+        @last_mouse_x = mouse_x
+        @last_mouse_y = mouse_y
       end
 
       game.update millis
@@ -71,19 +72,25 @@ class InputManager
   end
 
   def _handle_event(gosu_id, action) #:nodoc:
-    @window.close if gosu_id == @auto_quit
+    @window.close if @auto_quit && gosu_id == @auto_quit
     event_data = nil
+    mouse_dragged = false
 
     if gosu_id.nil?
       event_type = :mouse_motion
       callback_key = :mouse_motion
+      @mouse_dragging = true if @mouse_down
       event_data = [@window.mouse_x, @window.mouse_y]
     elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
       event_type = :mouse
       if action == :up
         callback_key = :mouse_up
+        @mouse_down = false
+        mouse_dragged = true if @mouse_dragging
+        @mouse_dragging = false
       else
         callback_key = :mouse_down
+        @mouse_down = true
       end
     elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
       event_type = :keyboard
@@ -105,17 +112,29 @@ class InputManager
       :type => event_type, 
       :id => gosu_id,
       :action => action,
-      :callback_key => event_type,
+      :callback_key => callback_key,
       :data => event_data
     }
 
+    fire_event(event)
+
+    if mouse_dragged
+      drag_data = {:to => [mouse_x, mouse_y], :from => [@last_mouse_x, @last_mouse_y]}
+      event[:data] = drag_data
+      event[:callback_key] = :mouse_drag
+      fire_event(event)
+    end
+  end
+
+  def fire_event(event)
     fire :event_received, event
 
     # fix for pause bug?
     @hooks ||= {}
     @non_id_hooks ||= {}
 
-    event_hooks = @hooks[callback_key] 
+    event_hooks = @hooks[event[:callback_key]] 
+    gosu_id = event[:id]
 
     unless gosu_id.nil?
       event_action_hooks = event_hooks[gosu_id] if event_hooks
@@ -126,7 +145,7 @@ class InputManager
       end
     end
     
-    non_id_event_hooks = @non_id_hooks[callback_key]
+    non_id_event_hooks = @non_id_hooks[event[:callback_key]]
     if non_id_event_hooks
       for callback in non_id_event_hooks
         callback.call event
@@ -230,6 +249,14 @@ class InputManager
     @non_id_hooks = @paused_non_id_hooks
     @paused_hooks = nil
     @paused_non_id_hooks = nil
+  end
+
+  private
+  def mouse_x
+    @window.mouse_x
+  end
+  def mouse_y
+    @window.mouse_y
   end
 
 end
