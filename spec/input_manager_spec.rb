@@ -30,9 +30,7 @@ describe InputManager do
 
       subject.stubs(:fire).with(:event_received, any_parameters)
 
-      p exp_event
       subject.expects(:fire).with(:event_received, exp_event)
-      # subject.expects(:fire).with(:mouse_drag, exp_event)
 
       subject._handle_event(MsLeft, :down)
       subject._handle_event(nil, :motion)
