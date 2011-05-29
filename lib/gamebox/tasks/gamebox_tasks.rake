@@ -24,20 +24,20 @@ task :bundle do |t|
   sh "bundle install vendor/bundle --disable-shared-gems"
 end
 
-begin
-  require 'rspec/core/rake_task'
+desc "Run specs"
+task :spec do
+  begin
+    require 'rspec/core/rake_task'
 
-  desc 'Default: run specs.'
-  task :default => :spec
-
-  desc "Run specs"
-  RSpec::Core::RakeTask.new do |t|
-    # t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
-    # Put spec opts in a file named .rspec in root
+    RSpec::Core::RakeTask.new(:specz) do |t|
+      # t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
+      # Put spec opts in a file named .rspec in root
+    end
+    Rake::Task[:specz].execute
+  rescue LoadError
+    puts "warning: rspec not installed"
+    puts "install with gem install rspec"
   end
-rescue LoadError
-  puts "warning: rspec not installed"
-  puts "install with gem install rspec"
 end
 
 
