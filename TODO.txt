@@ -24,8 +24,5 @@ static deployment bundles (crate, love-clone; custom C project)
 	ruby
 	gosu
 possible features:
-AI
-	 state machine
-	 rule based
 optional GUI via Fidgit?
 gamebox server (content server?)
