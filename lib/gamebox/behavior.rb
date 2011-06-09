@@ -56,7 +56,7 @@ class Behavior
     @actor.instance_eval do
       (class << self; self; end).class_eval do
         methods.each do |meth|
-          log("redefining #{meth} for #{@actor.class}") if @actor.respond_to? meth
+          # log("redefining #{meth} for #{@actor.class}") if @actor.respond_to? meth
           target.relegated_methods << meth
 
           define_method meth do |*args|
