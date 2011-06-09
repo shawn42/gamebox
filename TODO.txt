@@ -1,3 +1,7 @@
+examples:
+  move to separate repo?
+  roids: shield is not centered
+
 planned features:
 add network manager stub
 highscore upload system (use from chingu)
@@ -11,7 +15,6 @@ update physical objects to use chipmunk_object.rb
 
 make complex Phyiscal behaviors 
   - made up by a group of bodies pinned together
-  - easy joints
 physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
   
   - solidify rdocs (including tutorial)
@@ -20,9 +23,7 @@ SVGS
 add nice actor debugging
 add Extra; actor with a short time to live (TTL); useful for special effects (maybe as a behavior)
 	
-static deployment bundles (crate, love-clone; custom C project)
-	ruby
-	gosu
 possible features:
 optional GUI via Fidgit?
 gamebox server (content server?)
+
