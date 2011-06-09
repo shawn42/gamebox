@@ -5,6 +5,7 @@ class SoundManager
   attr_accessor :sounds, :music
 
   constructor :resource_manager, :config_manager
+  SUPPORTED_AUDIO_EXTS = %w(wav ogg mp3 au aiff caf)
   
   # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
   def setup
@@ -14,7 +15,7 @@ class SoundManager
 
     if @enabled
       @music = {}
-      files = Dir.glob "#{MUSIC_PATH}**"
+      files = Dir.glob "#{MUSIC_PATH}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
       for f in files
         name = File.basename(f)
         begin
@@ -27,7 +28,7 @@ class SoundManager
       end if files
 
       @sounds = {}
-      files = Dir.glob "#{SOUND_PATH}**"
+      files = Dir.glob "#{SOUND_PATH}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
       for f in files
         name = File.basename(f)
         begin

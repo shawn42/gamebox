@@ -1,5 +1,3 @@
-require 'physical_stage'
-
 class DemoStage < PhysicalStage
   
   def setup

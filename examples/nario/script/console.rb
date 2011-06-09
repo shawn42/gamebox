@@ -1,3 +1,3 @@
-require '../config/environment'
-require 'console_app'
+# require '../config/environment'
+# require 'console_app'
 
