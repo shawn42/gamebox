@@ -1,5 +1,4 @@
 
-require 'ftor'
 class DemoStage < Stage
   def setup
     super

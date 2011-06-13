@@ -1,10 +1,7 @@
-require 'helper'
-require 'pretty_gem'
-
-describe 'a new PrettyGem' do
+describe 'a new Background' do
   before do 
     opts = {:level=>"level", :input=>"input", :resources=>"resource"}
-    @test_me = PrettyGem.new opts
+    @test_me = Background.new opts
   end
 
   it 'should do something'

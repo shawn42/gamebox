@@ -1,6 +1,3 @@
-require 'helper'
-require 'mappy'
-
 describe 'a new Mappy' do
   before do 
     opts = {:level=>"level", :input=>"input", :resources=>"resource"}

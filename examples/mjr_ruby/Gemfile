@@ -1,0 +1,7 @@
+source "http://rubygems.org"
+gem "rake"
+gem "require_all"
+gem "constructor"
+gem "polaris"
+gem "gamebox"
+gem "diy"

@@ -1,6 +1,3 @@
-
-require 'graphical_actor_view'
-
 class EarthView < GraphicalActorView
 
   def draw(target, x_off, y_off, z)
