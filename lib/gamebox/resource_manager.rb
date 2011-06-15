@@ -110,8 +110,7 @@ class ResourceManager
       sound = Sample.new(@window, full_name)
       return sound
     rescue Exception => ex
-      p ex
-      # puts "Cannot load sound " + full_name + " : " + ex
+      puts "Cannot load sound " + full_name + " : " + ex.inspect
     end
   end
 

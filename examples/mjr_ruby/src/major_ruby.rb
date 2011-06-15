@@ -24,12 +24,12 @@ class MajorRuby < Actor
 
     if move_right
       (@speed * time_delta).times do
-        move 1, 0
+        move(1, 0)
       end
       self.action = :move_right unless self.action == :move_right
     elsif move_left
       (@speed * time_delta).times do
-        move -1, 0
+        move(-1, 0)
       end
       self.action = :move_left unless self.action == :move_left
     else
