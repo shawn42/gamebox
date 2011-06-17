@@ -2,7 +2,7 @@
 class DemoStage < Stage
   def setup
     super
-    # @map = spawn :mappy, :map_filenames => 'map.txt,map2.txt'
+    @map = spawn :mappy, :map_filenames => 'map2.txt'
     # @map.when :move_layer do |*args|
     #   fire :move_layer, *args
     # end

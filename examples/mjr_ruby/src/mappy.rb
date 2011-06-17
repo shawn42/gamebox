@@ -28,7 +28,7 @@ class Mappy < Actor
     @fog.layer = @actors.size*LAYER_OFFSET-1
     @fog.show
 #    @z = 1
-#    self.z_level=0
+   self.z_level=0
 
     @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
     input_manager.reg :keyboard_down, KbSpace do

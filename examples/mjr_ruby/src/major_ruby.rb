@@ -46,7 +46,7 @@ class MajorRuby < Actor
   def apply_gravity
     @vy += 1
     if @vy < 0 
-      (-@vy).times { if would_fit?(0, -1) then @y -= 1 else @vy = 0 end }
+      (-@vy).times { if would_fit?(0, -1) then y -= 1 else @vy = 0 end }
     end
     if @vy > 0 
       (@vy).times do 
@@ -60,7 +60,7 @@ class MajorRuby < Actor
           else
             fall_rate = 1
           end
-          @y += fall_rate
+          self.y += fall_rate
         else 
           @vy = 0 
         end 
@@ -78,25 +78,25 @@ class MajorRuby < Actor
 
   def move(dx,dy)
     if would_fit?(dx,0)
-      @x += dx 
+      x += dx 
     end
     if would_fit?(0,dy)
-      @y += dy 
+      y += dy 
     end
   end
 
   def would_fit?(x_off, y_off)
-    not @map.solid? @x.floor+x_off+5, @y.floor+y_off+2 and
-    not @map.solid? @x.floor+x_off+31, @y.floor+y_off+2 and
-    not @map.solid? @x.floor+x_off+5, @y.floor+y_off+34 and
-      not @map.solid? @x.floor+x_off+31, @y.floor+y_off+34 
+    not @map.solid? x.floor+x_off+5, y.floor+y_off+2 and
+    not @map.solid? x.floor+x_off+31, y.floor+y_off+2 and
+    not @map.solid? x.floor+x_off+5, y.floor+y_off+34 and
+      not @map.solid? x.floor+x_off+31, y.floor+y_off+34 
   end
 
   def collect_gems(gems)
     collected = []
     gems.each do |pg|
       matched = false
-      if (pg.x+18 - @x).abs < 36 and (pg.y+18 - @y).abs < 36
+      if (pg.x+18 - x).abs < 36 and (pg.y+18 - y).abs < 36
         matched = true
         play_sound :pretty
         pg.remove_self
