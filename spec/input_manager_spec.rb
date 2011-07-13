@@ -14,10 +14,8 @@ describe InputManager do
       from_y = 20
       to_x = 140
       to_y = 120
-      subject.instance_variable_set('@last_mouse_x', from_x)
-      subject.instance_variable_set('@last_mouse_y', from_y)
-      @window.stubs(:mouse_x).returns(to_x)
-      @window.stubs(:mouse_y).returns(to_y)
+      @window.stubs(:mouse_x).returns(from_x)
+      @window.stubs(:mouse_y).returns(from_y)
 
       event_data = {:from => [from_x, from_y],:to => [to_x, to_y]}
       exp_event = {
@@ -34,6 +32,8 @@ describe InputManager do
 
       subject._handle_event(MsLeft, :down)
       subject._handle_event(nil, :motion)
+      @window.stubs(:mouse_x).returns(to_x)
+      @window.stubs(:mouse_y).returns(to_y)
       subject._handle_event(MsLeft, :up)
 
     end

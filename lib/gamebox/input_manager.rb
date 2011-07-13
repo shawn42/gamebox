@@ -80,7 +80,7 @@ class InputManager
       event_type = :mouse_motion
       callback_key = :mouse_motion
       @mouse_dragging = true if @mouse_down
-      event_data = [@window.mouse_x, @window.mouse_y]
+      event_data = [mouse_x, mouse_y]
     elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
       event_type = :mouse
       if action == :up
@@ -91,6 +91,8 @@ class InputManager
       else
         callback_key = :mouse_down
         @mouse_down = true
+        @last_click_x = mouse_x
+        @last_click_y = mouse_y
       end
     elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
       event_type = :keyboard
@@ -119,7 +121,7 @@ class InputManager
     fire_event(event)
 
     if mouse_dragged
-      drag_data = {:to => [mouse_x, mouse_y], :from => [@last_mouse_x, @last_mouse_y]}
+      drag_data = {:to => [mouse_x, mouse_y], :from => [@last_click_x, @last_click_y]}
       event[:data] = drag_data
       event[:callback_key] = :mouse_drag
       fire_event(event)
