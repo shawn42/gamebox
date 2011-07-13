@@ -83,6 +83,7 @@ class InputManager
       event_data = [mouse_x, mouse_y]
     elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
       event_type = :mouse
+      event_data = [mouse_x, mouse_y]
       if action == :up
         callback_key = :mouse_up
         @mouse_down = false
