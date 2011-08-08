@@ -13,7 +13,7 @@ STATS_DIRECTORIES = [
 
 desc "Report code statistics (KLOCs, etc) from the application"
 task :stats do
-  require 'code_statistics'
+  require "#{File.dirname(__FILE__)}/lib/gamebox/lib/code_statistics"
   CodeStatistics.new(*STATS_DIRECTORIES).to_s
 end
 
