@@ -4,10 +4,10 @@ class ShipView < GraphicalActorView
     # draw a shield
     if @actor.invincible?
       radius = 25
-      x = @actor.x + x_off - radius
-      y = @actor.y + y_off - radius
+      x = @actor.x + x_off
+      y = @actor.y + y_off 
 
-      target.draw_circle x,y, radius, [200,200,255,140], z
+      target.draw_circle x, y, radius, [200,200,255,140], z
     end
     super target, x_off, y_off, z
   end
