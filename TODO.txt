@@ -1,7 +1,5 @@
 examples:
   move to separate repo?
-  roids: 
-    shield is not centered
   nario: 
     error on collision
     console.rb being loaded? (require_all?)
