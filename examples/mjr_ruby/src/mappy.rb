@@ -1,14 +1,6 @@
 require 'two_d_grid_location'
 require 'two_d_grid_map'
 
-class FogView < ActorView
-  def draw(target, x_off, y_off, z)
-    target.fill_screen [120,120,120,120], z
-  end
-end
-class Fog < Actor
-  has_behavior :layered
-end
 class Mappy < Actor
   attr_reader :major_ruby, :tw, :th, :width, :height, :actors
 
@@ -24,25 +16,13 @@ class Mappy < Actor
       @maps << load_map(fn,i)
     end
 
-    @fog = spawn :fog, :visible => false
-    @fog.layer = @actors.size*LAYER_OFFSET-1
-    @fog.show
-#    @z = 1
    self.z_level=0
 
     @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
-    input_manager.reg :keyboard_down, KbSpace do
-      rotate_layers
-    end
   end
 
   def finished?
     @pretty_gems.inject(0){|first,second|first + second.size} == 0
-  end
-
-  def rotate_layers
-    new_z = (@z + 1) % @actors.size
-    self.z_level = new_z
   end
 
   def remove(gems)

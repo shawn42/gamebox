@@ -2,20 +2,20 @@
 class DemoStage < Stage
   def setup
     super
-    @map = spawn :mappy, :map_filenames => 'map2.txt'
+    @map = spawn :mappy, :map_filenames => 'map.txt'
     # @map.when :move_layer do |*args|
     #   fire :move_layer, *args
     # end
     # 
     # spawn :background, :x => -100, :y => -100, :map => @map
-    # @major_ruby = @map.major_ruby
+    @major_ruby = @map.major_ruby
     # 
     # create_actor :logo, :x => 900, :y => 650
     # @score = spawn :score, :x => 90, :y => 50
     # 
     # sound_manager.play_music :future
     # 
-    # viewport.follow @major_ruby
+    viewport.follow @major_ruby
     # 
     # min_x = (viewport.width/2.0-@map.tw).floor
     # max_x = (@map.tw*@map.width-viewport.width/2.0).floor

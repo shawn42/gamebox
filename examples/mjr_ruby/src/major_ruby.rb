@@ -4,13 +4,25 @@ class MajorRuby < Actor
 
   has_behavior :audible, :animated, :updatable, :layered => {:layer => 10}
   attr_accessor :move_left, :move_right, :jump
+  def x
+    @x
+  end
+  def x=(px)
+    @x = px
+  end
+  def y
+    @y
+  end
+  def y=(py)
+    @y = py
+  end
+
   def setup
     @speed = 8
     @vy = 0
     @map = @opts[:map]
     input_manager.while_key_pressed KbLeft, self, :move_left
     input_manager.while_key_pressed KbRight, self, :move_right
-    #input_manager.while_key_pressed KbUp, self, :jump
     input_manager.reg :keyboard_down, KbUp do 
       try_to_jump
     end
@@ -20,7 +32,7 @@ class MajorRuby < Actor
     # TODO sucks that I have to call this here to update my behaviors
     super 
 
-    time_delta = time_delta/25.floor
+    time_delta = (time_delta/25.0).floor
 
     if move_right
       (@speed * time_delta).times do
@@ -46,7 +58,7 @@ class MajorRuby < Actor
   def apply_gravity
     @vy += 1
     if @vy < 0 
-      (-@vy).times { if would_fit?(0, -1) then y -= 1 else @vy = 0 end }
+      (-@vy).times { if would_fit?(0, -1) then self.y -= 1 else @vy = 0 end }
     end
     if @vy > 0 
       (@vy).times do 
@@ -78,25 +90,25 @@ class MajorRuby < Actor
 
   def move(dx,dy)
     if would_fit?(dx,0)
-      x += dx 
+      self.x += dx 
     end
     if would_fit?(0,dy)
-      y += dy 
+      self.y += dy 
     end
   end
 
   def would_fit?(x_off, y_off)
-    not @map.solid? x.floor+x_off+5, y.floor+y_off+2 and
-    not @map.solid? x.floor+x_off+31, y.floor+y_off+2 and
-    not @map.solid? x.floor+x_off+5, y.floor+y_off+34 and
-      not @map.solid? x.floor+x_off+31, y.floor+y_off+34 
+    not @map.solid? self.x.floor+x_off+5, self.y.floor+y_off+2 and
+    not @map.solid? self.x.floor+x_off+31, self.y.floor+y_off+2 and
+    not @map.solid? self.x.floor+x_off+5, self.y.floor+y_off+34 and
+      not @map.solid? self.x.floor+x_off+31, self.y.floor+y_off+34 
   end
 
   def collect_gems(gems)
     collected = []
     gems.each do |pg|
       matched = false
-      if (pg.x+18 - x).abs < 36 and (pg.y+18 - y).abs < 36
+      if (pg.x+18 - self.x).abs < 36 and (pg.y+18 - self.y).abs < 36
         matched = true
         play_sound :pretty
         pg.remove_self

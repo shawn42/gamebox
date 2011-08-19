@@ -42,9 +42,78 @@ end
 
 
 namespace :dist do
-  task :vendor do
-    sh 'wget http://github.com/downloads/shawn42/gamebox/vendor.zip; unzip vendor.zip; rm vendor.zip'
+  desc "Build a .app for your gamebox game"
+  task :mac do
+    GAME_NAME = "UntitledGame" unless defined?(GAME_NAME)
+    # DL template os x app
+    remote_file = "gosu-mac-wrapper-#{Gosu::VERSION}.tar.gz"
+    mac_build = "build/mac"
+    local_file = "#{mac_build}/#{remote_file}"
+
+    require 'net/http'
+    mkdir_p mac_build
+    # if false
+      Net::HTTP.start("www.libgosu.org") do |http|
+        resp = http.get("/downloads/#{remote_file}")
+        open(local_file, "wb") { |file| file.write(resp.body) } 
+      end
+    # end
+
+    # Expand it
+    root = pwd
+    cd mac_build
+    `tar xzf #{remote_file}`
+    app_name = "#{GAME_NAME}.app"
+    contents = "#{app_name}/Contents"
+    resources = "#{contents}/Resources"
+    dot_app_lib = "#{resources}/lib"
+    gem_vendored = "#{mac_build}/#{resources}/gems"
+
+    mv 'RubyGosu App.app', app_name
+    %w(config data src).each do |src|
+      cp_r "../../#{src}", resources
+    end
+
+    # TODO remove chingu / chipmunk / etc
+    clean_em_out = %w(chingu chingu.rb).map{|it| "#{dot_app_lib}/#{it}"}
+    rm_rf clean_em_out#, :verbose => true, :noop => true
+
+    cd root
+    p `bundle --system package`
+    p `bundle package`
+    p `bundle --deployment` 
+    mkdir_p gem_vendored
+    rejects = %w(chipmunk gosu)
+    Dir["vendor/bundle/ruby/**/gems/**/lib"].each do |gemmy|
+      cp_r gemmy, gem_vendored unless rejects.any?{|exclude| gemmy.match exclude}
+    end
+
+    cd mac_build
+    File.open "#{resources}/Main.rb", "w+" do |main|
+      main.puts <<-EOS
+      $: << "\#{File.dirname(__FILE__)}/config"
+
+      $: << "\#{File.dirname(__FILE__)}/gems/lib"
+
+      rejects = %w(spec src/app.rb vendor Main.rb)
+      ok_dirs = %w(config gems src)
+      REQUIRE_ALLS = ok_dirs.map{|dir| Dir.glob("\#{dir}/*.rb").reject{ |f| rejects.any?{|exclude| f.match exclude}}}.flatten
+      
+      require 'environment'
+
+      GameboxApp.run ARGV, ENV
+      EOS
+    end
+
+    # modify plist file
+    # UntitledGame
+    cd "#{GAME_NAME}.app/Contents"
+    plist = File.open("Info.plist").read
+    File.open("Info.plist", 'w+') do |f|
+      f.puts plist.gsub "UntitledGame", GAME_NAME
+    end
   end
+  
   task :win do
     # create dist dir
     FileUtils.mkdir "dist" unless File.exist? "dist"
