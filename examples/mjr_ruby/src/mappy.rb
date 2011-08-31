@@ -2,58 +2,37 @@ require 'two_d_grid_location'
 require 'two_d_grid_map'
 
 class Mappy < Actor
-  attr_reader :major_ruby, :tw, :th, :width, :height, :actors
-
-  LAYER_OFFSET = 3
+  attr_reader :major_ruby, :tw, :th, :width, :height, :actors, :pretty_gems
 
   def setup
-    @maps = []
     @pretty_gems = []
     @actors = []
     @z = 1
-    filenames = @opts[:map_filenames].split ','
-    filenames.each_with_index do |fn,i|
-      @maps << load_map(fn,i)
-    end
-
-   self.z_level=0
+    load_map @opts[:map_filename]
 
     @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
   end
 
   def finished?
-    @pretty_gems.inject(0){|first,second|first + second.size} == 0
+    @pretty_gems.size == 0
   end
 
   def remove(gems)
-    @actors[@z].delete_if{|it|gems.include? it}
-    @pretty_gems[@z].delete_if{|it|gems.include? it}
+    @actors.delete_if{|it|gems.include? it}
+    @pretty_gems.delete_if{|it|gems.include? it}
   end
 
-  def z_level=(new_z)
-    fire :move_layer, 1, @actors.size*LAYER_OFFSET, 1, 900
-
-    @z = new_z
-
-    fire :move_layer, 1, @z*LAYER_OFFSET, 1, @actors.size*LAYER_OFFSET
-    fire :move_layer, 1, 900, 1, @z*LAYER_OFFSET
-  end
-
-  def pretty_gems
-    @pretty_gems[@z]
-  end
-
-  def load_map(filename, z)
+  def load_map(filename)
     lines = File.readlines(File.join(DATA_PATH,"maps",filename)).map { |line| line.chop }
     @height = lines.size
     @width = lines[0].size
-    @pretty_gems[z] ||= []
-    @actors[z] ||= []
+    @pretty_gems = []
+    @actors = []
     @tw = 44
     @th = 44
 
 
-    map = TwoDGridMap.new @width, @height
+    @map = TwoDGridMap.new @width, @height
 
     @width.times do |x|
       @height.times do |y|
@@ -74,21 +53,21 @@ class Mappy < Actor
         unless type.nil?
           # no overlap yet
           thing = spawn type, :x => x*@tw, :y => y*@tw, :visible=>false
-          @actors[z] << thing
-          thing.layer = z*LAYER_OFFSET
+          @actors << thing
+          # thing.layer = z*LAYER_OFFSET
           thing.show
 
-          @pretty_gems[z] << thing if type == :pretty_gem
-          map.place(TwoDGridLocation.new(x,y), thing)
+          @pretty_gems << thing if type == :pretty_gem
+          @map.place(TwoDGridLocation.new(x,y), thing)
         end
       end
     end
 
-    map
+    @map
   end
 
   def solid?(x,y)
-    occ = @maps[@z].occupant TwoDGridLocation.new(x/@tw, y/@th)
+    occ = @map.occupant TwoDGridLocation.new(x/@tw, y/@th)
     not occ.nil? and occ.class != PrettyGem
   end
   

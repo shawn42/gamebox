@@ -2,7 +2,10 @@
 class DemoStage < Stage
   def setup
     super
-    @map = spawn :mappy, :map_filenames => 'map.txt'
+    input_manager.reg :keyboard_down, KbR do |e|
+      puts Gosu::fps
+    end
+    @map = spawn :mappy, :map_filename => 'map.txt'
     # @map.when :move_layer do |*args|
     #   fire :move_layer, *args
     # end

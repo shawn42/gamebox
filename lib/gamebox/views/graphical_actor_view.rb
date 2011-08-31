@@ -13,6 +13,8 @@ class GraphicalActorView < ActorView
 
     scale = actor.respond_to?(:scale) ? actor.scale : 1
     alpha = actor.respond_to?(:alpha) ? actor.alpha : 0xFF
+    @last_alpha ||= alpha
+    @color = Color.new(alpha,0xFF,0xFF,0xFF) unless last_alpha == alpha
 
     if actor.is? :physical
       img_w = img.width
@@ -34,11 +36,15 @@ class GraphicalActorView < ActorView
       else
         if actor.respond_to? :rotation
           rot = actor.rotation || 0.0
-          img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, scale, scale, Color.new(alpha,0xFF,0xFF,0xFF)
+          img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, scale, scale, @color
         else
-          img.draw offset_x, offset_y, z, scale, scale, Color.new(alpha,0xFF,0xFF,0xFF)
+          end
+          img.draw offset_x, offset_y, z, scale, scale, @color
         end
+        last_alpha = alpha
       end
+
+      @last_alpha = alpha
     end
   end
 end

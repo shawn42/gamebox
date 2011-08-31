@@ -13,6 +13,12 @@ class DemoStage < PhysicalStage
     input_manager.reg :keyboard_down, KbS do |evt|
       @ship.action = :exploding
     end
+    
+    input_manager.reg :keyboard_down, KbP do |evt|
+      require 'pry'
+      binding.pry
+    end
+    
     score = create_actor :score, :x => 10, :y => 10
     create_actor :logo, :x => 900, :y => 600
 

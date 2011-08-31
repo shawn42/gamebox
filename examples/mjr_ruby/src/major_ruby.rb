@@ -4,22 +4,23 @@ class MajorRuby < Actor
 
   has_behavior :audible, :animated, :updatable, :layered => {:layer => 10}
   attr_accessor :move_left, :move_right, :jump
-  def x
-    @x
-  end
-  def x=(px)
-    @x = px
-  end
-  def y
-    @y
-  end
-  def y=(py)
-    @y = py
-  end
+  # def x
+  #   @x
+  # end
+  # def x=(px)
+  #   @x = px
+  # end
+  # def y
+  #   @y
+  # end
+  # def y=(py)
+  #   @y = py
+  # end
 
   def setup
     @speed = 8
     @vy = 0
+    @left_over = 0
     @map = @opts[:map]
     input_manager.while_key_pressed KbLeft, self, :move_left
     input_manager.while_key_pressed KbRight, self, :move_right
@@ -32,15 +33,16 @@ class MajorRuby < Actor
     # TODO sucks that I have to call this here to update my behaviors
     super 
 
-    time_delta = (time_delta/25.0).floor
+    num_moves = ((time_delta+@left_over)/25.0).floor
+    @left_over = time_delta % 25
 
     if move_right
-      (@speed * time_delta).times do
+      (@speed * num_moves).times do
         move(1, 0)
       end
       self.action = :move_right unless self.action == :move_right
     elsif move_left
-      (@speed * time_delta).times do
+      (@speed * num_moves).times do
         move(-1, 0)
       end
       self.action = :move_left unless self.action == :move_left
@@ -51,7 +53,7 @@ class MajorRuby < Actor
       self.action = :jump unless self.action == :jump
     end
 
-    time_delta.times { apply_gravity }
+    num_moves.times { apply_gravity }
 
   end
 

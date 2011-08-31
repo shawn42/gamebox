@@ -5,7 +5,11 @@ class EarthView < GraphicalActorView
     y = @actor.y
 
     img = @actor.image
-    img.draw x+x_off, y+y_off, z
+    w = img.width
+    h = img.height
+    @hw ||= w/2.0
+    @hh ||= h/2.0
+    img.draw @hw+x+x_off, @hh+y+y_off, z
   end
 end
 
