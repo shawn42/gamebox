@@ -1,5 +1,3 @@
-
 class Grass < Actor
-  has_behavior :graphical, :layered
-  
+  has_behavior :graphical
 end

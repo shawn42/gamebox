@@ -7,10 +7,9 @@ class Mappy < Actor
   def setup
     @pretty_gems = []
     @actors = []
-    @z = 1
     load_map @opts[:map_filename]
 
-    @major_ruby = spawn :major_ruby, :x => 400, :y => 100, :map => self
+    @major_ruby = spawn :major_ruby, :x => 100, :y => 50, :map => self
   end
 
   def finished?
@@ -30,6 +29,8 @@ class Mappy < Actor
     @actors = []
     @tw = 44
     @th = 44
+    @half_tw = @tw/2
+    @half_th = @tw/2
 
 
     @map = TwoDGridMap.new @width, @height
@@ -52,10 +53,8 @@ class Mappy < Actor
           end
         unless type.nil?
           # no overlap yet
-          thing = spawn type, :x => x*@tw, :y => y*@tw, :visible=>false
+          thing = spawn type, :x => x*@tw, :y => y*@tw
           @actors << thing
-          # thing.layer = z*LAYER_OFFSET
-          thing.show
 
           @pretty_gems << thing if type == :pretty_gem
           @map.place(TwoDGridLocation.new(x,y), thing)
@@ -67,7 +66,7 @@ class Mappy < Actor
   end
 
   def solid?(x,y)
-    occ = @map.occupant TwoDGridLocation.new(x/@tw, y/@th)
+    occ = @map.occupant TwoDGridLocation.new((x+@half_tw)/@tw, (y+@half_th)/@th)
     not occ.nil? and occ.class != PrettyGem
   end
   

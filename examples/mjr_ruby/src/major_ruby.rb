@@ -4,18 +4,6 @@ class MajorRuby < Actor
 
   has_behavior :audible, :animated, :updatable, :layered => {:layer => 10}
   attr_accessor :move_left, :move_right, :jump
-  # def x
-  #   @x
-  # end
-  # def x=(px)
-  #   @x = px
-  # end
-  # def y
-  #   @y
-  # end
-  # def y=(py)
-  #   @y = py
-  # end
 
   def setup
     @speed = 8

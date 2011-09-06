@@ -37,8 +37,8 @@ class GraphicalActorView < ActorView
           rot = actor.rotation || 0.0
           img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, scale, scale, color
         else
+          img.draw offset_x, offset_y, z, scale, scale, color
         end
-        img.draw offset_x, offset_y, z, scale, scale, color
       end
     end
   end
