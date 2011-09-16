@@ -1,6 +1,6 @@
 class SpatialHash
 
-  attr_reader :cell_size, :buckets, :items
+  attr_reader :cell_size, :buckets, :items, :moved_items
   attr_accessor :auto_resize
 
   def initialize(cell_size, resize = false)
@@ -12,6 +12,8 @@ class SpatialHash
       @total_w = 0
       @total_h = 0
     end
+    @items = {}
+    @buckets = {}
     rehash
   end
 
@@ -21,6 +23,8 @@ class SpatialHash
   end
 
   def rehash
+    @moved_items = {}
+    return
     items = @items
 
     if @auto_resize
@@ -45,6 +49,18 @@ class SpatialHash
 
   def add(item)
     buckets = lookup item
+
+    item.when :x_changed do |old_x, new_x|
+      @moved_items[item] = item
+      remove item
+      add item
+    end
+    item.when :y_changed do |old_y, new_y|
+      @moved_items[item] = item
+      remove item
+      add item
+    end
+
     buckets.each do |bucket|
       x,y = *bucket
       @buckets[x] ||= {}
@@ -105,6 +121,8 @@ class SpatialHash
       return if @buckets[x].nil? || @buckets[x][y].nil?
       @buckets[x][y].delete item
     end
+    item.unsubscribe_all self
+
     @items.delete item
   end
   

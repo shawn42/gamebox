@@ -29,7 +29,7 @@ class SpatialStagehand < Stagehand
   end
   
   def items
-    @spatial_actors.items
+    @spatial_actors.moved_items.values
   end
 
   def buckets

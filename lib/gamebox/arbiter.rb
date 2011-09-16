@@ -3,7 +3,7 @@ module Arbiter
   attr_reader :checks, :collisions
 
   def register_collidable(actor)
-    stagehand(:spatial).add(actor) if stagehand(:spatial).items[actor].nil?
+    stagehand(:spatial).add(actor) #if stagehand(:spatial).items[actor].nil?
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -50,7 +50,7 @@ module Arbiter
 
   def find_collisions
     spatial_hash = stagehand(:spatial)
-    @collidable_actors = spatial_hash.items.values
+    @collidable_actors = spatial_hash.items
     @checks = 0
     @collisions = 0
     tmp_collidable_actors = @collidable_actors.dup
