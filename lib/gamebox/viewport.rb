@@ -5,7 +5,9 @@ class Viewport
   can_fire :scrolled
   
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
-    :height, :x_offset_range, :y_offset_range, :speed
+    :height, :x_offset_range, :y_offset_range
+
+  attr_reader :speed
 
   def debug
     "xoff:#{@x_offset} yoff:#{@y_offset}"
@@ -25,6 +27,16 @@ class Viewport
     @y_offset += y_delta
 
     fire :scrolled
+  end
+
+  def speed=(new_speed)
+    if new_speed > 1
+      @speed = 1
+    elsif new_speed < 0
+      @speed = 0
+    else
+      @speed = new_speed
+    end
   end
 
   def x_offset(layer=1)

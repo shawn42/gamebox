@@ -15,18 +15,18 @@ describe 'A new viewport' do
   end
 
   it 'should construct with width and height' do
-    @viewport.width.should equal(800)
-    @viewport.height.should equal(600)
-    @viewport.x_offset.should equal(0)
-    @viewport.y_offset.should equal(0)
+    @viewport.width.should == 800
+    @viewport.height.should == 600
+    @viewport.x_offset.should == 0
+    @viewport.y_offset.should == 0
   end
   
   it 'should center the viewport on an actor when follow' do
     actor = Vec.new 900, 200
     @viewport.follow actor
     
-    @viewport.x_offset.should equal(-500)
-    @viewport.y_offset.should equal(100)
+    @viewport.x_offset.should == -500
+    @viewport.y_offset.should == 100
     @viewport.follow_target.should equal(actor)
   end
   
@@ -34,8 +34,8 @@ describe 'A new viewport' do
     actor = Vec.new 900, 200
     @viewport.follow actor, [40,-20]
     
-    @viewport.x_offset.should equal(-460)
-    @viewport.y_offset.should equal(80)
+    @viewport.x_offset.should == -460
+    @viewport.y_offset.should == 80
     @viewport.follow_target.should equal(actor)
   end
   
@@ -43,16 +43,16 @@ describe 'A new viewport' do
     @viewport.x_offset = -200
     @viewport.y_offset = -300
     
-    @viewport.x_offset(2).should equal(-100)
-    @viewport.y_offset(2).should equal(-150)
+    @viewport.x_offset(2).should == -100
+    @viewport.y_offset(2).should == -150
   end
 
   it 'should return a zero offset on INFINITY' do
     @viewport.x_offset = -200
     @viewport.y_offset = -300
     
-    @viewport.x_offset(Float::INFINITY).should equal(0)
-    @viewport.y_offset(Float::INFINITY).should equal(0)
+    @viewport.x_offset(Float::INFINITY).should == 0
+    @viewport.y_offset(Float::INFINITY).should == 0
   end
   
   it 'shouldn\'t update anything unless following a target' do
@@ -61,8 +61,8 @@ describe 'A new viewport' do
     
     @viewport.update 3000
     
-    @viewport.x_offset.should equal(-200)
-    @viewport.y_offset.should equal(-300)
+    @viewport.x_offset.should == -200
+    @viewport.y_offset.should == -300
   end
   
   it 'should follow a target if target has gone right;down of its buffer' do
@@ -74,15 +74,15 @@ describe 'A new viewport' do
     actor.y = 390
     
     @viewport.update 100
-    @viewport.x_offset.should equal(-500)
-    @viewport.y_offset.should equal(100)
+    @viewport.x_offset.should == -500
+    @viewport.y_offset.should == 100
     
     actor.x = 1001
     actor.y = 401
     @viewport.update 100
     
-    @viewport.x_offset.should equal(-501)
-    @viewport.y_offset.should equal(99)
+    @viewport.x_offset.should == -501
+    @viewport.y_offset.should == 99
   end
   
   it 'should follow a target if target has gone left;up of its buffer' do
@@ -95,15 +95,50 @@ describe 'A new viewport' do
     actor.y = 10
 
     @viewport.update 100
-    @viewport.x_offset.should equal(-500)
-    @viewport.y_offset.should equal(100)
+    @viewport.x_offset.should == -500
+    @viewport.y_offset.should == 100
     
     actor.x = 799
     actor.y = -1
     @viewport.update 100
     
-    @viewport.x_offset.should equal(-499)
-    @viewport.y_offset.should equal(101)
+    @viewport.x_offset.should == -499
+    @viewport.y_offset.should == 101
+  end
+
+  it 'should respect the speed setting' do
+    actor = Vec.new 900, 200
+    @viewport.speed = 0.5
+    @viewport.follow actor, [0,0], [100,200]
+    
+    @viewport.update 100
+    actor.x = 990
+    actor.y = 390
+    
+    @viewport.update 100
+    @viewport.x_offset.should == -500
+    @viewport.y_offset.should == 100
+
+    actor.x = 1002
+    actor.y = 402
+    @viewport.update 100
+    
+    @viewport.x_offset.should == -501
+    @viewport.y_offset.should == 99
+
+  end
+
+  it 'enforces speed is >= 0 and <= 1' do
+    @viewport.speed.should == 1
+
+    @viewport.speed = 0
+    @viewport.speed.should == 0
+
+    @viewport.speed = 2
+    @viewport.speed.should == 1
+
+    @viewport.speed = 0.1
+    @viewport.speed.should be_within(0.001).of(0.1)
   end
   
   it 'should fire :scrolled event when targeting an actor' do
