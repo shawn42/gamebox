@@ -1,7 +1,6 @@
 TAKE YOUR PICK:
  - pull in exts from princess
  - specs for stage manager
- - viewport smooth follow
  - update specs for collision detection
  - collision detection performance for tiles?
  - collision detection honoring rotation?
