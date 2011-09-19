@@ -5,6 +5,7 @@ describe 'a new SpacialHash' do
   before do
     @hash = SpatialHash.new 10
   end
+
   it 'should be constructable' do
     @hash.cell_size.should == 10
   end
@@ -26,6 +27,7 @@ describe 'a new SpacialHash' do
     @hash.add box
 
     buckets = @hash.instance_variable_get('@buckets')
+
     buckets[0][0].first.should == box
     buckets[0][1].first.should == box
     buckets[1][0].first.should == box
@@ -87,12 +89,21 @@ describe 'a new SpacialHash' do
 end
 
 class Point
-  attr_accessor :x,:y
-  def initialize(x,y);@x=x;@y=y;end
+  include Kvo
+  kvo_attr_accessor :x, :y
+  def initialize(x,y)
+    self.x = x
+    self.y = y
+  end
 end
 
-class Item < Point
-  def initialize(x,y,w=1,h=1);@x=x;@y=y;@w=w;@h=h;end
-  def width;@w;end
-  def height;@h;end
+class Item 
+  include Kvo
+  kvo_attr_accessor :x, :y, :width, :height
+  def initialize(x,y,w=1,h=1)
+    self.x = x
+    self.y = y
+    self.width = w
+    self.height = h
+  end
 end

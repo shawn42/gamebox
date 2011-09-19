@@ -41,14 +41,6 @@ class SpatialStagehand < Stagehand
     actor.when :remove_me do 
       @spatial_actors.remove actor
     end
-    actor.when :x_changed do |oldX,newX|
-      @spatial_actors.remove actor
-      @spatial_actors.add actor
-    end
-    actor.when :y_changed do |oldX,newX|
-      @spatial_actors.remove actor
-      @spatial_actors.add actor
-    end
   end
 
   def remove(actor)

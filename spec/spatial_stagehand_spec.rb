@@ -41,9 +41,9 @@ describe 'a new SpacialStagehand' do
   end
 
   describe "#items" do
-    it "returns all the items" do
-      @hash.instance_variable_set("@items", :items)
-      @target.items.should == :items
+    it "returns all the moved items" do
+      @hash.instance_variable_set("@moved_items", :items => :items)
+      @target.items.should == [:items]
     end
   end
 
@@ -70,25 +70,6 @@ describe 'a new SpacialStagehand' do
       @actor.send :fire, :remove_me
     end
 
-    it 'should register for x_changed event' do
-      @actor = Actor.new {}
-      @target.add(@actor)
-
-      @hash.expects(:remove).with(@actor)
-      @hash.expects(:add).with(@actor)
-
-      @actor.send :fire, :x_changed
-    end
-
-    it 'should register for y_changed event' do
-      @actor = Actor.new {}
-      @target.add(@actor)
-
-      @hash.expects(:remove).with(@actor)
-      @hash.expects(:add).with(@actor)
-
-      @actor.send :fire, :y_changed
-    end
   end
 
   describe "#remove" do

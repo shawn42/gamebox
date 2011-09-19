@@ -50,6 +50,7 @@ class SpatialHash
   def add(item)
     buckets = lookup item
 
+    # TODO change these to one event? position_changed?
     item.when :x_changed do |old_x, new_x|
       @moved_items[item] = item
       remove item
@@ -60,6 +61,16 @@ class SpatialHash
       remove item
       add item
     end
+    # item.when :width_changed do |old_w, new_w|
+    #   @moved_items[item] = item
+    #   remove item
+    #   add item
+    # end
+    # item.when :height_changed do |old_h, new_h|
+    #   @moved_items[item] = item
+    #   remove item
+    #   add item
+    # end
 
     buckets.each do |bucket|
       x,y = *bucket
