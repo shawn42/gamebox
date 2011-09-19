@@ -9,6 +9,7 @@ TAKE YOUR PICK:
   * what does that do to PhysicalDirector when Director goes away?
  - rewrite console to use pry-remote?
  - solidify rdocs (including tutorial)
+ - collidable "grouping"
 
 EXAMPLES:
  - move to separate repo?
