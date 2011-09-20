@@ -13,7 +13,6 @@ EXAMPLES:
  - move to separate repo?
  - nario: 
     error on collision
-    console.rb being loaded? (require_all?)
 
 SOMEDAY:
  - add network manager stub
