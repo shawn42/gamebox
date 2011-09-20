@@ -51,6 +51,10 @@ class StageManager
     stage_instance.when :restart_stage do |*args|
       restart_stage *args
     end
+    stage_instance.when :change_stage do |stage_name, *args|
+      switch_to_stage stage_name, *args
+    end
+
     
     stage_instance
   end
@@ -61,10 +65,9 @@ class StageManager
       puts "last stage, exiting"
       exit
     end
-    stage = @stages.delete @stage_names[index+1]
-    @input_manager.clear_hooks stage
 
-    change_stage_to @stage_names[index+1], *args
+    shutdown_current_stage *args
+    switch_to_stage @stage_names[index+1], *args
   end
 
   def prev_stage(*args)
@@ -73,9 +76,9 @@ class StageManager
       puts "first stage, exiting"
       exit
     end
-    stage = @stages.delete @stage_names[index-1]
-    @input_manager.clear_hooks stage
-    change_stage_to @stage_names[index-1], *args
+
+    shutdown_current_stage *args
+    switch_to_stage @stage_names[index-1], *args
   end
 
   def restart_stage(*args)
@@ -85,21 +88,14 @@ class StageManager
     stage = @stages.delete @stage_names[index]
     @input_manager.clear_hooks stage
 
-    change_stage_to @stage, *args
+    switch_to_stage @stage, *args
   end
 
-  def change_stage_to(stage, *args)
-    @prev_stage = @stages[@stage]
-    unless @prev_stage.nil?
-      @prev_stage.curtain_dropping *args
-    end
-    @stage = stage
-    @stage_args = args
-    unless @stages[@stage]
-      @stages[@stage] = create_stage(@stage, @stage_opts[@stage_names.index(@stage)])
-    end
-    @stages[@stage].curtain_raising *args
+  def switch_to_stage(stage_name, *args)
+    shutdown_current_stage *args
+    activate_new_stage stage_name, *args
   end
+  alias :change_stage_to :switch_to_stage
 
   def current_stage
     @stages[@stage]
@@ -112,4 +108,25 @@ class StageManager
   def draw(target)
     @stages[@stage].draw target unless @stages[@stage].nil?
   end
+
+  private
+
+  def activate_new_stage(stage_name, *args)
+    @stage = stage_name
+    @stage_args = args
+    @stages[@stage] = create_stage(@stage, @stage_opts[@stage_names.index(@stage)])
+    @stages[@stage].curtain_raising *args
+  end
+
+  def shutdown_current_stage(*args)
+    if @stage and @stages and @stages[@stage]
+      current_stage = @stages[@stage]
+      current_stage.curtain_dropping *args
+      @input_manager.clear_hooks(current_stage)
+      @stages.delete @stage
+      @stage = nil
+      @stage_args = nil
+    end
+  end
+
 end
