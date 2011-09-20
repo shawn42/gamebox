@@ -35,7 +35,9 @@ class GameboxApp
   
   def setup_debug_server
     Thread.new do
-      binding.remote_pry
+      loop do
+        binding.remote_pry
+      end
     end
   end
   
