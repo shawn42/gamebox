@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency "require_all"
   s.add_dependency "kvo"
   s.add_dependency "pry"
+  s.add_dependency "pry-remote"
 
   # TODO make this optional
   s.add_dependency "chipmunk"

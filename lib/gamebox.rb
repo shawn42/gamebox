@@ -5,6 +5,8 @@ require 'constructor'
 require 'kvo'
 require 'gosu'
 include Gosu
+require 'pry'
+require 'pry-remote'
 
 
 # TODO move this to some logging class

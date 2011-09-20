@@ -34,13 +34,16 @@ class GameboxApp
   end
   
   def setup_debug_server
-    
-    require 'drb'
-    self.class.extend DRbUndumped
-    puts "Starting debug server..."
-    
-    DRb.start_service "druby://localhost:7373", self
-    puts "on #{DRb.uri}"
+    # 
+    # require 'drb'
+    # self.class.extend DRbUndumped
+    # puts "Starting debug server..."
+    # 
+    # DRb.start_service "druby://localhost:7373", self
+    # puts "on #{DRb.uri}"
+    Thread.new do
+      binding.remote_pry
+    end
   end
   
   def main_loop
