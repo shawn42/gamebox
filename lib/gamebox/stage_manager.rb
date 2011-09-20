@@ -66,7 +66,6 @@ class StageManager
       exit
     end
 
-    shutdown_current_stage *args
     switch_to_stage @stage_names[index+1], *args
   end
 
@@ -77,16 +76,12 @@ class StageManager
       exit
     end
 
-    shutdown_current_stage *args
     switch_to_stage @stage_names[index-1], *args
   end
 
   def restart_stage(*args)
     current_stage.curtain_dropping *args
     index = @stage_names.index @stage
-
-    stage = @stages.delete @stage_names[index]
-    @input_manager.clear_hooks stage
 
     switch_to_stage @stage, *args
   end
