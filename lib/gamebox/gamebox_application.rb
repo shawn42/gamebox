@@ -48,10 +48,6 @@ class GameboxApp
 
   def shutdown
   end
-  
-  def debug_eval(eval_str)
-    instance_eval eval_str
-  end
 
   def start(argv,env)
     setup
