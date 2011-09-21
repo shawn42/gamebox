@@ -119,20 +119,23 @@ class ResourceManager
     @loaded_fonts[name] ||= {}
     return @loaded_fonts[name][size] if @loaded_fonts[name][size]
     begin
-      #full_name = File.expand_path(FONTS_PATH + name)
-      full_name = FONTS_PATH + name
-      if File.exist? full_name
-        font = Font.new(@window, full_name, size)
+      if name =~ /^\// and File.exists?(name)
+        font = Font.new(@window, name, size)
         @loaded_fonts[name][size] = font
       else
-        #full_name = File.expand_path(GAMEBOX_FONTS_PATH + name)
-        full_name = GAMEBOX_FONTS_PATH + name
-        font = Font.new(@window, full_name, size)
-        @loaded_fonts[name][size] = font
+        full_name = FONTS_PATH + name
+        if File.exist? full_name
+          font = Font.new(@window, full_name, size)
+          @loaded_fonts[name][size] = font
+        else
+          full_name = GAMEBOX_FONTS_PATH + name
+          font = Font.new(@window, full_name, size)
+          @loaded_fonts[name][size] = font
+        end
       end
       return font
     rescue Exception => ex
-      puts "Cannot load font #{full_name}:#{ex}"
+      debug "Cannot load font #{full_name}:#{ex}"
     end
     return nil
   end
@@ -147,5 +150,10 @@ class ResourceManager
     end
     cached_svg
   end
+
+  def load_tiles(filename, tile_width, tile_height)
+    Image.load_tiles @window, GFX_PATH+filename, tile_width, tile_height, true
+  end
+
 
 end
