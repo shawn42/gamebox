@@ -1,4 +1,4 @@
-class LabelView 
+class LabelView < ActorView
   def draw(target,x_off,y_off,z)
     @converted_color ||= target.convert_color(actor.color)
     actor.font.draw actor.text, actor.x, actor.y, z, 
