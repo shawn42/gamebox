@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Framework for building and distributing games using Gosu}
   s.rubyforge_project = "gamebox"
 
-  s.files         = `git ls-files | grep -v examples`.split("\n")
+  s.files         = `git ls-files`.split("\n").reject{ |f| f[/^examples\//] || f[/^\./] }
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
