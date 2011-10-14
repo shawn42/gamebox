@@ -5,7 +5,7 @@ class Viewport
   can_fire :scrolled
   
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
-    :height, :x_offset_range, :y_offset_range
+    :height, :x_offset_range, :y_offset_range, :boundary
 
   attr_reader :speed
 
@@ -72,6 +72,7 @@ class Viewport
         else
           @x_offset += (x_diff + @buffer_x) * @speed
         end
+
         scrolled = true
       end
 
@@ -87,9 +88,28 @@ class Viewport
         scrolled = true
       end
 
+      # constrain_x_offset
+      if @boundary
+        if @x_offset > 0 - @boundary[0] # Left-wall bump
+          @x_offset = @boundary[0]
+        elsif @x_offset < @width - @boundary[2] # right-wall bump
+          @x_offset = @width - @boundary[2]
+        end
+      end
+
+      # constrain_y_offset
+      if @boundary
+        if @y_offset > 0 - @boundary[1]
+          @y_offset = @boundary[1]
+        elsif @y_offset < @height - @boundary[3]
+          @y_offset = @height - @boundary[3]
+        end
+      end
+
       fire :scrolled if scrolled
     end
   end
+
 
   def follow(target, off=[0,0], buff=[0,0])
     @follow_target = target
