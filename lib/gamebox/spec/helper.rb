@@ -2,13 +2,13 @@
 module GameboxSpecHelpers
 
   def create_actor(type, args = {})
-    InputManager.stub :setup
+    InputManager.any_instance.stubs :setup
     basic_opts = {
-      :stage => @stage = stub.as_null_object,
-      :input => @input_manager = InputManager.new(:config_manager => "config_manager"),
-      :sound => @sound_manager = stub.as_null_object,
-      :director => @director = stub.as_null_object,
-      :resources => @resource_manager = stub.as_null_object
+      stage: @stage = stub_everything,
+      input: @input_manager = InputManager.new(wrapped_screen: 'wrapped_screen', config_manager: 'config_manager'),
+      sound: @sound_manager = stub_everything,
+      director: @director = stub_everything,
+      resources: @resource_manager = stub_everything,
     }.merge(args)
 
     klass = ClassFinder.find(type)
