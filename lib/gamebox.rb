@@ -3,6 +3,7 @@ require 'chipmunk'
 require 'diy'
 require 'constructor'
 require 'kvo'
+require 'tween'
 require 'gosu'
 include Gosu
 require 'pry'

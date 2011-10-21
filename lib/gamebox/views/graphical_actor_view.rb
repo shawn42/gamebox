@@ -29,6 +29,7 @@ class GraphicalActorView < ActorView
         img_h = img.height
         x_tiles.times do |col|
           y_tiles.times do |row|
+            # TODO why is there a nasty black line between these that jitters?
             img.draw_rot offset_x+col*img_w, offset_y+row*img_h, z, actor.rotation, scale, scale
           end
         end

@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "constructor"
   s.add_dependency "publisher"
   s.add_dependency "diy"
+  s.add_dependency "tween"
   s.add_dependency "require_all"
   s.add_dependency "kvo"
   s.add_dependency "pry"
