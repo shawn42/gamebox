@@ -111,6 +111,7 @@ class Stage
             rescue Exception => ex
               p drawable.class
               p ex
+              p ex.backtrace
             end
           end
         end
