@@ -28,7 +28,7 @@ class WrappedScreen
   CIRCLE_STEP = 10
   # is very expensive
   # cache it if you can somehow
-  def draw_circle(cx,cy,r,color, z)
+  def draw_circle(cx,cy,r,color, z, step=CIRCLE_STEP)
     c_color = convert_color(color)
     
     x1, y1 = 0, -r

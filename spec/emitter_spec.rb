@@ -13,4 +13,8 @@ describe Emitter do
   it 'should be' do
     @emitter.should be
   end
+
+  it 'should add a timer for spawning particle actors' do
+  end
+
 end

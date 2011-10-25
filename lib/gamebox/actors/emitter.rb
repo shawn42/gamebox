@@ -30,6 +30,18 @@ class Emitter < Actor
       end
     end
 
+    target = opts[:follow]
+    if target
+      self.x = target.x
+      self.y = target.y
+      target.when :x_changed do
+        self.x = target.x
+      end
+      target.when :y_changed do
+        self.y = target.y
+      end
+    end
+
   end
 
   def spawn_particle

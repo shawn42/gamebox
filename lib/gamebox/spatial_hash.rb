@@ -47,19 +47,23 @@ class SpatialHash
     end
   end
 
-  def add(item)
-    buckets = lookup item
+  # does not remove or add event handlers
+  def move(item)
+    @moved_items[item] = item
+    _remove item
+    _add item
+  end
 
+  def add(item)
     # TODO change these to one event? position_changed?
     item.when :x_changed do |old_x, new_x|
-      @moved_items[item] = item
-      remove item
-      add item
+      move item
     end
     item.when :y_changed do |old_y, new_y|
-      @moved_items[item] = item
+      move item
+    end
+    item.when :remove_me do
       remove item
-      add item
     end
     # item.when :width_changed do |old_w, new_w|
     #   @moved_items[item] = item
@@ -72,13 +76,18 @@ class SpatialHash
     #   add item
     # end
 
+    _add item
+  end
+
+  def _add(item)
+    buckets = lookup item
+    @items[item] = buckets
     buckets.each do |bucket|
       x,y = *bucket
       @buckets[x] ||= {}
       @buckets[x][y] ||= []
       target_bucket = @buckets[x][y]
       target_bucket << item 
-      @items[item] = item
 
       if @auto_resize
         w = item.width if item.respond_to? :width
@@ -89,6 +98,22 @@ class SpatialHash
         @total_h += h 
       end
     end
+  end
+
+  def remove(item)
+    item.unsubscribe_all self
+    @moved_items.delete item
+    _remove item
+  end
+
+  def _remove(item)
+    buckets = @items[item]
+    buckets.each do |bucket|
+      x,y = *bucket
+      return if @buckets[x].nil? || @buckets[x][y].nil?
+      @buckets[x][y].delete item
+    end
+    @items.delete item
   end
 
   def lookup(item)
@@ -123,18 +148,6 @@ class SpatialHash
     bucket_x = (x/cell_size).floor
     bucket_y = (y/cell_size).floor
     return [bucket_x, bucket_y]
-  end
-
-  def remove(item)
-    buckets = lookup item
-    buckets.each do |bucket|
-      x,y = *bucket
-      return if @buckets[x].nil? || @buckets[x][y].nil?
-      @buckets[x][y].delete item
-    end
-    item.unsubscribe_all self
-
-    @items.delete item
   end
   
   def items_at(x,y)
