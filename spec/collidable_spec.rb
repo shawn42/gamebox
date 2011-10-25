@@ -54,8 +54,8 @@ describe 'A new collidable behavior' do
       @actor.x = 3
       @actor.y = 6
       @collidable = Collidable.new @actor, :shape => :circle, :radius => 20
-      @collidable.center_x.should be_within(0.001).of(23)
-      @collidable.center_y.should be_within(0.001).of(26)
+      @collidable.center_x.should be_within(0.001).of(3)
+      @collidable.center_y.should be_within(0.001).of(6)
     end
   end
 

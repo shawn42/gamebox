@@ -60,16 +60,6 @@ describe 'a new SpacialStagehand' do
       @hash.expects(:add).with(@actor)
       @target.add(@actor)
     end
-
-    it 'should register for remove_me event' do
-      @actor = Actor.new {}
-      @target.add(@actor)
-
-      @hash.expects(:remove).with(@actor)
-
-      @actor.send :fire, :remove_me
-    end
-
   end
 
   describe "#remove" do

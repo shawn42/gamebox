@@ -10,6 +10,13 @@ describe 'a new SpacialHash' do
     @hash.cell_size.should == 10
   end
 
+  it 'cleans up dead stuff' do
+    pt = Point.new 2, 3
+    @hash.add pt
+    @hash.expects(:remove).with(pt)
+    pt.send :fire, :remove_me
+  end
+
   it 'can add a point' do
     pt = Point.new 2, 3
     @hash.add pt
@@ -44,6 +51,7 @@ describe 'a new SpacialHash' do
 
     buckets[1][1].should be_nil
     buckets[0][1].should be_nil
+
   end
 
   it 'can remove points' do
@@ -89,6 +97,8 @@ describe 'a new SpacialHash' do
 end
 
 class Point
+  extend Publisher
+  can_fire :remove_me
   include Kvo
   kvo_attr_accessor :x, :y
   def initialize(x,y)
@@ -98,6 +108,8 @@ class Point
 end
 
 class Item 
+  extend Publisher
+  can_fire :remove_me
   include Kvo
   kvo_attr_accessor :x, :y, :width, :height
   def initialize(x,y,w=1,h=1)
