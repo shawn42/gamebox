@@ -1,39 +1,40 @@
 require File.join(File.dirname(__FILE__),'helper')
 describe 'A new actor' do
-  before do
-    opts = {:stage=>"stage", :input=>"input", 
+  let(:stage) { mock }
+  subject { 
+    opts = {:stage=>stage, :input=>"input", 
       :resources=>"resource", :actor_type => :actor}
-    @actor = Actor.new opts
-  end
+    Actor.new opts
+  }
 
   it 'should be alive' do
-    @actor.alive?.should be_true
+    subject.alive?.should be_true
   end
 
   it 'should be the correct type' do
-    @actor.actor_type.should == :actor
+    subject.actor_type.should == :actor
   end
 
   it 'should be at (0,0)' do
-    @actor.x.should equal(0)
-    @actor.y.should equal(0)
+    subject.x.should equal(0)
+    subject.y.should equal(0)
   end
 
   it 'should have access to backstage' do
-    @actor.stage = mock(:backstage => :stuff)
-    @actor.backstage.should == :stuff
+    subject.stage = mock(:backstage => :stuff)
+    subject.backstage.should == :stuff
   end
 
   it 'should have atts set' do
-    @actor.stage.should == "stage" 
-    @actor.input_manager.should == "input" 
-    @actor.resource_manager.should == "resource" 
-    @actor.behaviors.size.should equal(0)
+    subject.stage.should == stage 
+    subject.input_manager.should == "input" 
+    subject.resource_manager.should == "resource" 
+    subject.behaviors.size.should equal(0)
   end
 
   it 'should fire anything' do
     Proc.new {
-      @actor.when :foofoo_bar do
+      subject.when :foofoo_bar do
         "blah"
       end
     }.should_not raise_error
@@ -49,6 +50,14 @@ describe 'A new actor' do
     @james.is?(:smart).should be_true
     @james.instance_variable_get('@behaviors')[:smart].instance_variable_get('@opts').should == {:really=>true}
   end
+
+  describe '#viewport' do
+    it 'should return the stages viewport' do
+      stage.stubs(:viewport).returns(:da_viewport)
+      subject.viewport.should == :da_viewport
+    end
+  end
+
 end
 
 class Cool < Behavior; end

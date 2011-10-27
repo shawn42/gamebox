@@ -17,6 +17,7 @@ class Actor
     :x => 0,
     :y => 0,
   }.freeze
+
   def initialize(opts={}) # :nodoc:
     @opts = DEFAULT_PARAMS.merge opts
     self.x = @opts[:x]
@@ -140,6 +141,10 @@ class Actor
   
   def visible?
     self.visible
+  end
+
+  def viewport
+    @stage.viewport
   end
 
   def self.behaviors
