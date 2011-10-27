@@ -66,15 +66,7 @@ class SpatialHash
       remove item
     end
     # item.when :width_changed do |old_w, new_w|
-    #   @moved_items[item] = item
-    #   remove item
-    #   add item
-    # end
     # item.when :height_changed do |old_h, new_h|
-    #   @moved_items[item] = item
-    #   remove item
-    #   add item
-    # end
 
     _add item
   end
