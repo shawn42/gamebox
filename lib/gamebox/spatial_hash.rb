@@ -55,19 +55,6 @@ class SpatialHash
   end
 
   def add(item)
-    # TODO change these to one event? position_changed?
-    item.when :x_changed do |old_x, new_x|
-      move item
-    end
-    item.when :y_changed do |old_y, new_y|
-      move item
-    end
-    item.when :remove_me do
-      remove item
-    end
-    # item.when :width_changed do |old_w, new_w|
-    # item.when :height_changed do |old_h, new_h|
-
     _add item
   end
 
@@ -93,7 +80,6 @@ class SpatialHash
   end
 
   def remove(item)
-    item.unsubscribe_all self
     @moved_items.delete item
     _remove item
   end
