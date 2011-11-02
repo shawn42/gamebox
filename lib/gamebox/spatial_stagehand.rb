@@ -54,7 +54,6 @@ class SpatialStagehand < Stagehand
   end
 
   def remove(actor)
-    actor.unsubscribe_all self
     @spatial_actors.remove actor
   end
 

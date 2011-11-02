@@ -10,13 +10,6 @@ describe 'a new SpacialHash' do
     @hash.cell_size.should == 10
   end
 
-  it 'cleans up dead stuff' do
-    pt = Point.new 2, 3
-    @hash.add pt
-    @hash.expects(:remove).with(pt)
-    pt.send :fire, :remove_me
-  end
-
   it 'can add a point' do
     pt = Point.new 2, 3
     @hash.add pt
