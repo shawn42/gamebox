@@ -124,4 +124,10 @@ class Viewport
     fire :scrolled
   end
 
+  def bounds
+    left = -@x_offset
+    top = -@y_offset
+    [left, top, left + @width, top + @height]
+  end
+
 end

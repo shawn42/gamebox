@@ -37,11 +37,29 @@ class SpatialStagehand < Stagehand
   end
 
   def add(actor)
+    # TODO change these to one event? position_changed?
+    # item.when :width_changed do |old_w, new_w|
+    # item.when :height_changed do |old_h, new_h|
+
+    actor.when :x_changed do |old_x, new_x|
+      move actor
+    end
+    actor.when :y_changed do |old_y, new_y|
+      move actor
+    end
+    actor.when :remove_me do
+      remove actor
+    end
     @spatial_actors.add actor
   end
 
   def remove(actor)
+    actor.unsubscribe_all self
     @spatial_actors.remove actor
+  end
+
+  def move(actor)
+    @spatial_actors.move actor
   end
 
   def items_at(x,y)
