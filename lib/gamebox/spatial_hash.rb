@@ -86,7 +86,7 @@ class SpatialHash
 
   def _remove(item)
     buckets = @items[item]
-    buckets.each do |bucket|
+    (buckets || []).each do |bucket|
       x,y = *bucket
       return if @buckets[x].nil? || @buckets[x][y].nil?
       @buckets[x][y].delete item
