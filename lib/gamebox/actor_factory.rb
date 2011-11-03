@@ -30,7 +30,6 @@ class ActorFactory
   def build(actor, stage, opts={})
     actor_def = cached_actor_def actor
 
-    actor_type = actor_def[:actor_type]
     basic_opts = {
       :stage => stage,
       :input => @input_manager,
