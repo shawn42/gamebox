@@ -89,7 +89,7 @@ class ResourceManager
         end
         cached_img = Image.new(@window, full_name)
       rescue Exception => ex
-        puts "Cannot load image #{file_name}"
+        log "Cannot load image #{file_name}", :warn
       end
       @loaded_images[file_name] = cached_img
     end
@@ -101,7 +101,7 @@ class ResourceManager
       music = Song.new(@window, full_name)
       return music
     rescue Exception => ex
-      puts "Cannot load music " + full_name + " : " + ex
+      log "Cannot load music " + full_name + " : " + ex, :warn
     end
   end
 
@@ -110,7 +110,7 @@ class ResourceManager
       sound = Sample.new(@window, full_name)
       return sound
     rescue Exception => ex
-      puts "Cannot load sound " + full_name + " : " + ex.inspect
+      log "Cannot load sound " + full_name + " : " + ex.inspect, :warn
     end
   end
 
