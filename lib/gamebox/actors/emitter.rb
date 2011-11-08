@@ -22,10 +22,8 @@ class Emitter < Actor
     ttl = opts[:ttl]
     if ttl
       suicide_timer = "#{self.object_id}_ttl" 
-      self.when :remove_me do
-        stage.remove_timer suicide_timer
-      end
       stage.add_timer suicide_timer, ttl do
+        stage.remove_timer suicide_timer
         remove_self
       end
     end
