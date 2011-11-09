@@ -16,7 +16,8 @@ class Graphical < Behavior
     @rotation = 0.0
 
     graphical_obj = self
-    relegates :image, :graphical, :width, :height, :rotation, :rotation=
+    relegates :image, :graphical, :width, :height, :rotation, :rotation=, 
+      :scale, :scale=, :x_scale, :y_scale, :x_scale=, :y_scale=
   end
 
   def graphical
@@ -33,6 +34,31 @@ class Graphical < Behavior
 
   def tiled?
     @tiled
+  end
+
+  def scale
+    @scale || 1
+  end
+
+  def scale=(s)
+    @scale = s
+  end
+
+  def x_scale
+    @x_scale || scale
+  end
+
+  def x_scale=(xs)
+    @x_scale = xs
+  end
+
+
+  def y_scale
+    @y_scale || scale
+  end
+
+  def y_scale=(ys)
+    @y_scale = ys
   end
 
 end
