@@ -28,8 +28,12 @@ class SpatialStagehand < Stagehand
     @spatial_actors.auto_resize
   end
   
-  def items
+  def moved_items
     @spatial_actors.moved_items.values
+  end
+
+  def items
+    @spatial_actors.items.values
   end
 
   def buckets

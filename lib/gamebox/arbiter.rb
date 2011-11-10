@@ -3,7 +3,11 @@ module Arbiter
   attr_reader :checks, :collisions
 
   def register_collidable(actor)
-    stagehand(:spatial).add(actor) #if stagehand(:spatial).items[actor].nil?
+    stagehand(:spatial).add(actor)
+  end
+
+  def unregister_collidable(actor)
+    stagehand(:spatial).remove(actor)
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -50,13 +54,12 @@ module Arbiter
 
   def find_collisions
     spatial_hash = stagehand(:spatial)
-    @collidable_actors = spatial_hash.items
+    collidable_actors = spatial_hash.moved_items
     @checks = 0
     @collisions = 0
-    tmp_collidable_actors = @collidable_actors.dup
     collisions = {}
 
-    @collidable_actors.each do |first|
+    collidable_actors.each do |first|
       x = first.x - spatial_hash.cell_size
       y = first.y - spatial_hash.cell_size
       # TODO base this on size of object
@@ -65,14 +68,18 @@ module Arbiter
 
       tmp_collidable_actors = spatial_hash.neighbors_of(first)
 
-      tmp_collidable_actors.each do |second|
-        @checks += 1
-        if first != second && collide?(first, second)
-          collisions[second] ||= []
-          if !collisions[second].include?(first)
-            @collisions += 1
-            collisions[first] ||= []
-            collisions[first] << second
+      if first.is? :collidable
+        tmp_collidable_actors.each do |second|
+          @checks += 1
+          if second.is? :collidable
+            if first != second && collide?(first, second)
+              collisions[second] ||= []
+              if !collisions[second].include?(first)
+                @collisions += 1
+                collisions[first] ||= []
+                collisions[first] << second
+              end
+            end
           end
         end
       end
@@ -83,10 +90,14 @@ module Arbiter
         unique_collisions << [first,second]
       end
     end
+
     run_callbacks unique_collisions
   end
 
   def collide?(object, other)
+    if !other.is? :collidable
+      binding.pry
+    end
     case object.collidable_shape
     when :circle
       case other.collidable_shape

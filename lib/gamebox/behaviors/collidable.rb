@@ -22,6 +22,11 @@ class Collidable < Behavior
     @actor.stage.register_collidable @actor
   end
 
+  def removed
+    @actor.stage.unregister_collidable @actor
+    super
+  end
+
   def build_shape
     shape = nil
     @collidable_shape = opts[:shape]
