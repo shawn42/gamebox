@@ -35,7 +35,8 @@ class ActorFactory
       :input => @input_manager,
       :director => @director,
       :resources => stage.resource_manager,
-      :actor_type => actor
+      :actor_type => actor,
+      :wrapped_screen => @wrapped_screen
     }
     merged_opts = basic_opts.merge(opts)
     model = actor_def[:model_klass].new merged_opts 

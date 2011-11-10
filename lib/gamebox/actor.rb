@@ -6,6 +6,7 @@ class Actor
   
   attr_accessor :behaviors, :stage, :input_manager,
     :resource_manager, :alive, :opts, :visible, :director, 
+    :wrapped_screen,
     :actor_type
 
   # TODO change alive and visible to be KVO
@@ -28,6 +29,7 @@ class Actor
     @resource_manager = @opts[:resources]
     @director = @opts[:director]
     @actor_type = @opts[:actor_type]
+    @wrapped_screen = @opts[:wrapped_screen]
     self.alive = true
 
     @behaviors = {}
@@ -68,6 +70,10 @@ class Actor
   # Is the actor still alive?
   def alive?
     self.alive
+  end
+
+  def screen
+    @wrapped_screen
   end
 
   # Tells the actor's Director that he wants to be removed; and unsubscribes

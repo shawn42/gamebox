@@ -33,11 +33,11 @@ class ActorView
   end
 
   def screen_width
-    @screen_width ||= @wrapped_screen.screen.width
+    @screen_width ||= @wrapped_screen.width
   end
 
   def screen_height
-    @screen_height ||= @wrapped_screen.screen.height
+    @screen_height ||= @wrapped_screen.height
   end
 
 end
