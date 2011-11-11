@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency "tween"
   s.add_dependency "require_all"
   s.add_dependency "kvo"
-  s.add_dependency "pry"
+  s.add_dependency "pry", '0.9.6'
   s.add_dependency "pry-remote"
 
   # TODO make this optional
