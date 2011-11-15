@@ -1,6 +1,5 @@
 class LabelView < ActorView
   def draw(target,x_off,y_off,z)
-    puts "LabelView rendering #{actor.text}"
     @converted_color ||= target.convert_color(actor.color)
     actor.font.draw actor.text, actor.x, actor.y, z, 
       1,1,   # x factor, y factor
