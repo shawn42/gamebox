@@ -40,9 +40,16 @@ describe 'a new SpacialStagehand' do
     end
   end
 
-  describe "#items" do
+  describe "#moved_items" do
     it "returns all the moved items" do
-      @hash.instance_variable_set("@moved_items", :items => :items)
+      @hash.instance_variable_set("@moved_items", :moved_items => :moved_items)
+      @target.moved_items.should == [:moved_items]
+    end
+  end
+
+  describe "#items" do
+    it "returns all the items" do
+      @hash.instance_variable_set("@items", :items => :items)
       @target.items.should == [:items]
     end
   end

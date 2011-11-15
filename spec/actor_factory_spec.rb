@@ -17,6 +17,7 @@ describe ActorFactory do
       :input => @input_manager,
       :director => @director,
       :resources => @resource_manager,
+      :wrapped_screen => @screen,
     }
     @merged_opts = @basic_opts.merge(@opts)
     

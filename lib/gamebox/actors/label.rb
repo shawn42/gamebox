@@ -1,5 +1,6 @@
 class LabelView < ActorView
   def draw(target,x_off,y_off,z)
+    puts "LabelView rendering #{actor.text}"
     @converted_color ||= target.convert_color(actor.color)
     actor.font.draw actor.text, actor.x, actor.y, z, 
       1,1,   # x factor, y factor
@@ -8,6 +9,7 @@ class LabelView < ActorView
 end
 
 class Label < Actor
+  has_behavior layered: {layer: 1}
   attr_accessor :text, :font, :color
 
   def setup
@@ -20,6 +22,8 @@ class Label < Actor
     @size ||= 30
     font_name ||= "Asimov.ttf"
     @color ||= [250,250,250,255]
+    layer = opts[:layer]
+    layered.layer = layer
 
     @font = resource_manager.load_font font_name, @size
   end

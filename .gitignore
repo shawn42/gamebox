@@ -1,5 +1,6 @@
 pkg
 *.swp
+*.swo
 *.log
 doc
 coverage
