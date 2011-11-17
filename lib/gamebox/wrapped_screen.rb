@@ -13,11 +13,11 @@ class WrappedScreen
   end
 
   def width
-    @screen.width
+    screen_width
   end
 
   def height
-    @screen.height
+    screen_height
   end
 
   def draw_box(x1,y1,x2,y2,color, z)

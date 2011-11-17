@@ -22,6 +22,9 @@ class InputManager
   extend Publisher
   can_fire :key_up, :event_received
 
+  DOWN_EVENTS = [:mouse_down, :keyboard_down, :game_pad_down]
+  UP_EVENTS = [:mouse_up, :keyboard_up, :game_pad_up]
+
   attr_accessor :window
   constructor :config_manager, :wrapped_screen
 
@@ -35,6 +38,7 @@ class InputManager
 
     @hooks = {}
     @non_id_hooks = {}
+    @down_ids = {}
   end
 
   # This gets called from game app and sets up all the
@@ -73,9 +77,16 @@ class InputManager
 
   def _handle_event(gosu_id, action) #:nodoc:
     @window.close if @auto_quit && gosu_id == @auto_quit
+    if action == :down
+      @down_ids[gosu_id] = true 
+    else
+      @down_ids.delete gosu_id
+    end
+
     event_data = nil
     mouse_dragged = false
 
+    callback_key = action
     if gosu_id.nil?
       event_type = :mouse_motion
       callback_key = :mouse_motion
@@ -85,30 +96,20 @@ class InputManager
       event_type = :mouse
       event_data = [mouse_x, mouse_y]
       if action == :up
-        callback_key = :mouse_up
+        # callback_key = :mouse_up
         @mouse_down = false
         mouse_dragged = true if @mouse_dragging
         @mouse_dragging = false
       else
-        callback_key = :mouse_down
+        # callback_key = :mouse_down
         @mouse_down = true
         @last_click_x = mouse_x
         @last_click_y = mouse_y
       end
     elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
       event_type = :keyboard
-      if action == :up
-        callback_key = :keyboard_up
-      else
-        callback_key = :keyboard_down
-      end
     elsif gosu_id >= GpRangeBegin && gosu_id <= GpRangeEnd
       event_type = :game_pad
-      if action == :up
-        callback_key = :game_pad_up
-      else
-        callback_key = :game_pad_down
-      end
     end
 
     event = {
@@ -165,6 +166,8 @@ class InputManager
   #   # will be called on every spacebar key press
   # end
   def register_hook(event_class, *event_ids, &block)
+    event_class = :down if DOWN_EVENTS.include? event_class
+    event_class = :up if UP_EVENTS.include? event_class
     return unless block_given?
     listener = eval("self", block.binding) 
     _register_hook listener, event_class, *event_ids, &block
@@ -194,6 +197,8 @@ class InputManager
   # input_manager.unregister_hook KeyPressed, :space, registered_block
   # also see InputManager#clear_hooks for clearing many hooks
   def unregister_hook(event_class, *event_ids, &block)
+    event_class = :down if DOWN_EVENTS.include? event_class
+    event_class = :up if UP_EVENTS.include? event_class
     @hooks[event_class] ||= {}
     for event_id in event_ids
       @hooks[event_class][event_id] ||= []
@@ -230,13 +235,17 @@ class InputManager
     end
   end
 
-  # autohook a boolean to be set to true while a key is pressed
-  def while_key_pressed(key, target, accessor)
-    _register_hook target, :keyboard_down, key do
-      target.send "#{accessor}=", true
-    end
-    _register_hook target, :keyboard_up, key do
-      target.send "#{accessor}=", false
+  # autohook a boolean to be set to true while any of the keys are pressed
+  def while_pressed(id_or_ids, target, accessor)
+    ids = [id_or_ids].flatten
+    ids.each do |id|
+      _register_hook target, :down, id do
+        target.send "#{accessor}=", true
+      end
+
+      _register_hook target, :up, id do
+        target.send "#{accessor}=", false if (@down_ids.keys & ids).size == 0
+      end
     end
   end
 

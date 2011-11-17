@@ -2,9 +2,9 @@ require File.join(File.dirname(__FILE__),'helper')
 
 describe InputManager do
   before do
-    @config = mock(:[] => nil)
+    @config = stub(:[] => nil)
     @window = mock
-    @wrapped_screen = mock(:screen => @window)
+    @wrapped_screen = stub(:screen => @window)
   end
   let(:subject) { InputManager.new :config_manager => @config, :wrapped_screen => @wrapped_screen }
 
@@ -38,4 +38,97 @@ describe InputManager do
 
     end
   end
+
+  describe "standard keyboard events" do
+    it 'calls the callbacks for the correct events' do
+      r_pressed = 0
+      y_pressed = 0
+      subject.reg :keyboard_down, KbR do
+        r_pressed += 1
+      end
+      subject.reg :keyboard_down, KbY do
+        y_pressed += 1
+      end
+
+      subject._handle_event(KbT, :down)
+      r_pressed.should == 0
+      y_pressed.should == 0
+
+      subject._handle_event(KbR, :up)
+      r_pressed.should == 0
+      y_pressed.should == 0
+
+      subject._handle_event(KbR, :down)
+      r_pressed.should == 1
+      y_pressed.should == 0
+
+      subject._handle_event(KbY, :down)
+      r_pressed.should == 1
+      y_pressed.should == 1
+
+      subject.clear_hooks self
+
+      # has now been unregistered
+      subject._handle_event(KbR, :down)
+      r_pressed.should == 1
+
+      subject._handle_event(KbY, :down)
+      y_pressed.should == 1
+    end
+
+    it 'passes along args'
+  end
+
+  describe "mapping an event id to a boolean" do
+    it "should set an ivar to true as long as the event id is down" do
+      listener = Struct.new(:left).new
+      subject.while_pressed KbLeft, listener, :left
+
+      listener.left.should be_false
+
+      subject._handle_event(KbLeft, :down)
+      listener.left.should be_true
+
+      subject._handle_event(GpLeft, :down)
+      listener.left.should be_true
+
+      subject._handle_event(GpLeft, :up)
+      listener.left.should be_true
+
+      subject._handle_event(KbT, :up)
+      listener.left.should be_true
+
+      subject._handle_event(KbLeft, :up)
+      listener.left.should be_false
+    end
+  end
+
+  describe "mapping multiple keys to a boolean" do
+    it "should set an ivar to true as long as ANY of the keys are down" do
+      pending
+      listener = Struct.new(:left).new
+      subject.while_pressed [KbLeft, GpLeft], listener, :left
+
+      listener.left.should be_false
+
+      subject._handle_event(KbLeft, :down)
+      listener.left.should be_true
+
+      subject._handle_event(GpLeft, :down)
+      listener.left.should be_true
+
+      subject._handle_event(KbT, :up)
+      listener.left.should be_true
+
+      subject._handle_event(KbP, :down)
+      listener.left.should be_true
+
+      subject._handle_event(GpLeft, :up)
+      listener.left.should be_true
+
+      subject._handle_event(KbLeft, :up)
+      listener.left.should be_false
+    end
+  end
+
 end
