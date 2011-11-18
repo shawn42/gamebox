@@ -15,7 +15,6 @@ class Graphical < Behavior
     @num_y_tiles ||= 1
     @rotation = 0.0
 
-    graphical_obj = self
     relegates :image, :graphical, :width, :height, :rotation, :rotation=, 
       :scale, :scale=, :x_scale, :y_scale, :x_scale=, :y_scale=
   end
