@@ -6,7 +6,7 @@ class Timed < Behavior
     end
 
     @timers = []
-    relegates :add_timer
+    relegates :add_timer, :remove_timer
   end
 
   def add_timer(name, ms, recurring = true, &block)
