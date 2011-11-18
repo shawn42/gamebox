@@ -12,21 +12,21 @@ class Timed < Behavior
   def add_timer(name, ms, recurring = true, &block)
     timer_name = "#{actor.object_id} #{name}"
     @timers << timer_name
-    stage.add_timer timer_name, ms do
+    actor.stage.add_timer timer_name, ms do
       block.call
-      stage.remove_timer timer_name unless recurring
+      actor.stage.remove_timer timer_name unless recurring
     end
   end
 
   def remove_timer(name)
     timer_name = "#{actor.object_id} #{name}"
     @timers.delete timer_name
-    stage.remove_timer timer_name
+    actor.stage.remove_timer timer_name
   end
 
   def clear_timers
     @timers.each do |timer_name|
-      stage.remove_timer timer_name
+      actor.stage.remove_timer timer_name
     end
   end
 

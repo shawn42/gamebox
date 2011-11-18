@@ -59,8 +59,8 @@ class Behavior
           # log("redefining #{meth} for #{@actor.class}") if @actor.respond_to? meth
           target.relegated_methods << meth
 
-          define_method meth do |*args|
-            target.send meth, *args
+          define_method meth do |*args, &block|
+            target.send meth, *args, &block
           end
         end
       end
