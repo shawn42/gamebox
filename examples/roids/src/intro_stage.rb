@@ -4,7 +4,7 @@ class IntroStage < Stage
     # TODO change to use actor
     @image = @resource_manager.load_image 'intro.png'
     i = @input_manager
-    i.reg :keyboard_down, KbSpace do
+    i.reg :down, KbSpace do
       fire :next_stage
     end
 

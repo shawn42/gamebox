@@ -10,9 +10,9 @@ class MajorRuby < Actor
     @vy = 0
     @left_over = 0
     @map = @opts[:map]
-    input_manager.while_key_pressed KbLeft, self, :move_left
-    input_manager.while_key_pressed KbRight, self, :move_right
-    input_manager.reg :keyboard_down, KbUp do 
+    input_manager.while_pressed KbLeft, self, :move_left
+    input_manager.while_pressed KbRight, self, :move_right
+    input_manager.reg :down, KbUp do
       try_to_jump
     end
   end

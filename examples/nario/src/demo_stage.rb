@@ -5,7 +5,7 @@ class DemoStage < PhysicalStage
     sound_manager.play_music :overworld
 
     @svg_doc = resource_manager.load_svg @opts[:file]
-      
+
     space.gravity = vec2(0,1800)
     space.iterations = 10
 
@@ -103,7 +103,7 @@ class DemoStage < PhysicalStage
       end
     end
 
-    input_manager.reg :keyboard_down, KbP do
+    input_manager.reg :down, KbP do
       p viewport.debug
       p @nario.debug
     end
@@ -112,7 +112,7 @@ class DemoStage < PhysicalStage
   end
 
   def stop(*args)
-    input_manager.unreg :keyboard_down, KbP
+    input_manager.unreg :down, KbP
   end
 
   def draw(target)

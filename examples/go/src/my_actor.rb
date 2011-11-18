@@ -20,10 +20,10 @@ class MyActor < Actor
     input_manager.reg :mouse_down do 
       play_sound :laser
     end
-    input_manager.while_key_pressed KbLeft, self, :move_left
-    input_manager.while_key_pressed KbRight, self, :move_right
-    input_manager.while_key_pressed KbUp, self, :move_up
-    input_manager.while_key_pressed KbDown, self, :move_down
+    input_manager.while_pressed KbLeft, self, :move_left
+    input_manager.while_pressed KbRight, self, :move_right
+    input_manager.while_pressed KbUp, self, :move_up
+    input_manager.while_pressed KbDown, self, :move_down
   end
 
   def update(time_delta)
