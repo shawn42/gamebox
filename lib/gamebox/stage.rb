@@ -163,6 +163,8 @@ class Stage
   end
 
   # add block to be executed every interval_ms millis
+  # TODO make this hash based on object => name => block
+  # to clean up the timed behavior
   def add_timer(name, interval_ms, &block)
     @new_timers ||= {}
     @new_timers[name] = {:count => 0,
