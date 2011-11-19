@@ -89,7 +89,7 @@ class ResourceManager
         end
         cached_img = Image.new(@window, full_name)
       rescue Exception => ex
-        log "Cannot load image #{file_name}", :warn
+        # log "Cannot load image #{file_name}", :warn
       end
       @loaded_images[file_name] = cached_img
     end
