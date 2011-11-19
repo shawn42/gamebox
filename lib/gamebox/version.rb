@@ -1,7 +1,7 @@
 module Gamebox
   module VERSION #:nodoc:
     MAJOR = 0
-    MINOR = 2
+    MINOR = 3
     TINY  = 2
 
     ARRAY = [MAJOR, MINOR, TINY]
