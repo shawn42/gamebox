@@ -86,14 +86,14 @@ class Physical < Behavior
     when :circle
       @radius = @opts[:radius]
 
-      @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_circle(@mass, @radius, 0, ZERO_VEC_2)
+      @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : CP::moment_for_circle(@mass, @radius, 0, ZERO_VEC_2)
       @body = CP::Body.new(@mass, @moment_of_inertia)
       @shape = CP::Shape::Circle.new(@body, @radius, ZERO_VEC_2)
 
     when :poly
       shape_array = @opts[:verts].collect{|v| vec2(v[0],v[1])}
 
-      @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : moment_for_poly(@mass, shape_array, ZERO_VEC_2)
+      @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : CP::moment_for_poly(@mass, shape_array, ZERO_VEC_2)
       @body = CP::Body.new(@mass, @moment_of_inertia)
       @shape = CP::Shape::Poly.new(@body, shape_array, ZERO_VEC_2)
       verts = @opts[:verts].dup

@@ -1,5 +1,4 @@
 GAMEBOX_PATH = File.join(File.dirname(__FILE__),"gamebox/")
-require 'chipmunk'
 require 'diy'
 require 'constructor'
 require 'kvo'
@@ -14,6 +13,11 @@ require 'pry-remote'
 def log(output, level = :debug)
   t = Time.now
   puts "[#{t.min}:#{t.sec}:#{t.usec}] [#{level}] #{output}"
+end
+
+begin
+  require 'chipmunk'
+rescue LoadError
 end
 
 require 'require_all'
