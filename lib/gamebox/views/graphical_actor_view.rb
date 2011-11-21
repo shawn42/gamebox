@@ -14,15 +14,19 @@ class GraphicalActorView < ActorView
     alpha = actor.respond_to?(:alpha) ? actor.alpha : 0xFF
     color = Color.new(alpha,0xFF,0xFF,0xFF)
 
-    x_scale = actor.x_scale
-    y_scale = actor.y_scale
 
     if actor.is? :physical
+      x_scale = 1
+      y_scale = 1
+
       img_w = img.width
       img_h = img.height
 
       img.draw_rot offset_x, offset_y, z, actor.rotation, 0.5, 0.5, x_scale, y_scale
     else
+      x_scale = actor.x_scale
+      y_scale = actor.y_scale
+
       graphical_behavior = actor.graphical if actor.is? :graphical
       if graphical_behavior && graphical_behavior.tiled?
         x_tiles = graphical_behavior.num_x_tiles

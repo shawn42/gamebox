@@ -7,6 +7,8 @@ MUSIC_PATH =  APP_ROOT + "data/music/"
 GFX_PATH =  APP_ROOT + "data/graphics/"
 FONTS_PATH =  APP_ROOT + "data/fonts/"
 
+require 'bundler'
+Bundler.setup
 require 'gamebox'
 
 [GAMEBOX_PATH, APP_ROOT, File.join(APP_ROOT,'src')].each{|path| $: << path }
