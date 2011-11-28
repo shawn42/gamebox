@@ -94,6 +94,7 @@ class Stage
 
   def draw(target)
     z = 0
+    # TODO PERF cache this array and invalidate when new layers come in?
     @drawables.keys.sort.reverse.each do |parallax_layer|
 
       drawables_on_parallax_layer = @drawables[parallax_layer]

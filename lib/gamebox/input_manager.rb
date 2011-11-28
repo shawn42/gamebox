@@ -51,19 +51,22 @@ class InputManager
     @window.when :button_down do |button_id|
       _handle_event button_id, :down
     end
+
     @window.when :update do |millis|
 
-      @last_mouse_x ||= mouse_x
-      @last_mouse_y ||= mouse_y
+      if @uses_mouse
+        @last_mouse_x ||= mouse_x
+        @last_mouse_y ||= mouse_y
 
-      x_diff = @last_mouse_x - mouse_x
-      y_diff = @last_mouse_y - mouse_y
+        x_diff = @last_mouse_x - mouse_x
+        y_diff = @last_mouse_y - mouse_y
 
-      unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
-        _handle_event nil, :motion
+        unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
+          _handle_event nil, :motion
 
-        @last_mouse_x = mouse_x
-        @last_mouse_y = mouse_y
+          @last_mouse_x = mouse_x
+          @last_mouse_y = mouse_y
+        end
       end
 
       game.update millis
@@ -112,21 +115,21 @@ class InputManager
       event_type = :game_pad
     end
 
-    event = {
-      :type => event_type, 
-      :id => gosu_id,
-      :action => action,
-      :callback_key => callback_key,
-      :data => event_data
-    }
+    # single threaded.. keep same event
+    @event ||= {}
+    @event[:type] = event_type
+    @event[:id] = gosu_id
+    @event[:action] = action
+    @event[:callback_key] = callback_key
+    @event[:data] = event_data
 
-    fire_event(event)
+    fire_event(@event)
 
     if mouse_dragged
       drag_data = {:to => [mouse_x, mouse_y], :from => [@last_click_x, @last_click_y]}
-      event[:data] = drag_data
-      event[:callback_key] = :mouse_drag
-      fire_event(event)
+      @event[:data] = drag_data
+      @event[:callback_key] = :mouse_drag
+      fire_event(@event)
     end
   end
 
@@ -178,11 +181,13 @@ class InputManager
     return unless block_given?
     @hooks[event_class] ||= {}
     for event_id in event_ids
+      @uses_mouse = true if event_id >= MsRangeBegin && event_id <= MsRangeEnd
       @hooks[event_class][event_id] ||= []
       @hooks[event_class][event_id] << block
     end
     @non_id_hooks[event_class] ||= []
     if event_ids.empty?
+      @uses_mouse = true
       @non_id_hooks[event_class] << block
     end
     if listener.respond_to?(:can_fire?) && listener.can_fire?(:remove_me)
