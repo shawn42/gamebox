@@ -1,3 +1,21 @@
+class Bucket
+  attr_accessor :x, :y, :items
+  def initialize(x,y)
+    @x = x
+    @y = y
+    @items = []
+  end
+
+  def delete(item)
+    @items.delete item
+  end
+
+  def method_missing(name, *args, &block)
+    @items.send name, *args, &block
+  end
+
+end
+
 class SpatialHash
 
   attr_reader :cell_size, :buckets, :items, :moved_items
@@ -61,12 +79,9 @@ class SpatialHash
   def _add(item)
     buckets = lookup item
     @items[item] = buckets
+
     buckets.each do |bucket|
-      x,y = *bucket
-      @buckets[x] ||= {}
-      @buckets[x][y] ||= []
-      target_bucket = @buckets[x][y]
-      target_bucket << item 
+      bucket << item
 
       if @auto_resize
         w = item.width if item.respond_to? :width
@@ -88,9 +103,7 @@ class SpatialHash
     buckets = @items.delete item
     if buckets
       buckets.each do |bucket|
-        x,y = *bucket
-        return if @buckets[x].nil? || @buckets[x][y].nil?
-        @buckets[x][y].delete item
+        bucket.delete item
       end
     end
   end
@@ -104,34 +117,37 @@ class SpatialHash
 
     x = item.x
     y = item.y
-    min_x, min_y = bucket_for x, y
+    min_x = bucket_cell_for x
+    min_y = bucket_cell_for y
     if w == 1 && h == 1
       max_x = min_x
       max_y = min_y
     else
-      max_x, max_y = bucket_for x+w-1, y+h-1
+      max_x = bucket_cell_for x+w-1
+      max_y = bucket_cell_for y+h-1
     end
 
     buckets = []
     (max_x-min_x+1).times do |i|
       bucket_x = min_x + i
       (max_y-min_y+1).times do |j|
-        buckets << [bucket_x,min_y+j] 
+        # TODO return the actual buckets?
+        @buckets[bucket_x] ||= {}
+        @buckets[bucket_x][min_y+j] ||= Bucket.new(bucket_x, min_y+j)
+        buckets << @buckets[bucket_x][min_y+j]
       end
     end
 
     buckets
   end
 
-  def bucket_for(x,y)
-    bucket_x = (x/cell_size).floor
-    bucket_y = (y/cell_size).floor
-    return [bucket_x, bucket_y]
+  def bucket_cell_for(location)
+    (location/cell_size).floor
   end
-  
+
   def items_at(x,y)
-    bucket_x = (x/@cell_size).floor
-    bucket_y = (y/@cell_size).floor
+    bucket_x = bucket_cell_for x
+    bucket_y = bucket_cell_for y
     if @buckets[bucket_x].nil? || @buckets[bucket_x][bucket_y].nil?
       return []
     else
@@ -142,12 +158,14 @@ class SpatialHash
   def items_in(x,y,w,h)
     return items_at x, y if ((w.nil? || w == 1) && (h.nil? || w == 1))
 
-    min_x, min_y = bucket_for x, y
+    min_x = bucket_cell_for x
+    min_y = bucket_cell_for y
     if w == 1 && h == 1
       max_x = min_x
       max_y = min_y
     else
-      max_x, max_y = bucket_for x+w-1, y+h-1
+      max_x = bucket_cell_for x+w-1
+      max_y = bucket_cell_for y+w-1
     end
 
     items_in_bucket_range min_x, min_y, max_x, max_y
@@ -176,14 +194,11 @@ class SpatialHash
   # occupied by the item
   def neighbors_of(item, dist=1)
     buckets = lookup(item)
-    min_bucket_x, min_bucket_y = *buckets.first
-    max_bucket_x, max_bucket_y = *buckets.last
 
-    min_bucket_x = min_bucket_x-1
-    min_bucket_y = min_bucket_y-1
-
-    max_bucket_x = max_bucket_x+1
-    max_bucket_y = max_bucket_y+1
+    min_bucket_x = buckets.min_by{ |bucket| bucket.x }.x - dist
+    min_bucket_y = buckets.min_by{ |bucket| bucket.y }.y - dist
+    max_bucket_x = buckets.max_by{ |bucket| bucket.x }.x + dist
+    max_bucket_y = buckets.max_by{ |bucket| bucket.y }.y + dist
 
     items = items_in_bucket_range min_bucket_x, min_bucket_y, max_bucket_x, max_bucket_y
     items-[item]
