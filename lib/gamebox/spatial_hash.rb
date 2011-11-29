@@ -10,9 +10,17 @@ class Bucket
     @items.delete item
   end
 
-  def method_missing(name, *args, &block)
-    @items.send name, *args, &block
+  def <<(item)
+    @items << item
   end
+
+  def each(*args, &blk)
+    @items.each *args, &blk
+  end
+
+  # def method_missing(name, *args, &block)
+  #   @items.send name, *args, &block
+  # end
 
 end
 
