@@ -1,29 +1,3 @@
-class Bucket
-  attr_accessor :x, :y, :items
-  def initialize(x,y)
-    @x = x
-    @y = y
-    @items = []
-  end
-
-  def delete(item)
-    @items.delete item
-  end
-
-  def <<(item)
-    @items << item
-  end
-
-  def each(*args, &blk)
-    @items.each *args, &blk
-  end
-
-  # def method_missing(name, *args, &block)
-  #   @items.send name, *args, &block
-  # end
-
-end
-
 class SpatialHash
 
   attr_reader :cell_size, :buckets, :items, :moved_items
@@ -141,7 +115,7 @@ class SpatialHash
       (max_y-min_y+1).times do |j|
         # TODO return the actual buckets?
         @buckets[bucket_x] ||= {}
-        @buckets[bucket_x][min_y+j] ||= Bucket.new(bucket_x, min_y+j)
+        @buckets[bucket_x][min_y+j] ||= SpatialBucket.new(bucket_x, min_y+j)
         buckets << @buckets[bucket_x][min_y+j]
       end
     end
