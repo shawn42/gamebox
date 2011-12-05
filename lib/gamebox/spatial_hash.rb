@@ -4,10 +4,11 @@ class SpatialHash
   attr_accessor :auto_resize
 
   def initialize(cell_size, resize = false)
-    @cell_size = cell_size.to_f
+    @cell_size = cell_size.to_i
     @items = {}
     @auto_resize = resize
 
+    # TODO auto resize is broken atm
     if @auto_resize
       @total_w = 0
       @total_h = 0
@@ -18,12 +19,13 @@ class SpatialHash
   end
 
   def cell_size=(new_size)
-    @cell_size = new_size
+    @cell_size = new_size.to_i
     rehash
   end
 
   def rehash
     @moved_items = {}
+    # TODO WTF?
     return
     items = @items
 
@@ -33,7 +35,7 @@ class SpatialHash
         avg_w = @total_w / items.size
         avg_h = @total_h / items.size
 
-        @cell_size = (avg_w+avg_h)
+        @cell_size = (avg_w+avg_h).to_i
       end
 
       @total_w = 0
@@ -110,21 +112,23 @@ class SpatialHash
     end
 
     buckets = []
-    (max_x-min_x+1).times do |i|
-      bucket_x = min_x + i
-      (max_y-min_y+1).times do |j|
-        # TODO return the actual buckets?
+    bucket_x = min_x
+    while bucket_x < max_x + 1 do 
+      bucket_y = min_y
+      while bucket_y < max_y + 1 do 
         @buckets[bucket_x] ||= {}
-        @buckets[bucket_x][min_y+j] ||= SpatialBucket.new(bucket_x, min_y+j)
-        buckets << @buckets[bucket_x][min_y+j]
+        @buckets[bucket_x][bucket_y] ||= SpatialBucket.new(bucket_x, bucket_y)
+        buckets << @buckets[bucket_x][bucket_y]
+        bucket_y += 1
       end
+      bucket_x += 1
     end
 
     buckets
   end
 
   def bucket_cell_for(location)
-    (location/cell_size).floor
+    (location.to_i / cell_size).to_i
   end
 
   def items_at(x,y)

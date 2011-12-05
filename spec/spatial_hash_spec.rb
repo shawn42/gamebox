@@ -13,20 +13,20 @@ describe 'a new SpacialHash' do
   it 'can add a point' do
     pt = Point.new 2, 3
     @hash.add pt
-    @hash.instance_variable_get('@buckets')[0][0].first.should == pt
+    @hash.buckets[0][0].first.should == pt
   end
 
   it 'can add a neg point' do
     pt = Point.new -2, 3
     @hash.add pt
-    @hash.instance_variable_get('@buckets')[-1][0].first.should == pt
+    @hash.buckets[-1][0].first.should == pt
   end
 
   it 'can add a square' do
     box = Item.new 2, 3, 12, 13
     @hash.add box
 
-    buckets = @hash.instance_variable_get('@buckets')
+    buckets = @hash.buckets
 
     buckets[0][0].first.should == box
     buckets[0][1].first.should == box
@@ -38,7 +38,7 @@ describe 'a new SpacialHash' do
     box = Item.new 3, 3, 12, 2
     @hash.add box
 
-    buckets = @hash.instance_variable_get('@buckets')
+    buckets = @hash.buckets
     buckets[0][0].first.should == box
     buckets[1][0].first.should == box
 
@@ -50,26 +50,26 @@ describe 'a new SpacialHash' do
   it 'can remove points' do
     pt = Point.new -2, 3
     @hash.add pt
-    @hash.instance_variable_get('@buckets')[-1][0].should_not be_empty
+    @hash.buckets[-1][0].should_not be_empty
     @hash.remove pt
 
-    @hash.instance_variable_get('@buckets')[-1][0].should be_empty
+    @hash.buckets[-1][0].should be_empty
   end
 
   it 'can remove boxes' do
     box = Item.new 2, 3, 12, 13
     @hash.add box
-    @hash.instance_variable_get('@buckets')[0][0].should_not be_empty
-    @hash.instance_variable_get('@buckets')[0][1].should_not be_empty
-    @hash.instance_variable_get('@buckets')[1][0].should_not be_empty
-    @hash.instance_variable_get('@buckets')[1][1].should_not be_empty
+    @hash.buckets[0][0].should_not be_empty
+    @hash.buckets[0][1].should_not be_empty
+    @hash.buckets[1][0].should_not be_empty
+    @hash.buckets[1][1].should_not be_empty
 
     @hash.remove box
 
-    @hash.instance_variable_get('@buckets')[0][0].should be_empty
-    @hash.instance_variable_get('@buckets')[0][1].should be_empty
-    @hash.instance_variable_get('@buckets')[1][0].should be_empty
-    @hash.instance_variable_get('@buckets')[1][1].should be_empty
+    @hash.buckets[0][0].should be_empty
+    @hash.buckets[0][1].should be_empty
+    @hash.buckets[1][0].should be_empty
+    @hash.buckets[1][1].should be_empty
   end
 
   it 'can lookup objects for an x,y location' do
@@ -84,7 +84,7 @@ describe 'a new SpacialHash' do
     @hash.add box
     @hash.rehash
 
-    buckets = @hash.instance_variable_get('@buckets')
+    buckets = @hash.buckets
     buckets[0][0].first.should == box
     buckets[0][1].first.should == box
     buckets[1][0].first.should == box

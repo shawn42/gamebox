@@ -130,18 +130,13 @@ module Arbiter
   end
 
   def collide_circle_circle?(object, other)
-    x = object.center_x
-    y = object.center_y
-    x_prime = other.center_x
-    y_prime = other.center_y
-
-    x_delta = x_prime - x
+    x_delta = other.center_x - object.center_x
     x_dist  = x_delta * x_delta
-    y_delta = y_prime - y
+    y_delta = other.center_y - object.center_y
     y_dist  = y_delta * y_delta
 
     total_radius = object.radius + other.radius
-    x_dist + y_dist <= (total_radius * total_radius)
+    (x_dist + y_dist) <= (total_radius * total_radius)
   end
 
   # Idea from:

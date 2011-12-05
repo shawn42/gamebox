@@ -19,12 +19,8 @@ describe 'a new SpacialStagehand' do
   
   describe "#cell_size" do
     it "returns the cell size" do
-      @hash.cell_size = :size
-      @target.cell_size.should == :size
-    end
-    it "sets the cell size" do
-      @target.cell_size = :size
-      @hash.cell_size.should == :size
+      @hash.cell_size = 42
+      @target.cell_size.should == 42
     end
   end
 

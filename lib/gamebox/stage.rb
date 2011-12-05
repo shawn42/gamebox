@@ -95,12 +95,14 @@ class Stage
   def draw(target)
     z = 0
     # TODO PERF cache this array and invalidate when new layers come in?
-    @drawables.keys.sort.reverse.each do |parallax_layer|
+    @parallax_layers.each do |parallax_layer|
+    # @drawables.keys.sort.reverse.each do |parallax_layer|
 
       drawables_on_parallax_layer = @drawables[parallax_layer]
 
-      unless drawables_on_parallax_layer.nil?
-        drawables_on_parallax_layer.keys.sort.each do |layer|
+      if drawables_on_parallax_layer
+        @layer_orders[parallax_layer].each do |layer|
+        # drawables_on_parallax_layer.keys.sort.each do |layer|
 
           trans_x = @viewport.x_offset parallax_layer
           trans_y = @viewport.y_offset parallax_layer
@@ -126,13 +128,20 @@ class Stage
 
   def clear_drawables
     @drawables = {}
+    @layer_orders = {}
   end
 
   def register_drawable(drawable)
     layer = drawable.layer
     parallax = drawable.parallax
-    @drawables[parallax] ||= {}
-    @drawables[parallax][layer] ||= []
+    unless @drawables[parallax]
+      @drawables[parallax] = {}
+      @parallax_layers = @drawables.keys.sort.reverse
+    end
+    unless @drawables[parallax][layer]
+      @drawables[parallax][layer] = []
+      @layer_orders[parallax] = @drawables[parallax].keys.sort
+    end
     @drawables[parallax][layer] << drawable
   end
 
@@ -140,6 +149,7 @@ class Stage
   # note, this will remove all actors in that layer!
   def move_layer(from_parallax, from_layer, to_parallax, to_layer)
     drawable_list = @drawables[from_parallax].delete from_layer
+
 
     if drawable_list
       prev_drawable_list = @drawables[to_parallax].delete to_layer
