@@ -103,6 +103,7 @@ class WrappedScreen
   end
 
   def convert_color(color)
+    return color if color.is_a? Gosu::Color
     @colors ||= {}
     c = @colors[color]
     if c.nil?

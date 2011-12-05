@@ -28,6 +28,7 @@ class SoundManager
       end if files
 
       @sounds = {}
+      @playing_sounds = {}
       files = Dir.glob "#{SOUND_PATH}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
       for f in files
         name = File.basename(f)
@@ -50,7 +51,8 @@ class SoundManager
   # play_sound :foo # play sound at 100% volume
   def play_sound(what, opts={})
     if @enabled && @sounds[what]
-      @sounds[what].play #opts
+      merged_opts = {volume:1, speed:1, looping:false}.merge opts
+      @playing_sounds[what] = @sounds[what].play merged_opts[:volume], merged_opts[:speed], merged_opts[:looping]
     end
   end
 
@@ -79,7 +81,7 @@ class SoundManager
   # stop_sound :foo
   def stop_sound(what)
     if @enabled
-      @sounds[what].stop if @sounds[what]
+      @playing_sounds[what].stop if @playing_sounds[what]
     end
   end
 
