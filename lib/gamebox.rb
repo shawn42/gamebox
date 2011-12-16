@@ -5,9 +5,6 @@ require 'kvo'
 require 'tween'
 require 'gosu'
 include Gosu
-require 'pry'
-require 'pry-remote'
-
 
 # TODO move this to some logging class
 def log(output, level = :debug)
@@ -16,6 +13,8 @@ def log(output, level = :debug)
 end
 
 begin
+  require 'pry'
+  require 'pry-remote'
   require 'chipmunk'
 rescue LoadError
 end
