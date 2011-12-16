@@ -25,9 +25,9 @@ Gem::Specification.new do |s|
   s.add_dependency "tween"
   s.add_dependency "require_all"
   s.add_dependency "kvo"
-  s.add_dependency "pry", '~>0.9.7'
-  s.add_dependency "pry-remote"
 
+  s.add_development_dependency "pry", '~>0.9.7'
+  s.add_development_dependency "pry-remote"
   s.add_development_dependency "rspec-core"
   s.add_development_dependency "rspec-mocks"
   s.add_development_dependency "rspec-expectations"
