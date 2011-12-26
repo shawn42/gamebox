@@ -4,6 +4,9 @@ class HookedGosuWindow < Window
   extend Publisher
   can_fire :update, :draw, :button_down, :button_up
 
+  attr_accessor :needs_cursor
+  alias :needs_cursor? :needs_cursor
+
   def initialize(width, height, fullscreen)
     super(width, height, fullscreen)
   end

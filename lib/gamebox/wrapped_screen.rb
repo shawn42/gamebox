@@ -4,8 +4,12 @@ class WrappedScreen
   def setup
     width, height = *@config_manager[:screen_resolution]
     fullscreen = @config_manager[:fullscreen]
+    needs_cursor = @config_manager[:needs_cursor]
     @screen = HookedGosuWindow.new width, height, fullscreen
-    @screen.caption = @config_manager[:title]
+    @screen.tap do |screen|
+      screen.caption = @config_manager[:title]
+      screen.needs_cursor = @config_manager[:needs_cursor]
+    end
   end
 
   def method_missing(name,*args)
