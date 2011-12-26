@@ -21,7 +21,7 @@ class Label < Actor
     @size ||= 30
     font_name ||= "Asimov.ttf"
     @color ||= [250,250,250,255]
-    layer = opts[:layer]
+    layer = opts[:layer] || 1
     layered.layer = layer
 
     @font = resource_manager.load_font font_name, @size
