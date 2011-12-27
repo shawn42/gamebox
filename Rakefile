@@ -1,10 +1,5 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
-begin
-  require 'metric_fu'
-rescue LoadError
-  puts "metric_fu (or a dependency) not available. Install it with: sudo gem install metric_fu"
-end
 
 STATS_DIRECTORIES = [
   %w(Source         lib/),

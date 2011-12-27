@@ -1,11 +1,12 @@
 require_relative 'helper'
 
-class Gosu::Window
-  def initialize(*args)
-  end
-end
-
 describe HookedGosuWindow do
+  class Gosu::Window
+    def initialize(*args)
+      # autorelease garbage in output if I don't do this
+    end
+  end
+
   subject { HookedGosuWindow.new 2, 3, false }
 
   it 'should inherit from Gosu::Window' do
