@@ -13,7 +13,7 @@ class HookedGosuWindow < Window
 
   def update
     millis = Gosu::milliseconds
-    @last_millis ||= millis
+    @last_millis ||= 0
     fire :update, (millis - @last_millis)
     @last_millis = millis
   end

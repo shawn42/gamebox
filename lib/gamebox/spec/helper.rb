@@ -43,6 +43,15 @@ module GameboxSpecHelpers
         end
       end
     end
+
+    def expects_event(target, event_name, expected_args)
+      args = []
+      target.when event_name do |*event_args|
+        args << event_args
+      end
+      yield
+      args.should == expected_args
+    end
   end
 
   def self.included(base)
