@@ -1,3 +1,10 @@
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/spec/"
+  end 
+end
+
 here = File.dirname(__FILE__)
 gamebox_root = File.expand_path(File.join(here, '..', 'lib'))
 

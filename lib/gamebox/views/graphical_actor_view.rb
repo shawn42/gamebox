@@ -2,14 +2,14 @@
 
 class GraphicalActorView < ActorView
   def draw(target, x_off, y_off, z)
+    img = actor.image
+    return if img.nil?
+
     x = actor.x
     y = actor.y
 
     offset_x = x+x_off
     offset_y = y+y_off
-
-    img = actor.image
-    return if img.nil?
 
     alpha = actor.respond_to?(:alpha) ? actor.alpha : 0xFF
     color = Color.new(alpha,0xFF,0xFF,0xFF)
