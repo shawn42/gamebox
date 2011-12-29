@@ -14,34 +14,27 @@ class GraphicalActorView < ActorView
     alpha = actor.respond_to?(:alpha) ? actor.alpha : 0xFF
     color = Color.new(alpha,0xFF,0xFF,0xFF)
 
-
     x_scale = actor.respond_to?(:x_scale) ? actor.x_scale : 1
     y_scale = actor.respond_to?(:y_scale) ? actor.y_scale : 1
-    if actor.is? :physical
+
+    graphical_behavior = actor.graphical if actor.is? :graphical
+    if graphical_behavior && graphical_behavior.tiled?
+      x_tiles = graphical_behavior.num_x_tiles
+      y_tiles = graphical_behavior.num_y_tiles
       img_w = img.width
       img_h = img.height
-
-      img.draw_rot offset_x, offset_y, z, actor.rotation, 0.5, 0.5, x_scale, y_scale
+      x_tiles.times do |col|
+        y_tiles.times do |row|
+          # TODO why is there a nasty black line between these that jitters?
+          img.draw_rot offset_x+col*img_w, offset_y+row*img_h, z, actor.rotation, x_scale, y_scale
+        end
+      end
     else
-      graphical_behavior = actor.graphical if actor.is? :graphical
-      if graphical_behavior && graphical_behavior.tiled?
-        x_tiles = graphical_behavior.num_x_tiles
-        y_tiles = graphical_behavior.num_y_tiles
-        img_w = img.width
-        img_h = img.height
-        x_tiles.times do |col|
-          y_tiles.times do |row|
-            # TODO why is there a nasty black line between these that jitters?
-            img.draw_rot offset_x+col*img_w, offset_y+row*img_h, z, actor.rotation, x_scale, y_scale
-          end
-        end
+      if actor.respond_to? :rotation
+        rot = actor.rotation || 0.0
+        img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, x_scale, y_scale, color
       else
-        if actor.respond_to? :rotation
-          rot = actor.rotation || 0.0
-          img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, x_scale, y_scale, color
-        else
-          img.draw offset_x, offset_y, z, x_scale, y_scale, color
-        end
+        img.draw offset_x, offset_y, z, x_scale, y_scale, color
       end
     end
   end
