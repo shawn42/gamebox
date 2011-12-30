@@ -1,4 +1,7 @@
 # Helper methods and classes for writing specs for your gamebox application
+def log(*args)
+  # nothing for specs!
+end
 module GameboxSpecHelpers
   module ClassMethods
     def inject_mocks(*mock_names_array)

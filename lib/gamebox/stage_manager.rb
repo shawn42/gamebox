@@ -26,7 +26,7 @@ class StageManager
   def next_stage(*args)
     index = @stage_names.index @stage
     if index == @stage_names.size-1
-      puts "last stage, exiting"
+      log "last stage, exiting"
       exit
     end
 
@@ -36,7 +36,7 @@ class StageManager
   def prev_stage(*args)
     index = @stage_names.index @stage
     if index == 0
-      puts "first stage, exiting"
+      log "first stage, exiting"
       exit
     end
 
@@ -44,9 +44,6 @@ class StageManager
   end
 
   def restart_stage(*args)
-    current_stage.curtain_dropping *args
-    index = @stage_names.index @stage
-
     switch_to_stage @stage, *args
   end
 
