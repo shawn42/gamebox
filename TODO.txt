@@ -7,6 +7,12 @@ TAKE YOUR PICK:
   * what does that do to PhysicalDirector when Director goes away?
  - solidify rdocs (including tutorial)
  - collidable "grouping"
+ - system level testing of stage manager
+ - remove stage.yml in favor of Gamebox.configure block sytax?
+   Gamebox.configure |gb|
+     gb.stages = [ :intro, :main, :credits ]
+   end
+
 
 EXAMPLES:
  - move to separate repo?
