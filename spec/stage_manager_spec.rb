@@ -60,7 +60,7 @@ describe StageManager do
       subject.switch_to_stage :foo, :args
     end
 
-    it 'shutdowns the current stage' do
+    it 'shuts down the current stage' do
       foo_stage.expects(:curtain_dropping).with(:other_args)
       input_manager.expects(:clear_hooks).with(foo_stage)
       subject.switch_to_stage :foo, :args
@@ -69,7 +69,7 @@ describe StageManager do
   end
 
   describe '#prev_stage' do
-    it 'should go to prev stage' do
+    it 'goes to prev stage' do
       subject.switch_to_stage :bar
       foo_stage.expects(:curtain_raising).with(:args)
 
@@ -77,14 +77,14 @@ describe StageManager do
       subject.current_stage.should == foo_stage
     end
 
-    it 'should exit on prev_stage of first stage' do
+    it 'exits on prev_stage of first stage' do
       subject.switch_to_stage :foo
       lambda { subject.prev_stage :args }.should raise_exception(SystemExit)
     end
   end
 
   describe '#next_stage' do
-    it 'should go to next stage' do
+    it 'goes to next stage' do
       subject.switch_to_stage :foo
       bar_stage.expects(:curtain_raising).with(:args)
 
@@ -92,18 +92,44 @@ describe StageManager do
       subject.current_stage.should == bar_stage
     end
 
-    it 'should exit on next_stage of last stage' do
+    it 'exits on next_stage of last stage' do
       subject.switch_to_stage :bar
       lambda { subject.next_stage :args }.should raise_exception(SystemExit)
     end
   end
 
   describe '#restart_stage' do
-    it 'should restart the current stage' do
+    it 'restarts the current stage' do
       subject.switch_to_stage :foo, :args
 
       foo_stage.expects(:curtain_raising).with(:other_args)
       subject.restart_stage :other_args
+    end
+  end
+
+  describe "#update" do
+    it 'can be called on nil stage' do
+      subject.update :target
+    end
+
+    it 'updates the current stage' do
+      subject.switch_to_stage :foo, :args
+      foo_stage.expects(:update).with(44)
+
+      subject.update 44
+    end
+  end
+
+  describe "#draw" do
+    it 'can be called on nil stage' do
+      subject.draw :target
+    end
+
+    it 'draws the current stage' do
+      subject.switch_to_stage :foo, :args
+      foo_stage.expects(:draw).with(:target)
+
+      subject.draw :target
     end
   end
 
