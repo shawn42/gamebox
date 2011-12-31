@@ -44,93 +44,8 @@ class InputManager
   # This gets called from game app and sets up all the
   # events. (also shows the window)
   def main_loop(game)
-
-    @window.when :button_up do |button_id|
-      _handle_event button_id, :up
-    end
-    @window.when :button_down do |button_id|
-      _handle_event button_id, :down
-    end
-
-    @window.when :update do |millis|
-
-      if @uses_mouse
-        @last_mouse_x ||= mouse_x
-        @last_mouse_y ||= mouse_y
-
-        x_diff = @last_mouse_x - mouse_x
-        y_diff = @last_mouse_y - mouse_y
-
-        unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
-          _handle_event nil, :motion
-
-          @last_mouse_x = mouse_x
-          @last_mouse_y = mouse_y
-        end
-      end
-
-      game.update millis
-    end
-    @window.when :draw do 
-      game.draw 
-    end
-
+    setup_events game
     @window.show
-  end
-
-  def _handle_event(gosu_id, action) #:nodoc:
-    @window.close if @auto_quit && gosu_id == @auto_quit
-    if action == :down
-      @down_ids[gosu_id] = true 
-    else
-      @down_ids.delete gosu_id
-    end
-
-    event_data = nil
-    mouse_dragged = false
-
-    callback_key = action
-    if gosu_id.nil?
-      event_type = :mouse_motion
-      callback_key = :mouse_motion
-      @mouse_dragging = true if @mouse_down
-      event_data = [mouse_x, mouse_y]
-    elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
-      event_type = :mouse
-      event_data = [mouse_x, mouse_y]
-      if action == :up
-        # callback_key = :mouse_up
-        @mouse_down = false
-        mouse_dragged = true if @mouse_dragging
-        @mouse_dragging = false
-      else
-        # callback_key = :mouse_down
-        @mouse_down = true
-        @last_click_x = mouse_x
-        @last_click_y = mouse_y
-      end
-    elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
-      event_type = :keyboard
-    elsif gosu_id >= GpRangeBegin && gosu_id <= GpRangeEnd
-      event_type = :game_pad
-    end
-
-    # single threaded.. keep same event
-    @event ||= {}
-    @event[:type] = event_type
-    @event[:id] = gosu_id
-    @event[:action] = action
-    @event[:callback_key] = callback_key
-    @event[:data] = event_data
-
-    fire_event(@event)
-
-    if mouse_dragged
-      drag_data = {:to => [mouse_x, mouse_y], :from => [@last_click_x, @last_click_y]}
-      @event[:data] = drag_data
-      @event[:callback_key] = :mouse_drag
-      fire_event(@event)
-    end
   end
 
   def fire_event(event)
@@ -176,26 +91,6 @@ class InputManager
     _register_hook listener, event_class, *event_ids, &block
   end
   alias reg register_hook
-
-  def _register_hook(listener, event_class, *event_ids, &block)
-    return unless block_given?
-    @hooks[event_class] ||= {}
-    for event_id in event_ids
-      @uses_mouse = true if event_id >= MsRangeBegin && event_id <= MsRangeEnd
-      @hooks[event_class][event_id] ||= []
-      @hooks[event_class][event_id] << block
-    end
-    @non_id_hooks[event_class] ||= []
-    if event_ids.empty?
-      @uses_mouse = true
-      @non_id_hooks[event_class] << block
-    end
-    if listener.respond_to?(:can_fire?) && listener.can_fire?(:remove_me)
-      listener.when :remove_me do
-        unregister_hook event_class, *event_ids, &block
-      end
-    end
-  end
 
   # unregisters a block to be called when matching events are pulled from the SDL queue.
   # ie 
@@ -269,9 +164,118 @@ class InputManager
   end
 
   private
+  def setup_events(game)
+    @window.when :button_up do |button_id|
+      handle_event button_id, :up
+    end
+    @window.when :button_down do |button_id|
+      handle_event button_id, :down
+    end
+
+    @window.when :update do |millis|
+
+      if @uses_mouse
+        @last_mouse_x ||= mouse_x
+        @last_mouse_y ||= mouse_y
+
+        x_diff = @last_mouse_x - mouse_x
+        y_diff = @last_mouse_y - mouse_y
+
+        unless x_diff < 0.1 && x_diff > -0.1 && y_diff < 0.1 && y_diff > -0.1
+          handle_event nil, :motion
+
+          @last_mouse_x = mouse_x
+          @last_mouse_y = mouse_y
+        end
+      end
+
+      game.update millis
+    end
+    @window.when :draw do 
+      game.draw 
+    end
+  end
+
+  def handle_event(gosu_id, action) #:nodoc:
+    @window.close if @auto_quit && gosu_id == @auto_quit
+    if action == :down
+      @down_ids[gosu_id] = true 
+    else
+      @down_ids.delete gosu_id
+    end
+
+    event_data = nil
+    mouse_dragged = false
+
+    callback_key = action
+    if gosu_id.nil?
+      event_type = :mouse_motion
+      callback_key = :mouse_motion
+      @mouse_dragging = true if @mouse_down
+      event_data = [mouse_x, mouse_y]
+    elsif gosu_id >= MsRangeBegin && gosu_id <= MsRangeEnd
+      event_type = :mouse
+      event_data = [mouse_x, mouse_y]
+      if action == :up
+        # callback_key = :mouse_up
+        @mouse_down = false
+        mouse_dragged = true if @mouse_dragging
+        @mouse_dragging = false
+      else
+        # callback_key = :mouse_down
+        @mouse_down = true
+        @last_click_x = mouse_x
+        @last_click_y = mouse_y
+      end
+    elsif gosu_id >= KbRangeBegin && gosu_id <= KbRangeEnd
+      event_type = :keyboard
+    elsif gosu_id >= GpRangeBegin && gosu_id <= GpRangeEnd
+      event_type = :game_pad
+    end
+
+    # single threaded.. keep same event
+    @event ||= {}
+    @event[:type] = event_type
+    @event[:id] = gosu_id
+    @event[:action] = action
+    @event[:callback_key] = callback_key
+    @event[:data] = event_data
+
+    fire_event(@event)
+
+    if mouse_dragged
+      drag_data = {:to => [mouse_x, mouse_y], :from => [@last_click_x, @last_click_y]}
+      @event[:data] = drag_data
+      @event[:callback_key] = :mouse_drag
+      fire_event(@event)
+    end
+  end
+
+  def _register_hook(listener, event_class, *event_ids, &block)
+    return unless block_given?
+    @hooks[event_class] ||= {}
+    for event_id in event_ids
+      @uses_mouse = true if event_id >= MsRangeBegin && event_id <= MsRangeEnd
+      @hooks[event_class][event_id] ||= []
+      @hooks[event_class][event_id] << block
+    end
+    @non_id_hooks[event_class] ||= []
+    if event_ids.empty?
+      @uses_mouse = true
+      @non_id_hooks[event_class] << block
+    end
+    if listener.respond_to?(:can_fire?) && listener.can_fire?(:remove_me)
+      listener.when :remove_me do
+        unregister_hook event_class, *event_ids, &block
+      end
+    end
+  end
+
+
   def mouse_x
     @window.mouse_x
   end
+
   def mouse_y
     @window.mouse_y
   end

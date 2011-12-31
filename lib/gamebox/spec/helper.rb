@@ -55,11 +55,32 @@ module GameboxSpecHelpers
       yield
       args.should == expected_args
     end
+
+    def evented_stub(wrapped_object)
+      EventedStub.new wrapped_object
+    end
   end
 
   def self.included(base)
     base.send :include, InstanceMethods
     base.send :extend, ClassMethods
+  end
+end
+class EventedStub
+  extend Publisher
+  can_fire_anything
+  def initialize(object)
+    @inner_stub = object
+  end
+  def method_missing(name, *args)
+    @inner_stub.send name, *args
+  end
+  public
+  def fire(*args)
+    super
+  end
+  def when(*args)
+    super
   end
 end
 
