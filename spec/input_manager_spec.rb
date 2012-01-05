@@ -4,7 +4,7 @@ describe InputManager do
   inject_mocks :config_manager, :wrapped_screen
   before do
     @config_manager.stubs(:[] => nil)
-    @window = mock
+    @window = stub('window', mouse_x: 43, mouse_y: 12)
     @wrapped_screen.stubs(screen: @window)
   end
   let(:game) { stub('game') }
@@ -37,6 +37,40 @@ describe InputManager do
       @window.stubs(:mouse_y).returns(to_y)
       pretend_event(subject, MsLeft, :up)
 
+    end
+  end
+
+  describe "non-id specific events" do
+    it 'calls callback for all keyboard events' do
+      key_pressed = 0
+      subject.reg :keyboard_down do
+        key_pressed += 1
+      end
+
+      pretend_event(subject, KbT, :up)
+      key_pressed.should == 0
+
+      # pretend_event(subject, MsLeft, :down)
+      # key_pressed.should == 0
+
+      pretend_event(subject, KbT, :down)
+      key_pressed.should == 1
+    end
+
+    it 'calls callback for all mouse events' do
+      mouse_pressed = 0
+      subject.reg :mouse_down do
+        mouse_pressed += 1
+      end
+
+      pretend_event(subject, MsLeft, :up)
+      mouse_pressed.should == 0
+
+      # pretend_event(subject, KbT, :down)
+      # mouse_pressed.should == 0
+
+      pretend_event(subject, MsLeft, :down)
+      mouse_pressed.should == 1
     end
   end
 
@@ -167,7 +201,7 @@ describe InputManager do
 
   end
 
-  describe "#main_loop" do
+  describe "#show" do
     before do
       @window.stubs(:show)
       @window = evented_stub(@window)
@@ -176,19 +210,26 @@ describe InputManager do
 
     it 'shows the window' do
       @window.expects(:show)
-      subject.main_loop game
+      subject.show
+    end
+  end
+
+  describe "#register" do
+    before do
+      @window = evented_stub(@window)
+      @wrapped_screen.stubs(screen: @window)
     end
 
     it 'handles an update event' do
       game.expects(:update).with(:millis)
-      subject.main_loop game
+      subject.register game
 
       @window.fire :update, :millis
     end
 
     it 'handles a draw event' do
       game.expects(:draw)
-      subject.main_loop game
+      subject.register game
 
       @window.fire :draw
     end
@@ -211,6 +252,10 @@ describe InputManager do
 
   it 'tracks the mouse motion events'
   it 'cleanly removes handlers not using ids'
+  describe 'pausing' do
+    it 'pauses'
+    it 'unpauses'
+  end
 
   private
   def pretend_event(target, id, direction)

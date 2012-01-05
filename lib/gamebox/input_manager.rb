@@ -41,10 +41,9 @@ class InputManager
     @down_ids = {}
   end
 
-  # This gets called from game app and sets up all the
-  # events. (also shows the window)
-  def main_loop(game)
-    setup_events game
+  def show
+    # Does not return, Gosu uses this to pop up the window
+    # This must be last in the method
     @window.show
   end
 
@@ -91,6 +90,26 @@ class InputManager
     _register_hook listener, event_class, *event_ids, &block
   end
   alias reg register_hook
+
+  def _register_hook(listener, event_class, *event_ids, &block)
+    return unless block_given?
+    @hooks[event_class] ||= {}
+    for event_id in event_ids
+      @uses_mouse = true if event_id >= MsRangeBegin && event_id <= MsRangeEnd
+      @hooks[event_class][event_id] ||= []
+      @hooks[event_class][event_id] << block
+    end
+    @non_id_hooks[event_class] ||= []
+    if event_ids.empty?
+      @uses_mouse = true
+      @non_id_hooks[event_class] << block
+    end
+    if listener.respond_to?(:can_fire?) && listener.can_fire?(:remove_me)
+      listener.when :remove_me do
+        unregister_hook event_class, *event_ids, &block
+      end
+    end
+  end
 
   # unregisters a block to be called when matching events are pulled from the SDL queue.
   # ie 
@@ -163,8 +182,7 @@ class InputManager
     @paused_non_id_hooks = nil
   end
 
-  private
-  def setup_events(game)
+  def register(game)
     @window.when :button_up do |button_id|
       handle_event button_id, :up
     end
@@ -195,6 +213,8 @@ class InputManager
       game.draw 
     end
   end
+
+  private
 
   def handle_event(gosu_id, action) #:nodoc:
     @window.close if @auto_quit && gosu_id == @auto_quit
@@ -248,26 +268,6 @@ class InputManager
       @event[:data] = drag_data
       @event[:callback_key] = :mouse_drag
       fire_event(@event)
-    end
-  end
-
-  def _register_hook(listener, event_class, *event_ids, &block)
-    return unless block_given?
-    @hooks[event_class] ||= {}
-    for event_id in event_ids
-      @uses_mouse = true if event_id >= MsRangeBegin && event_id <= MsRangeEnd
-      @hooks[event_class][event_id] ||= []
-      @hooks[event_class][event_id] << block
-    end
-    @non_id_hooks[event_class] ||= []
-    if event_ids.empty?
-      @uses_mouse = true
-      @non_id_hooks[event_class] << block
-    end
-    if listener.respond_to?(:can_fire?) && listener.can_fire?(:remove_me)
-      listener.when :remove_me do
-        unregister_hook event_class, *event_ids, &block
-      end
     end
   end
 

@@ -25,14 +25,14 @@ class GameboxApp
 
     @context = DIY::Context.from_yaml(YAML.dump(objects))
   end
-  
+
   def setup
     @game = @context[:game]
-    
+
     @config_manager = @context[:config_manager]
     setup_debug_server if @config_manager[:debug_server] || ARGV.include?("-debug-server")
   end
-  
+
   def setup_debug_server
     Thread.new do
       loop do
@@ -40,10 +40,11 @@ class GameboxApp
       end
     end
   end
-  
+
   def main_loop
     @input_manager = @context[:input_manager]
-    @input_manager.main_loop @game
+    @input_manager.register @game
+    @input_manager.show
   end
 
   def shutdown

@@ -75,11 +75,7 @@ class EventedStub
   def method_missing(name, *args)
     @inner_stub.send name, *args
   end
-  public
   def fire(*args)
-    super
-  end
-  def when(*args)
     super
   end
 end
