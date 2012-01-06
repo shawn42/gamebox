@@ -241,6 +241,23 @@ class Stage
     @stagehands[stagehand_sym] ||= create_stagehand(stagehand_sym, opts)
   end
 
+  # pauses the current stage, creates an actor using args, unpauses on actor death
+  #
+  # Example:
+  #  modal_actor :dialog, x: 40, y: 50, message: "WOW"
+  def modal_actor(*args)
+    on_pause do
+      pause_actor = spawn *args
+      pause_actor.when :remove_me do
+        @pause_listeners = nil
+        unpause
+        yield if block_given?
+      end
+    end
+    pause
+
+  end
+
   private
   def create_stagehand(name, opts)
     underscored_class = "#{name}_stagehand"
