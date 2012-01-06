@@ -62,4 +62,8 @@ describe 'A new stage' do
     @stage.drawables[6][7].should == [a,b,c]
     @stage.drawables[2][3].should be_nil
   end
+
+  describe "#modal_actor" do
+    it 'pauses, shows actor, unpauses when that actor dies'
+  end
 end

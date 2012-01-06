@@ -241,15 +241,13 @@ class Stage
     @stagehands[stagehand_sym] ||= create_stagehand(stagehand_sym, opts)
   end
 
+  private
   def create_stagehand(name, opts)
     underscored_class = "#{name}_stagehand"
-    begin
-      require underscored_class
-    rescue LoadError
-      # TODO log this?
-    end
     klass = ClassFinder.find underscored_class
     klass.new self, opts
   end
+
+
 end
 

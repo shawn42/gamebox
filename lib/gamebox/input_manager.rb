@@ -65,13 +65,13 @@ class InputManager
         end
       end
     end
-    
+
     non_id_event_hooks = @non_id_hooks[event[:callback_key]]
     if non_id_event_hooks
       for callback in non_id_event_hooks
         callback.call event
       end
-    end          
+    end
   end
 
   # registers a block to be called when matching events are pulled from the SDL queue.
@@ -142,7 +142,7 @@ class InputManager
           end
         end
       end
-      
+
       for key in @non_id_hooks.keys.dup
         @non_id_hooks[key].delete_if do |block|
           eval('self',block.binding).equal?(listener)
