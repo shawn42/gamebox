@@ -76,7 +76,6 @@ class Viewport
         scrolled = true
       end
 
-
       y_diff = @height/2 + @follow_offset_y - y - @y_offset
       if y_diff.abs > @buffer_y
         # move screen

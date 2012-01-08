@@ -1,11 +1,11 @@
 
 
 class SpatialStagehand < Stagehand
-
   DEFAULT_PARAMS = {
     :cell_size => 50
   }
   def setup
+    @dead_actors = []
     merged_opts = DEFAULT_PARAMS.merge opts
     @spatial_actors = SpatialHash.new merged_opts[:cell_size]
     # TODO
@@ -58,6 +58,7 @@ class SpatialStagehand < Stagehand
   end
 
   def remove(actor)
+    @dead_actors << actor
     @spatial_actors.remove actor
   end
 
@@ -75,6 +76,13 @@ class SpatialStagehand < Stagehand
 
   def neighbors_of(item, dist=1)
     @spatial_actors.neighbors_of item, dist
+  end
+
+  def update(time)
+    @dead_actors.each do |actor|
+      actor.unsubscribe_all self
+    end
+    @dead_actors = []
   end
 
 end

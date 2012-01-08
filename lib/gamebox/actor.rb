@@ -134,17 +134,17 @@ class Actor
     # TODO maybe use a callback list for child classes
     update_behaviors time
   end
-  
+
   def hide
     fire :hide_me if visible?
     self.visible = false
   end
-  
+
   def show
     fire :show_me unless visible?
     self.visible = true
   end
-  
+
   def visible?
     self.visible
   end
@@ -153,27 +153,33 @@ class Actor
     @stage.viewport
   end
 
-  def self.behaviors
-    @behaviors ||= []
+  def to_s
+    "#{self.class.name}:#{self.object_id} [#{self.x},#{self.y}] with behaviors\n#{self.behaviors.keys}"
   end
 
-  def self.has_behaviors(*args)
-    @behaviors ||= []
-    for a in args
-      if a.is_a? Hash
-        for k,v in a 
-          h = {}
-          h[k]=v
-          @behaviors << h
-        end
-      else
-        @behaviors << a
-      end
+  class << self
+    def behaviors
+      @behaviors ||= []
     end
-    @behaviors
-  end
 
-  def self.has_behavior(*args)
-    has_behaviors *args
+    def has_behaviors(*args)
+      @behaviors ||= []
+      for a in args
+        if a.is_a? Hash
+          for k,v in a 
+            h = {}
+            h[k]=v
+            @behaviors << h
+          end
+        else
+          @behaviors << a
+        end
+      end
+      @behaviors
+    end
+
+    def has_behavior(*args)
+      has_behaviors *args
+    end
   end
 end

@@ -66,9 +66,22 @@ describe 'a new SpacialStagehand' do
   end
 
   describe "#remove" do
+    let(:actor) { stub('actor') }
     it "removes the actor from the hash" do
-      @hash.expects(:remove).with(:actor)
-      @target.remove(:actor)
+      @hash.expects(:remove).with(actor)
+      @target.remove(actor)
+    end
+  end
+
+  describe "#update" do
+    let(:actor) { stub('actor') }
+    it 'unsubscribes from dead actors' do
+      @target.remove(actor)
+
+      actor.expects(:unsubscribe_all).with(@target)
+      @target.update 24
+      # make sure its only called once
+      @target.update 24
     end
   end
 
