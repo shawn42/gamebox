@@ -129,6 +129,7 @@ class Stage
   def clear_drawables
     @drawables = {}
     @layer_orders = {}
+    @parallax_layers = []
   end
 
   def register_drawable(drawable)

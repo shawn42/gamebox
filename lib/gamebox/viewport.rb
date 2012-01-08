@@ -120,14 +120,14 @@ class Viewport
 
     @x_offset = @width/2 - @follow_target.x + @follow_offset_x
     @y_offset = @height/2 - @follow_target.y + @follow_offset_y
-    
+
     fire :scrolled
   end
 
   def bounds
     left = -@x_offset
     top = -@y_offset
-    [left, top, left + @width, top + @height]
+    Rect.new left, top, left + @width, top + @height
   end
 
 end

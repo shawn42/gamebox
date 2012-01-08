@@ -152,7 +152,11 @@ describe 'A new viewport' do
       subject.x_offset = -10
       subject.y_offset = -100
 
-      subject.bounds.should == [10,100,810,700]
+      bounds = subject.bounds
+      bounds.left.should == 10
+      bounds.top.should == 100
+      bounds.width.should == 810
+      bounds.height.should == 700
     end
   end
   

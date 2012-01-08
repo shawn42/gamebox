@@ -64,6 +64,6 @@ describe 'A new stage' do
   end
 
   describe "#modal_actor" do
-    it 'pauses, shows actor, unpauses when that actor dies'
+    it 'pauses, shows actor, unpauses when that actor dies; ug, how to test this?'
   end
 end
