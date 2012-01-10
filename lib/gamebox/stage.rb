@@ -1,7 +1,7 @@
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
-  include Arbiter
+  include AABBArbiter
   extend Publisher
   can_fire_anything
 

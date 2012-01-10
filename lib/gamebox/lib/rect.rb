@@ -606,6 +606,11 @@ class Rect < Array
     return self
   end
 
+  # calculate the area of the Rect
+  def area
+    w * h
+  end
+
 
 end # class Rect
 
