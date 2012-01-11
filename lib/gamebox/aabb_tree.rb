@@ -6,40 +6,66 @@
 # balance
 class AABBTree
   attr_reader :items
+  extend Forwardable
+
+  def_delegators :@items, :size, :include?
+  def_delegators :@root, :to_s
+
   def initialize
     @items = {}
+    @root = nil
+  end
+
+  # query the tree
+  def query(search_bb, &callback)
+    log "="*100
+    log "query #{search_bb}"
+    return unless @root
+    @root.query_subtree search_bb, &callback
+  end
+
+  def each(&blk)
+    return unless @root
+    query @root.bb, &blk
   end
 
   def insert(item)
-    bb = calculate_bb item
-    leaf = Node.new nil, item, item.bb
-    @items[item] = leaf
-    if @root
-      @root = @root.insert_subtree leaf
+    leaf = @items[item.object_id]
+    if leaf
+      reindex leaf
     else
-      @root = leaf
+      leaf = Node.new nil, item, calculate_bb(item)
+      @items[item.object_id] = leaf
+      insert_leaf leaf
     end
     # leaf->STAMP = GetStamp(tree);
     # LeafAddPairs(leaf, tree);
     # IncrementStamp(tree);
   end
 
+  def insert_leaf(leaf)
+    if @root
+      @root = @root.insert_subtree leaf
+    else
+      @root = leaf
+    end
+  end
+
   def remove(item)
-    leaf = @items.delete item
+    leaf = @items.delete item.object_id
     # PairsClear
     @root = @root.remove_subtree leaf if leaf
   end
 
   def reindex(item)
-    leaf = @items.delete item
-    if leaf.leaf?
-      unless leaf.bb.contain? item.bb
-        leaf.bb = calculate_bb item
-        @root.remove_subtree leaf
-        @root.insert_subtree leaf
-        true
+    leaf = @items[item.object_id]
+    if leaf && leaf.leaf?
+      new_bb = calculate_bb(item)
+      unless leaf.bb.contain? new_bb
+        leaf.bb = new_bb
+        @root = @root.remove_subtree leaf
+        insert_leaf leaf
       end
-      false
     end
   end
 
@@ -49,25 +75,32 @@ class AABBTree
       item.bb
     else
       if item.respond_to? :width
-        w = item.respond_to?(:width) ? item.width : 1
-        h = item.respond_to?(:height) ? item.height : 1
+        w = item.width
+        h = item.height
       elsif item.respond_to? :radius
-        w = h = item.radius * 2
+        w = item.radius * 2
+        h = item.radius * 2
       end
-      Rect.new item.x, item.y, w, h
+      w ||= 1
+      h ||= 1
+      horizontal_growth = w + 0.05
+      vertical_growth = h + 0.05
+      Rect.new item.x - horizontal_growth, item.y - vertical_growth, 
+        w + 2*horizontal_growth, h + 2*vertical_growth
     end
   end
 
   def neighbors_of(item, &blk)
-    query calculate_bb(item), &blk
-  end
-
-  def size
-    @items.size
-  end
-
-  def to_s
-    @root.to_s
+    leaf = @items[item.object_id]
+    return unless leaf
+    # if leaf.parent
+    #   leaf.parent.query_subtree leaf.bb, &blk
+    # else
+      query calculate_bb(item), &blk
+    # end
+    # @items.keys.each do |item|
+    #   blk.call item
+    # end
   end
 
   class Node
@@ -129,18 +162,17 @@ class AABBTree
 
     # horrible name!!
     def hand_off_child(leaf)
-      child = @parent
-      dad = child.parent
-      raise "Internal Error: Cannot replace child of a leaf." if dad.leaf?
-      raise "Internal Error: Node is not a child of parent." unless child == dad.a || child == dad.b
+      value = other(leaf)
+      raise "Internal Error: Cannot replace child of a leaf." if @parent.leaf?
+      raise "Internal Error: Node is not a child of parent." unless self == @parent.a || self == @parent.b
 
-      if dad.a == child
-        dad.a = leaf
+      if @parent.a == self
+        @parent.a = value
       else
-        dad.b = leaf
+        @parent.b = value
       end
 
-      parent.update_bb
+      @parent.update_bb
     end
 
     def update_bb
@@ -159,7 +191,7 @@ class AABBTree
           other_child.parent = @parent
           return other_child
         else
-          hand_off_child other(leaf)
+          leaf.parent.hand_off_child leaf
           return self
         end
       end
@@ -172,10 +204,14 @@ class AABBTree
     end
 
     def query_subtree(search_bb, &blk)
+      log "query subtree #{self} #{search_bb}"
       if @bb.collide_rect? search_bb
+        log "collided"
         if leaf?
+          log "#{self} is a leaf, calling..."
           blk.call @object
         else
+          log "checking my kids"
           @a.query_subtree search_bb, &blk
           @b.query_subtree search_bb, &blk
         end
@@ -203,9 +239,4 @@ class AABBTree
 
   end
 
-  # query the tree
-  def query(search_bb, &callback)
-    return unless @root
-    @root.query_subtree search_bb, &callback
-  end
 end

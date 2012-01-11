@@ -142,14 +142,6 @@ class Rect < Array
   def inspect; "#<Rect:#{self.object_id} [%s,%s,%s,%s]>"%self; end
 
 
-  # Returns an SDL::Rect version of this Rect. Float values are
-  # rounded to the nearest integer.
-  # 
-  def to_sdl                    # :nodoc:
-    SDL::Rect.new( self.collect{|n| n.round } )
-  end
-
-
   #--
   # ATTRIBUTES
   #++

@@ -9,6 +9,7 @@ describe AABBTree do
     let(:one) { bb('one', 0,0,1,1) }
     let(:two) { bb('two', 5,9,1,1) }
     let(:three) { bb('three', 7,10,5,1) }
+    let(:four) { bb('four', -10,-50,20,5) }
 
     it 'adds a single item' do
       # NOTE: its 3am, I'm bastardizing this test case
@@ -33,7 +34,12 @@ describe AABBTree do
       found_items.should == [two]
 
       found_items = []
-      subject.query [1,1,10, 10] do |item|
+      subject.reindex two
+      subject.reindex three
+      subject.insert two
+      subject.insert two
+      subject.insert four
+      subject.query [1,1,10,10] do |item|
         found_items << item
       end
       found_items.should == [two, three]
@@ -45,6 +51,38 @@ describe AABBTree do
         found_items << item
       end
       found_items.should == [three]
+
+      them = []
+      subject.each do |item|
+        them << item
+      end
+      them.map(&:object_id).size.should == 3
+
+      # require 'perftools'
+
+      # PerfTools::CpuProfiler.start("/tmp/gamebox_perf.txt")
+     # set_trace_func proc { |event, file, line, id, binding, classname|
+     #   printf("%8s %s:%-2d %10s %8s\n", event, file, line, id, classname) if classname == Rect && id == :initialize
+     # }
+
+     # GC.disable
+      # 800.times do |i|
+      #   subject.insert(bb("thing#{i}",i,i,i,i))
+      # end
+
+   # set_trace_func nil
+      # puts "\nGARBAGE COLLECTION"
+      # # Not even close to exact, but gives a rough idea of what's being collected
+      # old_objects = ObjectSpace.count_objects.dup
+      # ObjectSpace.garbage_collect
+      # new_objects = ObjectSpace.count_objects
+
+      # old_objects.each do |k,v|
+      #   diff = v - new_objects[k]
+      #   puts "#{k} #{diff} diff" if diff != 0
+      # end
+
+      # PerfTools::CpuProfiler.stop
     end
   end
 

@@ -3,11 +3,11 @@ module AABBArbiter
   attr_reader :checks, :collisions
 
   def register_collidable(actor)
-    stagehand(:spation_tree).insert(actor)
+    stagehand(:spatial_tree).add(actor)
   end
 
   def unregister_collidable(actor)
-    stagehand(:spation_tree).remove(actor)
+    stagehand(:spatial_tree).remove(actor)
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -27,6 +27,12 @@ module AABBArbiter
         end
       end
     end
+  end
+
+  def interested_in_collision_of?(type1, type2)
+    @collision_handlers ||= {}
+    (@collision_handlers[type1] && @collision_handlers[type1][type2]) ||
+    (@collision_handlers[type2] && @collision_handlers[type2][type1])
   end
 
   def run_callbacks(collisions)
@@ -53,18 +59,19 @@ module AABBArbiter
   end
 
   def find_collisions
-    aabb_tree = stagehand(:spation_tree)
-    collidable_actors = aabb_tree.moved_items
+    aabb_tree = stagehand(:spatial_tree)
+    collidable_actors = aabb_tree.moved_items.values
 
     collisions = {}
 
     collidable_actors.each do |first|
-
       if first.is? :collidable
         # TODO better method name (or return an Enumerator)
         aabb_tree.neighbors_of(first) do |second|
           if second.is? :collidable
-            if first != second && collide?(first, second)
+            if first != second && 
+              interested_in_collision_of?(first.actor_type, second.actor_type) &&
+              collide?(first, second)
               collisions[second] ||= []
               if !collisions[second].include?(first)
                 collisions[first] ||= []
@@ -81,8 +88,8 @@ module AABBArbiter
         unique_collisions << [first,second]
       end
     end
-
     run_callbacks unique_collisions
+    aabb_tree.reset
   end
 
   def collide?(object, other)
