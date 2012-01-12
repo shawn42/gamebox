@@ -2,6 +2,7 @@
 # single player stage).
 class Stage
   include AABBArbiter
+  # include Arbiter
   extend Publisher
   can_fire_anything
 

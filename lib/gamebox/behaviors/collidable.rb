@@ -14,8 +14,27 @@ class Collidable < Behavior
     relegates :collidable_shape, :radius, :cw_world_points, :cw_world_lines, :center_x, :center_y, :cw_world_edge_normals
     relegates :width unless @actor.respond_to? :width
     relegates :height unless @actor.respond_to? :height
+    relegates :bb unless @actor.respond_to? :bb
 
     register_actor
+  end
+
+  def width; 1; end
+  def height; 1; end
+
+  def bb
+    w = actor.width || 1
+    h = actor.height || 1
+    hw = w / 2
+    hh = h / 2
+    x = actor.x - hw
+    y = actor.y - hh
+    @bb ||= Rect.new
+    @bb.x = x
+    @bb.y = y
+    @bb.w = w
+    @bb.h = h
+    @bb
   end
 
   def register_actor

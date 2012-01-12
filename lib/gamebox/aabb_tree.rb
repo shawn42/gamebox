@@ -58,15 +58,15 @@ class AABBTree
   def reindex(item)
     leaf = @items[item.object_id]
     if leaf && leaf.leaf?
-      new_bb = calculate_bb(item)
+      new_bb = item.bb #calculate_bb(item)
       unless leaf.bb.contain? new_bb
 
+        # use velocity vector to extrap
         # 10% bigger
-        # horizontal_growth = new_bb.w + 0.05
-        # vertical_growth = new_bb.h + 0.05
-        # leaf.bb = Rect.new new_bb.x - horizontal_growth, new_bb.y - vertical_growth, 
-        #     new_bb.w + 2*horizontal_growth, new_bb.h + 2*vertical_growth
-        leaf.bb = new_bb
+        horizontal_growth = new_bb.w + 0.1
+        vertical_growth = new_bb.h + 0.1
+        leaf.bb[0,4] = new_bb.x - horizontal_growth, new_bb.y - vertical_growth, 
+            new_bb.w + 2*horizontal_growth, new_bb.h + 2*vertical_growth
 
         @root = @root.remove_subtree leaf
         insert_leaf leaf
