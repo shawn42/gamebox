@@ -1,13 +1,13 @@
 require 'benchmark'
 
 # Point = Struct.new :x, :y
-class Point
-  attr_accessor :x, :y
-  def initialize(x,y)
-    @x = x
-    @y = y
-  end
-end
+# class Point
+#   attr_accessor :x, :y
+#   def initialize(x,y)
+#     @x = x
+#     @y = y
+#   end
+# end
 NUM = 10_000_000
 Benchmark.bm(60) do |b|
   b.report("array") do

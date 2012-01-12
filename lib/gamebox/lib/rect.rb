@@ -146,8 +146,8 @@ class Rect < Array
   # ATTRIBUTES
   #++
 
-  # Returns self.at(0)
-  def x; return self.at(0); end
+  # Returns self[0]
+  def x; return self[0]; end
   # Sets self[0] to +val+
   def x=(val); self[0] = val; end
 
@@ -156,8 +156,8 @@ class Rect < Array
   alias l x
   alias l= x=;
 
-  # Returns self.at(1)
-  def y; return self.at(1); end
+  # Returns self[1]
+  def y; return self[1]; end
   # Sets self[1] to +val+
   def y=(val); self[1] = val; end
 
@@ -166,16 +166,16 @@ class Rect < Array
   alias t y
   alias t= y=;
 
-  # Returns self.at(2)
-  def w; return self.at(2); end
+  # Returns self[2]
+  def w; return self[2]; end
   # Sets self[2] to +val+
   def w=(val); self[2] = val; end
 
   alias width w
   alias width= w=;
 
-  # Returns self.at(3)
-  def h; return self.at(3); end
+  # Returns self[3]
+  def h; return self[3]; end
   # Sets self[3] to +val+
   def h=(val); self[3] = val; end
 
@@ -193,21 +193,21 @@ class Rect < Array
   end
 
   # Return the x coordinate of the right side of the Rect.
-  def right; return self.at(0)+self.at(2); end
+  def right; return self[0]+self[2]; end
 
   # Set the x coordinate of the right side of the Rect by translating the
   # Rect (adjusting the x offset).
-  def right=(r); self[0] = r - self.at(2); return r; end
+  def right=(r); self[0] = r - self[2]; return r; end
 
   alias r right
   alias r= right=;
 
   # Return the y coordinate of the bottom side of the Rect.
-  def bottom; return self.at(1)+self.at(3); end
+  def bottom; return self[1]+self[3]; end
 
   # Set the y coordinate of the bottom side of the Rect by translating the
   # Rect (adjusting the y offset).
-  def bottom=(b); self[1] = b - self.at(3); return b; end
+  def bottom=(b); self[1] = b - self[3]; return b; end
 
   alias b bottom
   alias b= bottom=;
@@ -226,21 +226,21 @@ class Rect < Array
   alias c= center=;
 
   # Return the x coordinate of the center of the Rect
-  def centerx; return self.at(0)+(self.at(2).div(2)); end
+  def centerx; return self[0]+(self[2].div(2)); end
 
   # Set the x coordinate of the center of the Rect by translating the
   # Rect (adjusting the x offset).
-  def centerx=(x); self[0] = x - (self.at(2).div(2)); return x; end
+  def centerx=(x); self[0] = x - (self[2].div(2)); return x; end
 
   alias cx centerx
   alias cx= centerx=;
 
   # Return the y coordinate of the center of the Rect
-  def centery; return self.at(1)+(self.at(3).div(2)); end
+  def centery; return self[1]+(self[3].div(2)); end
 
   # Set the y coordinate of the center of the Rect by translating the
   # Rect (adjusting the y offset).
-  def centery=(y); self[1] = y- (self.at(3).div(2)); return y; end
+  def centery=(y); self[1] = y- (self[3].div(2)); return y; end
 
   alias cy centery
   alias cy= centery=;
@@ -260,7 +260,7 @@ class Rect < Array
   alias tl= topleft=;
 
   # Return the x and y coordinates of the top-right corner of the Rect
-  def topright; return self.right, self.at(1); end
+  def topright; return self.right, self[1]; end
 
   # Set the x and y coordinates of the top-right corner of the Rect by 
   # translating the Rect (adjusting the x and y offsets).
@@ -274,7 +274,7 @@ class Rect < Array
   alias tr= topright=;
 
   # Return the x and y coordinates of the bottom-left corner of the Rect
-  def bottomleft; return self.at(0), self.bottom; end
+  def bottomleft; return self[0], self.bottom; end
 
   # Set the x and y coordinates of the bottom-left corner of the Rect by 
   # translating the Rect (adjusting the x and y offsets).
@@ -303,7 +303,7 @@ class Rect < Array
 
   # Return the x and y coordinates of the midpoint on the left side of the
   # Rect.
-  def midleft; return self.at(0), self.centery; end  
+  def midleft; return self[0], self.centery; end  
 
   # Set the x and y coordinates of the midpoint on the left side of the Rect
   # by translating the Rect (adjusting the x and y offsets).
@@ -318,7 +318,7 @@ class Rect < Array
 
   # Return the x and y coordinates of the midpoint on the left side of the
   # Rect.
-  def midtop; return self.centerx, self.at(1); end  
+  def midtop; return self.centerx, self[1]; end  
 
   # Set the x and y coordinates of the midpoint on the top side of the Rect
   # by translating the Rect (adjusting the x and y offsets).
@@ -381,31 +381,31 @@ class Rect < Array
     unless rect.contain?(nself)
 
       #If self is too wide:
-      if nself.at(2) >= rect.at(2)
-        self[0] = rect.centerx - nself.at(2).div(2)
+      if nself[2] >= rect[2]
+        self[0] = rect.centerx - nself[2].div(2)
         #Else self is not too wide
       else
         #If self is to the left of arg
-        if nself.at(0) < rect.at(0)
-          self[0] = rect.at(0)
+        if nself[0] < rect[0]
+          self[0] = rect[0]
         #If self is to the right of arg
         elsif nself.right > rect.right
-          self[0] = rect.right - nself.at(2)
+          self[0] = rect.right - nself[2]
         #Otherwise, leave x alone
         end
       end
 
       #If self is too tall:
-      if nself.at(3) >= rect.at(3)
-        self[1] = rect.centery - nself.at(3).div(2)
+      if nself[3] >= rect[3]
+        self[1] = rect.centery - nself[3].div(2)
         #Else self is not too tall
       else
         #If self is above arg
-        if nself.at(1) < rect.at(1)
-          self[1] = rect.at(1)
+        if nself[1] < rect[1]
+          self[1] = rect[1]
         #If self below arg
         elsif nself.bottom > rect.bottom
-          self[1] = rect.bottom - nself.at(3)
+          self[1] = rect.bottom - nself[3]
         #Otherwise, leave y alone
         end
       end
@@ -427,10 +427,10 @@ class Rect < Array
     nself = self.normalize
     other = Rect.new_from_object(rect).normalize!
     if self.collide_rect?(other)
-      self[0] = [nself.at(0), other.at(0)].max
-      self[1] = [nself.at(1), other.at(1)].max
-      self[2] = [nself.right, other.right].min - self.at(0)
-      self[3] = [nself.bottom, other.bottom].min - self.at(1)
+      self[0] = [nself[0], other[0]].max
+      self[1] = [nself[1], other[1]].max
+      self[2] = [nself.right, other.right].min - self[0]
+      self[3] = [nself.bottom, other.bottom].min - self[1]
     else #if they do not intersect at all:
       self[0], self[1] = nself.topleft
       self[2], self[3] = 0, 0
@@ -497,8 +497,8 @@ class Rect < Array
 
   # True if the caller and the given Rect overlap (or touch) at all.
   def collide_rect?(rect)
-    nself = self.normalize
-    rect  = Rect.new_from_object(rect).normalize!
+    nself = self #.normalize
+    rect  = Rect.new_from_object(rect)#.normalize!
     return ((nself.l >= rect.l && nself.l <= rect.r) or (rect.l >= nself.l && rect.l <= nself.r)) &&
            ((nself.t >= rect.t && nself.t <= rect.b) or (rect.t >= nself.t && rect.t <= nself.b))
   end
@@ -506,18 +506,18 @@ class Rect < Array
   # True if the given Rect is totally within the caller. Borders may
   # overlap.
   def contain?(rect)
-    nself = self.normalize
-    rect = Rect.new_from_object(rect).normalize!
+    nself = self#.normalize
+    rect = Rect.new_from_object(rect)#.normalize!
     return (nself.left <= rect.left and rect.right <= nself.right and
           nself.top <= rect.top and rect.bottom <= nself.bottom)
   end
 
   # As #inflate!, but the original caller is not changed.
   def inflate(x,y)
-    return self.class.new(self.at(0) - x.div(2),
-                          self.at(1) - y.div(2),
-                          self.at(2) + x,
-                          self.at(3) + y)
+    return self.class.new(self[0] - x.div(2),
+                          self[1] - y.div(2),
+                          self[2] + x,
+                          self[3] + y)
   end
 
   # Increase the Rect's size is the x and y directions, while keeping the
@@ -553,11 +553,11 @@ class Rect < Array
   # area it represents. Has no effect on Rects with non-negative width
   # and height. Some Rect methods will automatically normalize the Rect.
   def normalize!
-    if self.at(2) < 0
-      self[0], self[2] = self.at(0)+self.at(2), -self.at(2)
+    if self[2] < 0
+      self[0], self[2] = self[0]+self[2], -self[2]
     end
-    if self.at(3) < 0
-      self[1], self[3] = self.at(1)+self.at(3), -self.at(3)
+    if self[3] < 0
+      self[1], self[3] = self[1]+self[3], -self[3]
     end
     self
   end

@@ -18,8 +18,6 @@ class AABBTree
 
   # query the tree
   def query(search_bb, &callback)
-    log "="*100
-    log "query #{search_bb}"
     return unless @root
     @root.query_subtree search_bb, &callback
   end
@@ -62,7 +60,14 @@ class AABBTree
     if leaf && leaf.leaf?
       new_bb = calculate_bb(item)
       unless leaf.bb.contain? new_bb
+
+        # 10% bigger
+        # horizontal_growth = new_bb.w + 0.05
+        # vertical_growth = new_bb.h + 0.05
+        # leaf.bb = Rect.new new_bb.x - horizontal_growth, new_bb.y - vertical_growth, 
+        #     new_bb.w + 2*horizontal_growth, new_bb.h + 2*vertical_growth
         leaf.bb = new_bb
+
         @root = @root.remove_subtree leaf
         insert_leaf leaf
       end
@@ -81,12 +86,20 @@ class AABBTree
         w = item.radius * 2
         h = item.radius * 2
       end
-      w ||= 1
-      h ||= 1
+      w ||= 2
+      h ||= 2
+      hh = h / 2
+      hw = h / 2
+      # 10% bigger
+      horizontal_growth = w + 0.05
+      vertical_growth = h + 0.05
+      # Rect.new item.x - hh - horizontal_growth, item.y - hh - vertical_growth,
+      #   w + 2*horizontal_growth, h + 2*vertical_growth
+
       horizontal_growth = w + 0.05
       vertical_growth = h + 0.05
       Rect.new item.x - horizontal_growth, item.y - vertical_growth, 
-        w + 2*horizontal_growth, h + 2*vertical_growth
+          w + 2*horizontal_growth, h + 2*vertical_growth
     end
   end
 
@@ -129,16 +142,55 @@ class AABBTree
       @b.parent = self
     end
 
+    def min(a,b)
+      a < b ? a : b
+    end
+    def max(a,b)
+      a > b ? a : b
+    end
+
+    def union_bb_area(bb, rect)
+      rleft = bb.left
+      rtop = bb.top
+      rright = bb.right
+      rbottom = bb.bottom
+      r2 = Rect.new_from_object(rect)
+
+      rleft = min(rleft, r2.left)
+      rtop = min(rtop, r2.top)
+      rright = max(rright, r2.right)
+      rbottom = max(rbottom, r2.bottom)
+
+      (rright - rleft) * (rbottom - rtop)
+    end
+
+    def union_bb(bb, rect)
+      rleft = bb.left
+      rtop = bb.top
+      rright = bb.right
+      rbottom = bb.bottom
+      r2 = Rect.new_from_object(rect)
+
+      rleft = min(rleft, r2.left)
+      rtop = min(rtop, r2.top)
+      rright = max(rright, r2.right)
+      rbottom = max(rbottom, r2.bottom)
+
+      Rect.new rleft, rtop, rright - rleft, rbottom - rtop
+    end
+
     def insert_subtree(leaf)
       if leaf?
         # node new
-        new_node = Node.new nil, nil, @bb.union(leaf.bb)
+        new_node = Node.new nil, nil, union_bb(@bb, leaf.bb) #@bb.union(leaf.bb)
         new_node.a = self
         new_node.b = leaf
         return new_node
       else
-        cost_a = @b.bb.area + @a.bb.union(leaf.bb).area
-        cost_b = @a.bb.area + @b.bb.union(leaf.bb).area
+        cost_a = @b.bb.area + union_bb_area(@a.bb, leaf.bb) # @a.bb.union(leaf.bb).area
+        cost_b = @a.bb.area + union_bb_area(@b.bb, leaf.bb) # @b.bb.union(leaf.bb).area
+        # cost_a = @b.bb.area + @a.bb.union(leaf.bb).area
+        # cost_b = @a.bb.area + @b.bb.union(leaf.bb).area
 
         if cost_a == cost_b
           # tie breaker
@@ -151,7 +203,7 @@ class AABBTree
           self.a = @a.insert_subtree leaf
         end
 
-        @bb.union! leaf.bb
+        @bb = union_bb(@bb, leaf.bb)
         return self
       end
     end
@@ -178,7 +230,7 @@ class AABBTree
     def update_bb
       node = self
       while node = node.parent
-        node.bb = @a.bb.union(@b.bb)
+        node.bb = union_bb(@a.bb, @b.bb)
       end
     end
 
@@ -204,14 +256,10 @@ class AABBTree
     end
 
     def query_subtree(search_bb, &blk)
-      log "query subtree #{self} #{search_bb}"
       if @bb.collide_rect? search_bb
-        log "collided"
         if leaf?
-          log "#{self} is a leaf, calling..."
           blk.call @object
         else
-          log "checking my kids"
           @a.query_subtree search_bb, &blk
           @b.query_subtree search_bb, &blk
         end
