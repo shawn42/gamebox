@@ -62,8 +62,8 @@ class AABBTree
       unless node.bb.contain? new_bb
         # use velocity vector to extrap
         # 10% bigger
-        horizontal_growth = (new_bb.w * 0.1).round
-        vertical_growth = (new_bb.h * 0.1).round
+        horizontal_growth = (new_bb.w * 0.1).ceil
+        vertical_growth = (new_bb.h * 0.1).ceil
         node.bb[0] = new_bb.x - horizontal_growth
         node.bb[1] = new_bb.y - vertical_growth
         node.bb[2] = new_bb.w + 2*horizontal_growth
@@ -90,8 +90,8 @@ class AABBTree
       w ||= 2
       h ||= 2
 
-      horizontal_growth = (w * 0.05).round
-      vertical_growth = (h * 0.05).round
+      horizontal_growth = (w * 0.05).ceil
+      vertical_growth = (h * 0.05).ceil
 
       Rect.new item.x - horizontal_growth, item.y - vertical_growth,
           w + 2*horizontal_growth, h + 2*vertical_growth
