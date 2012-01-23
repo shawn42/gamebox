@@ -17,6 +17,7 @@ describe AABBTree do
       subject.insert two
       subject.insert three
       subject.size.should == 3
+      subject.valid?.should be_true
       # puts subject.to_s
 
       subject.remove one
@@ -43,9 +44,12 @@ describe AABBTree do
         found_items << item
       end
       found_items.should == [two, three]
+      subject.valid?.should be_true
 
+      subject.valid?.should be_true
       two.bb = Rect.new -10, -10, 1, 1
       subject.reindex two
+      subject.valid?.should be_true
       found_items = []
       subject.query [1,1,10, 10] do |item|
         found_items << item
@@ -57,6 +61,17 @@ describe AABBTree do
         them << item
       end
       them.map(&:object_id).size.should == 3
+      subject.valid?.should be_true
+
+      them = []
+      two.bb = Rect.new 5, 8, 6, 10
+      subject.reindex two
+      found_items = []
+      subject.neighbors_of two do |item|
+        found_items << item
+      end
+      found_items.should =~ [three, two]
+      subject.valid?.should be_true
 
       # require 'perftools'
 

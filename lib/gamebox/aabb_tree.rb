@@ -56,20 +56,21 @@ class AABBTree
   end
 
   def reindex(item)
-    leaf = @items[item.object_id]
-    if leaf && leaf.leaf?
+    node = @items[item.object_id]
+    if node && node.leaf?
       new_bb = item.bb #calculate_bb(item)
-      unless leaf.bb.contain? new_bb
-
+      unless node.bb.contain? new_bb
         # use velocity vector to extrap
         # 10% bigger
-        horizontal_growth = new_bb.w + 0.1
-        vertical_growth = new_bb.h + 0.1
-        leaf.bb[0,4] = new_bb.x - horizontal_growth, new_bb.y - vertical_growth, 
-            new_bb.w + 2*horizontal_growth, new_bb.h + 2*vertical_growth
+        horizontal_growth = (new_bb.w * 0.1).round
+        vertical_growth = (new_bb.h * 0.1).round
+        node.bb[0] = new_bb.x - horizontal_growth
+        node.bb[1] = new_bb.y - vertical_growth
+        node.bb[2] = new_bb.w + 2*horizontal_growth
+        node.bb[3] = new_bb.h + 2*vertical_growth
 
-        @root = @root.remove_subtree leaf
-        insert_leaf leaf
+        @root = @root.remove_subtree node
+        insert_leaf node
       end
     end
   end
@@ -88,17 +89,11 @@ class AABBTree
       end
       w ||= 2
       h ||= 2
-      hh = h / 2
-      hw = h / 2
-      # 10% bigger
-      horizontal_growth = w + 0.05
-      vertical_growth = h + 0.05
-      # Rect.new item.x - hh - horizontal_growth, item.y - hh - vertical_growth,
-      #   w + 2*horizontal_growth, h + 2*vertical_growth
 
-      horizontal_growth = w + 0.05
-      vertical_growth = h + 0.05
-      Rect.new item.x - horizontal_growth, item.y - vertical_growth, 
+      horizontal_growth = (w * 0.05).round
+      vertical_growth = (h * 0.05).round
+
+      Rect.new item.x - horizontal_growth, item.y - vertical_growth,
           w + 2*horizontal_growth, h + 2*vertical_growth
     end
   end
@@ -106,18 +101,15 @@ class AABBTree
   def neighbors_of(item, &blk)
     leaf = @items[item.object_id]
     return unless leaf
-    # if leaf.parent
-    #   leaf.parent.query_subtree leaf.bb, &blk
-    # else
-      query calculate_bb(item), &blk
-    # end
-    # @items.keys.each do |item|
-    #   blk.call item
-    # end
+    @root.query_subtree calculate_bb(item), &blk
+  end
+
+  def valid?
+    @root.contains_children?
   end
 
   class Node
-    attr_accessor :bb, :a, :b, :parent
+    attr_accessor :bb, :a, :b, :parent, :object
 
     def initialize(parent, object, bb)
       @parent = parent
@@ -165,6 +157,7 @@ class AABBTree
     end
 
     def union_bb(bb, rect)
+      # TODO can this be changed to actually update bb?
       rleft = bb.left
       rtop = bb.top
       rright = bb.right
@@ -176,21 +169,19 @@ class AABBTree
       rright = max(rright, r2.right)
       rbottom = max(rbottom, r2.bottom)
 
-      Rect.new rleft, rtop, rright - rleft, rbottom - rtop
+      Rect.new(rleft, rtop, rright - rleft, rbottom - rtop)
     end
 
     def insert_subtree(leaf)
       if leaf?
         # node new
-        new_node = Node.new nil, nil, union_bb(@bb, leaf.bb) #@bb.union(leaf.bb)
+        new_node = Node.new nil, nil, union_bb(@bb, leaf.bb) 
         new_node.a = self
         new_node.b = leaf
         return new_node
       else
-        cost_a = @b.bb.area + union_bb_area(@a.bb, leaf.bb) # @a.bb.union(leaf.bb).area
-        cost_b = @a.bb.area + union_bb_area(@b.bb, leaf.bb) # @b.bb.union(leaf.bb).area
-        # cost_a = @b.bb.area + @a.bb.union(leaf.bb).area
-        # cost_b = @a.bb.area + @b.bb.union(leaf.bb).area
+        cost_a = @b.bb.area + union_bb_area(@a.bb, leaf.bb)
+        cost_b = @a.bb.area + union_bb_area(@b.bb, leaf.bb)
 
         if cost_a == cost_b
           # tie breaker
@@ -204,6 +195,7 @@ class AABBTree
         end
 
         @bb = union_bb(@bb, leaf.bb)
+        # TODO expand_to_include leaf.bb
         return self
       end
     end
@@ -266,6 +258,17 @@ class AABBTree
       end
     end
 
+    def contains_children?
+      if leaf?
+        true
+      else
+        @bb.contain?(a.bb) &&
+        @bb.contain?(b.bb) &&
+        @a.contains_children? &&
+        @b.contains_children?
+      end
+    end
+
     def to_s
       if leaf?
         """
@@ -277,6 +280,9 @@ class AABBTree
       else
         """
         Container #{object_id}
+        UnionedBB: #{union_bb(@a.bb, @b.bb)}
+        ACollide?: #{@bb.collide_rect?(@a.bb)}
+        BCollide?: #{@bb.collide_rect?(@b.bb)}
         BB: #{@bb}
         A: #{@a}
         B: #{@b}
@@ -284,7 +290,6 @@ class AABBTree
         """
       end
     end
-
   end
 
 end

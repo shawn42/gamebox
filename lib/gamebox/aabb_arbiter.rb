@@ -64,10 +64,16 @@ module AABBArbiter
 
     collisions = {}
 
+    # aabb_tree.each do |actor|
+    #   puts "#{actor.class} #{actor.bb}"
+    # end
+    puts "#"*80
+    puts aabb_tree.instance_variable_get('@tree')
     collidable_actors.each do |first|
       if first.is? :collidable
         # TODO better method name (or return an Enumerator)
         aabb_tree.neighbors_of(first) do |second|
+          puts "FOUND neighbors_of #{first.class}, #{second.class}" unless first == second
           if second.is? :collidable
             if first != second && 
               interested_in_collision_of?(first.actor_type, second.actor_type) &&
@@ -88,6 +94,7 @@ module AABBArbiter
         unique_collisions << [first,second]
       end
     end
+    puts "found #{unique_collisions.size} uniqs" if unique_collisions.size > 0
     run_callbacks unique_collisions
     aabb_tree.reset
   end
@@ -146,7 +153,7 @@ module AABBArbiter
       potential_sep_axis = 
         (object.cw_world_edge_normals | other.cw_world_edge_normals).uniq
       potential_sep_axis.each do |axis|
-        return false unless project_and_detect(axis, object, other)           
+        return false unless project_and_detect(axis, object, other)
       end 
     else
       return false
