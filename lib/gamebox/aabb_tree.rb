@@ -233,8 +233,8 @@ class AABBTree
         cost_b = @a.bb.area + union_bb_area(@b.bb, leaf.bb)
 
         if cost_a == cost_b
-          # tie breaker
-          # check proximity
+          cost_a = @a.proximity(leaf)
+          cost_b = @b.proximity(leaf)
         end
 
         if cost_b < cost_a

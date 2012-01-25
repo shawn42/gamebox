@@ -3,24 +3,21 @@ $: << File.dirname(__FILE__)+"/../lib/gamebox"
 require 'gamebox'
 
 
-NUM_RUNS = 800
-PROFILE = true
+NUM_RUNS = 1000
+PROFILE = false
+class FakeInput
+  def unsubscribe_all(*args);end
+end
 
 def run
   config = {
     screen_resolution: [800,600]
   }
 
-  af = ActorFactory.new input_manager: :input_manager, wrapped_screen: :wrapped_screen
+  fake_input = FakeInput.new
+  af = ActorFactory.new input_manager: fake_input, wrapped_screen: :wrapped_screen
   af.director = FakeUpdate.new
   stage = Stage.new :input_manager, af, :resource_manager, :sound_manager, config, :backstage, {}
-
-  things = []
-  20.times do |i|
-    5.times do |j|
-      things << stage.spawn(:thinger, x: i*40, y: j*40)
-    end
-  end
 
   Benchmark.bm(60) do |b|
     b.report("update loop") do
@@ -31,16 +28,38 @@ def run
         require 'perftools'
         PerfTools::CpuProfiler.start("/tmp/gamebox_perf.txt")
       end
+      things = []
+      200.times do |i|
+        50.times do |j|
+          things << stage.spawn(:thinger, x: i*40, y: j*40)
+        end
+      end
 
+
+      stage.on_collision_of :thinger, :thinger do |a,b|
+        # no op, just want something to call
+      end
       runs.times do 
-        things[0].x = things[0].x + 1
-        things[2].x = things[0].x + 1
-        things[0].x = things[2].x - 1
-        things[2].x = things[2].x - 1
-        things[0].y = things[0].y + 1
-        things[2].y = things[0].y + 1
-        things[0].y = things[2].y - 1
-        things[2].y = things[2].y - 1
+        # move some around
+        dist = 10
+        [0,2,5,7,13,19].each do |i|
+          thing = things[i]
+          thing.x = thing.x + dist
+          thing.y = thing.y + dist
+        end
+
+        stage.update(20)
+
+        [0,2,5,7,13,19].each do |i|
+          thing = things[i]
+          thing.x = thing.x - dist
+          thing.y = thing.y - dist
+        end
+        stage.update(20)
+
+        to_kill = things.pop
+        things << stage.spawn(:thinger, x: to_kill.x, y: to_kill.y)
+        to_kill.remove_self
         stage.update(20)
 # 
 #         puts "\nGARBAGE COLLECTION"
