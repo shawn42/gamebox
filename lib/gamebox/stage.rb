@@ -132,8 +132,8 @@ class Stage
     #   # stagehand(:spatial_tree).instance_variable_get('@tree').items.values.each do |node|
     #   stagehand(:spatial_tree).instance_variable_get('@tree').each_node do |node|
     #     bb = node.bb
-    #     target.draw_box(bb.x+tx,bb.y+ty,bb.r+tx,bb.b+ty,[20,255,20,200], 9999)
-    #     @font.draw "#{bb.w}x#{bb.h}", bb.x+tx, bb.y+ty, 9999, 1,1, Color::WHITE
+    #     target.draw_box(bb.x+tx,bb.y+ty,bb.r+tx,bb.b+ty,Color::WHITE, 9999)
+    #     # @font.draw "#{bb.w}x#{bb.h}", bb.x+tx, bb.y+ty, 9999, 1,1, Color::WHITE
     #   end
     # end
   end

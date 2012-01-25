@@ -2,7 +2,7 @@ require 'forwardable'
 
 class SpatialTreeStagehand < Stagehand
   extend Forwardable
-  def_delegators :@tree, :neighbors_of, :calculate_bb, :to_s, :each, :query, :valid?
+  def_delegators :@tree, :calculate_bb, :to_s, :each, :query, :valid?
 
   attr_reader :moved_items
 
@@ -13,7 +13,7 @@ class SpatialTreeStagehand < Stagehand
   end
 
   def items
-    @tree.items.values
+    @tree.items.keys
   end
 
   def add(actor)
@@ -36,7 +36,6 @@ class SpatialTreeStagehand < Stagehand
     else
       @tree.insert actor
     end
-    raise "added #{actor} #{__FILE__}" unless @tree.valid?
   end
 
   def remove(actor)

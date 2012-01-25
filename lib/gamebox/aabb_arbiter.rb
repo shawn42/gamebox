@@ -18,7 +18,6 @@ module AABBArbiter
 
   def find_collisions
     aabb_tree = stagehand(:spatial_tree)
-    raise "FINDING COLLISIONS" unless aabb_tree.valid?
     collidable_actors = aabb_tree.moved_items.values
 
     collisions = {}
@@ -48,7 +47,6 @@ module AABBArbiter
       end
     end
     run_callbacks unique_collisions
-    # raise "ABOUT TO RESET" unless aabb_tree.valid?
     aabb_tree.reset
   end
 

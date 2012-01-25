@@ -1,11 +1,48 @@
 # TODO
 # keep NodePool around to reduce object churn
-# force all bb to be in integers? (rect may do this for us)
 # have a dot file output for debugging
 # optimize
 # balance
+
+def min(a,b)
+  a < b ? a : b
+end
+def max(a,b)
+  a > b ? a : b
+end
+
+def union_bb_area(bb, rect)
+  rleft = bb.left
+  rtop = bb.top
+  rright = bb.right
+  rbottom = bb.bottom
+  r2 = Rect.new_from_object(rect)
+
+  rleft = min(rleft, r2.left)
+  rtop = min(rtop, r2.top)
+  rright = max(rright, r2.right)
+  rbottom = max(rbottom, r2.bottom)
+
+  (rright - rleft) * (rbottom - rtop)
+end
+
+def union_bb(bb, rect)
+  # TODO can this be changed to actually update bb?
+  rleft = bb.left
+  rtop = bb.top
+  rright = bb.right
+  rbottom = bb.bottom
+  r2 = Rect.new_from_object(rect)
+
+  rleft = min(rleft, r2.left)
+  rtop = min(rtop, r2.top)
+  rright = max(rright, r2.right)
+  rbottom = max(rbottom, r2.bottom)
+
+  Rect.new(rleft, rtop, rright - rleft, rbottom - rtop)
+end
 class AABBTree
-  DEFAULT_BB_SCALE = 0.3
+  DEFAULT_BB_SCALE = 1
   attr_reader :items
   extend Forwardable
 
@@ -34,17 +71,14 @@ class AABBTree
   end
 
   def insert(item)
-    leaf = @items[item.object_id]
+    leaf = @items[item]
     if leaf
       reindex leaf
     else
       leaf = Node.new nil, item, calculate_bb(item)
-      @items[item.object_id] = leaf
+      @items[item] = leaf
       insert_leaf leaf
     end
-    # leaf->STAMP = GetStamp(tree);
-    # LeafAddPairs(leaf, tree);
-    # IncrementStamp(tree);
   end
 
   def insert_leaf(leaf)
@@ -56,13 +90,13 @@ class AABBTree
   end
 
   def remove(item)
-    leaf = @items.delete item.object_id
+    leaf = @items.delete item
     # PairsClear
     @root = @root.remove_subtree leaf if leaf
   end
 
   def reindex(item)
-    node = @items[item.object_id]
+    node = @items[item]
     if node && node.leaf?
       new_bb = calculate_bb(item)
       unless node.bb.contain? item.bb
@@ -86,10 +120,25 @@ class AABBTree
     bb
   end
 
+  def project_bb_by_velocity!(bb, velocity_vector)
+    projected_bb = [bb.x + velocity_vector.x,
+                    bb.y + velocity_vector.y,
+                    bb.w, bb.h ]
+
+    u_bb = union_bb(bb, projected_bb)
+    bb.x = u_bb.x
+    bb.y = u_bb.y
+    bb.w = u_bb.w
+    bb.h = u_bb.y
+  end
+
   def calculate_bb(item)
     # TODO extrude and whatnot
     if item.respond_to? :bb
-      expand_bb_by!(item.bb.dup, DEFAULT_BB_SCALE)
+      # TODO move these methods to Rect?
+      bb = item.bb.dup
+      project_bb_by_velocity!(bb, item.velocity) if item.respond_to? :velocity
+      expand_bb_by!(bb, DEFAULT_BB_SCALE)
     else
       if item.respond_to? :width
         w = item.width
@@ -103,12 +152,6 @@ class AABBTree
 
       expand_bb_by!(Rect.new item.x, item.y, w, h, DEFAULT_BB_SCALE)
     end
-  end
-
-  def neighbors_of(item, &blk)
-    leaf = @items[item.object_id]
-    return unless leaf
-    @root.query_subtree calculate_bb(item), &blk
   end
 
   def valid?
@@ -140,44 +183,6 @@ class AABBTree
     def b=(new_b)
       @b = new_b
       @b.parent = self
-    end
-
-    def min(a,b)
-      a < b ? a : b
-    end
-    def max(a,b)
-      a > b ? a : b
-    end
-
-    def union_bb_area(bb, rect)
-      rleft = bb.left
-      rtop = bb.top
-      rright = bb.right
-      rbottom = bb.bottom
-      r2 = Rect.new_from_object(rect)
-
-      rleft = min(rleft, r2.left)
-      rtop = min(rtop, r2.top)
-      rright = max(rright, r2.right)
-      rbottom = max(rbottom, r2.bottom)
-
-      (rright - rleft) * (rbottom - rtop)
-    end
-
-    def union_bb(bb, rect)
-      # TODO can this be changed to actually update bb?
-      rleft = bb.left
-      rtop = bb.top
-      rright = bb.right
-      rbottom = bb.bottom
-      r2 = Rect.new_from_object(rect)
-
-      rleft = min(rleft, r2.left)
-      rtop = min(rtop, r2.top)
-      rright = max(rright, r2.right)
-      rbottom = max(rbottom, r2.bottom)
-
-      Rect.new(rleft, rtop, rright - rleft, rbottom - rtop)
     end
 
     def insert_subtree(leaf)
@@ -232,15 +237,15 @@ class AABBTree
         @parent.b = value
       end
 
-      # @parent.update_bb
+      @parent.update_bb
     end
 
     def update_bb
       node = self
       unless node.leaf?
-        node.bb = union_bb(@a.bb, @b.bb)
+        node.bb = union_bb(node.a.bb, node.b.bb)
         while node = node.parent
-          node.bb = union_bb(@a.bb, @b.bb)
+          node.bb = union_bb(node.a.bb, node.b.bb)
         end
       end
     end
@@ -269,8 +274,8 @@ class AABBTree
     def each_node(&blk)
       blk.call self
       unless leaf?
-        blk.call @a
-        blk.call @b
+        @a.each_node &blk
+        @b.each_node &blk
       end
     end
 
@@ -301,7 +306,7 @@ class AABBTree
         """
         Leaf #{object_id}
         BB: #{@bb}
-        Parent: #{@parent.object_id}
+        Parent: #{@parent}
         Object: #{@object}
         """
       else
@@ -313,7 +318,7 @@ class AABBTree
         BB: #{@bb}
         A: #{@a}
         B: #{@b}
-        Parent: #{@parent.object_id}
+        Parent: #{@parent}
         """
       end
     end
