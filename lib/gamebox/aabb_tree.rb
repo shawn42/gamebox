@@ -60,6 +60,14 @@ class AABBTree
     @root.query_subtree search_bb, &callback
   end
 
+  def potential_collisions(item, &blk)
+    leaf = @items[item]
+    return unless leaf && leaf.pairs
+    leaf.pairs.each do |collider|
+      blk.call collider.object
+    end
+  end
+
   def each(&blk)
     return unless @root
     query @root.bb, &blk
@@ -68,6 +76,11 @@ class AABBTree
   def each_node(&blk)
     return unless @root
     @root.each_node &blk
+  end
+
+  def each_leaf(&blk)
+    return unless @root
+    @root.each_leaf &blk
   end
 
   def insert(item)
@@ -81,18 +94,41 @@ class AABBTree
     end
   end
 
+  def clear_pairs(leaf)
+    pairs = leaf.pairs
+
+    if pairs
+      leaf.pairs = nil
+      pairs.each do |other|
+        other.pairs.delete leaf
+      end
+    end
+  end
+
+  def build_pairs(leaf)
+    each_leaf do |other|
+      if leaf != other && leaf.bb.collide_rect?(other.bb)
+        leaf.pairs ||= []
+        other.pairs ||= []
+        leaf.pairs << other 
+        other.pairs << leaf
+      end
+    end
+  end
+
   def insert_leaf(leaf)
     if @root
       @root = @root.insert_subtree leaf
     else
       @root = leaf
     end
+    build_pairs leaf
   end
 
   def remove(item)
     leaf = @items.delete item
-    # PairsClear
     @root = @root.remove_subtree leaf if leaf
+    clear_pairs leaf
   end
 
   def reindex(item)
@@ -160,7 +196,7 @@ class AABBTree
   end
 
   class Node
-    attr_accessor :bb, :a, :b, :parent, :object
+    attr_accessor :bb, :a, :b, :parent, :object, :pairs
 
     def initialize(parent, object, bb)
       @parent = parent
@@ -276,6 +312,15 @@ class AABBTree
       unless leaf?
         @a.each_node &blk
         @b.each_node &blk
+      end
+    end
+
+    def each_leaf(&blk)
+      if leaf?
+        blk.call self
+      else leaf?
+        @a.each_leaf &blk
+        @b.each_leaf &blk
       end
     end
 
