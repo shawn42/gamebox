@@ -32,7 +32,7 @@ describe AABBTree do
       subject.query two.bb do |item|
         found_items << item
       end
-      found_items.should == [two]
+      found_items.should == [two, three]
 
       found_items = []
       subject.reindex two
@@ -67,37 +67,11 @@ describe AABBTree do
       two.bb = Rect.new 5, 8, 6, 10
       subject.reindex two
       found_items = []
-      subject.neighbors_of two do |item|
+      subject.potential_collisions two do |item|
         found_items << item
       end
-      found_items.should =~ [three, two]
+      found_items.should =~ [three]
       subject.valid?.should be_true
-
-      # require 'perftools'
-
-      # PerfTools::CpuProfiler.start("/tmp/gamebox_perf.txt")
-     # set_trace_func proc { |event, file, line, id, binding, classname|
-     #   printf("%8s %s:%-2d %10s %8s\n", event, file, line, id, classname) if classname == Rect && id == :initialize
-     # }
-
-     # GC.disable
-      # 800.times do |i|
-      #   subject.insert(bb("thing#{i}",i,i,i,i))
-      # end
-
-   # set_trace_func nil
-      # puts "\nGARBAGE COLLECTION"
-      # # Not even close to exact, but gives a rough idea of what's being collected
-      # old_objects = ObjectSpace.count_objects.dup
-      # ObjectSpace.garbage_collect
-      # new_objects = ObjectSpace.count_objects
-
-      # old_objects.each do |k,v|
-      #   diff = v - new_objects[k]
-      #   puts "#{k} #{diff} diff" if diff != 0
-      # end
-
-      # PerfTools::CpuProfiler.stop
     end
   end
 

@@ -137,6 +137,7 @@ class AABBTree
       new_bb = calculate_bb(item)
       unless node.bb.contain? item.bb
         node.bb = new_bb
+        clear_pairs node
         @root = @root.remove_subtree node
         insert_leaf node
       end
