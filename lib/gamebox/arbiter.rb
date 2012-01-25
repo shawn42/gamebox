@@ -3,11 +3,11 @@ module Arbiter
   attr_reader :checks, :collisions
 
   def register_collidable(actor)
-    stagehand(:spatial).add(actor)
+    stagehand(:spatial_tree).add(actor)
   end
 
   def unregister_collidable(actor)
-    stagehand(:spatial).remove(actor)
+    stagehand(:spatial_tree).remove(actor)
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -52,30 +52,29 @@ module Arbiter
     end
   end
 
+  def interested_in_collision_of?(type1, type2)
+    @collision_handlers ||= {}
+    (@collision_handlers[type1] && @collision_handlers[type1][type2]) ||
+    (@collision_handlers[type2] && @collision_handlers[type2][type1])
+  end
+
   def find_collisions
-    spatial_hash = stagehand(:spatial)
-    collidable_actors = spatial_hash.moved_items
-    @checks = 0
-    @collisions = 0
+    aabb_tree = stagehand(:spatial_tree)
+    collidable_actors = aabb_tree.moved_items.values
+
     collisions = {}
 
     collidable_actors.each do |first|
-      x = first.x - spatial_hash.cell_size
-      y = first.y - spatial_hash.cell_size
-      # TODO base this on size of object
-      w = spatial_hash.cell_size * 3
-      h = w
-
-      tmp_collidable_actors = spatial_hash.neighbors_of(first)
-
       if first.is? :collidable
-        tmp_collidable_actors.each do |second|
-          @checks += 1
+        # HUH? it appears that querying modifies the tree somehow?
+        # aabb_tree.query(first.bb) do |second|
+        aabb_tree.potential_collisions(first) do |second|
+
           if second.is? :collidable
-            if first != second && collide?(first, second)
-              collisions[second] ||= []
-              if !collisions[second].include?(first)
-                @collisions += 1
+            if first != second &&
+              interested_in_collision_of?(first.actor_type, second.actor_type) &&
+              collide?(first, second)
+              if !collisions[second] || (collisions[second] && !collisions[second].include?(first))
                 collisions[first] ||= []
                 collisions[first] << second
               end
@@ -90,9 +89,11 @@ module Arbiter
         unique_collisions << [first,second]
       end
     end
-
     run_callbacks unique_collisions
+    aabb_tree.reset
   end
+
+
 
   def collide?(object, other)
     if !other.is? :collidable

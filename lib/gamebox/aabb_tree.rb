@@ -1,60 +1,18 @@
-# TODO
-# keep NodePool around to reduce object churn
-# have a dot file output for debugging
-# optimize
-# balance
-
-def min(a,b)
-  a < b ? a : b
-end
-def max(a,b)
-  a > b ? a : b
-end
-
-def union_bb_area(bb, rect)
-  rleft = bb.left
-  rtop = bb.top
-  rright = bb.right
-  rbottom = bb.bottom
-  r2 = Rect.new_from_object(rect)
-
-  rleft = min(rleft, r2.left)
-  rtop = min(rtop, r2.top)
-  rright = max(rright, r2.right)
-  rbottom = max(rbottom, r2.bottom)
-
-  (rright - rleft) * (rbottom - rtop)
-end
-
-def union_bb(bb, rect)
-  # TODO can this be changed to actually update bb?
-  rleft = bb.left
-  rtop = bb.top
-  rright = bb.right
-  rbottom = bb.bottom
-  r2 = Rect.new_from_object(rect)
-
-  rleft = min(rleft, r2.left)
-  rtop = min(rtop, r2.top)
-  rright = max(rright, r2.right)
-  rbottom = max(rbottom, r2.bottom)
-
-  Rect.new(rleft, rtop, rright - rleft, rbottom - rtop)
-end
 class AABBTree
-  DEFAULT_BB_SCALE = 1
+  include BBHelpers
+  DEFAULT_BB_SCALE = 0
+  VELOCITY_SCALE = 3
+
   attr_reader :items
   extend Forwardable
 
   def_delegators :@items, :size, :include?
-  def_delegators :@root, :to_s
 
   def initialize
     @items = {}
     @root = nil
   end
 
-  # query the tree
   def query(search_bb, &callback)
     return unless @root
     @root.query_subtree search_bb, &callback
@@ -94,6 +52,32 @@ class AABBTree
     end
   end
 
+  def remove(item)
+    leaf = @items.delete item
+    @root = @root.remove_subtree leaf if leaf
+    clear_pairs leaf
+  end
+
+  def reindex(item)
+    node = @items[item]
+    if node && node.leaf?
+      new_bb = calculate_bb(item)
+      unless node.bb.contain? item.bb
+        node.bb = new_bb
+        clear_pairs node
+        @root = @root.remove_subtree node
+        insert_leaf node
+      end
+    end
+  end
+
+  def valid?
+    return true unless @root
+    @root.contains_children?
+  end
+
+  private
+
   def clear_pairs(leaf)
     pairs = leaf.pairs
 
@@ -125,25 +109,6 @@ class AABBTree
     build_pairs leaf
   end
 
-  def remove(item)
-    leaf = @items.delete item
-    @root = @root.remove_subtree leaf if leaf
-    clear_pairs leaf
-  end
-
-  def reindex(item)
-    node = @items[item]
-    if node && node.leaf?
-      new_bb = calculate_bb(item)
-      unless node.bb.contain? item.bb
-        node.bb = new_bb
-        clear_pairs node
-        @root = @root.remove_subtree node
-        insert_leaf node
-      end
-    end
-  end
-
   def expand_bb_by!(bb, percent)
     new_w = bb.w * percent
     new_h = bb.h * percent
@@ -158,6 +123,7 @@ class AABBTree
   end
 
   def project_bb_by_velocity!(bb, velocity_vector)
+    future_vector = velocity_vector * VELOCITY_SCALE
     projected_bb = [bb.x + velocity_vector.x,
                     bb.y + velocity_vector.y,
                     bb.w, bb.h ]
@@ -170,9 +136,7 @@ class AABBTree
   end
 
   def calculate_bb(item)
-    # TODO extrude and whatnot
     if item.respond_to? :bb
-      # TODO move these methods to Rect?
       bb = item.bb.dup
       project_bb_by_velocity!(bb, item.velocity) if item.respond_to? :velocity
       expand_bb_by!(bb, DEFAULT_BB_SCALE)
@@ -191,12 +155,8 @@ class AABBTree
     end
   end
 
-  def valid?
-    return true unless @root
-    @root.contains_children?
-  end
-
   class Node
+    include BBHelpers
     attr_accessor :bb, :a, :b, :parent, :object, :pairs
 
     def initialize(parent, object, bb)
@@ -347,27 +307,6 @@ class AABBTree
       end
     end
 
-    def to_s
-      if leaf?
-        """
-        Leaf #{object_id}
-        BB: #{@bb}
-        Parent: #{@parent}
-        Object: #{@object}
-        """
-      else
-        """
-        Container #{object_id}
-        UnionedBB: #{union_bb(@a.bb, @b.bb)}
-        ACollide?: #{@bb.collide_rect?(@a.bb)}
-        BCollide?: #{@bb.collide_rect?(@b.bb)}
-        BB: #{@bb}
-        A: #{@a}
-        B: #{@b}
-        Parent: #{@parent}
-        """
-      end
-    end
   end
 
 end
