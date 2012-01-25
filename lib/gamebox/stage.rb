@@ -1,8 +1,8 @@
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
-  include AABBArbiter
-  # include Arbiter
+  include Arbiter
+  # include AABBArbiter
   extend Publisher
   can_fire_anything
 
@@ -121,6 +121,21 @@ class Stage
         end
       end
     end
+
+    # @font ||= resource_manager.load_font "Asimov.ttf", 18
+    # stagehand(:spatial_tree).items.each do |actor|
+    #   bb = actor.bb
+    #   tx = @viewport.x_offset 1
+    #   ty = @viewport.y_offset 1
+    #   target.fill(bb.x+tx,bb.y+ty,bb.r+tx,bb.b+ty,[255,20,20, 200], 999)
+
+    #   # stagehand(:spatial_tree).instance_variable_get('@tree').items.values.each do |node|
+    #   stagehand(:spatial_tree).instance_variable_get('@tree').each_node do |node|
+    #     bb = node.bb
+    #     target.draw_box(bb.x+tx,bb.y+ty,bb.r+tx,bb.b+ty,[20,255,20,200], 9999)
+    #     @font.draw "#{bb.w}x#{bb.h}", bb.x+tx, bb.y+ty, 9999, 1,1, Color::WHITE
+    #   end
+    # end
   end
 
   def unregister_drawable(drawable)

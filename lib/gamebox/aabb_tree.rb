@@ -5,6 +5,7 @@
 # optimize
 # balance
 class AABBTree
+  DEFAULT_BB_SCALE = 0.3
   attr_reader :items
   extend Forwardable
 
@@ -25,6 +26,11 @@ class AABBTree
   def each(&blk)
     return unless @root
     query @root.bb, &blk
+  end
+
+  def each_node(&blk)
+    return unless @root
+    @root.each_node &blk
   end
 
   def insert(item)
@@ -58,27 +64,32 @@ class AABBTree
   def reindex(item)
     node = @items[item.object_id]
     if node && node.leaf?
-      new_bb = item.bb #calculate_bb(item)
-      unless node.bb.contain? new_bb
-        # use velocity vector to extrap
-        # 10% bigger
-        horizontal_growth = (new_bb.w * 0.1).ceil
-        vertical_growth = (new_bb.h * 0.1).ceil
-        node.bb[0] = new_bb.x - horizontal_growth
-        node.bb[1] = new_bb.y - vertical_growth
-        node.bb[2] = new_bb.w + 2*horizontal_growth
-        node.bb[3] = new_bb.h + 2*vertical_growth
-
+      new_bb = calculate_bb(item)
+      unless node.bb.contain? item.bb
+        node.bb = new_bb
         @root = @root.remove_subtree node
         insert_leaf node
       end
     end
   end
 
+  def expand_bb_by!(bb, percent)
+    new_w = bb.w * percent
+    new_h = bb.h * percent
+    hw = new_w / 2.0
+    hh = new_h / 2.0
+
+    bb.x = (bb.x - hw).ceil
+    bb.y = (bb.y - hh).ceil
+    bb.w = (bb.w + new_w).ceil
+    bb.h = (bb.w + new_h).ceil
+    bb
+  end
+
   def calculate_bb(item)
     # TODO extrude and whatnot
     if item.respond_to? :bb
-      item.bb
+      expand_bb_by!(item.bb.dup, DEFAULT_BB_SCALE)
     else
       if item.respond_to? :width
         w = item.width
@@ -90,11 +101,7 @@ class AABBTree
       w ||= 2
       h ||= 2
 
-      horizontal_growth = (w * 0.05).ceil
-      vertical_growth = (h * 0.05).ceil
-
-      Rect.new item.x - horizontal_growth, item.y - vertical_growth,
-          w + 2*horizontal_growth, h + 2*vertical_growth
+      expand_bb_by!(Rect.new item.x, item.y, w, h, DEFAULT_BB_SCALE)
     end
   end
 
@@ -105,6 +112,7 @@ class AABBTree
   end
 
   def valid?
+    return true unless @root
     @root.contains_children?
   end
 
@@ -204,6 +212,14 @@ class AABBTree
       @a == child ? @b : @a
     end
 
+    def root
+      node = self
+      while node.parent
+        node = node.parent
+      end
+      node
+    end
+
     # horrible name!!
     def hand_off_child(leaf)
       value = other(leaf)
@@ -216,13 +232,16 @@ class AABBTree
         @parent.b = value
       end
 
-      @parent.update_bb
+      # @parent.update_bb
     end
 
     def update_bb
       node = self
-      while node = node.parent
+      unless node.leaf?
         node.bb = union_bb(@a.bb, @b.bb)
+        while node = node.parent
+          node.bb = union_bb(@a.bb, @b.bb)
+        end
       end
     end
 
@@ -245,6 +264,14 @@ class AABBTree
       other_bb = other_node.bb
       (@bb.left + @bb.right - other_bb.left - other_bb.right).abs +
       (@bb.bottom + @bb.top - other_bb.bottom - other_bb.top).abs 
+    end
+
+    def each_node(&blk)
+      blk.call self
+      unless leaf?
+        blk.call @a
+        blk.call @b
+      end
     end
 
     def query_subtree(search_bb, &blk)
