@@ -3,6 +3,7 @@ require_relative 'helper'
 describe HookedGosuWindow do
   class Gosu::Window
     def initialize(*args)
+      # sometimes causes seg faults if running bundle exec rake
       # autorelease garbage in output if I don't do this
     end
   end
