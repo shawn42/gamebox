@@ -68,6 +68,7 @@
 # In Rubygame, Rects are used for collision detection and describing 
 # the area of a Surface to operate on.
 class Rect < Array
+  include MinMaxHelpers
 
   #--
   # GENERAL
@@ -603,6 +604,66 @@ class Rect < Array
     w * h
   end
 
+  def zero_out!
+    self[0] = 0
+    self[1] = 0
+    self[2] = 0
+    self[3] = 0
+  end
+
+  def union_area(rect)
+    rleft = self.left
+    rtop = self.top
+    rright = self.right
+    rbottom = self.bottom
+    r2 = Rect.new_from_object(rect)
+
+    rleft = min(rleft, r2.left)
+    rtop = min(rtop, r2.top)
+    rright = max(rright, r2.right)
+    rbottom = max(rbottom, r2.bottom)
+
+    (rright - rleft) * (rbottom - rtop)
+  end
+
+  def union_fast(rect)
+    rleft = self.left
+    rtop = self.top
+    rright = self.right
+    rbottom = self.bottom
+    r2 = Rect.new_from_object(rect)
+
+    rleft = min(rleft, r2.left)
+    rtop = min(rtop, r2.top)
+    rright = max(rright, r2.right)
+    rbottom = max(rbottom, r2.bottom)
+
+    Rect.new(rleft, rtop, rright - rleft, rbottom - rtop)
+  end
+
+  def expand_to_include!(rect)
+    rleft = self.left
+    rtop = self.top
+    rright = self.right
+    rbottom = self.bottom
+    r2 = Rect.new_from_object(rect)
+
+    rleft = min(rleft, r2.left)
+    rtop = min(rtop, r2.top)
+    rright = max(rright, r2.right)
+    rbottom = max(rbottom, r2.bottom)
+
+    self.x = rleft
+    self.y = rtop
+    self.w = rright - rleft
+    self.h = rbottom - rtop
+  end
+
+  def refit_for!(rect_a, rect_b)
+    self.zero_out!
+    expand_to_include! self, rect_a
+    expand_to_include! self, rect_b
+  end
 
 end # class Rect
 

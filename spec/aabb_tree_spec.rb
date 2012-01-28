@@ -32,7 +32,7 @@ describe AABBTree do
       subject.query two.bb do |item|
         found_items << item
       end
-      found_items.should == [two]
+      found_items.should == [two, three]
 
       found_items = []
       subject.reindex two

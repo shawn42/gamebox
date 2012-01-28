@@ -1,11 +1,9 @@
 class AABBTree
-  include BBHelpers
-  DEFAULT_BB_SCALE = 0
+  DEFAULT_BB_SCALE = 1
   VELOCITY_SCALE = 3
 
   attr_reader :items
   extend Forwardable
-
   def_delegators :@items, :size, :include?
 
   def initialize
@@ -46,7 +44,7 @@ class AABBTree
     if leaf
       reindex leaf
     else
-      leaf = Node.new nil, item, calculate_bb(item)
+      leaf = AABBNode.new nil, item, calculate_bb(item)
       @items[item] = leaf
       insert_leaf leaf
     end
@@ -128,7 +126,7 @@ class AABBTree
                     bb.y + velocity_vector.y,
                     bb.w, bb.h ]
 
-    u_bb = union_bb(bb, projected_bb)
+    u_bb = bb.union_fast(projected_bb)
     bb.x = u_bb.x
     bb.y = u_bb.y
     bb.w = u_bb.w
@@ -155,158 +153,5 @@ class AABBTree
     end
   end
 
-  class Node
-    include BBHelpers
-    attr_accessor :bb, :a, :b, :parent, :object, :pairs
-
-    def initialize(parent, object, bb)
-      @parent = parent
-      @a = nil
-      @b = nil
-
-      @object = object
-      @bb = bb
-    end
-
-    def leaf?
-      @object
-    end
-
-    def a=(new_a)
-      @a = new_a
-      @a.parent = self
-    end
-
-    def b=(new_b)
-      @b = new_b
-      @b.parent = self
-    end
-
-    def insert_subtree(leaf)
-      if leaf?
-        # node new
-        new_node = Node.new nil, nil, union_bb(@bb, leaf.bb) 
-        new_node.a = self
-        new_node.b = leaf
-        return new_node
-      else
-        cost_a = @b.bb.area + union_bb_area(@a.bb, leaf.bb)
-        cost_b = @a.bb.area + union_bb_area(@b.bb, leaf.bb)
-
-        if cost_a == cost_b
-          cost_a = @a.proximity(leaf)
-          cost_b = @b.proximity(leaf)
-        end
-
-        if cost_b < cost_a
-          self.b = @b.insert_subtree leaf
-        else
-          self.a = @a.insert_subtree leaf
-        end
-
-        @bb = union_bb(@bb, leaf.bb)
-        # TODO expand_to_include leaf.bb
-        return self
-      end
-    end
-
-    def other(child)
-      @a == child ? @b : @a
-    end
-
-    def root
-      node = self
-      while node.parent
-        node = node.parent
-      end
-      node
-    end
-
-    # horrible name!!
-    def hand_off_child(leaf)
-      value = other(leaf)
-      raise "Internal Error: Cannot replace child of a leaf." if @parent.leaf?
-      raise "Internal Error: Node is not a child of parent." unless self == @parent.a || self == @parent.b
-
-      if @parent.a == self
-        @parent.a = value
-      else
-        @parent.b = value
-      end
-
-      @parent.update_bb
-    end
-
-    def update_bb
-      node = self
-      unless node.leaf?
-        node.bb = union_bb(node.a.bb, node.b.bb)
-        while node = node.parent
-          node.bb = union_bb(node.a.bb, node.b.bb)
-        end
-      end
-    end
-
-    def remove_subtree(leaf)
-      if leaf == self
-        return nil
-      else
-        if leaf.parent == self
-          other_child = other(leaf)
-          other_child.parent = @parent
-          return other_child
-        else
-          leaf.parent.hand_off_child leaf
-          return self
-        end
-      end
-    end
-
-    def proximity(other_node)
-      other_bb = other_node.bb
-      (@bb.left + @bb.right - other_bb.left - other_bb.right).abs +
-      (@bb.bottom + @bb.top - other_bb.bottom - other_bb.top).abs 
-    end
-
-    def each_node(&blk)
-      blk.call self
-      unless leaf?
-        @a.each_node &blk
-        @b.each_node &blk
-      end
-    end
-
-    def each_leaf(&blk)
-      if leaf?
-        blk.call self
-      else leaf?
-        @a.each_leaf &blk
-        @b.each_leaf &blk
-      end
-    end
-
-    def query_subtree(search_bb, &blk)
-      if @bb.collide_rect? search_bb
-        if leaf?
-          blk.call @object
-        else
-          @a.query_subtree search_bb, &blk
-          @b.query_subtree search_bb, &blk
-        end
-      end
-    end
-
-    def contains_children?
-      if leaf?
-        true
-      else
-        @bb.contain?(a.bb) &&
-        @bb.contain?(b.bb) &&
-        @a.contains_children? &&
-        @b.contains_children?
-      end
-    end
-
-  end
 
 end
