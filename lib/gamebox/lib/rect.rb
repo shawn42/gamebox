@@ -661,8 +661,8 @@ class Rect < Array
 
   def refit_for!(rect_a, rect_b)
     self.zero_out!
-    expand_to_include! self, rect_a
-    expand_to_include! self, rect_b
+    self.expand_to_include! rect_a
+    self.expand_to_include! rect_b
   end
 
 end # class Rect

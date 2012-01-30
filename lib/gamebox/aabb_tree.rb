@@ -1,4 +1,9 @@
+# AABBTree is a binary tree where each node has a bounding box that contains
+# its children's bounding boxes. It extrapolates and expands the node bounding
+# boxes before inserting to lower the amount of updates to the tree structure.
+# It caches all leaf node collisions for quick lookup.
 class AABBTree
+  include AABBTreeDebugHelpers
   DEFAULT_BB_SCALE = 1
   VELOCITY_SCALE = 3
 
@@ -16,84 +21,60 @@ class AABBTree
     @root.query_subtree search_bb, &callback
   end
 
-  def potential_collisions(item, &blk)
+  def collisions(item, &blk)
     leaf = @items[item]
-    return unless leaf && leaf.pairs
-    leaf.pairs.each do |collider|
+    return unless leaf && leaf.cached_collisions
+    leaf.cached_collisions.each do |collider|
       blk.call collider.object
     end
   end
 
-  def each(&blk)
-    return unless @root
-    query @root.bb, &blk
-  end
-
-  def each_node(&blk)
-    return unless @root
-    @root.each_node &blk
-  end
-
-  def each_leaf(&blk)
-    return unless @root
-    @root.each_leaf &blk
-  end
-
   def insert(item)
-    leaf = @items[item]
-    if leaf
-      reindex leaf
-    else
-      leaf = AABBNode.new nil, item, calculate_bb(item)
-      @items[item] = leaf
-      insert_leaf leaf
-    end
+    raise "Adding an existing item, please use update" if @items[item]
+    leaf = AABBNode.new nil, item, calculate_bb(item)
+    @items[item] = leaf
+    insert_leaf leaf
   end
 
   def remove(item)
     leaf = @items.delete item
     @root = @root.remove_subtree leaf if leaf
-    clear_pairs leaf
+    clear_cached_collisions leaf
   end
 
-  def reindex(item)
+  def update(item)
     node = @items[item]
     if node && node.leaf?
       new_bb = calculate_bb(item)
       unless node.bb.contain? item.bb
         node.bb = new_bb
-        clear_pairs node
+        clear_cached_collisions node
         @root = @root.remove_subtree node
         insert_leaf node
       end
     end
   end
 
-  def valid?
-    return true unless @root
-    @root.contains_children?
-  end
-
   private
 
-  def clear_pairs(leaf)
-    pairs = leaf.pairs
+  def clear_cached_collisions(leaf)
+    cached_collisions = leaf.cached_collisions
 
-    if pairs
-      leaf.pairs = nil
-      pairs.each do |other|
-        other.pairs.delete leaf
+    if cached_collisions
+      leaf.cached_collisions = nil
+      cached_collisions.each do |other|
+        other.cached_collisions.delete leaf
       end
     end
   end
 
-  def build_pairs(leaf)
+  def build_cached_collisions(leaf)
     each_leaf do |other|
       if leaf != other && leaf.bb.collide_rect?(other.bb)
-        leaf.pairs ||= []
-        other.pairs ||= []
-        leaf.pairs << other 
-        other.pairs << leaf
+        leaf.cached_collisions ||= []
+        other.cached_collisions ||= []
+        leaf.cached_collisions << other 
+        other.cached_collisions << leaf
       end
     end
   end
@@ -104,7 +85,7 @@ class AABBTree
     else
       @root = leaf
     end
-    build_pairs leaf
+    build_cached_collisions leaf
   end
 
   def expand_bb_by!(bb, percent)
@@ -116,7 +97,7 @@ class AABBTree
     bb.x = (bb.x - hw).ceil
     bb.y = (bb.y - hh).ceil
     bb.w = (bb.w + new_w).ceil
-    bb.h = (bb.w + new_h).ceil
+    bb.h = (bb.h + new_h).ceil
     bb
   end
 
@@ -152,6 +133,5 @@ class AABBTree
       expand_bb_by!(Rect.new item.x, item.y, w, h, DEFAULT_BB_SCALE)
     end
   end
-
-
 end
+

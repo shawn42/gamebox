@@ -68,7 +68,7 @@ module Arbiter
       if first.is? :collidable
         # HUH? it appears that querying modifies the tree somehow?
         # aabb_tree.query(first.bb) do |second|
-        aabb_tree.potential_collisions(first) do |second|
+        aabb_tree.collisions(first) do |second|
 
           if second.is? :collidable
             if first != second &&
