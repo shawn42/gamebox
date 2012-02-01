@@ -4,6 +4,7 @@ pkg
 *.log
 doc
 coverage
+complexity
 .DS_Store
 .yardoc
 tmp
