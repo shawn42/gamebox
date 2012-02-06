@@ -1,443 +1,178 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
-
-
-
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 	<title>shawn42/gamebox @ GitHub</title>
-	
+
+	<link href='http://fonts.googleapis.com/css?family=Metrophobic' rel='stylesheet' type='text/css'>
 	<style type="text/css">
-		body {
-  		margin: 0em 0 0 0;
-  		padding: 0px;
-      background-color: #cdeee5;
-		  font-family: "helvetica"; 
-  		color: #000000;
+    @font-face {
+        font-family: 'Supertext01Regular';
+        src: url('st01r-webfont.eot');
+        src: url('st01r-webfont.eot?#iefix') format('embedded-opentype'),
+             url('st01r-webfont.woff') format('woff'),
+             url('st01r-webfont.ttf') format('truetype'),
+             url('st01r-webfont.svg#Supertext01Regular') format('svg');
+        font-weight: normal;
+        font-style: normal;
+
+    }    
+
+    body {
+      font-family: 'Metrophobic', sans-serif;
+      background: #434445 url('noise.png'); 
+      margin:0;
+      padding:0;
+      text-shadow: 1px 1px 1px rgba(0,0,0,.5);
     }
-    html, body
-    {
-/*      height: 100%;*/
-    }
+
     #container {
-      margin: 0 auto;
-/*      width: 700px;*/
+      font-family: 'Metrophobic', sans-serif;
+      padding: 20px;
+      width: 700px;
+      margin: 15px auto 15px 20px;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      color: #DDD;
     }
-		h1 { font-size: 3.8em; color: #32111a; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #32111a; }
-    h3 { text-align: center; color: #32111a; }
-    a { color: #32111a; }
-    .description { font-size: 1.2em; margin-bottom: 15px; font-style: italic;}
+
+    .header { 
+      overflow: auto;
+    }
+
+    h1 a, h2 a { 
+      text-decoration: none;
+      color: #A23434;
+      text-shadow: 0px 3px 0px #333;
+      filter: dropshadow(color=#333, offx=0, offy=2);
+    }
+
+    .header h1, .header h2 {
+      font-family: 'Supertext01Regular', sans-serif;
+    }
+
+    h1 {
+      font-family: 'Metrophobic', sans-serif;
+      font-size: 3.8em;
+      font-weight: 600;
+      margin: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      font-family: 'Metrophobic', sans-serif;
+      font-weight: 600;
+      font-size: 1.8em;
+      margin: 0;
+      color: #A23434;
+      text-shadow: 0px 2px 0px #333;
+      filter: dropshadow(color=#333, offx=0, offy=2);
+    }
+
+    h2.subhead { 
+      margin: -25px 0 10px 0;
+      color: #DDD;
+      text-shadow: 0px 2px 0px #999999;
+      filter: dropshadow(color=#999999, offx=0, offy=2);
+    }
+
+    .header a.logo {
+      float: left;
+      margin-right: 25px
+    }
+
+    .nav {
+      margin: 25px 0;
+    }
+
+    .nav a {
+      color: #fff;
+      margin: 0 5px;
+      display: inline-block;
+      position: relative;
+      top: 0;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
+      background: #333;
+    }
+    
+    .nav a span {
+      display: inline-block;
+      padding: 8px  20px 10px;
+      line-height: 1;
+      text-shadow: 0 -1px 1px rgba(19,65,88,.8);
+      border-bottom: 1px solid #555;
+      border-right: 1px solid #555;
+      border-top: 1px solid #666;
+      border-left: 1px solid #666;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
+    }
+
+    .nav a:hover {
+      background: #222;
+    }
+    
+    .description { 
+      font-size: 1em; 
+      margin-bottom: 15px; 
+      font-style: italic;
+    }
+
+    hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .download { margin-bottom: 15px; }
-		pre { background: #32111a; color: #fff; padding: 15px;-moz-border-radius: 5px;
-    -webkit-border-radius: 5px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+    pre { 
+      background: #111; 
+      border-bottom: 1px solid #555;
+      border-right: 1px solid #555;
+      border-top: 1px solid #666;
+      border-left: 1px solid #666;
+      color: #fff; 
+      padding: 15px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+    }
     .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
 	
-<style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+    a img {
+      cursor: hand;
+      border: none;
+    }
 
-#firebugBody {
-    position: fixed;
-    top:0;
-    left:0;
-    margin:0;
-    padding:0;
-    width:1px;
-    height:1px;
-    overflow:visible;
-}
-
-.firebugCanvas {
-    position:fixed;
-    top: 0;
-    left: 0;
-    display:none;
-    border: 0 none;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-}
-
-.firebugHighlight {
-    z-index: 2147483647;
-    position: absolute;
-    background-color: #3875d7;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    border: 0 none;
-}
-
-.firebugLayoutBoxParent {
-    z-index: 2147483647;
-    position: absolute;
-    background-color: transparent;
-    border-top: 0 none;
-    border-right: 1px dashed #BBBBBB;
-    border-bottom: 1px dashed #BBBBBB;
-    border-left: 0 none;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-}
-
-.firebugRuler {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    border: 0 none;
-}
-
-.firebugRulerH {
-    top: -15px;
-    left: 0;
-    width: 100%;
-    height: 14px;
-    background: url(chrome://firebug/skin/rulerH.png) repeat-x;
-    border-top: 1px solid #BBBBBB;
-    border-right: 1px dashed #BBBBBB;
-    border-bottom: 1px solid #000000;
-}
-
-.firebugRulerV {
-    top: 0;
-    left: -15px;
-    width: 14px;
-    height: 100%;
-    background: url(chrome://firebug/skin/rulerV.png) repeat-y;
-    border-left: 1px solid #BBBBBB;
-    border-right: 1px solid #000000;
-    border-bottom: 1px dashed #BBBBBB;
-}
-
-.overflowRulerX > .firebugRulerV {
-    left: 0;
-}
-
-.overflowRulerY > .firebugRulerH {
-    top: 0;
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-.firebugLayoutBox {
-    margin: 0;
-    padding: 0;
-    border: 0 none;
-    outline: 0;
-}
-
-.firebugLayoutBoxOffset {
-    z-index: 2147483647;
-    position: absolute;
-    opacity: 0.8;
-}
-
-.firebugLayoutBoxMargin {
-    background-color: #EDFF64;
-}
-
-.firebugLayoutBoxBorder {
-    background-color: #666666;
-}
-
-.firebugLayoutBoxPadding {
-    background-color: SlateBlue;
-}
-
-.firebugLayoutBoxContent {
-    background-color: SkyBlue;
-}
-
-/*.firebugHighlightGroup .firebugLayoutBox {
-    background-color: transparent;
-}
-
-.firebugHighlightBox {
-    background-color: Blue !important;
-}*/
-
-.firebugLayoutLine {
-    z-index: 2147483647;
-    background-color: #000000;
-    opacity: 0.4;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    border: 0 none;
-}
-
-.firebugLayoutLineLeft,
-.firebugLayoutLineRight {
-    position: fixed;
-    width: 1px;
-    height: 100%;
-}
-
-.firebugLayoutLineTop,
-.firebugLayoutLineBottom {
-    position: absolute;
-    width: 100%;
-    height: 1px;
-}
-
-.firebugLayoutLineTop {
-    margin-top: -1px;
-    border-top: 1px solid #999999;
-}
-
-.firebugLayoutLineRight {
-    border-right: 1px solid #999999;
-}
-
-.firebugLayoutLineBottom {
-    border-bottom: 1px solid #999999;
-}
-
-.firebugLayoutLineLeft {
-    margin-left: -1px;
-    border-left: 1px solid #999999;
-}
-</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
-
-#firebugBody {
-    position: fixed;
-    top:0;
-    left:0;
-    margin:0;
-    padding:0;
-    width:1px;
-    height:1px;
-    overflow:visible;
-}
-
-.firebugCanvas {
-    position:fixed;
-    top: 0;
-    left: 0;
-    display:none;
-    border: 0 none;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-}
-
-.firebugHighlight {
-    z-index: 2147483647;
-    position: absolute;
-    background-color: #3875d7;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    border: 0 none;
-}
-
-.firebugLayoutBoxParent {
-    z-index: 2147483647;
-    position: absolute;
-    background-color: transparent;
-    border-top: 0 none;
-    border-right: 1px dashed #BBBBBB;
-    border-bottom: 1px dashed #BBBBBB;
-    border-left: 0 none;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-}
-
-.firebugRuler {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    border: 0 none;
-}
-
-.firebugRulerH {
-    top: -15px;
-    left: 0;
-    width: 100%;
-    height: 14px;
-    background: url(chrome://firebug/skin/rulerH.png) repeat-x;
-    border-top: 1px solid #BBBBBB;
-    border-right: 1px dashed #BBBBBB;
-    border-bottom: 1px solid #000000;
-}
-
-.firebugRulerV {
-    top: 0;
-    left: -15px;
-    width: 14px;
-    height: 100%;
-    background: url(chrome://firebug/skin/rulerV.png) repeat-y;
-    border-left: 1px solid #BBBBBB;
-    border-right: 1px solid #000000;
-    border-bottom: 1px dashed #BBBBBB;
-}
-
-.overflowRulerX > .firebugRulerV {
-    left: 0;
-}
-
-.overflowRulerY > .firebugRulerH {
-    top: 0;
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-.firebugLayoutBox {
-    margin: 0;
-    padding: 0;
-    border: 0 none;
-    outline: 0;
-}
-
-.firebugLayoutBoxOffset {
-    z-index: 2147483647;
-    position: absolute;
-    opacity: 0.8;
-}
-
-.firebugLayoutBoxMargin {
-    background-color: #EDFF64;
-}
-
-.firebugLayoutBoxBorder {
-    background-color: #666666;
-}
-
-.firebugLayoutBoxPadding {
-    background-color: SlateBlue;
-}
-
-.firebugLayoutBoxContent {
-    background-color: SkyBlue;
-}
-
-/*.firebugHighlightGroup .firebugLayoutBox {
-    background-color: transparent;
-}
-
-.firebugHighlightBox {
-    background-color: Blue !important;
-}*/
-
-.firebugLayoutLine {
-    z-index: 2147483647;
-    background-color: #000000;
-    opacity: 0.4;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    border: 0 none;
-}
-
-.firebugLayoutLineLeft,
-.firebugLayoutLineRight {
-    position: fixed;
-    width: 1px;
-    height: 100%;
-}
-
-.firebugLayoutLineTop,
-.firebugLayoutLineBottom {
-    position: absolute;
-    width: 100%;
-    height: 1px;
-}
-
-.firebugLayoutLineTop {
-    margin-top: -1px;
-    border-top: 1px solid #999999;
-}
-
-.firebugLayoutLineRight {
-    border-right: 1px solid #999999;
-}
-
-.firebugLayoutLineBottom {
-    border-bottom: 1px solid #999999;
-}
-
-.firebugLayoutLineLeft {
-    margin-left: -1px;
-    border-left: 1px solid #999999;
-}
-html
-{
-  background: url(bg.gif);
-  margin:0;
-  padding:0;
-}
-body
-{
-  background: none; 
-  margin:0;
-  padding:0;
-}
-a img
-{
-  border: none;
-  vertical-align: middle;
-  margin: 0px 10px 0px 0px;
-}
-#container
-{
-  padding: 20px;
-  width: 700px;
-  background: #fff;
-  margin: 15px auto;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  color: #333;
-}
-.nav
-{
-  margin-bottom: 25px;
-}
-.nav a
-{
-  padding: 5px 8px;
-  margin-right: 5px;
-  text-decoration: none;
-  color: #fff;
-  background: #F33E3E;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  opacity: 1;
-  -webkit-transition: opacity 2s linear;
-}
-  .nav a:hover
-  {
-/*    background:#F39F9F;*/
-    opacity: .8;
-  }
-  
-h1, h2, p
-{
-  margin: 0px 0px 20px 0px;
-  padding:0;
-}
-h1
-{
-  font-size: 3em;
-}
-h2
-{
-  font-size: 1.2em;
-  margin:0px 0px 5px 0px;
-}
-</style></head><body>
+    a {
+      color: #FFF;
+    }
+      
+    p {
+      margin: 0px 0px 20px 0px;
+      padding:0;
+    }
+</style>
+</head>
+<body>
   <a href="http://github.com/shawn42/gamebox"><img style="border: 0pt none ; position: absolute; top: 0; right: 0; margin:0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
   <div id="container">
-    <h1><a href="http://github.com/shawn42/gamebox"><img src="gamebox_logo2.png">gamebox</a> 
-      <span class="small">by <a href="http://github.com/shawn42">shawn42</a></span></h1>
-    <p class="nav"><a href="http://gamebox.rubyforge.org/docs/getting_started_rdoc.html">Getting Started</a><a href="http://gamebox.rubyforge.org">API</a><a href="#">Examples</a><a href="#">Tutorials</a></p> 
-    <div class="description">
-      A game template for building and distributing Rubygame apps.
+    <div class='header'>
+      <a href='http://github.com/shawn42/gamebox' class='logo'><img src='gamebox_logo2.png' /></a>
+      <h1><a href="http://github.com/shawn42/gamebox">gamebox</a></h1> 
     </div>
+    <div class="description">A game template for building and distributing Rubygame apps.</div>
+    <div class="nav">
+      <a href="#installation"><span>Installation</span></a>
+      <a href="http://gamebox.rubyforge.org/docs/getting_started_rdoc.html"><span>Getting Started</span></a>
+      <a href="http://gamebox.rubyforge.org"><span>API</span></a>
+      <a href="#"><span>Examples</span></a>
+      <a href="#"><span>Tutorials</span></a>
+    </div> 
+    <hr />
     <p>
     <pre>gem install gamebox
 gamebox zappy</pre><br/>
