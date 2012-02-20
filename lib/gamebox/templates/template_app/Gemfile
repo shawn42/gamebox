@@ -1,5 +1,6 @@
 source "http://rubygems.org"
-gem 'chipmunk'
+# uncomment for chipmunk
+# gem 'chipmunk'
 gem 'require_all'
 gem "gamebox"
 gem "diy"
