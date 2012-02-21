@@ -3,7 +3,7 @@
 # stage, input_manager, director, resource_manager. It also creates the ActorView 
 # associated with the Actor and registers it to the Stage be drawn. 
 class ActorFactory
-  constructor :input_manager, :wrapped_screen
+  construct_with :input_manager, :wrapped_screen
 
   attr_accessor :stage_manager, :director
   
@@ -32,11 +32,11 @@ class ActorFactory
 
     basic_opts = {
       :stage => stage,
-      :input => @input_manager,
+      :input => input_manager,
       :director => @director,
       :resources => stage.resource_manager,
       :actor_type => actor,
-      :wrapped_screen => @wrapped_screen
+      :wrapped_screen => wrapped_screen
     }
     merged_opts = basic_opts.merge(opts)
     model = actor_def[:model_klass].new merged_opts 
@@ -48,7 +48,7 @@ class ActorFactory
       view_klass ||= GraphicalActorView
     end
     
-    view_klass.new stage, model, @wrapped_screen if view_klass
+    view_klass.new stage, model, wrapped_screen if view_klass
     
     model.show unless opts[:hide]
 

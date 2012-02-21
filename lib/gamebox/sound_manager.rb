@@ -4,14 +4,14 @@
 class SoundManager
   attr_accessor :sounds, :music
 
-  constructor :resource_manager, :config_manager
+  construct_with :resource_manager, :config_manager
   SUPPORTED_AUDIO_EXTS = %w(wav ogg mp3 au aiff caf)
   
   # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
   def setup
 
     puts 'CHANGE TO LOG:Warning, sound disabled' unless
-    @enabled = (@config_manager.settings[:sound].nil? or @config_manager.settings[:sound] == true)
+    @enabled = (config_manager.settings[:sound].nil? or config_manager.settings[:sound] == true)
 
     if @enabled
       @music = {}
@@ -22,7 +22,7 @@ class SoundManager
           sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
           ext = name.gsub(" ","_").split(".").last
           unless ext == "txt"
-            @music[sym] = @resource_manager.load_music(f)
+            @music[sym] = resource_manager.load_music(f)
           end
         rescue;end
       end if files
@@ -36,7 +36,7 @@ class SoundManager
           sym = name.gsub(" ","_").split(".")[0..-2].join(".").to_sym
           ext = name.gsub(" ","_").split(".").last
           unless ext == "txt"
-            @sounds[sym] = @resource_manager.load_sound(f)
+            @sounds[sym] = resource_manager.load_sound(f)
           end
         rescue;end
       end if files

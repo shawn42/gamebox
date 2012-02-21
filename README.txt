@@ -17,7 +17,7 @@
 == REQUIREMENTS:
 
 * Gosu
-* constructor gem
+* conject gem
 * publisher gem
 * bundler
 * rspec (for gamebox tests)

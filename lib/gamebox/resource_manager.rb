@@ -3,13 +3,13 @@ require "fileutils"
 
 class ResourceManager
 
-  constructor :wrapped_screen
+  construct_with :wrapped_screen
 
   def setup
     @loaded_images = {}
     @loaded_fonts = {}
     @loaded_svgs = {}
-    @window = @wrapped_screen.screen
+    @window = wrapped_screen.screen
   end
 
   def load_actor_image(actor)

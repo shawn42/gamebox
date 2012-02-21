@@ -26,14 +26,14 @@ class InputManager
   UP_EVENTS = [:mouse_up, :keyboard_up, :game_pad_up]
 
   attr_accessor :window
-  constructor :config_manager, :wrapped_screen
+  construct_with :config_manager, :wrapped_screen
 
   # Sets up the clock and main event loop. You should never call this method, 
-  # as this class should be initialized by diy.
+  # as this class should be initialized by conject.
   def setup
-    @window = @wrapped_screen.screen
+    @window = wrapped_screen.screen
 
-    auto_quit = @config_manager[:auto_quit]
+    auto_quit = config_manager[:auto_quit]
     @auto_quit = instance_eval(auto_quit) if auto_quit
 
     @hooks = {}

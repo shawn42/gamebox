@@ -1,14 +1,14 @@
 class WrappedScreen
-  constructor :config_manager
+  construct_with :config_manager
   attr_accessor :screen
   def setup
-    width, height = *@config_manager[:screen_resolution]
-    fullscreen = @config_manager[:fullscreen]
-    needs_cursor = @config_manager[:needs_cursor]
+    width, height = *config_manager[:screen_resolution]
+    fullscreen = config_manager[:fullscreen]
+    needs_cursor = config_manager[:needs_cursor]
     @screen = HookedGosuWindow.new width, height, fullscreen
     @screen.tap do |screen|
-      screen.caption = @config_manager[:title]
-      screen.needs_cursor = @config_manager[:needs_cursor]
+      screen.caption = config_manager[:title]
+      screen.needs_cursor = config_manager[:needs_cursor]
     end
   end
 

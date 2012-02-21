@@ -23,7 +23,7 @@ class GameboxApp
     end
     objects = gamebox_objects.merge! game_specific_objects
 
-    @context = DIY::Context.from_yaml(YAML.dump(objects))
+    @context = Conject.default_object_context #DIY::Context.from_yaml(YAML.dump(objects))
   end
 
   def setup
