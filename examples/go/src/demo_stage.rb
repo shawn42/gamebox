@@ -1,6 +1,6 @@
 
 class DemoStage < Stage
-  def setup
+  def initialize
     super
     @my_actor = spawn :my_actor, :x => 100, :y => 100
     spawn :my_other_actor

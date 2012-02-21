@@ -8,7 +8,7 @@ class SoundManager
   SUPPORTED_AUDIO_EXTS = %w(wav ogg mp3 au aiff caf)
   
   # checks to see if sdl_mixer is availalbe and preloads the sounds and music directories. 
-  def setup
+  def initialize
 
     puts 'CHANGE TO LOG:Warning, sound disabled' unless
     @enabled = (config_manager.settings[:sound].nil? or config_manager.settings[:sound] == true)

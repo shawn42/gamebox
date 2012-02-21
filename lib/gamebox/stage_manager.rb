@@ -5,7 +5,7 @@ class StageManager
 
   attr_reader :backstage, :stage_names, :stage_opts
 
-  def setup
+  def initialize
     @stages = {}
     @backstage = Backstage.new
 
@@ -78,7 +78,7 @@ class StageManager
     if @stage and @stages and @stages[@stage]
       current_stage = @stages[@stage]
       current_stage.curtain_dropping *args
-      @input_manager.clear_hooks(current_stage)
+      input_manager.clear_hooks(current_stage)
       @stages.delete @stage
       @stage = nil
       @stage_args = nil

@@ -30,15 +30,19 @@ class InputManager
 
   # Sets up the clock and main event loop. You should never call this method, 
   # as this class should be initialized by conject.
-  def setup
-    @window = wrapped_screen.screen
-
-    auto_quit = config_manager[:auto_quit]
-    @auto_quit = instance_eval(auto_quit) if auto_quit
-
+  def initialize
     @hooks = {}
     @non_id_hooks = {}
     @down_ids = {}
+
+    setup
+  end
+
+  def setup
+    puts "IM: SETUP"
+    @window = wrapped_screen.screen
+    auto_quit = config_manager[:auto_quit]
+    @auto_quit = instance_eval(auto_quit) if auto_quit
   end
 
   def show

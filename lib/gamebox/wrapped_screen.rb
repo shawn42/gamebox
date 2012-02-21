@@ -1,7 +1,7 @@
 class WrappedScreen
   construct_with :config_manager
   attr_accessor :screen
-  def setup
+  def initialize
     width, height = *config_manager[:screen_resolution]
     fullscreen = config_manager[:fullscreen]
     needs_cursor = config_manager[:needs_cursor]

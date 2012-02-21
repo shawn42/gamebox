@@ -41,7 +41,7 @@ notes:
    * Can set later
       has_behaviors :graphical => {:tiled => true}
 
-      def setup
+      def initialize
          self.graphical.num_x_tiles = ...
           ...
       end

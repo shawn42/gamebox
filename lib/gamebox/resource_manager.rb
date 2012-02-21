@@ -5,7 +5,7 @@ class ResourceManager
 
   construct_with :wrapped_screen
 
-  def setup
+  def initialize
     @loaded_images = {}
     @loaded_fonts = {}
     @loaded_svgs = {}
