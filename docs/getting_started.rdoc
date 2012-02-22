@@ -16,7 +16,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 - required gems
   - bundler
   - gosu 
-  - constructor
+  - conject
   - publisher
   - rspec for unit tests
 

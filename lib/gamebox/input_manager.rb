@@ -39,7 +39,6 @@ class InputManager
   end
 
   def setup
-    puts "IM: SETUP"
     @window = wrapped_screen.screen
     auto_quit = config_manager[:auto_quit]
     @auto_quit = instance_eval(auto_quit) if auto_quit

@@ -114,8 +114,5 @@ class DemoStage < PhysicalStage
     end
   end
 
-  def draw(target)
-    super
-  end
 end
 
