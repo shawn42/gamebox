@@ -1,18 +1,11 @@
 require File.join(File.dirname(__FILE__),'helper')
 
 describe StageManager do
+  inject_mocks :resource_manager, :actor_factory, :input_manager,
+    :sound_manager, :config_manager, :this_object_context
+
   class FooStage; end
   class BarStage; end
-
-  subject { StageManager.new resource_manager: :resource_manager,
-    config_manager: config_manager,
-    actor_factory: actor_factory,
-    input_manager: input_manager,
-    sound_manager: :sound_manager
-  }
-  let(:actor_factory) { stub('actor_factory', :stage_manager= => nil) }
-  let(:input_manager) { stub('input_manager', clear_hooks: nil) }
-  let(:config_manager) { stub('config_manager', load_config: stage_config) }
 
   let(:foo_stage) { stub('foo stage', when: nil, curtain_raising: nil, curtain_dropping: nil) }
   let(:bar_stage) { stub('bar stage', when: nil, curtain_raising: nil, curtain_dropping: nil) }
@@ -20,12 +13,16 @@ describe StageManager do
   let(:bar_stage_config) { {bar: {thing:2} } }
   let(:stage_config) { {stages: [foo_stage_config, bar_stage_config]} }
   before do
+    @input_manager.stubs(:clear_hooks)
+    @config_manager.stubs(:load_config).returns(stage_config)
     Backstage.stubs(:new).returns :backstage
-    FooStage.stubs(:new).with(input_manager, actor_factory, 
-                                :resource_manager, :sound_manager, 
-                                config_manager, :backstage, {thing:1}).
-                                returns(foo_stage)
-    BarStage.stubs(:new).returns(bar_stage)
+    # TODO sub context helper
+    @subcontext = stub('subcontext')
+    @subcontext.stubs(:[]).with('foo_stage').returns(foo_stage)
+    @subcontext.stubs(:[]).with('bar_stage').returns(bar_stage)
+    foo_stage.stubs(:post_build).with(:backstage, {thing:1})
+    bar_stage.stubs(:post_build).with(:backstage, {thing:2})
+    @this_object_context.stubs(:in_subcontext).yields(@subcontext)
   end
 
   describe '#setup' do
@@ -35,11 +32,6 @@ describe StageManager do
 
     it 'setups the backstage' do
       subject.backstage.should == :backstage
-    end
-
-    it 'installs its self on the actor factor' do
-      actor_factory.expects(:stage_manager=).with(instance_of(StageManager))
-      subject
     end
 
     it 'sets up the stage config' do
@@ -62,7 +54,7 @@ describe StageManager do
 
     it 'shuts down the current stage' do
       foo_stage.expects(:curtain_dropping).with(:other_args)
-      input_manager.expects(:clear_hooks).with(foo_stage)
+      @input_manager.expects(:clear_hooks).with(foo_stage)
       subject.switch_to_stage :foo, :args
       subject.switch_to_stage :bar, :other_args
     end

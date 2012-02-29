@@ -1,7 +1,7 @@
 class StageManager
 
   construct_with :resource_manager, :actor_factory, :input_manager,
-    :sound_manager, :config_manager
+    :sound_manager, :config_manager, :this_object_context
 
   attr_reader :backstage, :stage_names, :stage_opts
 
@@ -9,7 +9,6 @@ class StageManager
     @stages = {}
     @backstage = Backstage.new
 
-    actor_factory.stage_manager = self
     stages = config_manager.load_config('stage_config')[:stages]
 
     @stage_names = []
@@ -85,19 +84,13 @@ class StageManager
     end
   end
 
-  def lookup_stage_class(stage_name)
-    index = @stage_names.index stage_name
-    opts = @stage_opts[index]
-
-    name = opts[:class]
-    name ||= stage_name
-    stage_klass_name ||= Inflector.camelize name.to_s+"Stage"
-    stage_klass = ObjectSpace.const_get stage_klass_name
-  end
-
   def create_stage(name, opts)
-    # TODO use a conject context here?
-    stage_instance = lookup_stage_class(name).new(input_manager, actor_factory, resource_manager, sound_manager, config_manager, @backstage, opts)
+    stage_instance = nil
+    this_object_context.in_subcontext do |stage_context|
+      stage_instance = stage_context["#{name}_stage"]
+    end
+
+    stage_instance.post_build(@backstage, opts)
 
     stage_instance.when :next_stage do |*args|
       next_stage *args
@@ -111,7 +104,6 @@ class StageManager
     stage_instance.when :change_stage do |stage_name, *args|
       switch_to_stage stage_name, *args
     end
-
     stage_instance
   end
 

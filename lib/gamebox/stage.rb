@@ -1,6 +1,9 @@
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
+  construct_with :input_manager, :actor_factory, :resource_manager, 
+    :sound_manager, :config_manager
+
   include Arbiter
   extend Publisher
   can_fire_anything
@@ -8,21 +11,13 @@ class Stage
   attr_accessor :drawables, :resource_manager, :sound_manager,
     :director, :opts, :viewport, :input_manager, :backstage
 
-  def initialize(input_manager, actor_factory, resource_manager, sound_manager, config_manager, backstage, opts)
-    @input_manager = input_manager
-
-    @resource_manager = resource_manager
-    @sound_manager = sound_manager
-
-    @config_manager = config_manager
-    res = @config_manager[:screen_resolution]
+  def post_build(backstage, opts)
+    res = config_manager[:screen_resolution]
     @viewport = Viewport.new res[0], res[1]
-
-    @actor_factory = actor_factory
     @director = create_director
-    @actor_factory.director = @director
-    @backstage = backstage
+    actor_factory.director = @director
 
+    @backstage = backstage
     @stagehands = {}
     @opts = opts
 

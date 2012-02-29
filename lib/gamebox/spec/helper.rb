@@ -66,6 +66,7 @@ module GameboxSpecHelpers
     base.send :extend, ClassMethods
   end
 end
+
 class EventedStub
   extend Publisher
   can_fire_anything

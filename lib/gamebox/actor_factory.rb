@@ -5,7 +5,7 @@
 class ActorFactory
   construct_with :input_manager, :wrapped_screen
 
-  attr_accessor :stage_manager, :director
+  attr_accessor :director
   
   # Returns a hash of actor params {:model_klass=>k, :view_klass=>v}. This is for performance reasons.
   def cached_actor_def(actor)
