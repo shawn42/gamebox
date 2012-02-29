@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__),'helper')
 
 describe StageManager do
-  inject_mocks :resource_manager, :actor_factory, :input_manager,
-    :sound_manager, :config_manager, :this_object_context, :backstage
+  inject_mocks :input_manager, :config_manager, :backstage,
+    :this_object_context
 
   class FooStage; end
   class BarStage; end

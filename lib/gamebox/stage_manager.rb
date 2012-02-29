@@ -1,7 +1,7 @@
 class StageManager
 
-  construct_with :resource_manager, :actor_factory, :input_manager,
-    :sound_manager, :config_manager, :this_object_context, :backstage
+  construct_with :input_manager, :config_manager, :backstage,
+    :this_object_context
 
   attr_reader :stage_names, :stage_opts
 
