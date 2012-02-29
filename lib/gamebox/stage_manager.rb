@@ -1,13 +1,12 @@
 class StageManager
 
   construct_with :resource_manager, :actor_factory, :input_manager,
-    :sound_manager, :config_manager, :this_object_context
+    :sound_manager, :config_manager, :this_object_context, :backstage
 
-  attr_reader :backstage, :stage_names, :stage_opts
+  attr_reader :stage_names, :stage_opts
 
   def initialize
     @stages = {}
-    @backstage = Backstage.new
 
     stages = config_manager.load_config('stage_config')[:stages]
 
@@ -89,8 +88,7 @@ class StageManager
     this_object_context.in_subcontext do |stage_context|
       stage_instance = stage_context["#{name}_stage"]
     end
-
-    stage_instance.post_build(@backstage, opts)
+    stage_instance.configure(backstage, opts)
 
     stage_instance.when :next_stage do |*args|
       next_stage *args

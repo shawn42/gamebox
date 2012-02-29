@@ -9,7 +9,7 @@ describe Stage do
   before do
     @config_manager.stubs(:[]).with(:screen_resolution).returns([800,600])
     @actor_factory.stubs(:director=)
-    subject.post_build(:backstage, {})
+    subject.configure(:backstage, {})
   end
 
   it 'should construct' do

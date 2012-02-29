@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__),'helper')
 
 describe StageManager do
   inject_mocks :resource_manager, :actor_factory, :input_manager,
-    :sound_manager, :config_manager, :this_object_context
+    :sound_manager, :config_manager, :this_object_context, :backstage
 
   class FooStage; end
   class BarStage; end
@@ -15,23 +15,19 @@ describe StageManager do
   before do
     @input_manager.stubs(:clear_hooks)
     @config_manager.stubs(:load_config).returns(stage_config)
-    Backstage.stubs(:new).returns :backstage
+
     # TODO sub context helper
     @subcontext = stub('subcontext')
     @subcontext.stubs(:[]).with('foo_stage').returns(foo_stage)
     @subcontext.stubs(:[]).with('bar_stage').returns(bar_stage)
-    foo_stage.stubs(:post_build).with(:backstage, {thing:1})
-    bar_stage.stubs(:post_build).with(:backstage, {thing:2})
+    foo_stage.stubs(:configure).with(@backstage, {thing:1})
+    bar_stage.stubs(:configure).with(@backstage, {thing:2})
     @this_object_context.stubs(:in_subcontext).yields(@subcontext)
   end
 
   describe '#setup' do
     it 'constructs' do
       subject.should be
-    end
-
-    it 'setups the backstage' do
-      subject.backstage.should == :backstage
     end
 
     it 'sets up the stage config' do

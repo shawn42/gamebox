@@ -11,14 +11,14 @@ class Stage
   attr_accessor :drawables, :resource_manager, :sound_manager,
     :director, :opts, :viewport, :input_manager, :backstage
 
-  def post_build(backstage, opts)
+  def configure(backstage, opts)
     res = config_manager[:screen_resolution]
     @viewport = Viewport.new res[0], res[1]
     @director = create_director
     actor_factory.director = @director
 
-    @backstage = backstage
     @stagehands = {}
+    @backstage = backstage
     @opts = opts
 
     setup
