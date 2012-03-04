@@ -3,11 +3,12 @@
 # They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
   include Kvo
+
+  construct_with :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
+    :backstage
+  public :stage
   
-  attr_accessor :behaviors, :stage, :input_manager,
-    :resource_manager, :alive, :opts, :visible, :director, 
-    :wrapped_screen,
-    :actor_type
+  attr_accessor :behaviors, :alive, :opts, :visible, :actor_type
 
   # TODO change alive and visible to be KVO
   kvo_attr_accessor :x, :y, :alive, :visible
@@ -19,17 +20,12 @@ class Actor
     :y => 0,
   }.freeze
 
-  def initialize(opts={}) # :nodoc:
+  def configure(opts={}) # :nodoc:
     @opts = DEFAULT_PARAMS.merge opts
     self.x = @opts[:x]
     self.y = @opts[:y]
 
-    @stage = @opts[:stage]
-    @input_manager = @opts[:input]
-    @resource_manager = @opts[:resources]
-    @director = @opts[:director]
     @actor_type = @opts[:actor_type]
-    @wrapped_screen = @opts[:wrapped_screen]
     self.alive = true
 
     @behaviors = {}
@@ -73,7 +69,7 @@ class Actor
   end
 
   def screen
-    @wrapped_screen
+    wrapped_screen
   end
 
   # Tells the actor's Director that he wants to be removed; and unsubscribes
@@ -81,7 +77,7 @@ class Actor
   def remove_self
     self.alive = false
     fire :remove_me
-    @input_manager.unsubscribe_all self
+    input_manager.unsubscribe_all self
   end
 
   # Does this actor have this behavior?
@@ -121,12 +117,7 @@ class Actor
 
   # Creates a new actor and returns it. (This actor will automatically be added to the Director.
   def spawn(type, args={})
-    @stage.spawn type, args
-  end
-
-  # Access to backstage for storage
-  def backstage
-    @stage.backstage
+    stage.spawn type, args
   end
 
   # to be defined in child class
@@ -150,7 +141,7 @@ class Actor
   end
 
   def viewport
-    @stage.viewport
+    stage.viewport
   end
 
   def to_s

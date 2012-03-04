@@ -1,61 +1,54 @@
 require File.join(File.dirname(__FILE__),'helper')
 
 
-describe 'A new actor view' do
+describe ActorView do
+  subject { create_actor_view(:actor_view, @actor) }
+
   before do
-    @actor = mock
-    @stage = mock
-    @actor.stubs :when
+    @actor = stub 'actor', when: nil
   end
 
   it 'should be layered 0/1 by default' do
     @actor.expects(:is?).with(:layered).returns(false)
-    @test_me = ActorView.new @stage, @actor, :wrapped_screen
-    @test_me.layer.should == 0
-    @test_me.parallax.should == 1
+    subject.layer.should == 0
+    subject.parallax.should == 1
   end
 
   it 'should call setup on creation' do
     ActorView.any_instance.expects :setup
     @actor.expects(:is?).with(:layered).returns(false)
-    @test_me = ActorView.new @stage, @actor, :wrapped_screen
+    subject
   end
 
   it 'should accept layered behavior params from actor' do
     @actor.stubs(:layer => 6, :parallax => 3)
     @actor.expects(:is?).with(:layered).returns(true)
-    @test_me = ActorView.new @stage, @actor, :wrapped_screen
 
-    @test_me.layer.should == 6
-    @test_me.parallax.should == 3
-  end
-  
-  it 'should register for show events' do
-    @actor = Actor.new({})
-    
-    @test_me = ActorView.new @stage, @actor, :wrapped_screen
-    @stage.expects(:register_drawable).with(@test_me)
-    
-    @actor.send :fire, :show_me
+    subject.layer.should == 6
+    subject.parallax.should == 3
   end
 
-  it 'should register for hide events' do
-    @actor = Actor.new({})
+  context 'with a real Actor' do
+    before do
+      @actor = create_actor :actor
+      subject.actor = @actor
+    end
     
-    @test_me = ActorView.new @stage, @actor, :wrapped_screen
-    @stage.expects(:unregister_drawable).with(@test_me)
-    
-    @actor.send :fire, :hide_me
-  end
+    it 'should register for show events' do
+      @stage.expects(:register_drawable).with(subject)
+      @actor.send :fire, :show_me
+    end
 
-  it 'should register for remove events' do
-    @actor = Actor.new({})
-    
-    @test_me = ActorView.new @stage, @actor, :wrapped_screen
-    @stage.expects(:unregister_drawable).with(@test_me)
-    
-    @actor.send :fire, :remove_me
+    it 'should register for hide events' do
+      @stage.expects(:unregister_drawable).with(subject)
+      @actor.send :fire, :hide_me
+    end
+
+    it 'should register for remove events' do
+      @stage.expects(:unregister_drawable).with(subject)
+      @actor.send :fire, :remove_me
+    end
   end
-  
+    
   it 'should manage a cached surface for drawing (possibly use record{})' 
 end

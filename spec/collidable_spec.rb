@@ -7,9 +7,9 @@ end
 
 describe 'A new collidable behavior' do
   before do
-    @stage = stub(:register_collidable => nil)
-    @actor_opts = {:actor_type => :actor, :stage=>@stage, :input=>"input", :resources=> :rm}
-    @actor = Actor.new @actor_opts
+    @actor_opts = {:actor_type => :actor}
+    @actor = create_actor :actor, @actor_opts
+    @stage.stubs(:register_collidable)
   end
 
 
@@ -20,7 +20,8 @@ describe 'A new collidable behavior' do
           [-15,10],[15,10],
           [15,-10], [-15,10]
         ]}
-      @actor = SizedActor.new @actor_opts
+      @actor = create_actor :sized_actor, @actor_opts
+      @stage.stubs(:register_collidable)
       @collidable = Collidable.new @actor, @behavior_opts
     end
 

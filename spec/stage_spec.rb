@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__),'helper')
 
 describe Stage do
   inject_mocks :input_manager, :actor_factory, :resource_manager, 
-    :sound_manager, :config_manager
+    :sound_manager, :config_manager, :director
   FakeDrawable = Struct.new :layer, :parallax
 
   before do

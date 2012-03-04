@@ -2,19 +2,18 @@
 # single player stage).
 class Stage
   construct_with :input_manager, :actor_factory, :resource_manager, 
-    :sound_manager, :config_manager
+    :sound_manager, :config_manager, :director
 
   include Arbiter
   extend Publisher
   can_fire_anything
 
   attr_accessor :drawables, :resource_manager, :sound_manager,
-    :director, :opts, :viewport, :input_manager, :backstage
+    :opts, :viewport, :input_manager, :backstage
 
   def configure(backstage, opts)
     res = config_manager[:screen_resolution]
     @viewport = Viewport.new res[0], res[1]
-    @director = create_director
     actor_factory.director = @director
 
     @stagehands = {}
@@ -22,10 +21,6 @@ class Stage
     @opts = opts
 
     setup
-  end
-
-  def create_director
-    Director.new
   end
 
   def setup

@@ -34,10 +34,8 @@ describe 'A new backstage' do
   end
 
   it 'should raise if an Actor strolls off backstage' do
-    class Foo < Actor
-      def initialize;end
-    end
-    foo = Foo.new
+    class Foo < Actor; end
+    foo = create_actor :foo
 
     lambda{ @backstage[:foo] = foo }.should raise_error
   end

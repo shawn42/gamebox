@@ -11,20 +11,23 @@ module GameboxSpecHelpers
   end
 
   module InstanceMethods
-    def create_actor(type, args = {})
-      InputManager.any_instance.stubs :setup
-      basic_opts = {
-        stage: @stage = stub_everything,
-        input: @input_manager = InputManager.new(wrapped_screen: 'wrapped_screen', config_manager: 'config_manager'),
-        sound: @sound_manager = stub_everything,
-        director: @director = stub_everything,
-        resources: @resource_manager = stub_everything,
-      }.merge(args)
 
-      klass = ClassFinder.find(type)
+    def create_conjected_object(type, args={}, configure=true)
+      actor_klass = ClassFinder.find(type)
+      raise "Could not find actor class #{type}" unless actor_klass
 
-      raise "Could not find actor class #{type}" unless klass
-      klass.new(basic_opts)
+      mocks = create_mocks *actor_klass.object_definition.component_names
+      actor_klass.new(mocks).tap do |actor|
+        actor.configure args if configure
+      end
+    end
+
+    def create_actor(type=:actor, args={}, configure=true)
+      create_conjected_object type, args, configure
+    end
+
+    def create_actor_view(type=:actor_view, args={}, configure=true)
+      create_conjected_object type, args, configure
     end
 
     def create_mocks(*args)

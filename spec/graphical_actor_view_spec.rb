@@ -1,11 +1,8 @@
 require_relative 'helper'
 describe GraphicalActorView do
-  subject { GraphicalActorView.new stage, actor, screen}
-
+  subject { create_actor_view :graphical_actor_view, actor }
   let(:actor) { stub('actor', is?: false, when: nil, image: nil,
                               x: 2, y: 3, graphical: graphical) }
-  let(:stage) { stub('stage') }
-  let(:screen) { stub('screen') }
   let(:graphical) { stub('graphical', tiled?: false) }
   let(:image) { stub('image', width: 10, height: 20, draw:nil) }
 

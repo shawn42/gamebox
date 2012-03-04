@@ -1,57 +1,45 @@
 require File.join(File.dirname(__FILE__),'helper')
 describe ActorFactory do
+  inject_mocks :input_manager, :wrapped_screen, :this_object_context, :resource_manager
+
   before do
-    @input_manager = mock
-    @screen = mock
-    @stage = mock
-    @resource_manager = mock
-    @stage = mock
-    @stage.stubs(:resource_manager).returns(@resource_manager)
+    @stage = mock('stage')
     @director = mock
-    params = {:input_manager => @input_manager, :wrapped_screen => @screen}
-    @target = ActorFactory.new params
-    @target.director = @director
     @opts = Actor::DEFAULT_PARAMS.merge({:foo => :bar})
-    @basic_opts = {
-      :stage => @stage,
-      :input => @input_manager,
-      :director => @director,
-      :resources => @resource_manager,
-      :wrapped_screen => @screen,
-    }
-    @merged_opts = @basic_opts.merge(@opts)
-    
+    @merged_opts = @opts.merge(actor_type: :actor)
   end
   
   describe "#build" do
-    it "creates an Actor instance and registers the view" do
+    let(:no_view_actor) { stub 'no view actor', configure: nil, show: nil, is?: false }
+    let(:actor) { stub 'actor', configure: nil, show: nil, is?: false }
+    let(:actor_view) { stub 'actor_view', configure: nil }
+    before do
+      @subcontext = stub('subcontext')
+      @subcontext.stubs(:[]).with(:actor).returns(actor)
+      @subcontext.stubs(:[]).with("actor_view").returns(actor_view)
+      @subcontext.stubs(:[]).with(:no_view_actor).returns(no_view_actor)
+      @subcontext.stubs(:[]).with(:no_actor).raises("cannot find")
+      @this_object_context.stubs(:in_subcontext).yields(@subcontext)
+    end
 
-      view_actor = nil
-      @stage.expects(:register_drawable).with() do |view|
-        view.class.should == ActorView
-        view.stage.should == @stage
-        view.wrapped_screen.should == @screen
-        view.actor.class.should == Actor
-        view_actor = view.actor
-      end
-      @merged_opts[:actor_type] = :actor
-      
-      act = @target.build :actor, @stage, @opts
-      act.opts.should == @merged_opts
-      act.class.should == Actor
-      act.should == view_actor
+    it 'configures the actor correctly' do
+      actor.expects(:configure).with(@merged_opts)
+      subject.build(:actor, @stage, @opts).should == actor
+    end
+
+    it 'creates the associated view class' do
+      actor_view.expects(:configure).with(actor)
+      subject.build(:actor, @stage, @opts).should == actor
     end
     
     it "creates an Actor instance with no view" do
       @merged_opts[:actor_type] = :no_view_actor
-      
-      act = @target.build :no_view_actor, @stage, @opts
-      act.opts.should == @merged_opts
-      act.class.should == NoViewActor
+      @subcontext.stubs(:[]).with("no_view_actor_view").raises("cannot find")
+      subject.build(:no_view_actor, @stage, @opts).should == no_view_actor
     end
     
-    it "nil on actor not found" do
-      lambda{ @target.build :no_actor, @stage, @opts }.should raise_error("no_actor not found")
+    it "raises on actor not found" do
+      lambda{ subject.build :no_actor, @stage, @opts }.should raise_error("no_actor not found")
     end
     
   end

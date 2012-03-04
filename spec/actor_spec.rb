@@ -1,11 +1,11 @@
 require File.join(File.dirname(__FILE__),'helper')
-describe 'A new actor' do
-  let(:stage) { mock }
-  subject { 
-    opts = {:stage=>stage, :input=>"input", 
-      :resources=>"resource", :actor_type => :actor}
-    Actor.new opts
-  }
+describe Actor do
+  inject_mocks :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
+    :backstage
+
+  before do
+    subject.configure actor_type: :actor
+  end
 
   it 'should be alive' do
     subject.alive?.should be_true
@@ -20,15 +20,7 @@ describe 'A new actor' do
     subject.y.should equal(0)
   end
 
-  it 'should have access to backstage' do
-    subject.stage = mock(:backstage => :stuff)
-    subject.backstage.should == :stuff
-  end
-
   it 'should have atts set' do
-    subject.stage.should == stage 
-    subject.input_manager.should == "input" 
-    subject.resource_manager.should == "resource" 
     subject.behaviors.size.should equal(0)
   end
 
@@ -41,19 +33,19 @@ describe 'A new actor' do
   end
 
   it 'should inherit parents behaviors' do
-    @shawn = Shawn.new {}
+    @shawn = create_actor :shawn
     @shawn.is?(:smart).should be_true
   end
 
   it 'should be able to override parents behaviors' do
-    @james = JamesKilton.new {}
+    @james = create_actor :james_kilton
     @james.is?(:smart).should be_true
     @james.instance_variable_get('@behaviors')[:smart].instance_variable_get('@opts').should == {:really=>true}
   end
 
   describe '#viewport' do
     it 'should return the stages viewport' do
-      stage.stubs(:viewport).returns(:da_viewport)
+      @stage.stubs(:viewport).returns(:da_viewport)
       subject.viewport.should == :da_viewport
     end
   end
