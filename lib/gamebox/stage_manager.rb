@@ -86,7 +86,8 @@ class StageManager
   def create_stage(name, opts)
     stage_instance = nil
     this_object_context.in_subcontext do |stage_context|
-      stage_instance = stage_context["#{name}_stage"]
+      name_or_klass = opts[:class] || name
+      stage_instance = stage_context["#{name_or_klass}_stage"]
     end
     stage_instance.configure(backstage, opts)
 

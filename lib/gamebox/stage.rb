@@ -8,13 +8,11 @@ class Stage
   extend Publisher
   can_fire_anything
 
-  attr_accessor :drawables, :resource_manager, :sound_manager,
-    :opts, :viewport, :input_manager, :backstage
+  attr_accessor :drawables, :opts, :viewport, :backstage
 
   def configure(backstage, opts)
     res = config_manager[:screen_resolution]
     @viewport = Viewport.new res[0], res[1]
-    actor_factory.director = @director
 
     @stagehands = {}
     @backstage = backstage
@@ -59,7 +57,7 @@ class Stage
   end
 
   def update(time)
-    @director.update time
+    director.update time
     @viewport.update time
     @stagehands.each do |name, stagehand|
       stagehand.update time 
@@ -207,8 +205,8 @@ class Stage
   def pause
     @pause_listeners ||= []
     @paused = true
-    @director.pause
-    @input_manager.pause
+    director.pause
+    input_manager.pause
     @paused_timers = @timers
     @timers = nil
     @pause_listeners.each do |listener|
@@ -218,8 +216,8 @@ class Stage
 
   def unpause
     @unpause_listeners ||= []
-    @director.unpause
-    @input_manager.unpause
+    director.unpause
+    input_manager.unpause
     @timers = @paused_timers
     @paused_timers = nil
     @unpause_listeners.each do |listener|

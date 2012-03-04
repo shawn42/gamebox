@@ -2,8 +2,8 @@
 class IntroStage < Stage
   def curtain_up
     # TODO change to use actor
-    @image = @resource_manager.load_image 'intro.png'
-    i = @input_manager
+    @image = resource_manager.load_image 'intro.png'
+    i = input_manager
     i.reg :down, KbSpace do
       fire :next_stage
     end

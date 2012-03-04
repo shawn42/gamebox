@@ -3,7 +3,7 @@ class Game
   construct_with :wrapped_screen, :input_manager, :sound_manager,
     :stage_manager
 
-  def initialize
+  def configure
     stage_manager.change_stage_to :intro
   end
 
