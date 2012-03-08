@@ -5,8 +5,9 @@ class Actor
   include Kvo
 
   construct_with :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
-    :backstage
-  public :stage
+    :backstage, :sound_manager
+  public :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
+    :backstage, :sound_manager
   
   attr_accessor :behaviors, :alive, :opts, :visible, :actor_type
 

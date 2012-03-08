@@ -34,7 +34,7 @@ class ActorFactory
 
       model.show unless opts[:hide]
       rescue Exception => e
-        raise "#{actor} not found"
+        raise "#{actor} not found: #{e.inspect}"
       end
     end
     model

@@ -1,5 +1,7 @@
 class ActorView
-  construct_with :stage, :wrapped_screen
+  construct_with :stage, :wrapped_screen, :resource_manager
+  public :stage, :wrapped_screen, :resource_manager
+
   attr_accessor :actor, :layer, :parallax
   def configure(actor)
     @actor = actor

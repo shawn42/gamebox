@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__),'helper')
 describe Actor do
   inject_mocks :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
-    :backstage
+    :backstage, :sound_manager
 
   before do
     subject.configure actor_type: :actor

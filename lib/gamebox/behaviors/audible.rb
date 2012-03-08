@@ -3,7 +3,7 @@
 class Audible < Behavior
   
   def setup
-    @sound_manager = @actor.stage.sound_manager
+    @sound_manager = @actor.sound_manager
 
     audible_obj = self
     relegates :play_sound, :stop_sound

@@ -26,7 +26,7 @@ class Stage
   end
 
   def create_actor(type, args={})
-    @actor_factory.build type, self, args
+    actor_factory.build type, self, args
   end
   alias :spawn :create_actor 
 
