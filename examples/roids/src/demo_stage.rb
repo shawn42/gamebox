@@ -1,12 +1,19 @@
-class DemoStage < PhysicalStage
+class DemoStage < Stage
+
+  # TODO make this work in conject
+  # construct_with :physics_manager
+  attr_accessor :physics_manager
 
   def setup
     super
+    @physics_manager = this_object_context[:physics_manager]
+    @physics_manager.configure
+
     sound_manager.play_music :roids
 
     create_actor :starry_night, :width => viewport.width, :height => viewport.height
 
-    space.elastic_iterations = 4
+    @physics_manager.elastic_iterations = 4
 
     @ship = create_actor :ship, :x => 300, :y => 300
 
@@ -34,14 +41,14 @@ class DemoStage < PhysicalStage
       rock.warp vec2(x,y)
     end
 
-    space.damping = 0.4
+    @physics_manager.damping = 0.4
 
     # TODO get this from screen config
     @width = 1024
     @height = 768
 
     # ship rock collision
-    space.add_collision_func(:rock, :ship) do |rock, ship|
+    @physics_manager.add_collision_func(:rock, :ship) do |rock, ship|
       shippy = director.find_physical_obj ship
       unless shippy.invincible?
         sound_manager.play_sound :implosion
@@ -56,7 +63,7 @@ class DemoStage < PhysicalStage
       end
     end
 
-    space.add_collision_func(:rock, :bullet) do |rock, bullet|
+    @physics_manager.add_collision_func(:rock, :bullet) do |rock, bullet|
       sound_manager.play_sound :implosion
 
       rocky = director.find_physical_obj rock
@@ -75,7 +82,9 @@ class DemoStage < PhysicalStage
 
       @rocks.delete rocky
 
-      director.remove_physical_obj bullet
+      # director.remove_physical_obj bullet
+      act = director.actors.select{|a|a.respond_to?(:shape) && a.shape==bullet}.first
+      act.remove_self
     end
 
     @stars = []
@@ -88,6 +97,10 @@ class DemoStage < PhysicalStage
       curtain_up
     end
 
+  end
+
+  def actor_removed(act)
+    @physics_manager.unregister_physical_object act if act.is? :physical
   end
 
   def curtain_up(*args)

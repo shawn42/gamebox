@@ -2,7 +2,7 @@
 # single player stage).
 class Stage
   construct_with :input_manager, :actor_factory, :resource_manager, 
-    :sound_manager, :config_manager, :director
+    :sound_manager, :config_manager, :director, :this_object_context
 
   include Arbiter
   extend Publisher

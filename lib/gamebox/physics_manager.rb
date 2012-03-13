@@ -1,23 +1,13 @@
-# Stage represent on level of game play.  Some games will likely have only one
-# stage. Stage is responsible for loading its background, props, and directors.
-# PhysicalStage adds a physics space to the Stage
-class PhysicalStage < Stage
-  
-  attr_accessor :space
+# PhysicsManager creates and manages chipmunks space.
+class PhysicsManager
+  include Forwardable
+  def_delegator :@space, :elastic_iterations=, :damping=, :add_collision_func
 
-  def setup
-    super
-    setup_space
-  end
-  
-  def setup_space
+  attr_accessor :space
+  def configure
     @space = CP::Space.new
     @space.iterations = 20
     @space.elastic_iterations = 5
-  end
-
-  def create_director
-    PhysicalDirector.new
   end
 
   PHYSICS_STEP = 25.0
@@ -103,5 +93,4 @@ class PhysicalStage < Stage
     super
     restart_physics
   end
-
 end

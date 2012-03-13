@@ -143,11 +143,12 @@ class Physical < Behavior
     end
 
     physical_obj = self
-    if @actor.stage.respond_to? :register_physical_object
+    @physics = @physics.physics_manager
+    if @physics
       if @opts[:fixed]
-        @actor.stage.register_physical_object physical_obj, true
+        @physics.register_physical_object physical_obj, true
       else
-        @actor.stage.register_physical_object physical_obj
+        @physics.register_physical_object physical_obj
       end
     else
       raise "physical actor in a non-physical stage!"
@@ -181,7 +182,7 @@ class Physical < Behavior
 
   def warp(new_p)
     body.p = new_p
-    @actor.stage.space.rehash_static if opts[:fixed]
+    @physics.space.rehash_static if opts[:fixed]
   end
 
   def physical
@@ -190,14 +191,14 @@ class Physical < Behavior
 
   def pivot(my_anchor, other_physical, other_anchor)
     pivot = CP::Constraint::PivotJoint.new(physical.body, other_physical.body, my_anchor, other_anchor)
-    @actor.stage.register_physical_constraint pivot
+    @physics.register_physical_constraint pivot
     @constraints << pivot
     pivot
   end
 
   def pin(my_anchor, other_physical, other_anchor)
     pin = CP::Constraint::PinJoint.new(physical.body, other_physical.physical.body, my_anchor, other_anchor)
-    @actor.stage.register_physical_constraint pin
+    @physics.register_physical_constraint pin
     @constraints << pin
     pin
   end
@@ -205,21 +206,21 @@ class Physical < Behavior
   def spring(my_anchor, other_physical, other_anchor, rest_length, stiffness, damping)
     spring = CP::Constraint::DampedSpring.new(physical.body,other_physical.body,
                                          my_anchor,other_anchor, rest_length, stiffness, damping)
-    @actor.stage.register_physical_constraint spring
+    @physics.register_physical_constraint spring
     @constraints << spring
     spring
   end
 
   def slide(my_anchor, other_physical, other_anchor, min_distance, max_distance)
     slide = CP::Constraint::SlideJoint.new(physical.body, other_physical.body, my_anchor, other_anchor, min_distance, max_distance)
-    @actor.stage.register_physical_constraint slide
+    @physics.register_physical_constraint slide
     @constraints << slide
     slide
   end
 
   def groove(groove_start, groove_end, other_physical, other_anchor)
     groove = CP::Constraint::GrooveJoint.new(physical.body, other_physical.body, groove_start, groove_end, other_anchor)
-    @actor.stage.register_physical_constraint groove
+    @physics.register_physical_constraint groove
     @constraints << groove
     groove
   end
@@ -230,42 +231,42 @@ class Physical < Behavior
 
   def rotary_spring(other_physical, rest_angle, stiffness, damping)
     rotary_spring = CP::Constraint::DampedRotarySpring.new(physical.body, other_physical.body, rest_angle, stiffness, damping)
-    @actor.stage.register_physical_constraint rotary_spring
+    @physics.register_physical_constraint rotary_spring
     @constraints << rotary_spring
     rotary_spring
   end
 
   def rotary_limit(other_physical, min_angle, max_angle)
     rotary_limit = CP::Constraint::RotaryLimitJoint.new(physical.body, other_physical.body, min_angle, max_angle)
-    @actor.stage.register_physical_constraint rotary_limit
+    @physics.register_physical_constraint rotary_limit
     @constraints << rotary_limit
     rotary_limit
   end
 
   def ratchet(other_physical, phase, ratchet)
     ratchet_joint = CP::Constraint::RatchetJoint.new(physical.body, other_physical.body, phase, ratchet)
-    @actor.stage.register_physical_constraint ratchet_joint
+    @physics.register_physical_constraint ratchet_joint
     @constraints << ratchet_joint
     ratchet_joint
   end
 
   def gear(other_physical, phase, ratio)
     gear = CP::Constraint::GearJoint.new(physical.body, other_physical.body, phase, ratio)
-    @actor.stage.register_physical_constraint gear
+    @physics.register_physical_constraint gear
     @constraints << gear
     gear
   end
 
   def motor(other_physical, rate)
     motor = CP::Constraint::SimpleMotor.new(physical.body, other_physical.body, rate)
-    @actor.stage.register_physical_constraint motor
+    @physics.register_physical_constraint motor
     @constraints << motor
     motor
   end
 
   def cleanup_constraints
     @constraints.each do |c|
-      @actor.stage.unregister_physical_constraint c
+      @physics.unregister_physical_constraint c
     end
   end
 
