@@ -131,7 +131,6 @@ class Physical < Behavior
           end
           part_shape.collision_type = part_name.to_sym
           @shapes << part_shape
-          # puts @shapes.inspect
         end
       end
     end
@@ -143,7 +142,7 @@ class Physical < Behavior
     end
 
     physical_obj = self
-    @physics = @physics.physics_manager
+    @physics = @actor.stage.physics_manager
     if @physics
       if @opts[:fixed]
         @physics.register_physical_object physical_obj, true

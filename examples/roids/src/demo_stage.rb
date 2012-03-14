@@ -9,6 +9,10 @@ class DemoStage < Stage
     @physics_manager = this_object_context[:physics_manager]
     @physics_manager.configure
 
+    director.when :actor_removed do |act|
+      @physics_manager.unregister_physical_object act if act.is? :physical
+    end
+
     sound_manager.play_music :roids
 
     create_actor :starry_night, :width => viewport.width, :height => viewport.height
@@ -49,7 +53,7 @@ class DemoStage < Stage
 
     # ship rock collision
     @physics_manager.add_collision_func(:rock, :ship) do |rock, ship|
-      shippy = director.find_physical_obj ship
+      shippy = find_physical_obj ship
       unless shippy.invincible?
         sound_manager.play_sound :implosion
 
@@ -66,7 +70,7 @@ class DemoStage < Stage
     @physics_manager.add_collision_func(:rock, :bullet) do |rock, bullet|
       sound_manager.play_sound :implosion
 
-      rocky = director.find_physical_obj rock
+      rocky = find_physical_obj rock
       rocky.when :remove_me do
         score += 10
       end
@@ -82,8 +86,7 @@ class DemoStage < Stage
 
       @rocks.delete rocky
 
-      # director.remove_physical_obj bullet
-      act = director.actors.select{|a|a.respond_to?(:shape) && a.shape==bullet}.first
+      act = find_physical_obj bullet
       act.remove_self
     end
 
@@ -99,8 +102,8 @@ class DemoStage < Stage
 
   end
 
-  def actor_removed(act)
-    @physics_manager.unregister_physical_object act if act.is? :physical
+  def find_physical_obj(shape)
+    director.actors.select{|a|a.respond_to?(:shape) && a.shape==shape}.first
   end
 
   def curtain_up(*args)
@@ -116,7 +119,7 @@ class DemoStage < Stage
 
     super
     return unless running?
-    update_physics time
+    @physics_manager.update_physics time
     director.update time
 
     if @rocks.empty?

@@ -1,5 +1,7 @@
 # Directors manage actors.
 class Director
+  extend Publisher
+  can_fire_anything
   attr_accessor :actors
 
   def initialize
@@ -16,18 +18,12 @@ class Director
     actor.when :remove_me do
       remove_actor actor
     end
-    actor_added actor
+    fire :actor_added, actor
     actor
   end
 
   def remove_actor(actor)
     @dead_actors << actor
-  end
-
-  def actor_removed(actor)
-  end
-
-  def actor_added(actor)
   end
 
   def empty?
@@ -50,7 +46,7 @@ class Director
   def update(time)
     for act in @dead_actors
       @actors.delete act
-      actor_removed act
+      fire :actor_removed, act
     end
     @dead_actors = []
     for act in @actors

@@ -88,8 +88,6 @@ class StageManager
     this_object_context.in_subcontext do |stage_context|
       name_or_klass = opts[:class] || name
       stage_instance = stage_context["#{name_or_klass}_stage"]
-      # XXX no worky?
-      puts "ABOUT TO INJECT: #{stage_instance.class}"
       stage_context[:stage] = stage_instance 
     end
     stage_instance.configure(backstage, opts)
