@@ -1,7 +1,7 @@
 
 class CreditsStage < Stage
   def curtain_up
-    @image = @resource_manager.load_image 'credits.png'
+    @image = resource_manager.load_image 'credits.png'
     i = @input_manager
     i.reg :down, KbSpace do
       fire :next_stage
