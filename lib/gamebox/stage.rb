@@ -1,12 +1,16 @@
 # Stage is a state that the game is in.  (ie intro stage, multiplayer stage,
 # single player stage).
 class Stage
-  construct_with :input_manager, :actor_factory, :resource_manager, 
-    :sound_manager, :config_manager, :director, :this_object_context
-
   include Arbiter
   extend Publisher
   can_fire_anything
+
+  construct_with :input_manager, :actor_factory, :resource_manager, 
+    :sound_manager, :config_manager, :director, :this_object_context
+
+  def self.inherited(kid)
+    kid.construct_with *self.object_definition.component_names unless kid.respond_to :object_definition
+  end
 
   attr_accessor :drawables, :opts, :viewport, :backstage
 
