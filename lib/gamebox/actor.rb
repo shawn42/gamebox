@@ -8,10 +8,9 @@ class Actor
     :backstage, :sound_manager
   public :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
     :backstage, :sound_manager
-  
+
   attr_accessor :behaviors, :alive, :opts, :visible, :actor_type
 
-  # TODO change alive and visible to be KVO
   kvo_attr_accessor :x, :y, :alive, :visible
 
   can_fire_anything
