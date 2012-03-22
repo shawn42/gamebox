@@ -1,4 +1,3 @@
-
 class ParticleSystemView < ActorView
   def draw(target, x_off, y_off, z)
     ax = @actor.x + x_off
@@ -9,8 +8,8 @@ class ParticleSystemView < ActorView
   end
 end
 
-class Particle < Struct.new(:x,:y,:r,:g,:b,:a,:dir,:speed,:ttl)
-end
+# TODO constructor struct thing here?
+Particle = Struct.new(:x,:y,:r,:g,:b,:a,:dir,:speed,:ttl)
 
 # Class to generate particles
 class ParticleSystem < Actor
