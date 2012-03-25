@@ -1,12 +1,5 @@
 require 'publisher'
-
-class HookedGosuWindow < Window
-  extend Publisher
-  can_fire :update, :draw, :button_down, :button_up
-
-  attr_accessor :needs_cursor
-  alias :needs_cursor? :needs_cursor
-
+module GosuWindowAPI
   def initialize(width, height, fullscreen)
     super(width, height, fullscreen)
   end
@@ -30,4 +23,14 @@ class HookedGosuWindow < Window
   def button_up(id)
     fire :button_up, id
   end
+
+  attr_accessor :needs_cursor
+  alias :needs_cursor? :needs_cursor
+end
+
+class HookedGosuWindow < Window
+  include GosuWindowAPI
+  extend Publisher
+  can_fire :update, :draw, :button_down, :button_up
+
 end

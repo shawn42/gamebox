@@ -21,7 +21,7 @@ class ConfigManager
 
   # TODO make this path include that app name?
   def load_config(name)
-    conf = YAML::load_file(CONFIG_PATH + name + ".yml")
+    conf = YAML::load_file("#{Gamebox.configuration.config_path}#{name}.yml")
     user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
     if File.exist? user_file
       user_conf = YAML::load_file user_file

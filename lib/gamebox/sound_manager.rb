@@ -15,7 +15,8 @@ class SoundManager
 
     if @enabled
       @music = {}
-      files = Dir.glob "#{MUSIC_PATH}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
+      music_path = Gamebox.configuration.music_path
+      files = Dir.glob "#{music_path}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
       for f in files
         name = File.basename(f)
         begin
@@ -29,7 +30,8 @@ class SoundManager
 
       @sounds = {}
       @playing_sounds = {}
-      files = Dir.glob "#{SOUND_PATH}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
+      sound_path = Gamebox.configuration.sound_path
+      files = Dir.glob "#{sound_path}**.{#{SUPPORTED_AUDIO_EXTS.join(',')}}"
       for f in files
         name = File.basename(f)
         begin

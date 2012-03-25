@@ -9,7 +9,7 @@ class Stage
     :sound_manager, :config_manager, :director, :this_object_context
 
   def self.inherited(kid)
-    kid.construct_with *self.object_definition.component_names unless kid.respond_to :object_definition
+    kid.construct_with *self.object_definition.component_names
   end
 
   attr_accessor :drawables, :opts, :viewport, :backstage
