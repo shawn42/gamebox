@@ -6,10 +6,11 @@ describe "The basic life cycle of an actor" do
     # Gamebox.configuration do |config|
     #   config.config_path = "spec/fixtures/"
     # end
-    config = Gamebox.configuration
-    config.config_path = "spec/fixtures/"
-    config.music_path = "spec/fixtures/"
-    config.sound_path = "spec/fixtures/"
+    Gamebox.configure do |config|
+      config.config_path = "spec/fixtures/"
+      config.music_path = "spec/fixtures/"
+      config.sound_path = "spec/fixtures/"
+    end
 
     Conject.instance_variable_set '@default_object_context', nil
     # NOTE this usually causes gosu to freak out when running tests

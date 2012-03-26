@@ -1,5 +1,6 @@
 APP_ROOT = "#{File.join(File.dirname(__FILE__),"..")}/"
 
+# TODO update to use new Gamebox.configuration
 CONFIG_PATH = APP_ROOT + "config/"
 DATA_PATH =  APP_ROOT + "data/"
 SOUND_PATH =  APP_ROOT + "data/sounds/"
