@@ -20,6 +20,10 @@ class Actor
     :y => 0,
   }.freeze
 
+  def initialize
+    @behaviors = {}
+  end
+
   def configure(opts={}) # :nodoc:
     @opts = DEFAULT_PARAMS.merge opts
     self.x = @opts[:x]
@@ -28,33 +32,6 @@ class Actor
     @actor_type = @opts[:actor_type]
     self.alive = true
 
-    @behaviors = {}
-
-    # add our classes behaviors and parents behaviors
-    klass = self.class
-    actor_klasses = []
-    while klass != Actor
-      actor_klasses << klass
-      klass = klass.superclass
-    end
-
-    behavior_defs = {}
-    ordered_behaviors = []
-    
-    actor_klasses.reverse.each do |actor_klass|
-      actor_behaviors = actor_klass.behaviors.dup
-      actor_behaviors.each do |behavior|
-
-        behavior_sym = behavior.is_a?(Hash) ? behavior.keys.first : behavior
-
-        ordered_behaviors << behavior_sym unless ordered_behaviors.include? behavior_sym
-        behavior_defs[behavior_sym] = behavior
-      end
-    end
-
-    ordered_behaviors.each do |behavior|
-      is behavior_defs[behavior] unless is? behavior
-    end
     setup
   end
 

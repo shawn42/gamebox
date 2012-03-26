@@ -2,17 +2,10 @@
 class Behavior
   attr_accessor :actor, :opts, :relegated_methods
 
-  def initialize(actor,opts={})
+  def configure(actor, opts={})
     @actor = actor
     @opts = opts
     @relegated_methods = []
-
-    req_behs = self.class.required_behaviors
-    req_behs.each do |beh|
-      unless @actor.is? beh
-        @actor.is beh
-      end
-    end
     setup
   end
 

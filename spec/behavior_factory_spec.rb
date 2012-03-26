@@ -35,5 +35,7 @@ describe BehaviorFactory do
     it 'raises for missing behavior' do
       lambda { subject.add_behavior actor, :do_not_exist }.should raise_exception
     end
+
+    it 'creates all required behaviors'
   end
 end

@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__),'helper')
 describe ActorFactory do
-  inject_mocks :input_manager, :wrapped_screen, :this_object_context, :resource_manager
+  inject_mocks :input_manager, :wrapped_screen, :this_object_context, :resource_manager, :behavior_factory
 
   before do
     @stage = mock('stage')
@@ -39,7 +39,7 @@ describe ActorFactory do
     end
     
     it "raises on actor not found" do
-      lambda{ subject.build :no_actor, @stage, @opts }.should raise_error("no_actor not found")
+      lambda{ subject.build :no_actor, @stage, @opts }.should raise_error(/no_actor not found/)
     end
     
   end

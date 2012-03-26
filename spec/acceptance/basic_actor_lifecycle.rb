@@ -19,7 +19,6 @@ describe "The basic life cycle of an actor" do
   let(:gosu) { MockGosuWindow.new }
 
   class Shooty < Behavior
-    def configure; @bullets = 0; end
     attr_accessor :bullets
     def setup
       relegates :bullets
@@ -31,7 +30,6 @@ describe "The basic life cycle of an actor" do
     end
   end
   class DeathOnD < Behavior
-    # def configure(actor, opts={})
     def setup
       @actor.input_manager.reg :up, KbD do
         @actor.remove_self
