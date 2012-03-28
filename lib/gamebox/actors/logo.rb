@@ -1,3 +1,4 @@
+__END__
 
 class Logo < Actor
   has_behaviors :graphical, 

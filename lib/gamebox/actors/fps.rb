@@ -1,3 +1,4 @@
+__END__
 class FpsView < LabelView; end
 class Fps < Label
 

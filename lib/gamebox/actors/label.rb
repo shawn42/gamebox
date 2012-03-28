@@ -1,3 +1,4 @@
+__END__
 class LabelView < ActorView
   def draw(target,x_off,y_off,z)
     @converted_color ||= target.convert_color(actor.color)

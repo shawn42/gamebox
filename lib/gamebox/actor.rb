@@ -3,43 +3,67 @@
 # They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
   include Kvo
+  can_fire_anything
 
+  # TODO show/hide methods? go in a behavior? base behavior ActorBehavior?
   kvo_attr_accessor :alive
+  attr_accessor :actor_type
+
+  def initialize
+    @behaviors = []
+  end
+
+  def configure(opts={}) # :nodoc:
+    @opts = opts
+    @actor_type = @opts[:actor_type]
+    self.alive = true
+  end
+
+  def add_behavior(name, behavior)
+    # TODO do we need a name here?
+    @behaviors << behavior
+  end
 
   def react_to(message, *opts)
-    behaviors.each do |behavior|
+    @behaviors.each do |behavior|
       behavior.react_to(message)
     end
   end
 
-  def to_s
-    "#{self.class.name}:#{self.object_id} with behaviors\n#{self.behaviors.map(&:class).inspect}"
+  # Tells the actor's Director that he wants to be removed; and unsubscribes
+  # the actor from all input events.
+  def remove_self
+    self.alive = false
+    fire :remove_me
   end
 
+  def to_s
+    "#{self.class.name}:#{self.object_id} with behaviors\n#{@behaviors.map(&:class).inspect}"
+  end
+
+  # TODO should this live somewhere else?
+  # TODO should we support "inheritance" of components?
   class << self
-    def behaviors
-      @behaviors ||= []
+
+    attr_accessor :definitions
+    def define(actor_type, &block)
+      @definitions ||= {}
+      definition = ActorDefinition.new
+      definition.instance_eval &block
+      @definitions[actor_type] = definition
     end
 
-    def has_behaviors(*args)
+  end
+
+  class ActorDefinition
+    attr_accessor :behaviors
+    def has_behaviors(*behaviors)
       @behaviors ||= []
-      for a in args
-        if a.is_a? Hash
-          for k,v in a 
-            h = {}
-            h[k]=v
-            @behaviors << h
-          end
-        else
-          @behaviors << a
-        end
+      behaviors.each do |beh|
+        @behaviors << beh
       end
-      @behaviors
     end
-
-    def has_behavior(*args)
-      has_behaviors *args
-    end
+    alias has_behavior has_behaviors
   end
 
 end
@@ -60,17 +84,6 @@ __END__
 
   def initialize
     @behaviors = {}
-  end
-
-  def configure(opts={}) # :nodoc:
-    @opts = DEFAULT_PARAMS.merge opts
-    self.x = @opts[:x]
-    self.y = @opts[:y]
-
-    @actor_type = @opts[:actor_type]
-    self.alive = true
-
-    setup
   end
 
   # Called at the end of actor/behavior initialization. To be defined by the

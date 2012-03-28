@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "conject", ">= 0.0.3"
   s.add_dependency "tween"
   s.add_dependency "require_all"
-  s.add_dependency "kvo"
+  s.add_dependency "kvo", ">= 0.0.2"
 
   s.add_development_dependency "pry", '~>0.9.7'
   s.add_development_dependency "pry-remote"

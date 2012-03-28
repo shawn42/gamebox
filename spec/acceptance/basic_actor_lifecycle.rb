@@ -15,30 +15,31 @@ describe "The basic life cycle of an actor" do
   let(:gosu) { MockGosuWindow.new }
 
   class Shooty < Behavior
+    construct_with :wrapped_screen
     attr_accessor :bullets
     def setup
       relegates :bullets
       @bullets = opts[:bullets]
-    end
+      wrapped_screen.screen.when :update do |time|
+        @bullets -= time
+      end
 
-    def update(time)
-      @bullets -= time
     end
   end
+
   class DeathOnD < Behavior
+    construct_with :input_manager
     def setup
-      @actor.input_manager.reg :up, KbD do
+      input_manager.reg :up, KbD do
         @actor.remove_self
       end
     end
   end
 
-  class McBane < Actor
-    construct_with *Actor.object_definition.component_names
-    public *Actor.object_definition.component_names
-
-    has_behavior :updatable
-    has_behavior shooty: { bullets: 50 }
+  # no code is allowed in the actor!
+  # all done through behaviors
+  Actor.define :mc_bane do
+    has_behavior  shooty: { bullets: 50 }
     has_behavior :death_on_d
   end
 
@@ -151,7 +152,7 @@ describe "The basic life cycle of an actor" do
   end
 
   def update(time)
-    game.update time
+    gosu.update time
   end
 
   def send_up(button_id)

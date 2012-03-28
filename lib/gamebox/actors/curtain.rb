@@ -1,3 +1,4 @@
+__END__
 
 require 'publisher'
 

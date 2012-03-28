@@ -13,38 +13,19 @@ class ActorFactory
     model = nil
     this_object_context.in_subcontext do |actor_context|
       begin
-        model = actor_context[actor]
+        model = actor_context[:actor]
 
-        # ============= STOLEN FROM ACTOR =====================
-        # add our classes behaviors and parents behaviors
-        behavior_defs = {}
-        ordered_behaviors = []
+        Actor.definitions[actor].behaviors.each do |behavior|
+          beh_opts = {}
+          beh_key = behavior
 
-        actor_klasses = class_ancestors(model)
-        actor_klasses.reverse.each do |actor_klass|
-          actor_behaviors = actor_klass.behaviors.dup
-          actor_behaviors.each do |behavior|
-
-            behavior_sym = behavior
-            behavior_opts = {}
-            if behavior.is_a?(Hash)
-              behavior_sym =  behavior.keys.first
-              behavior_opts = behavior[behavior_sym]
-            end
-
-            # TODO does an actor really need to know its list of behaviors?... probably..
-            # TODO clean up behaviors on is_no_longer
-            ordered_behaviors << behavior_sym unless ordered_behaviors.include? behavior_sym
-            behavior_defs[behavior_sym] = behavior_opts
+          if behavior.is_a?(Hash)
+            beh_opts = behavior.values.first
+            beh_key = behavior.keys.first
           end
-        end
 
-        ordered_behaviors.each do |behavior|
-          # TODO make this use the actor_context
-          beh_opts = behavior_defs[behavior] || {}
-          model.behaviors[behavior] = behavior_factory.add_behavior model, behavior, beh_opts
+          model.add_behavior beh_key, behavior_factory.add_behavior(model, beh_key, beh_opts)
         end
-        # ============= STOLEN FROM ACTOR =====================
 
         model.configure(merged_opts)
 
@@ -64,10 +45,15 @@ class ActorFactory
           log "could not find view class for #{actor} with key #{view_klass}"
         end
 
-        model.show unless opts[:hide]
+        # TODO figure this out too
+        # model.show unless opts[:hide]
       rescue Exception => e
         # binding.pry
-        raise "#{actor} not found: #{e.inspect}"
+        raise """
+          #{actor} not found: 
+          #{e.inspect}
+          #{e.backtrace[0..6].join("\n")}
+        """
       end
     end
     model

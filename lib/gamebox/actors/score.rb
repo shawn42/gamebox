@@ -1,3 +1,5 @@
+__END__
+
 class ScoreView < ActorView
   def draw(target,x_off,y_off,z)
     text = @actor.score.to_s
