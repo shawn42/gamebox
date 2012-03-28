@@ -2,10 +2,6 @@ require 'helper'
 
 describe "The basic life cycle of an actor" do
   before do
-    # TODO
-    # Gamebox.configuration do |config|
-    #   config.config_path = "spec/fixtures/"
-    # end
     Gamebox.configure do |config|
       config.config_path = "spec/fixtures/"
       config.music_path = "spec/fixtures/"
@@ -66,6 +62,7 @@ describe "The basic life cycle of an actor" do
     # TODO rendering checks?
   end
 
+  # HELPERS TO EXTRACT
   class MockGosuWindow
     include GosuWindowAPI
     extend Publisher
@@ -137,7 +134,6 @@ describe "The basic life cycle of an actor" do
     end
   end
 
-  # HELPERS TO EXTRACT
   let(:game) { 
     context = Conject.default_object_context
     context[:testing_game].tap do |g|

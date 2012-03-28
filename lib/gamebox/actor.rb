@@ -4,15 +4,53 @@
 class Actor
   include Kvo
 
-  construct_with :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
-    :backstage, :sound_manager
-  public :stage, :input_manager, :director, :resource_manager, :wrapped_screen,
-    :backstage, :sound_manager
+  kvo_attr_accessor :alive
 
-  attr_accessor :behaviors, :alive, :opts, :visible, :actor_type
+  def react_to(message, *opts)
+    behaviors.each do |behavior|
+      behavior.react_to(message)
+    end
+  end
 
+  def to_s
+    "#{self.class.name}:#{self.object_id} with behaviors\n#{self.behaviors.map(&:class).inspect}"
+  end
+
+  class << self
+    def behaviors
+      @behaviors ||= []
+    end
+
+    def has_behaviors(*args)
+      @behaviors ||= []
+      for a in args
+        if a.is_a? Hash
+          for k,v in a 
+            h = {}
+            h[k]=v
+            @behaviors << h
+          end
+        else
+          @behaviors << a
+        end
+      end
+      @behaviors
+    end
+
+    def has_behavior(*args)
+      has_behaviors *args
+    end
+  end
+
+end
+
+
+
+__END__
+
+  # TODO GUT THIS
+  attr_accessor :behaviors, :opts, :visible, :actor_type
   kvo_attr_accessor :x, :y, :alive, :visible
-
   can_fire_anything
 
   DEFAULT_PARAMS = {
@@ -121,33 +159,4 @@ class Actor
     stage.viewport
   end
 
-  def to_s
-    "#{self.class.name}:#{self.object_id} [#{self.x},#{self.y}] with behaviors\n#{self.behaviors.keys}"
-  end
-
-  class << self
-    def behaviors
-      @behaviors ||= []
-    end
-
-    def has_behaviors(*args)
-      @behaviors ||= []
-      for a in args
-        if a.is_a? Hash
-          for k,v in a 
-            h = {}
-            h[k]=v
-            @behaviors << h
-          end
-        else
-          @behaviors << a
-        end
-      end
-      @behaviors
-    end
-
-    def has_behavior(*args)
-      has_behaviors *args
-    end
-  end
 end
