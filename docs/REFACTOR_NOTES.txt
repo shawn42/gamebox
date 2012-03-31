@@ -1,0 +1,27 @@
+TODO:
+ - update basic lifecycle spec to use director NOT wrapped_screen (allows for pausing)
+ - double check actor view mechanism
+ - update all gamebox actors
+ - update all behaviors 
+   - remove updatable?)
+ - solidify configuration and config_manager
+
+ - ALL specs passing (grep for __END__)
+ - fill in pending specs
+
+examples
+  - roids
+  - princess
+  - omg aliens
+
+missing acceptance specs
+ - pausing / unpausing
+ - showing / drawing actors (can test Z and order)
+ - physical collisions (non-chipmunk)
+ - chipmunk space
+
+
+
+QUESTIONS:
+ - adding / removing behaviors? (only from other behaviors?)
+ - behavior inheritence? difficult for now; not recommended

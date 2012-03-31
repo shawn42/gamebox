@@ -12,6 +12,9 @@ class Behavior
   def setup
   end
 
+  def react_to(message_type, *opts)
+  end
+
   def removed
     target = self
 

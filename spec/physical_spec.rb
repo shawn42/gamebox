@@ -1,3 +1,4 @@
+__END__
 require File.join(File.dirname(__FILE__),'helper')
 
 # Only run these if the user has chipmunk installed

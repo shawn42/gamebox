@@ -2,6 +2,7 @@
 # Actors can have behaviors added and removed from them. Such as :physical or :animated.
 # They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
+  include Gamebox::Extensions::Object::Yoda
   include Kvo
   can_fire_anything
 
@@ -45,20 +46,26 @@ class Actor
   # TODO should we support "inheritance" of components?
   class << self
 
-    attr_accessor :definitions
-    def define(actor_type, &block)
+    def define(actor_type)
       @definitions ||= {}
       definition = ActorDefinition.new
-      definition.instance_eval &block
+      yield definition if block_given?
       @definitions[actor_type] = definition
+    end
+
+    def definitions
+      @definitions ||= {}
     end
 
   end
 
   class ActorDefinition
     attr_accessor :behaviors
+    def initialize
+      @behaviors = []
+    end
+
     def has_behaviors(*behaviors)
-      @behaviors ||= []
       behaviors.each do |beh|
         @behaviors << beh
       end
@@ -84,20 +91,6 @@ __END__
 
   def initialize
     @behaviors = {}
-  end
-
-  # Called at the end of actor/behavior initialization. To be defined by the
-  # child class.
-  def setup
-  end
-
-  # Is the actor still alive?
-  def alive?
-    self.alive
-  end
-
-  def screen
-    wrapped_screen
   end
 
   # Tells the actor's Director that he wants to be removed; and unsubscribes

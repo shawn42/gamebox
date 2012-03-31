@@ -9,7 +9,6 @@ describe "The basic life cycle of an actor" do
     end
 
     Conject.instance_variable_set '@default_object_context', nil
-    # NOTE this usually causes gosu to freak out when running tests
     HookedGosuWindow.stubs(:new).returns(gosu)
   end
   let(:gosu) { MockGosuWindow.new }
@@ -23,7 +22,6 @@ describe "The basic life cycle of an actor" do
       wrapped_screen.screen.when :update do |time|
         @bullets -= time
       end
-
     end
   end
 
@@ -38,9 +36,9 @@ describe "The basic life cycle of an actor" do
 
   # no code is allowed in the actor!
   # all done through behaviors
-  Actor.define :mc_bane do
-    has_behavior  shooty: { bullets: 50 }
-    has_behavior :death_on_d
+  Actor.define :mc_bane do |actor|
+    actor.has_behavior  shooty: { bullets: 50 }
+    actor.has_behavior :death_on_d
   end
 
   it 'creates an actor from within stage with the correct behaviors and updates' do

@@ -7,15 +7,16 @@ class ActorFactory
 
   # returns the newly created Actor after it and its ActorView has been created.
   def build(actor, stage, opts={})
-    basic_opts = { :actor_type => actor }
-    merged_opts = basic_opts.merge(opts)
+    merged_opts = opts.merge(actor_type: actor)
 
     model = nil
     this_object_context.in_subcontext do |actor_context|
       begin
         model = actor_context[:actor]
 
-        Actor.definitions[actor].behaviors.each do |behavior|
+        actor_definition = Actor.definitions[actor]
+        raise "#{actor} not found in Actor.definitions" if actor_definition.nil?
+        actor_definition.behaviors.each do |behavior|
           beh_opts = {}
           beh_key = behavior
 
@@ -31,22 +32,20 @@ class ActorFactory
 
         # TODO how can I ask Conject if something can be found w/o just rescueing here?
         begin
-          view_klass = opts[:view]
 
-          if model.is? :animated or model.is? :graphical or model.is? :physical
-            view_klass ||= "graphical_actor_view"
-          else
-            view_klass ||= "#{actor}_view"
+          # TODO
+          # have animated, graphical, physical set a view attr on actor
+          view_klass = opts[:view] || model.do_or_do_not(:view)
+
+          if view_klass
+            view = actor_context[view_klass]
+            view.configure model
           end
-
-          view = actor_context[view_klass]
-          view.configure model
         rescue Exception => e
           log "could not find view class for #{actor} with key #{view_klass}"
         end
 
-        # TODO figure this out too
-        # model.show unless opts[:hide]
+        model.react_to :show unless opts[:hide]
       rescue Exception => e
         # binding.pry
         raise """

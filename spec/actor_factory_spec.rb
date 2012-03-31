@@ -5,15 +5,19 @@ describe ActorFactory do
   before do
     @stage = mock('stage')
     @director = mock
-    @opts = Actor::DEFAULT_PARAMS.merge({:foo => :bar})
-    @merged_opts = @opts.merge(actor_type: :actor)
+    @opts = {:foo => :bar}
+    @merged_opts = @opts.merge(actor_type: :some_actor)
   end
   
   describe "#build" do
     let(:no_view_actor) { stub 'no view actor', configure: nil, show: nil, is?: false }
-    let(:actor) { stub 'actor', configure: nil, show: nil, is?: false }
+    # TODO can we use a real actor here?
+    let(:actor) { stub 'actor', configure: nil }
     let(:actor_view) { stub 'actor_view', configure: nil }
     before do
+      Actor.definitions.clear
+      Actor.define :some_actor
+
       @subcontext = stub('subcontext')
       @subcontext.stubs(:[]).with(:actor).returns(actor)
       @subcontext.stubs(:[]).with("actor_view").returns(actor_view)
@@ -24,26 +28,20 @@ describe ActorFactory do
 
     it 'configures the actor correctly' do
       actor.expects(:configure).with(@merged_opts)
-      subject.build(:actor, @stage, @opts).should == actor
+      actor.expects(:react_to).with(:show)
+      subject.build(:some_actor, @stage, @opts).should == actor
     end
 
     it 'creates the associated view class' do
+      actor.stubs(:do_or_do_not).with(:view).returns('actor_view')
       actor_view.expects(:configure).with(actor)
-      subject.build(:actor, @stage, @opts).should == actor
-    end
-    
-    it "creates an Actor instance with no view" do
-      @merged_opts[:actor_type] = :no_view_actor
-      @subcontext.stubs(:[]).with("no_view_actor_view").raises("cannot find")
-      subject.build(:no_view_actor, @stage, @opts).should == no_view_actor
+      actor.expects(:react_to).with(:show)
+      subject.build(:some_actor, @stage, @opts).should == actor
     end
     
     it "raises on actor not found" do
       lambda{ subject.build :no_actor, @stage, @opts }.should raise_error(/no_actor not found/)
     end
     
-  end
-  
-  class NoViewActor < Actor
   end
 end
