@@ -31,6 +31,15 @@ class Actor
     end
   end
 
+  def add_attribute(name, value=nil)
+    self.metaclass.send :kvo_attr_accessor, name
+    self.send("#{name}=", value)
+  end
+
+  def has_attribute?(name)
+    respond_to? name
+  end
+
   # Tells the actor's Director that he wants to be removed; and unsubscribes
   # the actor from all input events.
   def remove_self

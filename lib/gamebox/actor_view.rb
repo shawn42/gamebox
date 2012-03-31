@@ -6,18 +6,12 @@ class ActorView
   def configure(actor)
     @actor = actor
 
-    @layer = 0
-    @parallax = 1
-    if @actor.is? :layered
-      @layer = @actor.layer
-      @parallax = @actor.parallax
-    end
+    @layer = @actor.do_or_do_not(:layer) || 0
+    @parallax = @actor.do_or_do_not(:parallax) || 1
 
-    actor.when :remove_me do unregister end
-    
-    actor.when :hide_me do unregister  end
-    
-    actor.when :show_me do register end
+    actor.when :remove_me do unregister  end
+    actor.when :hide_me   do unregister  end
+    actor.when :show_me   do register    end
     
     setup
   end

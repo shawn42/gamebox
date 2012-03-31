@@ -12,6 +12,12 @@ module GameboxSpecHelpers
 
   module InstanceMethods
 
+    def create_actor(type=:actor, args={})
+      Actor.new.tap do |act|
+        act.configure args.merge(actor_type: type)
+      end
+    end
+
     def create_conjected_object(type, args={}, configure=true)
       actor_klass = ClassFinder.find(type)
       raise "Could not find actor class #{type}" unless actor_klass
@@ -20,10 +26,6 @@ module GameboxSpecHelpers
       actor_klass.new(mocks).tap do |actor|
         actor.configure args if configure
       end
-    end
-
-    def create_actor(type=:actor, args={}, configure=true)
-      create_conjected_object type, args, configure
     end
 
     def create_actor_view(type=:actor_view, args={}, configure=true)

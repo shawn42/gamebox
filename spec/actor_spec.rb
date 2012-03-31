@@ -36,11 +36,20 @@ describe Actor do
     it 'can add a behavior to the actors list of behaviors'
   end
 
+  describe "#add_attribute" do
+    it 'adds an evented attribute'
+  end
+
+  describe "#has_attribute?" do
+    it 'returns true if the actor has the attribute'
+    it 'returns false if the actor does not have the attribute'
+  end
+
   describe ".define" do
     it 'adds an actor definition'  do
-      Actor.define :mc_bane do
-        has_behavior  shooty: { bullets: 50 }
-        has_behavior :death_on_d
+      Actor.define :mc_bane do |act|
+        act.has_behavior  shooty: { bullets: 50 }
+        act.has_behavior :death_on_d
       end
 
       definition = Actor.definitions[:mc_bane]
