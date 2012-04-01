@@ -1,12 +1,14 @@
 require File.join(File.dirname(__FILE__),'helper')
 
 describe 'A new animated behavior' do
+  subject { create_conjected_object :animated, actor }
+  let(:actor) { create_actor }
+
   before do
     @rm = stub(:load_animation_set => ['1.png_img_obj','2.png_img_obj'])
     @actor = create_actor
     @actor.expects(:is?).with(:updatable).returns(true)
     @actor.stubs(:resource_manager).returns(@rm)
-    @animated = Animated.new @actor
   end
 
   it 'should define methods on actor' do
@@ -18,65 +20,65 @@ describe 'A new animated behavior' do
   end
 
   it 'shouldn\'t update frame for non-animating' do
-    @animated.stop_animating
+    subject.stop_animating
 
-    @animated.update @animated.frame_update_time+1
+    subject.update subject.frame_update_time+1
 
-    @animated.frame_time.should equal(0)
-    @animated.frame_num.should equal(0)
+    subject.frame_time.should equal(0)
+    subject.frame_num.should equal(0)
   end
 
   it 'should update frame for animating' do
-    time_passed = @animated.frame_update_time-1
-    @animated.update time_passed
-    @animated.frame_time.should equal(time_passed)
-    @animated.frame_num.should equal(0)
+    time_passed = subject.frame_update_time-1
+    subject.update time_passed
+    subject.frame_time.should equal(time_passed)
+    subject.frame_num.should equal(0)
 
     time_passed_again = 2
-    @animated.update time_passed_again
+    subject.update time_passed_again
     # we rolled over the time
-    @animated.frame_time.should equal(1)
-    @animated.frame_num.should equal(1)
+    subject.frame_time.should equal(1)
+    subject.frame_num.should equal(1)
 
-    time_passed_again = @animated.frame_update_time
-    @animated.update time_passed_again
+    time_passed_again = subject.frame_update_time
+    subject.update time_passed_again
     # we rolled over the time
-    @animated.frame_time.should equal(1)
-    @animated.frame_num.should equal(0)
+    subject.frame_time.should equal(1)
+    subject.frame_num.should equal(0)
   end
 
   it 'should stop animating' do
-    @animated.stop_animating
-    @animated.animating.should equal(false)
+    subject.stop_animating
+    subject.animating.should equal(false)
   end
 
   it 'should start animating' do
-    @animated.start_animating
-    @animated.animating.should equal(true)
+    subject.start_animating
+    subject.animating.should equal(true)
   end
   
   it 'should return itself for animated' do
-    @animated.animated.should == @animated
+    subject.animated.should == subject
   end
 
   it 'should set the action and animate accordingly for single frame' do
-    @animated.animating = true
+    subject.animating = true
     @rm.expects(:load_animation_set).with(@actor, :foo).returns([:frame_one])
-    @animated.action = :foo
+    subject.action = :foo
     
-    @animated.animating.should be_false
-    @animated.frame_num.should == 0
-    @animated.action.should == :foo
+    subject.animating.should be_false
+    subject.frame_num.should == 0
+    subject.action.should == :foo
   end
 
   it 'should set the action and animate accordingly for many frames' do
-    @animated.animating = false
+    subject.animating = false
     @rm.expects(:load_animation_set).with(@actor, :foo).returns([:frame_one, :frame_two])
-    @animated.action = :foo
+    subject.action = :foo
     
-    @animated.animating.should be_true
-    @animated.frame_num.should == 0
-    @animated.action.should == :foo
+    subject.animating.should be_true
+    subject.frame_num.should == 0
+    subject.action.should == :foo
   end
 
 

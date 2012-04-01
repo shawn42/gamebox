@@ -4,8 +4,9 @@
 # by default it expects images to be:
 # data/graphics/classname/action/01..n.png
 class Animated < Behavior
-  requires_behavior :updatable
-  
+  # TODO uh oh.. inheritance again!! maybe remove the base class all together?
+  construct_with :actor, :resource_manager
+
   attr_accessor :frame_time, :frame_num, :animating, :frame_update_time
   def setup
     @images = {}

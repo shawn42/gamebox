@@ -25,7 +25,7 @@ class ActorFactory
             beh_key = behavior.keys.first
           end
 
-          model.add_behavior beh_key, behavior_factory.add_behavior(model, beh_key, beh_opts)
+          model.add_behavior beh_key, behavior_factory.add_behavior(actor_context, model, beh_key, beh_opts)
         end
 
         model.configure(merged_opts)
