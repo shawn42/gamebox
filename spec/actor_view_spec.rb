@@ -16,8 +16,8 @@ describe ActorView do
   end
 
   it 'should accept layered behavior params from actor' do
-    actor.add_attribute :layer, 6
-    actor.add_attribute :parallax, 3
+    actor.has_attribute :layer, 6
+    actor.has_attribute :parallax, 3
 
     subject.layer.should == 6
     subject.parallax.should == 3

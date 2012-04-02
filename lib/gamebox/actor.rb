@@ -2,12 +2,17 @@
 # Actors can have behaviors added and removed from them. Such as :physical or :animated.
 # They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
+  extend Publisher
+  include EventedAttributes
+end
+class Actor
   include Gamebox::Extensions::Object::Yoda
-  include Kvo
   can_fire_anything
+  construct_with :this_object_context
+  public :this_object_context
 
   # TODO show/hide methods? go in a behavior? base behavior ActorBehavior?
-  kvo_attr_accessor :alive
+  has_attribute :alive
   attr_accessor :actor_type
 
   def initialize
@@ -31,18 +36,9 @@ class Actor
     end
   end
 
-  def add_attribute(name, value=nil)
-    self.metaclass.send :kvo_attr_accessor, name
-    self.send("#{name}=", value)
-  end
-
-  def has_attribute?(name)
-    respond_to? name
-  end
-
   # Tells the actor's Director that he wants to be removed; and unsubscribes
   # the actor from all input events.
-  def remove_self
+  def remove
     self.alive = false
     fire :remove_me
   end
@@ -100,14 +96,6 @@ __END__
 
   def initialize
     @behaviors = {}
-  end
-
-  # Tells the actor's Director that he wants to be removed; and unsubscribes
-  # the actor from all input events.
-  def remove_self
-    self.alive = false
-    fire :remove_me
-    input_manager.unsubscribe_all self
   end
 
   # Does this actor have this behavior?

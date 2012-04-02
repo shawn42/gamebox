@@ -1,9 +1,7 @@
 require File.join(File.dirname(__FILE__),'helper')
 describe Actor do
 
-  before do
-    subject.configure actor_type: :actor
-  end
+  subject { create_actor :actor }
 
   it 'should be alive' do
     subject.alive.should be_true
@@ -36,7 +34,7 @@ describe Actor do
     it 'can add a behavior to the actors list of behaviors'
   end
 
-  describe "#add_attribute" do
+  describe "#has_attribute" do
     it 'adds an evented attribute'
   end
 

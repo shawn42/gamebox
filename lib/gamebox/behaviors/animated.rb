@@ -4,8 +4,7 @@
 # by default it expects images to be:
 # data/graphics/classname/action/01..n.png
 class Animated < Behavior
-  # TODO uh oh.. inheritance again!! maybe remove the base class all together?
-  construct_with :actor, :resource_manager
+  construct_with :actor, :resource_manager, :director
 
   attr_accessor :frame_time, :frame_num, :animating, :frame_update_time
   def setup
@@ -13,29 +12,24 @@ class Animated < Behavior
     @frame_update_time = @opts[:frame_update_time]
     @frame_update_time ||= 60
     @frame_time = 0
-    
+
     # all animated actors have to have an idle animation
     # data/graphics/ship/idle/1.png
     @frame_num = 0
-    self.action = :idle
 
-    relegates :image, :width, :height, 
-      :start_animating, :stop_animating, :animated,
-      :action, :action=
+    actor.has_attributes :action, :image, :width, :height
+    actor.action = :idle
+    actor.when :action_changed do |old_action, new_action|
+      action_changed old_action, new_action
+    end
 
-  end
+    # TODO use director
+    director.when :update do |time|
+      update time
+    end
 
-  def animated
-    self
-  end
-
-  def width
-    image.width
-  end
-
-  def height
-    image.height
-  end
+    reacts_with :start_animating, :stop_animating
+    end
 
   def update(time)
     return unless @animating
@@ -44,6 +38,7 @@ class Animated < Behavior
       next_frame
       @frame_time = @frame_time-@frame_update_time
     end
+    set_image
   end
 
   def next_frame()
@@ -52,14 +47,10 @@ class Animated < Behavior
 
   # load all the images for this action
   def load_action(action)
-    @actor.resource_manager.load_animation_set @actor, action 
+    resource_manager.load_animation_set @actor, action 
   end
 
-  def action
-    @action
-  end
-
-  def action=(new_action)
+  def action_changed(old_action, new_action)
     @images[new_action] ||= load_action(new_action)
     if @images[new_action].size > 1
       start_animating
@@ -68,11 +59,13 @@ class Animated < Behavior
     end
     @frame_num = 0
     @action = new_action
+    set_image
   end
 
-  # returns the current image, or nil if no action is defined
-  def image
-    @images[@action][@frame_num]
+  def set_image
+    actor.image = @images[@action][@frame_num]
+    actor.width = image.width
+    actor.height = image.height
   end
 
   def start_animating

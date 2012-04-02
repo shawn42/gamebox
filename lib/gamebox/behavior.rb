@@ -10,7 +10,15 @@ class Behavior
   def setup
   end
 
+  def reacts_with(*messages_with_methods)
+    @message_handlers = messages_with_methods
+  end
+
   def react_to(message_type, *opts)
+    # TODO perf analysis, should I use a hash here?
+    if @message_handlers && @message_handlers.include?(message_type)
+      send message_type, *opts
+    end
   end
 
   def required_behaviors

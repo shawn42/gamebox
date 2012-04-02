@@ -9,16 +9,16 @@ class BehaviorFactory
   #  add_behavior(:shootable) or add_behavior(:shootable => {:range=>3})
   #  this will create a new instance of Shootable and pass
   #  :range=>3 to it
-  def add_behavior(object_context, actor, behavior, opts = {})
+  def add_behavior(actor, behavior, opts = {})
     raise "nil actor" if actor.nil?
     raise "nil behavior definition" if behavior.nil?
 
-    object_context[behavior].tap do |behavior|
+    actor.this_object_context[behavior].tap do |behavior|
       deps = behavior.required_behaviors
       deps.each do |beh|
         add_behavior actor, beh unless @actor.is? beh
       end
-      behavior.configure(actor, opts)
+      behavior.configure(opts)
     end
   end
 

@@ -14,22 +14,20 @@ describe "The basic life cycle of an actor" do
   let(:gosu) { MockGosuWindow.new }
 
   class Shooty < Behavior
-    construct_with :wrapped_screen
-    attr_accessor :bullets
+    construct_with :actor, :director
     def setup
-      relegates :bullets
-      @bullets = opts[:bullets]
-      wrapped_screen.screen.when :update do |time|
-        @bullets -= time
+      actor.has_attribute :bullets, opts[:bullets]
+      director.when :update do |time|
+        actor.bullets -= time
       end
     end
   end
 
   class DeathOnD < Behavior
-    construct_with :input_manager
+    construct_with :actor, :input_manager
     def setup
       input_manager.reg :up, KbD do
-        @actor.remove_self
+        actor.remove
       end
     end
   end

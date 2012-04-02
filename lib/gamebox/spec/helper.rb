@@ -13,9 +13,9 @@ module GameboxSpecHelpers
   module InstanceMethods
 
     def create_actor(type=:actor, args={})
-      Actor.new.tap do |act|
-        act.configure args.merge(actor_type: type)
-      end
+      act = create_conjected_object type, nil, false
+      act.configure args.merge(actor_type: type)
+      act
     end
 
     def create_conjected_object(type, args={}, configure=true)
