@@ -23,13 +23,14 @@ class Animated < Behavior
       action_changed old_action, new_action
     end
 
-    # TODO use director
     director.when :update do |time|
       update time
     end
 
     reacts_with :start_animating, :stop_animating
-    end
+
+    start_animating
+  end
 
   def update(time)
     return unless @animating
@@ -42,12 +43,13 @@ class Animated < Behavior
   end
 
   def next_frame()
-    @frame_num = (@frame_num + 1) % @images[@action].size
+    action_set = @images[actor.action]
+    @frame_num = (@frame_num + 1) % action_set.size unless action_set.nil?
   end
 
   # load all the images for this action
   def load_action(action)
-    resource_manager.load_animation_set @actor, action 
+    resource_manager.load_animation_set actor, action 
   end
 
   def action_changed(old_action, new_action)
@@ -58,14 +60,17 @@ class Animated < Behavior
       stop_animating
     end
     @frame_num = 0
-    @action = new_action
     set_image
   end
 
   def set_image
-    actor.image = @images[@action][@frame_num]
-    actor.width = image.width
-    actor.height = image.height
+    action_set = @images[actor.action]
+    if action_set
+      image = action_set[@frame_num]
+      actor.image = image
+      actor.width = image.width
+      actor.height = image.height
+    end
   end
 
   def start_animating
