@@ -1,8 +1,13 @@
 
 
-class GraphicalActorView < ActorView
+class GraphicalActorView < ActorView(....)
+  # # TODO ANNOYING to have to do this!!
+  # construct_with *ActorView.object_definition.component_names
+  # public *ActorView.object_definition.component_names
+  construct_with :foo_thing
+
   def draw(target, x_off, y_off, z)
-    img = actor.image
+    img = actor.do_or_do_not(:image)
     return if img.nil?
 
     x = actor.x

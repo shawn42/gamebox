@@ -1,8 +1,3 @@
-
-
-
-
-
 # available collidable_shapes are :circle, :polygon, :aabb
 class Collidable < Behavior
 

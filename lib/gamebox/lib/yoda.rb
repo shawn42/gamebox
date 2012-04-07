@@ -23,6 +23,7 @@ module Gamebox #:nodoc:
           return nil unless name
           respond_to?(name) ? send(name, *args) : nil
         end
+        alias yoda do_or_do_not
 
         # You must unlearn what you have learned. -- Yoda
         #

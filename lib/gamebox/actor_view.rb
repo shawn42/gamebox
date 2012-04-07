@@ -1,19 +1,24 @@
 class ActorView
-  construct_with :stage, :wrapped_screen, :resource_manager
-  public :stage, :wrapped_screen, :resource_manager
+  construct_with :stage, :wrapped_screen, :resource_manager, :actor
+  public :stage, :wrapped_screen, :resource_manager, :actor
 
-  attr_accessor :actor, :layer, :parallax
-  def configure(actor)
-    @actor = actor
-
-    @layer = @actor.do_or_do_not(:layer) || 0
-    @parallax = @actor.do_or_do_not(:parallax) || 1
+  attr_accessor :layer, :parallax
+  def configure
+    @layer = actor.do_or_do_not(:layer) || 0
+    @parallax = actor.do_or_do_not(:parallax) || 1
 
     actor.when :remove_me do unregister  end
     actor.when :hide_me   do unregister  end
     actor.when :show_me   do register    end
     
     setup
+  end
+
+  def self.inherited(klass)
+    klass.instance_eval do
+      construct_with *ActorView.object_definition.component_names
+      public *ActorView.object_definition.component_names
+    end
   end
   
   def register

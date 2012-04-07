@@ -1,5 +1,6 @@
 TODO:
  - double check actor view mechanism
+ - pull drawing code out of stage?
  - update all gamebox actors
  - update all behaviors 
  - solidify configuration and config_manager

@@ -13,22 +13,34 @@ describe "The basic life cycle of an actor" do
   end
   let(:gosu) { MockGosuWindow.new }
 
-  class Shooty < Behavior
-    construct_with :actor, :director
-    def setup
+  Behavior.define :shooty do |beh|
+    beh.requires :director
+    beh.setup do
       actor.has_attribute :bullets, opts[:bullets]
       director.when :update do |time|
         actor.bullets -= time
+        update(time)
       end
     end
   end
 
-  class DeathOnD < Behavior
-    construct_with :actor, :input_manager
-    def setup
+  Behavior.define :death_on_d do |beh|
+    beh.requires :input_manager
+    beh.setup do
       input_manager.reg :up, KbD do
         actor.remove
       end
+    end
+  end
+
+  ActorView.define :mc_bane_view do |view|
+    view.requires :resource_manager # needs these injected
+    view.configure do
+      @image = resource_manager.load_actor_image(actor)
+    end
+
+    view.draw do |target, x_off, y_off, z|
+      @image.draw(4,7)
     end
   end
 
@@ -37,7 +49,19 @@ describe "The basic life cycle of an actor" do
   Actor.define :mc_bane do |actor|
     actor.has_behavior  shooty: { bullets: 50 }
     actor.has_behavior :death_on_d
+    actor.has_behavior :graphical
+
+    # FEATURE REQUEST
+    # actor.has_view do |view|
+    #   view.uses :resource_manager
+    #   view.configure do
+    #   end
+
+    #   view.draw do |target, x_off, y_off, z|
+    #   end
+    # end
   end
+
 
   it 'creates an actor from within stage with the correct behaviors and updates' do
     # going for a capybara style "page" reference for the game
@@ -47,6 +71,8 @@ describe "The basic life cycle of an actor" do
     see_actor_attrs :mc_bane, bullets: 50
 
     update 10
+    see_actor_drawn :mc_bane
+
     see_actor_attrs :mc_bane, bullets: 40
     game.should have_actor(:mc_bane)
 
@@ -141,6 +167,11 @@ describe "The basic life cycle of an actor" do
     end
   }
 
+  def see_actor_drawn(actor_type)
+    act = game.actor(actor_type)
+    act.should be
+  end
+
   def see_actor_attrs(actor_type, attrs)
     act = game.actor(actor_type)
     act.should be
@@ -159,3 +190,23 @@ describe "The basic life cycle of an actor" do
     gosu.button_down button_id
   end
 end
+
+# 
+#   class Shooty < Behavior
+#     construct_with :actor, :director
+#     def setup
+#       actor.has_attribute :bullets, opts[:bullets]
+#       director.when :update do |time|
+#         actor.bullets -= time
+#       end
+#     end
+#   end
+# 
+#   class DeathOnD < Behavior
+#     construct_with :actor, :input_manager
+#     def setup
+#       input_manager.reg :up, KbD do
+#         actor.remove
+#       end
+#     end
+#   end
