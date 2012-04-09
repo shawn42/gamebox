@@ -40,5 +40,34 @@ class ActorView
     @screen_height ||= wrapped_screen.height
   end
 
-end
+  class << self
+    def define(actor_view_type)
+      @definitions ||= {}
+      definition = ActorViewDefinition.new
+      yield definition if block_given?
+      @definitions[actor_view_type] = definition
+    end
 
+    def definitions
+      @definitions ||= {}
+    end
+  end
+
+  # TODO can these defs be unified?
+  class ActorViewDefinition
+    attr_accessor :draw_block, :configure_block, :required_injections
+    def requires(*injections_needed)
+      @required_injections = injections_needed
+    end
+
+    def configure(&configure_block)
+      @configure_block = configure_block
+    end
+
+    def draw(&draw_block)
+      @draw_block = draw_block
+    end
+  end
+
+
+end

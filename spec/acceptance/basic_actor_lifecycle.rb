@@ -25,6 +25,7 @@ describe "The basic life cycle of an actor" do
 
   Behavior.define :death_on_d do |beh|
     beh.requires :input_manager
+    # TODO can we rename this to configure?
     beh.setup do
       input_manager.reg :up, KbD do
         actor.remove
@@ -32,16 +33,16 @@ describe "The basic life cycle of an actor" do
     end
   end
 
-  # ActorView.define :mc_bane_view do |view|
-  #   view.requires :resource_manager # needs these injected
-  #   view.configure do
-  #     @image = resource_manager.load_actor_image(actor)
-  #   end
+  ActorView.define :mc_bane_view do |view|
+    view.requires :resource_manager # needs these injected
+    view.configure do
+      @image = resource_manager.load_actor_image(actor)
+    end
 
-  #   view.draw do |target, x_off, y_off, z|
-  #     @image.draw(4,7)
-  #   end
-  # end
+    view.draw do |target, x_off, y_off, z|
+      @image.draw(4,7)
+    end
+  end
 
   # no code is allowed in the actor!
   # all done through behaviors
@@ -169,6 +170,7 @@ describe "The basic life cycle of an actor" do
   def see_actor_drawn(actor_type)
     act = game.actor(actor_type)
     act.should be
+    binding.pry
   end
 
   def see_actor_attrs(actor_type, attrs)

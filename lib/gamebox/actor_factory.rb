@@ -35,11 +35,28 @@ class ActorFactory
 
           # TODO
           # have animated, graphical, physical set a view attr on actor
-          view_klass = opts[:view] || model.do_or_do_not(:view)
+          view_klass = opts[:view] || model.do_or_do_not(:view) || "#{actor}_view"
 
-          if view_klass
-            view = actor_context[view_klass]
-            view.configure model
+          view_definition = ActorView.definitions[view_klass.to_sym]
+          if view_definition
+            view = actor_context[:actor_view]
+
+            reqs = view_definition.required_injections
+            if reqs
+              reqs.each do |req|
+                object = actor_context[req]
+                view.define_singleton_method req do
+                  components[req] 
+                end
+                components = view.send :components
+                components[req] = object
+              end
+            end
+
+            view.define_singleton_method :draw, &view_definition.draw_block if view_definition.configure_block
+            view.define_singleton_method :configure, &view_definition.configure_block if view_definition.configure_block
+
+            view.configure
           end
         rescue Exception => e
           log "could not find view class for #{actor} with key #{view_klass}"
