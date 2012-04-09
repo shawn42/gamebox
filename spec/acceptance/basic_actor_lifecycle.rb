@@ -19,7 +19,6 @@ describe "The basic life cycle of an actor" do
       actor.has_attribute :bullets, opts[:bullets]
       director.when :update do |time|
         actor.bullets -= time
-        update(time)
       end
     end
   end
@@ -33,23 +32,23 @@ describe "The basic life cycle of an actor" do
     end
   end
 
-  ActorView.define :mc_bane_view do |view|
-    view.requires :resource_manager # needs these injected
-    view.configure do
-      @image = resource_manager.load_actor_image(actor)
-    end
+  # ActorView.define :mc_bane_view do |view|
+  #   view.requires :resource_manager # needs these injected
+  #   view.configure do
+  #     @image = resource_manager.load_actor_image(actor)
+  #   end
 
-    view.draw do |target, x_off, y_off, z|
-      @image.draw(4,7)
-    end
-  end
+  #   view.draw do |target, x_off, y_off, z|
+  #     @image.draw(4,7)
+  #   end
+  # end
 
   # no code is allowed in the actor!
   # all done through behaviors
   Actor.define :mc_bane do |actor|
     actor.has_behavior  shooty: { bullets: 50 }
     actor.has_behavior :death_on_d
-    actor.has_behavior :graphical
+    # actor.has_behavior :graphical
 
     # FEATURE REQUEST
     # actor.has_view do |view|
