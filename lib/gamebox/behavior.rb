@@ -58,13 +58,17 @@ class Behavior
   end
 
   class BehaviorDefinition
-    attr_accessor :setup_block, :required_injections
+    attr_accessor :setup_block, :required_injections, :react_to_block
     def requires(*injections_needed)
       @required_injections = injections_needed
     end
 
     def setup(&setup_block)
       @setup_block = setup_block
+    end
+
+    def react_to(&react_to_block)
+      @react_to_block = react_to_block
     end
   end
 end

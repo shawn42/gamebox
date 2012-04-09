@@ -11,7 +11,7 @@ class Actor
   construct_with :this_object_context
   public :this_object_context
 
-  # TODO show/hide methods? go in a behavior? base behavior ActorBehavior?
+  # TODO show/hide methods? go in a behavior?
   has_attribute :alive
   attr_accessor :actor_type
 

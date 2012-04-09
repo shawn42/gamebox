@@ -36,11 +36,14 @@ describe "The basic life cycle of an actor" do
   ActorView.define :mc_bane_view do |view|
     view.requires :resource_manager # needs these injected
     view.configure do
+      # TODO MOCK THIS IMAGE
       @image = resource_manager.load_actor_image(actor)
     end
 
     view.draw do |target, x_off, y_off, z|
-      @image.draw(4,7)
+      # TODO TRACK THESE DRAWINGS
+      # raise "DRAWING"
+      # @image.draw offset_x, offset_y, z, x_scale, y_scale, color
     end
   end
 
@@ -170,7 +173,6 @@ describe "The basic life cycle of an actor" do
   def see_actor_drawn(actor_type)
     act = game.actor(actor_type)
     act.should be
-    binding.pry
   end
 
   def see_actor_attrs(actor_type, attrs)

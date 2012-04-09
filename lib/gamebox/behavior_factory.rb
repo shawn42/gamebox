@@ -31,6 +31,8 @@ class BehaviorFactory
         end
       end
 
+      behavior.define_singleton_method :react_to, behavior_definition.react_to_block if behavior_definition.react_to_block
+
       deps = behavior.required_behaviors
       deps.each do |beh|
         add_behavior actor, beh unless @actor.is? beh

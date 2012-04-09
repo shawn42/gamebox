@@ -57,6 +57,9 @@ class ActorFactory
             view.define_singleton_method :configure, &view_definition.configure_block if view_definition.configure_block
 
             view.configure
+
+            # TODO this reads like butt!
+            model.add_behavior :visible, behavior_factory.add_behavior(model, :visible, view: view)
           end
         rescue Exception => e
           log "could not find view class for #{actor} with key #{view_klass}"

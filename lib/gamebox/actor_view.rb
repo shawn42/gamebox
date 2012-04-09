@@ -3,15 +3,15 @@ class ActorView
   public :stage, :wrapped_screen, :resource_manager, :actor
 
   attr_accessor :layer, :parallax
-  def configure
+  def initialize
     @layer = actor.do_or_do_not(:layer) || 0
     @parallax = actor.do_or_do_not(:parallax) || 1
 
     actor.when :remove_me do unregister  end
+    # TODO clean up the show/hide here
     actor.when :hide_me   do unregister  end
     actor.when :show_me   do register    end
     
-    setup
   end
 
   def self.inherited(klass)
@@ -27,9 +27,6 @@ class ActorView
   
   def unregister
     stage.unregister_drawable self
-  end
-
-  def setup
   end
 
   def screen_width
