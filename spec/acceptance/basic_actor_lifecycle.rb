@@ -12,6 +12,7 @@ describe "The basic life cycle of an actor" do
     HookedGosuWindow.stubs(:new).returns(gosu)
   end
   let(:gosu) { MockGosuWindow.new }
+  let!(:mc_bane_png) { mock_image('mc_bane.png') }
 
   Behavior.define :shooty do |beh|
     beh.requires :director
@@ -42,8 +43,7 @@ describe "The basic life cycle of an actor" do
 
     view.draw do |target, x_off, y_off, z|
       # TODO TRACK THESE DRAWINGS
-      # raise "DRAWING"
-      # @image.draw offset_x, offset_y, z, x_scale, y_scale, color
+      @image.draw #offset_x, offset_y, z, x_scale, y_scale, color
     end
   end
 
@@ -74,7 +74,7 @@ describe "The basic life cycle of an actor" do
     see_actor_attrs :mc_bane, bullets: 50
 
     update 10
-    see_actor_drawn :mc_bane
+    see_image_drawn mc_bane_png
 
     see_actor_attrs :mc_bane, bullets: 40
     game.should have_actor(:mc_bane)
@@ -143,6 +143,18 @@ describe "The basic life cycle of an actor" do
     end
   end
 
+  class MockImage
+    attr_accessor :filename, :calls
+    def initialize(filename)
+      @calls = []
+      @filename = filename
+    end
+
+    def method_missing(*args)
+      @calls << args
+    end
+  end
+
   class TestingGame < Game
     construct_with *Game.object_definition.component_names
     public *Game.object_definition.component_names
@@ -167,12 +179,25 @@ describe "The basic life cycle of an actor" do
 
       input_manager = context[:input_manager]
       input_manager.register g
+
     end
   }
+
+  def mock_image(filename)
+    context = Conject.default_object_context
+    resource_manager = context[:resource_manager]
+    img = MockImage.new(filename)
+    resource_manager.stubs(:load_image).with(filename).returns(img)
+    img
+  end
 
   def see_actor_drawn(actor_type)
     act = game.actor(actor_type)
     act.should be
+  end
+
+  def see_image_drawn(img)
+    img.calls.first.first.should == :draw
   end
 
   def see_actor_attrs(actor_type, attrs)
@@ -194,22 +219,3 @@ describe "The basic life cycle of an actor" do
   end
 end
 
-# 
-#   class Shooty < Behavior
-#     construct_with :actor, :director
-#     def setup
-#       actor.has_attribute :bullets, opts[:bullets]
-#       director.when :update do |time|
-#         actor.bullets -= time
-#       end
-#     end
-#   end
-# 
-#   class DeathOnD < Behavior
-#     construct_with :actor, :input_manager
-#     def setup
-#       input_manager.reg :up, KbD do
-#         actor.remove
-#       end
-#     end
-#   end
