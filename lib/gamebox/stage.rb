@@ -86,28 +86,18 @@ class Stage
 
   def draw(target)
     z = 0
-    # TODO PERF cache this array and invalidate when new layers come in?
     @parallax_layers.each do |parallax_layer|
-    # @drawables.keys.sort.reverse.each do |parallax_layer|
-
       drawables_on_parallax_layer = @drawables[parallax_layer]
 
       if drawables_on_parallax_layer
         @layer_orders[parallax_layer].each do |layer|
-        # drawables_on_parallax_layer.keys.sort.each do |layer|
 
           trans_x = @viewport.x_offset parallax_layer
           trans_y = @viewport.y_offset parallax_layer
 
           z += 1
           drawables_on_parallax_layer[layer].each do |drawable|
-            begin
-              drawable.draw target, trans_x, trans_y, z
-            rescue Exception => ex
-              p drawable.class
-              p ex
-              p ex.backtrace
-            end
+            drawable.draw target, trans_x, trans_y, z
           end
         end
       end
