@@ -14,8 +14,8 @@ class ResourceManager
 
   def load_actor_image(actor)
     # use pngs only for now
-    actor_name = Inflector.underscore(actor.class)
-    return load_image("#{actor_name}.png")
+    # actor_name = Inflector.underscore(actor.class)
+    return load_image("#{actor.actor_type}.png")
   end
 
   def load_animation_set(actor, action)
