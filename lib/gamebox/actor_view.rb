@@ -38,10 +38,10 @@ class ActorView
   end
 
   class << self
-    def define(actor_view_type)
+    def define(actor_view_type, &blk)
       @definitions ||= {}
       definition = ActorViewDefinition.new
-      yield definition if block_given?
+      definition.instance_eval &blk if block_given?
       @definitions[actor_view_type] = definition
     end
 

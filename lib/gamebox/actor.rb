@@ -51,10 +51,10 @@ class Actor
   # TODO should we support "inheritance" of components?
   class << self
 
-    def define(actor_type)
+    def define(actor_type, &blk)
       @definitions ||= {}
       definition = ActorDefinition.new
-      yield definition if block_given?
+      definition.instance_eval &blk if block_given?
       @definitions[actor_type] = definition
     end
 

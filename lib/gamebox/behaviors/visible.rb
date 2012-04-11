@@ -1,8 +1,8 @@
 # in charge of registering / showing / hiding of actor views
-Behavior.define :visible do |beh|
-  beh.requires :stage
+Gamebox.define_behavior :visible do
+  requires :stage
 
-  beh.react_to do |message, *args|
+  react_to do |message, *args|
     if message == :show
       stage.register_drawable opts[:view]
     elsif message == :hide

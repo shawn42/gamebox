@@ -14,7 +14,7 @@ describe "The basic life cycle of an actor" do
   let(:gosu) { MockGosuWindow.new }
   let!(:mc_bane_png) { mock_image('mc_bane.png') }
 
-  Behavior.define :shooty do |beh|
+  define_behavior :shooty do |beh|
     beh.requires :director
     beh.setup do
       actor.has_attribute :bullets, opts[:bullets]
@@ -24,24 +24,23 @@ describe "The basic life cycle of an actor" do
     end
   end
 
-  Behavior.define :death_on_d do |beh|
-    beh.requires :input_manager
+  define_behavior :death_on_d do
+    requires :input_manager
     # TODO can we rename this to configure?
-    beh.setup do
+    setup do
       input_manager.reg :up, KbD do
         actor.remove
       end
     end
   end
 
-  ActorView.define :mc_bane_view do |view|
-    view.requires :resource_manager # needs these injected
-    view.configure do
-      # TODO MOCK THIS IMAGE
+  define_actor_view :mc_bane_view do
+    requires :resource_manager # needs these injected
+    configure do
       @image = resource_manager.load_actor_image(actor)
     end
 
-    view.draw do |target, x_off, y_off, z|
+    draw do |target, x_off, y_off, z|
       # TODO TRACK THESE DRAWINGS
       @image.draw #offset_x, offset_y, z, x_scale, y_scale, color
     end
@@ -49,9 +48,9 @@ describe "The basic life cycle of an actor" do
 
   # no code is allowed in the actor!
   # all done through behaviors
-  Actor.define :mc_bane do |actor|
-    actor.has_behavior  shooty: { bullets: 50 }
-    actor.has_behavior :death_on_d
+  define_actor :mc_bane do
+    has_behavior  shooty: { bullets: 50 }
+    has_behavior :death_on_d
     # actor.has_behavior :graphical
 
     # FEATURE REQUEST

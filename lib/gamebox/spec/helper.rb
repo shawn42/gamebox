@@ -2,6 +2,8 @@
 def log(*args)
   # nothing for specs!
 end
+include Gamebox
+
 module GameboxSpecHelpers
   module ClassMethods
     def inject_mocks(*mock_names_array)

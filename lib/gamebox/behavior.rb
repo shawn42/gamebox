@@ -45,10 +45,10 @@ class Behavior
       requires_behaviors(*args)
     end
 
-    def define(behavior_type)
+    def define(behavior_type, &blk)
       @definitions ||= {}
       definition = BehaviorDefinition.new
-      yield definition if block_given?
+      definition.instance_eval &blk if block_given?
       @definitions[behavior_type] = definition
     end
 
