@@ -4,16 +4,13 @@
 class Actor
   extend Publisher
   include EventedAttributes
-end
-class Actor
   include Gamebox::Extensions::Object::Yoda
   can_fire_anything
   construct_with :this_object_context
   public :this_object_context
 
-  # TODO show/hide methods? go in a behavior?
   has_attribute :alive
-  attr_accessor :actor_type
+  attr_accessor :actor_type, :opts
 
   def initialize
     @behaviors = []

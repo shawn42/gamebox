@@ -14,13 +14,6 @@ class ActorView
     
   end
 
-  def self.inherited(klass)
-    klass.instance_eval do
-      construct_with *ActorView.object_definition.component_names
-      public *ActorView.object_definition.component_names
-    end
-  end
-  
   def register
     stage.register_drawable self
   end

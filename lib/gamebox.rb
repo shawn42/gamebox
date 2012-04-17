@@ -18,5 +18,9 @@ begin
 rescue LoadError
 end
 
+require "#{GAMEBOX_PATH}/version.rb"
 require 'require_all'
-require_all Dir.glob("#{GAMEBOX_PATH}/**/*.rb").reject { |f| f.match("template_app") || f.match("spec") || f.match("gamebox_application.rb")}
+directory_load_order = %w(lib core actors behaviors views stagehands)
+directory_load_order.each do |dir|
+  require_all "#{GAMEBOX_PATH}/#{dir}/*.rb"
+end

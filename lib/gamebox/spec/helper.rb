@@ -1,7 +1,7 @@
 # Helper methods and classes for writing specs for your gamebox application
-def log(*args)
-  # nothing for specs!
-end
+# def log(*args)
+#   # nothing for specs!
+# end
 include Gamebox
 
 module GameboxSpecHelpers
@@ -37,7 +37,8 @@ module GameboxSpecHelpers
     def create_mocks(*args)
       {}.tap do |mocks|
         args.each do |mock_name|
-          the_mock = mock(mock_name.to_s)
+          the_mock = instance_variable_get("@#{mock_name}")
+          the_mock ||= mock(mock_name.to_s)
           instance_variable_set "@#{mock_name}", the_mock
           mocks[mock_name.to_sym] = the_mock
         end
@@ -91,3 +92,4 @@ end
 RSpec.configure do |configuration|
   configuration.include GameboxSpecHelpers
 end
+

@@ -6,7 +6,7 @@ class ActorFactory
     :behavior_factory, :this_object_context
 
   # returns the newly created Actor after it and its ActorView has been created.
-  def build(actor, stage, opts={})
+  def build(actor, opts={})
     merged_opts = opts.merge(actor_type: actor)
 
     model = nil
