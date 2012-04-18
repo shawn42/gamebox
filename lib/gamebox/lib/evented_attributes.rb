@@ -1,9 +1,14 @@
 module EventedAttributes
 
   def has_attributes(*names)
-    # TODO make this take a hash or an array
-    names.each do |name|
-      has_attribute name
+    if names.first.is_a? Hash
+      names.each do |name, default|
+        has_attribute name, default
+      end
+    else
+      names.each do |name|
+        has_attribute name
+      end
     end
   end
 
