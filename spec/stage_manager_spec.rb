@@ -12,17 +12,18 @@ describe StageManager do
   let(:foo_stage_config) { {foo: {thing:1} } }
   let(:bar_stage_config) { {bar: {thing:2} } }
   let(:stage_config) { {stages: [foo_stage_config, bar_stage_config]} }
+  let(:subcontext) { stub 'subcontext' }
   before do
     @input_manager.stubs(:clear_hooks)
     @config_manager.stubs(:load_config).returns(stage_config)
 
     # TODO sub context helper
-    @subcontext = stub('subcontext')
-    @subcontext.stubs(:[]).with('foo_stage').returns(foo_stage)
-    @subcontext.stubs(:[]).with('bar_stage').returns(bar_stage)
+    subcontext.stubs(:[]).with('foo_stage').returns(foo_stage)
+    subcontext.stubs(:[]).with('bar_stage').returns(bar_stage)
+    subcontext.stubs(:[]=)
     foo_stage.stubs(:configure).with(@backstage, {thing:1})
     bar_stage.stubs(:configure).with(@backstage, {thing:2})
-    @this_object_context.stubs(:in_subcontext).yields(@subcontext)
+    @this_object_context.stubs(:in_subcontext).yields(subcontext)
   end
 
   describe '#setup' do
@@ -114,6 +115,8 @@ describe StageManager do
     end
 
     it 'draws the current stage' do
+
+      subcontext.expects(:[]=).with(:stage, foo_stage)
       subject.switch_to_stage :foo, :args
       foo_stage.expects(:draw).with(:target)
 
