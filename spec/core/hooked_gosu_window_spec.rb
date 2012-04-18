@@ -1,4 +1,4 @@
-require_relative 'helper'
+require 'helper'
 
 describe HookedGosuWindow do
   class Gosu::Window

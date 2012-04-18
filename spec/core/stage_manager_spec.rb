@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 
 describe StageManager do
   inject_mocks :input_manager, :config_manager, :backstage,

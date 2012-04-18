@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 
 describe 'a new Label' do
   before do 

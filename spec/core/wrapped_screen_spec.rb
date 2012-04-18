@@ -1,4 +1,4 @@
-require_relative 'helper'
+require 'helper'
 
 describe WrappedScreen do
   inject_mocks :config_manager

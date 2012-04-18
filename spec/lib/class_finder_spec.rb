@@ -1,4 +1,5 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
+
 describe ClassFinder do  
   describe "::find" do
     it "finds inflected classname" do

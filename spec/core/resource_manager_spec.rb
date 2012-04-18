@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 
 describe 'A new resource manager' do
   let(:actor) { stub 'actor', actor_type: 'string' }

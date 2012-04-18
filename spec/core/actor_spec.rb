@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 describe Actor do
 
   subject { create_actor :actor }

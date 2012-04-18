@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 
 class SizedActor < Actor
   def width;12;end

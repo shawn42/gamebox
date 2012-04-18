@@ -1,4 +1,5 @@
-require_relative 'helper'
+require 'helper'
+
 describe :graphical_actor_view do
   # TODO this subjet construction is WAY off now
   subject { create_actor_view }

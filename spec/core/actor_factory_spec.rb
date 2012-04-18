@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 describe ActorFactory do
   inject_mocks :input_manager, :wrapped_screen, :this_object_context, :resource_manager, :behavior_factory
 

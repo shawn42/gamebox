@@ -1,5 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
-
+require 'helper'
 
 class Vec
   attr_accessor :x, :y

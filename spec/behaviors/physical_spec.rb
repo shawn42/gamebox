@@ -1,5 +1,5 @@
 __END__
-require File.join(File.dirname(__FILE__),'helper')
+require 'helper'
 
 # Only run these if the user has chipmunk installed
 if defined? CP

@@ -1,5 +1,4 @@
-require File.join(File.dirname(__FILE__),'helper')
-
+require 'helper'
 
 describe Stage do
   inject_mocks :input_manager, :actor_factory, :resource_manager, 
