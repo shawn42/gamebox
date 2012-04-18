@@ -2,17 +2,22 @@ require File.join(File.dirname(__FILE__),'helper')
 
 
 describe ActorView do
-  subject { create_actor_view(:actor_view, actor) }
-  let(:actor) { create_actor }
+
+  let!(:subcontext) do 
+    it = nil
+    Conject.default_object_context.in_subcontext{|ctx|it = ctx}; 
+    _mocks = create_mocks *(Actor.object_definition.component_names + ActorView.object_definition.component_names - [:actor])
+    _mocks.each do |k,v|
+      it[k] = v
+    end
+    it
+  end
+  subject { subcontext[:actor_view] }
+  let!(:actor) { subcontext[:actor] }
 
   it 'should be layered 0/1 by default' do
     subject.layer.should == 0
     subject.parallax.should == 1
-  end
-
-  it 'should call setup on creation' do
-    ActorView.any_instance.expects :setup
-    subject
   end
 
   it 'should accept layered behavior params from actor' do
@@ -23,26 +28,27 @@ describe ActorView do
     subject.parallax.should == 3
   end
 
-  context 'with a real Actor' do
-    before do
-      subject.actor = actor
-    end
-    
-    it 'should register for show events' do
-      @stage.expects(:register_drawable).with(subject)
-      actor.send :fire, :show_me
-    end
+  # TODO move these to visible behavior spec
+  # it 'should register for show events' do
+  #   @stage.expects(:register_drawable).with(subject)
+  #   actor.react_to :show
+  # end
 
-    it 'should register for hide events' do
-      @stage.expects(:unregister_drawable).with(subject)
-      actor.send :fire, :hide_me
-    end
+  # it 'should register for hide events' do
+  #   @stage.expects(:unregister_drawable).with(subject)
+  #   actor.react_to :hide
+  # end
 
-    it 'should register for remove events' do
-      @stage.expects(:unregister_drawable).with(subject)
-      actor.send :fire, :remove_me
-    end
+  # it 'should register for remove events' do
+  #   @stage.expects(:unregister_drawable).with(subject)
+  #   actor.react_to :remove
+  # end
+
+  describe ".define" do
+    it 'should call setup on creation'
+      # ActorView.any_instance.expects :configure
   end
+
     
   it 'should manage a cached surface for drawing (possibly use record{})' 
 end
