@@ -2,13 +2,35 @@ require 'helper'
 
 describe :graphical_actor_view do
   # TODO this subjet construction is WAY off now
-  subject { create_actor_view }
-  let(:actor) { stub('actor', do_or_do_not: nil, x: 2, y: 3) }
+  let!(:subcontext) do 
+    it = nil
+    Conject.default_object_context.in_subcontext{|ctx|it = ctx}; 
+    _mocks = create_mocks *(Actor.object_definition.component_names + ActorView.object_definition.component_names - [:actor])
+    _mocks[:this_object_context] = it
+    _mocks.each do |k,v|
+      it[k] = v
+    end
+    it
+  end
+  subject { subcontext[:actor_view_factory].build actor, {} }
+  let(:actor) do 
+    subcontext[:actor].tap do |a| 
+      a.has_attribute :view, :graphical_actor_view
+      a.has_attribute :x, 2
+      a.has_attribute :y, 3
+      a.has_attribute :image, image
+      # TODO no more self publishing of behaviors
+      a.has_attribute :graphical, graphical
+    end
+  end
+
   let(:graphical) { stub('graphical', tiled?: false) }
   let(:image) { stub('image', width: 10, height: 20, draw:nil) }
+
   before do
     # inject mocks hack
     @actor = actor
+    @stage.stub_everything
   end
 
   describe "#draw" do

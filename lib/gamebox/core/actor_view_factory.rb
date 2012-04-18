@@ -9,34 +9,32 @@ class ActorViewFactory
     # TODO  have animated, graphical, physical set a view attr on actor
     view_klass = opts[:view] || actor.do_or_do_not(:view) || "#{actor.actor_type}_view"
     view_definition = ActorView.definitions[view_klass.to_sym]
+    view = nil
     if view_definition
       actor_context = actor.this_object_context
-      begin
-        view = actor_context[:actor_view]
-        reqs = view_definition.required_injections
-        if reqs
-          reqs.each do |req|
-            object = actor_context[req]
-            view.define_singleton_method req do
-              components[req] 
-            end
-            components = view.send :components
-            components[req] = object
+      view = actor_context[:actor_view]
+      reqs = view_definition.required_injections
+      if reqs
+        reqs.each do |req|
+          object = actor_context[req]
+          view.define_singleton_method req do
+            components[req] 
           end
+          components = view.send :components
+          components[req] = object
         end
-
-        view.define_singleton_method :draw, &view_definition.draw_block if view_definition.configure_block
-        view.define_singleton_method :configure, &view_definition.configure_block if view_definition.configure_block
-
-        view.configure
-
-        behavior_factory.add_behavior(actor, :visible, view: view)
-      rescue Exception => e
-        log "could not find view class for #{actor.actor_type} with key #{view_klass}"
       end
 
+      view.define_singleton_method :draw, &view_definition.draw_block if view_definition.draw_block
+      if view_definition.configure_block
+        view.define_singleton_method :configure, &view_definition.configure_block 
+        view.configure
+      end
+
+      behavior_factory.add_behavior(actor, :visible, view: view)
       actor.react_to :show unless opts[:hide]
     end
+    view
   end
 
 end

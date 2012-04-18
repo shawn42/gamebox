@@ -11,13 +11,13 @@ ActorView.define :graphical_actor_view do
     offset_x = x+x_off
     offset_y = y+y_off
 
-    alpha = actor.respond_to?(:alpha) ? actor.alpha : 0xFF
+    alpha = actor.do_or_do_not(:alpha) || 0xFF
     color = Color.new(alpha,0xFF,0xFF,0xFF)
 
-    x_scale = actor.respond_to?(:x_scale) ? actor.x_scale : 1
-    y_scale = actor.respond_to?(:y_scale) ? actor.y_scale : 1
+    x_scale = actor.do_or_do_not(:x_scale) || 1
+    y_scale = actor.do_or_do_not(:y_scale) || 1
 
-    graphical_behavior = actor.graphical if actor.is? :graphical
+    graphical_behavior = actor.do_or_do_not :graphical
     if graphical_behavior && graphical_behavior.tiled?
       x_tiles = graphical_behavior.num_x_tiles
       y_tiles = graphical_behavior.num_y_tiles
