@@ -7,7 +7,7 @@ class AaBbCollidable < CollidableShape
     @shape_type = opts[:shape]
 
     @cw_local_points = opts[:cw_local_points]
-    @cw_local_points ||= opts[:points]
+    @cw_local_points ||= opts[:points] || []
     @cw_world_points ||= build_aabb
 
     @radius = opts[:radius]
@@ -28,7 +28,6 @@ class AaBbCollidable < CollidableShape
     ]
   end
 
-  # TODO infinite loop if actor hasn't defined width and it gets relegated to us
   def calculate_radius
     w = @actor.width
     hw = w * 0.5

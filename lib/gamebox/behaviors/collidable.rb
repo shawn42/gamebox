@@ -35,17 +35,24 @@ Behavior.define :collidable do
       end
     shape.setup
 
+    actor.has_attributes( shape: shape,
+                          center_x: shape.center_x,
+                          center_y: shape.center_y,
+                          cw_world_points: shape.cw_world_points,
+                          cw_world_lines: shape.cw_world_lines,
+                          cw_world_edge_normals: shape.cw_world_edge_normals,
+                          radius: shape.radius
+                        )
 
-    actor.has_attributes( shape: shape )
-                          # radius: shape.radius,
-                          # cw_world_points: XXX,
-                          # cw_world_lines: XXX,
-                          # center_x: XXX,
-                          # center_y: XXX,
-                          # cw_world_edge_normals: XXX,
-
+    # TODO watch for x, y, w, h changes instead?
     director.when :update do |time|
       shape.update(time)
+      actor.center_x = shape.center_x
+      actor.center_y = shape.center_y
+      actor.cw_world_points = shape.cw_world_points
+      actor.cw_world_lines = shape.cw_world_lines
+      actor.cw_world_edge_normals = shape.cw_world_edge_normals
+      actor.radius = shape.radius
     end
 
     stage.register_collidable actor

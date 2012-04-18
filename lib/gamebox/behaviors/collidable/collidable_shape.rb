@@ -1,5 +1,8 @@
 class CollidableShape
   attr_accessor :opts, :actor, :radius
+
+  attr_reader :cw_world_points, :cw_local_points, :cw_world_lines, :cw_world_edge_normals
+
   def initialize(actor, options)
     @opts = options
     @actor = actor
@@ -32,4 +35,6 @@ class CollidableShape
 
   def recalculate_collidable_cache
   end
+
+
 end
