@@ -1,10 +1,14 @@
 require_relative 'helper'
-describe GraphicalActorView do
-  subject { create_actor_view :graphical_actor_view, actor }
-  let(:actor) { stub('actor', is?: false, when: nil, image: nil,
-                              x: 2, y: 3, graphical: graphical) }
+describe :graphical_actor_view do
+  # TODO this subjet construction is WAY off now
+  subject { create_actor_view }
+  let(:actor) { stub('actor', do_or_do_not: nil, x: 2, y: 3) }
   let(:graphical) { stub('graphical', tiled?: false) }
   let(:image) { stub('image', width: 10, height: 20, draw:nil) }
+  before do
+    # inject mocks hack
+    @actor = actor
+  end
 
   describe "#draw" do
     context "no image" do

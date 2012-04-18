@@ -3,7 +3,7 @@
 # associated with the Actor and registers it to the Stage be drawn. 
 class ActorFactory
   construct_with :input_manager, :wrapped_screen, :resource_manager,
-    :behavior_factory, :this_object_context
+    :behavior_factory, :actor_view_factory, :this_object_context
 
   # returns the newly created Actor after it and its ActorView has been created.
   def build(actor, opts={})
@@ -30,41 +30,7 @@ class ActorFactory
 
         model.configure(merged_opts)
 
-        # TODO how can I ask Conject if something can be found w/o just rescueing here?
-        begin
-
-          # TODO
-          # have animated, graphical, physical set a view attr on actor
-          view_klass = opts[:view] || model.do_or_do_not(:view) || "#{actor}_view"
-
-          view_definition = ActorView.definitions[view_klass.to_sym]
-          if view_definition
-            view = actor_context[:actor_view]
-
-            reqs = view_definition.required_injections
-            if reqs
-              reqs.each do |req|
-                object = actor_context[req]
-                view.define_singleton_method req do
-                  components[req] 
-                end
-                components = view.send :components
-                components[req] = object
-              end
-            end
-
-            view.define_singleton_method :draw, &view_definition.draw_block if view_definition.configure_block
-            view.define_singleton_method :configure, &view_definition.configure_block if view_definition.configure_block
-
-            view.configure
-
-            behavior_factory.add_behavior(model, :visible, view: view)
-          end
-        rescue Exception => e
-          log "could not find view class for #{actor} with key #{view_klass}"
-        end
-
-        model.react_to :show unless opts[:hide]
+        actor_view_factory.build model, opts
       rescue Exception => e
         # binding.pry
         raise """
