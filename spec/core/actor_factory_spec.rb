@@ -1,6 +1,7 @@
 require 'helper'
 describe ActorFactory do
-  inject_mocks :input_manager, :wrapped_screen, :this_object_context, :resource_manager, :behavior_factory
+  inject_mocks :input_manager, :wrapped_screen, :this_object_context, 
+    :resource_manager, :behavior_factory, :actor_view_factory
 
   before do
     @opts = {:foo => :bar}
@@ -20,8 +21,8 @@ describe ActorFactory do
       @actor = actor
       @subcontext = stub('subcontext')
       @subcontext.stubs(:[]).with(:actor).returns(actor)
-      @subcontext.stubs(:[]).with("actor_view").returns(actor_view)
       @this_object_context.stubs(:in_subcontext).yields(@subcontext)
+      @actor_view_factory.stubs(:build)
     end
 
     it 'configures the actor correctly' do
@@ -30,8 +31,8 @@ describe ActorFactory do
     end
 
     it 'creates the associated view class' do
+      @actor_view_factory.expects(:build).with(actor, @opts)
       subject.build(:some_actor, @opts).should == actor
-      actor_view.actor.should == actor
     end
     
     it "raises on actor not found" do
