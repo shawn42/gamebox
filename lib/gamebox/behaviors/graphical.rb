@@ -12,6 +12,7 @@ Behavior.define :graphical do
                           width: image.width,
                           height: image.height,
                           tiled: @opts[:tiled],
+                          view: @opts[:view] || :graphical_actor_view,
                           num_x_tiles: @opts[:num_x_tiles] || 1,
                           num_y_tiles: @opts[:num_y_tiles] || 1,
                           scale: scale,

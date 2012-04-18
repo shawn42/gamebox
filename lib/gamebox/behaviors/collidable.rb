@@ -1,67 +1,65 @@
 # available collidable_shapes are :circle, :polygon, :aabb
-class Collidable < Behavior
+Behavior.define :collidable do
 
-  attr_accessor :collidable_shape, :cw_local_points, :shape
+  requires :stage, :director
+  setup do
+    shape_type = opts[:shape]
 
-  def setup
-    @shape = build_shape
-
-    relegates :collidable_shape, :radius, :cw_world_points, :cw_world_lines, :center_x, :center_y, :cw_world_edge_normals
-    relegates :width unless @actor.respond_to? :width
-    relegates :height unless @actor.respond_to? :height
-    relegates :bb unless @actor.respond_to? :bb
-
-    register_actor
-  end
-
-  def width; 1; end
-  def height; 1; end
-
-  def bb
-    w = actor.width || 1
-    h = actor.height || 1
+    w = actor.do_or_do_not(:width) || 1
+    h = actor.do_or_do_not(:height) || 1
     hw = w / 2
     hh = h / 2
-    x = actor.x - hw
-    y = actor.y - hh
-    @bb ||= Rect.new
-    @bb.x = x
-    @bb.y = y
-    @bb.w = w
-    @bb.h = h
-    @bb
-  end
+    x = (actor.do_or_do_not(:x) || 0) - hw
+    y = (actor.do_or_do_not(:y) || 0) - hh
+    bb ||= Rect.new
+    bb.x = x
+    bb.y = y
+    bb.w = w
+    bb.h = h
 
-  def register_actor
-    @actor.stage.register_collidable @actor
-  end
+    actor.has_attributes( shape_type: shape_type,
+                          width: w,
+                          height: h,
+                          x: x,
+                          y: y,
+                          bb: bb )
 
-  def removed
-    @actor.stage.unregister_collidable @actor
-    super
-  end
+    shape = 
+      case shape_type
+      when :circle
+        CircleCollidable.new actor, opts
+      when :aabb
+        AaBbCollidable.new actor, opts
+      when :polygon
+        PolygonCollidable.new actor, opts
+      end
+    shape.setup
 
-  def build_shape
-    shape = nil
-    @collidable_shape = opts[:shape]
-    case @collidable_shape
-    when :circle
-      shape = CircleCollidable.new @actor, opts
-    when :aabb
-      shape = AaBbCollidable.new @actor, opts
-    when :polygon
-      shape = PolygonCollidable.new @actor, opts
+
+    actor.has_attributes( shape: shape )
+                          # radius: shape.radius,
+                          # cw_world_points: XXX,
+                          # cw_world_lines: XXX,
+                          # center_x: XXX,
+                          # center_y: XXX,
+                          # cw_world_edge_normals: XXX,
+
+    director.when :update do |time|
+      shape.update(time)
     end
 
-    shape.setup
-    shape
+    stage.register_collidable actor
   end
 
-  def update(time)
-    shape.update(time)
+  react_to do |message, *args|
+    case message
+    when :remove
+      stage.unregister_collidable actor
+    end
   end
 
-  def method_missing(name, *args)
-    @shape.send(name, *args)
-  end
+  # TODO was this needed?
+  # def method_missing(name, *args)
+  #   @shape.send(name, *args)
+  # end
 end

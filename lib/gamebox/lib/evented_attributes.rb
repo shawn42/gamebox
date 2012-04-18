@@ -2,7 +2,7 @@ module EventedAttributes
 
   def has_attributes(*names)
     if names.first.is_a? Hash
-      names.each do |name, default|
+      names.first.each do |name, default|
         has_attribute name, default
       end
     else

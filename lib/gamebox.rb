@@ -22,5 +22,5 @@ require "#{GAMEBOX_PATH}/version.rb"
 require 'require_all'
 directory_load_order = %w(lib core actors behaviors views stagehands)
 directory_load_order.each do |dir|
-  require_all "#{GAMEBOX_PATH}/#{dir}/*.rb"
+  require_all "#{GAMEBOX_PATH}/#{dir}/**/*.rb"
 end
