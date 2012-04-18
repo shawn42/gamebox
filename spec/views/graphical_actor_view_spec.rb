@@ -19,12 +19,12 @@ describe :graphical_actor_view do
       a.has_attribute :x, 2
       a.has_attribute :y, 3
       a.has_attribute :image, image
-      # TODO no more self publishing of behaviors
-      a.has_attribute :graphical, graphical
+      a.has_attribute :tiled
+      a.has_attribute :num_x_tiles
+      a.has_attribute :num_y_tiles
     end
   end
 
-  let(:graphical) { stub('graphical', tiled?: false) }
   let(:image) { stub('image', width: 10, height: 20, draw:nil) }
 
   before do
@@ -96,9 +96,9 @@ describe :graphical_actor_view do
       it 'draws correctly for tiled graphical actors' do
         actor.stubs(:rotation).returns(0.0)
         actor.stubs(:is?).with(:graphical).returns(true)
-        graphical.stubs(:tiled?).returns(true)
-        graphical.stubs(:num_x_tiles).returns(2)
-        graphical.stubs(:num_y_tiles).returns(3)
+        actor.stubs(:tiled).returns(true)
+        actor.stubs(:num_x_tiles).returns(2)
+        actor.stubs(:num_y_tiles).returns(3)
 
         image.expects(:draw_rot).with(2, 3, 1, 0.0, 1, 1)
         image.expects(:draw_rot).with(2, 23, 1, 0.0, 1, 1)

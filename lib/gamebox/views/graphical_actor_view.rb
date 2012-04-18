@@ -17,10 +17,10 @@ ActorView.define :graphical_actor_view do
     x_scale = actor.do_or_do_not(:x_scale) || 1
     y_scale = actor.do_or_do_not(:y_scale) || 1
 
-    graphical_behavior = actor.do_or_do_not :graphical
-    if graphical_behavior && graphical_behavior.tiled?
-      x_tiles = graphical_behavior.num_x_tiles
-      y_tiles = graphical_behavior.num_y_tiles
+    # TODO add ? ableness to actor attributes
+    if actor.do_or_do_not(:tiled)
+      x_tiles = actor.num_x_tiles
+      y_tiles = actor.num_y_tiles
       img_w = img.width
       img_h = img.height
       x_tiles.times do |col|
