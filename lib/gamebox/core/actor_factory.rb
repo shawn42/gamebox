@@ -25,7 +25,7 @@ class ActorFactory
             beh_key = behavior.keys.first
           end
 
-          model.add_behavior beh_key, behavior_factory.add_behavior(model, beh_key, beh_opts)
+          behavior_factory.add_behavior(model, beh_key, beh_opts)
         end
 
         model.configure(merged_opts)
@@ -58,8 +58,7 @@ class ActorFactory
 
             view.configure
 
-            # TODO this reads like butt!
-            model.add_behavior :visible, behavior_factory.add_behavior(model, :visible, view: view)
+            behavior_factory.add_behavior(model, :visible, view: view)
           end
         rescue Exception => e
           log "could not find view class for #{actor} with key #{view_klass}"

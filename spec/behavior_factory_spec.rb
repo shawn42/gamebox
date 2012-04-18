@@ -3,11 +3,12 @@ require 'helper'
 describe BehaviorFactory do
   let(:some_behavior) { stub('some behavior', required_behaviors: []) }
   let(:object_context) { mock('object context') }
-  let(:some_actor) { stub('some actor', this_object_context: object_context) }
+  let(:some_actor) { stub('some actor', add_behavior: nil, this_object_context: object_context) }
 
   before do
-    object_context.stubs(:[]).with(:do_not_exist).returns(nil)
-    object_context.stubs(:[]).with(:shootable).returns(some_behavior)
+    Behavior.define :shootable
+
+    object_context.stubs(:[]).with(:behavior).returns(some_behavior)
     some_behavior.stubs(:configure)
   end
 
@@ -15,6 +16,11 @@ describe BehaviorFactory do
     it 'creates the behavior based on the actor and symbol behavior_def' do
       some_behavior.expects(:configure).with({})
 
+      subject.add_behavior some_actor, :shootable
+    end
+
+    it 'adds the behavior to the actor' do
+      some_actor.expects(:add_behavior).with(:shootable, some_behavior)
       subject.add_behavior some_actor, :shootable
     end
 

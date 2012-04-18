@@ -13,7 +13,7 @@ class Actor
   attr_accessor :actor_type, :opts
 
   def initialize
-    @behaviors = []
+    @behaviors = {}
   end
 
   def configure(opts={}) # :nodoc:
@@ -23,20 +23,25 @@ class Actor
   end
 
   def add_behavior(name, behavior)
-    # TODO do we need a name here?
-    @behaviors << behavior
+    @behaviors[name] = behavior
   end
 
   def react_to(message, *opts)
-    @behaviors.each do |behavior|
+    # TODO cache the values array?
+    @behaviors.values.each do |behavior|
       behavior.react_to(message)
     end
+  end
+
+  def has_behavior?(name)
+    @behaviors[name]
   end
 
   # Tells the actor's Director that he wants to be removed; and unsubscribes
   # the actor from all input events.
   def remove
     self.alive = false
+    react_to :remove
     fire :remove_me
   end
 

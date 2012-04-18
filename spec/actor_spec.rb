@@ -43,6 +43,11 @@ describe Actor do
     it 'returns false if the actor does not have the attribute'
   end
 
+  describe "#has_behavior?" do
+    it 'returns true if the actor has the behavior'
+    it 'returns false if the actor does not have the behavior'
+  end
+
   describe ".define" do
     it 'adds an actor definition'  do
       Actor.define :mc_bane do |act|

@@ -22,7 +22,6 @@ class BehaviorFactory
       if reqs
         reqs.each do |req|
           object = context[req]
-          # object.send "#{req}=", req
           behavior.define_singleton_method req do
             components[req] 
           end
@@ -35,10 +34,11 @@ class BehaviorFactory
 
       deps = behavior.required_behaviors
       deps.each do |beh|
-        add_behavior actor, beh unless @actor.is? beh
+        add_behavior actor, beh unless actor.has_behavior?(beh)
       end
       behavior.configure(opts)
       behavior.instance_eval &behavior_definition.setup_block if behavior_definition.setup_block
+      actor.add_behavior behavior_name, behavior
     end
   end
 
