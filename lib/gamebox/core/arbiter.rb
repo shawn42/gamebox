@@ -99,9 +99,9 @@ module Arbiter
     if !other.is? :collidable
       binding.pry
     end
-    case object.collidable_shape
+    case object.shape_type
     when :circle
-      case other.collidable_shape
+      case other.shape_type
       when :circle
         collide_circle_circle? object, other
       when :aabb
@@ -110,7 +110,7 @@ module Arbiter
         collide_circle_polygon? object, other
       end
     when :aabb
-      case other.collidable_shape
+      case other.shape_type
       when :circle
         collide_aabb_circle? object, other
       when :aabb
@@ -119,7 +119,7 @@ module Arbiter
         collide_aabb_polygon? object, other
       end
     when :polygon
-      case other.collidable_shape
+      case other.shape_type
       when :circle
         collide_polygon_circle? object, other
       when :aabb
@@ -160,8 +160,8 @@ module Arbiter
 
   # returns true if the projections overlap
   def project_and_detect(axis, a, b)
-    a_min, a_max = send("#{a.collidable_shape}_interval", axis, a)
-    b_min, b_max = send("#{b.collidable_shape}_interval", axis, b)
+    a_min, a_max = send("#{a.shape_type}_interval", axis, a)
+    b_min, b_max = send("#{b.shape_type}_interval", axis, b)
 
     a_min <= b_max && b_min <= a_max
   end

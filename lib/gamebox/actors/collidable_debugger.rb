@@ -21,7 +21,7 @@ class CollidableDebuggerView < ActorView
 
   def draw(target,x_off,y_off,z)
     collider = @actor.actor
-    case collider.collidable_shape
+    case collider.shape_type
     when :circle
       target.draw_circle x_off+collider.center_x, y_off+collider.center_y, collider.radius, @color, z
     else

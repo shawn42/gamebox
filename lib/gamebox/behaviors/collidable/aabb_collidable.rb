@@ -4,7 +4,7 @@ class AaBbCollidable < CollidableShape
   attr_accessor :cw_local_points
 
   def setup
-    @collidable_shape = opts[:shape]
+    @shape_type = opts[:shape]
 
     @cw_local_points = opts[:cw_local_points]
     @cw_local_points ||= opts[:points]

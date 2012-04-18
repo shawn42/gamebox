@@ -1,4 +1,4 @@
-# available collidable_shapes are :circle, :polygon, :aabb
+# available shape_types are :circle, :polygon, :aabb
 Behavior.define :collidable do
 
   requires :stage, :director
