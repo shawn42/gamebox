@@ -6,7 +6,8 @@ class Stage
   can_fire_anything
 
   construct_with :input_manager, :actor_factory, :resource_manager, 
-    :sound_manager, :config_manager, :director, :this_object_context
+    :sound_manager, :config_manager, :director, :timer_manager, 
+    :this_object_context
 
   def self.inherited(kid)
     kid.construct_with *self.object_definition.component_names
@@ -67,7 +68,7 @@ class Stage
       stagehand.update time 
     end
     find_collisions
-    update_timers time
+    timer_manager.update time
   end
 
   def curtain_raising(*args)
@@ -146,42 +147,6 @@ class Stage
 
   end
 
-  def remove_timer(name)
-    @timers ||= {}
-    @timers.delete name
-  end
-
-  def timer(name)
-    @timers ||= {}
-    @timers[name]
-  end
-
-  # add block to be executed every interval_ms millis
-  # TODO make this hash based on object => name => block
-  # to clean up the timed behavior
-  def add_timer(name, interval_ms, &block)
-    @new_timers ||= {}
-    @new_timers[name] = {:count => 0,
-      :interval_ms => interval_ms, :callback => block}
-  end
-
-  # update each timers counts, call any blocks that are over their interval
-  def update_timers(time_delta)
-    # TODO handle overwriting the same timer name...
-    @timers ||= {}
-    if @new_timers
-      @timers.merge!(@new_timers) 
-      @new_timers = nil
-    end
-    @timers.each do |name, timer_hash|
-      timer_hash[:count] += time_delta
-      if timer_hash[:count] > timer_hash[:interval_ms]
-        timer_hash[:count] -= timer_hash[:interval_ms]
-        timer_hash[:callback].call
-      end
-    end
-  end
-
   def on_pause(&block)
     @pause_listeners ||= []
     @pause_listeners << block if block_given?
@@ -200,9 +165,8 @@ class Stage
     @pause_listeners ||= []
     @paused = true
     director.pause
+    timer_manager.pause
     input_manager.pause
-    @paused_timers = @timers
-    @timers = nil
     @pause_listeners.each do |listener|
       listener.call
     end
@@ -212,8 +176,7 @@ class Stage
     @unpause_listeners ||= []
     director.unpause
     input_manager.unpause
-    @timers = @paused_timers
-    @paused_timers = nil
+    timer_manager.unpause
     @unpause_listeners.each do |listener|
       listener.call
     end
