@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-  A game template for building and distributing Gosu games. See docs/getting_started.rdoc for help getting started.
+A game template for building and distributing Gosu games. See docs/getting_started.rdoc for help getting started.
 
 == FEATURES/PROBLEMS:
 
@@ -12,7 +12,7 @@
 
 == SYNOPSIS:
 
-  A game template for building and distributing Gosu games.
+A game template for building and distributing Gosu games.
 
 == REQUIREMENTS:
 
