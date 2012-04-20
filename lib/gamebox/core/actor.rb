@@ -14,6 +14,7 @@ class Actor
 
   def initialize
     @behaviors = {}
+    @opts = {}
   end
 
   def configure(opts={}) # :nodoc:
@@ -46,7 +47,12 @@ class Actor
   end
 
   def to_s
-    "#{self.class.name}:#{self.object_id} with behaviors\n#{@behaviors.map(&:class).inspect}"
+    atts = methods.sort - Actor.instance_methods
+    atts_hash = {}
+    atts.each do |att|
+      atts_hash[att] = send(att) unless att.to_s.end_with? "="
+    end
+    "#{self.actor_type}:#{self.object_id} with attributes\n#{atts_hash.inspect}"
   end
 
   # TODO should this live somewhere else?

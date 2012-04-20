@@ -30,9 +30,9 @@ class TimerManager
       remove_timer name
     end
     # TODO handle overwriting the same timer name...
-    if @new_timers
+    unless @new_timers.empty?
       @timers.merge!(@new_timers) 
-      @new_timers.clear!
+      @new_timers.clear
     end
     @timers.each do |name, timer_hash|
       timer_hash[:count] += time_delta

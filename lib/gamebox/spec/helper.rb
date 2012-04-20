@@ -89,7 +89,148 @@ class EventedStub
   end
 end
 
+module GameboxAcceptanceSpecHelpers
+  def foo!
+    puts "AAAHHH"
+  end
+  class ::MockGosuWindow
+    include GosuWindowAPI
+    extend Publisher
+    can_fire :update, :draw, :button_down, :button_up
+
+    def initialize
+      @total_millis = 0
+    end
+
+    def update(millis)
+      @total_millis += millis
+      Gosu.stubs(:milliseconds).returns @total_millis
+      super()
+    end
+
+    def caption=(new_caption)
+    end
+  end
+
+
+  class ::TestingStage < Stage
+    attr_accessor :actors
+
+    def initialize
+      @actors = []
+    end
+
+    def create_actor(actor_type, *args)
+      super.tap do |act|
+        @actors << act
+        act.when :remove_me do
+          @actors.delete act
+        end
+      end
+    end
+  end
+
+  class ::MockImage
+    attr_accessor :filename, :calls
+    def initialize(filename)
+      @calls = []
+      @filename = filename
+    end
+
+    def method_missing(*args)
+      @calls << args
+    end
+  end
+
+  class ::TestingGame < Game
+    construct_with *Game.object_definition.component_names
+    public *Game.object_definition.component_names
+
+    def configure
+      stage_manager.change_stage_to :testing
+    end
+
+    def stage(&blk)
+      stage_manager.current_stage.instance_eval &blk
+    end
+
+    def actor(actor_type)
+      stage_manager.current_stage.actors.detect { |act| act.actor_type == actor_type }
+    end
+  end
+
+  module ClassMethods
+  end
+
+  module InstanceMethods
+    def mock_image(filename)
+      context = Conject.default_object_context
+      resource_manager = context[:resource_manager]
+      img = MockImage.new(filename)
+      resource_manager.stubs(:load_image).with(filename).returns(img)
+      img
+    end
+
+    def see_actor_drawn(actor_type)
+      act = game.actor(actor_type)
+      act.should be
+    end
+
+    def see_image_drawn(img)
+      img.calls.first.first.should == :draw
+    end
+
+    def see_actor_attrs(actor_type, attrs)
+      act = game.actor(actor_type)
+      act.should be
+      act.should have_attrs(attrs)
+    end
+
+    def update(time)
+      gosu.update time
+    end
+
+    def send_up(button_id)
+      gosu.button_up button_id
+    end
+
+    def send_down(button_id)
+      gosu.button_down button_id
+    end
+
+    def game
+      context = Conject.default_object_context
+      @game ||= context[:testing_game].tap do |g|
+        g.configure
+        input_manager = context[:input_manager]
+        input_manager.register g
+      end
+    end
+
+  end
+
+  def self.included(base)
+    base.send :include, InstanceMethods
+    base.send :extend, ClassMethods
+
+    RSpec::Matchers.define :have_actor do |actor_type|
+      match do |game|
+        !game.stage_manager.current_stage.actors.detect { |act| act.actor_type == actor_type }.nil?
+      end
+    end
+
+    RSpec::Matchers.define :have_attrs do |expected_attributes|
+      match do |actor|
+        expected_attributes.each do |key, val|
+          actor.send(key).should == val
+        end
+      end
+    end
+  end
+end
+
 RSpec.configure do |configuration|
   configuration.include GameboxSpecHelpers
+  configuration.include GameboxAcceptanceSpecHelpers
 end
 
