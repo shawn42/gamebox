@@ -49,10 +49,10 @@ describe :collidable do
       {shape: :circle, radius: 20}
     end
 
-    it 'should recalculate_collidable_cache on update' do
+    it 'should recalculate_collidable_cache on position_changed' do
       subject
       actor.shape.expects(:recalculate_collidable_cache)
-      director.fire :update, 4
+      actor.react_to :position_changed
     end
 
     it 'should calculate center point for circle' do

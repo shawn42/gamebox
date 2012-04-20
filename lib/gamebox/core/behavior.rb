@@ -23,27 +23,7 @@ class Behavior
     end
   end
 
-  def required_behaviors
-    self.class.required_behaviors
-  end
-
   class << self
-
-    def required_behaviors
-      @required_behaviors ||= []
-    end
-
-    def requires_behaviors(*args)
-      @required_behaviors ||= []
-      for a in args
-        @required_behaviors << a
-      end
-      @behaviors
-    end
-
-    def requires_behavior(*args)
-      requires_behaviors(*args)
-    end
 
     def define(behavior_type, &blk)
       @definitions ||= {}
@@ -58,9 +38,13 @@ class Behavior
   end
 
   class BehaviorDefinition
-    attr_accessor :setup_block, :required_injections, :react_to_block
+    attr_accessor :setup_block, :required_injections, :react_to_block, :required_behaviors
     def requires(*injections_needed)
       @required_injections = injections_needed
+    end
+
+    def requires_behaviors(*behaviors_needed)
+      @required_behaviors = behaviors_needed
     end
 
     def setup(&setup_block)

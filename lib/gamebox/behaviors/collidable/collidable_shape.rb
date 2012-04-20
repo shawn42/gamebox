@@ -29,10 +29,6 @@ class CollidableShape
   end
   alias :height :width
 
-  def update(time)
-    recalculate_collidable_cache
-  end
-
   def recalculate_collidable_cache
   end
 

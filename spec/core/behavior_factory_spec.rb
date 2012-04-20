@@ -9,6 +9,7 @@ describe BehaviorFactory do
     Behavior.define :shootable
 
     object_context.stubs(:[]).with(:behavior).returns(some_behavior)
+    object_context.stubs(:in_subcontext).yields(object_context)
     some_behavior.stubs(:configure)
   end
 

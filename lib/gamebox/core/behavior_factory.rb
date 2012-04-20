@@ -17,28 +17,32 @@ class BehaviorFactory
 
     raise "unknown behavior #{behavior_name}" unless behavior_definition
     context = actor.this_object_context
-    context[:behavior].tap do |behavior|
-      reqs = behavior_definition.required_injections
-      if reqs
-        reqs.each do |req|
-          object = context[req]
-          behavior.define_singleton_method req do
-            components[req] 
+    context.in_subcontext do |behavioral_context|
+      behavioral_context[:behavior].tap do |behavior|
+        reqs = behavior_definition.required_injections
+        if reqs
+          reqs.each do |req|
+            object = context[req]
+            behavior.define_singleton_method req do
+              components[req] 
+            end
+            components = behavior.send :components
+            components[req] = object
           end
-          components = behavior.send :components
-          components[req] = object
         end
-      end
 
-      behavior.define_singleton_method :react_to, behavior_definition.react_to_block if behavior_definition.react_to_block
+        behavior.define_singleton_method :react_to, behavior_definition.react_to_block if behavior_definition.react_to_block
 
-      deps = behavior.required_behaviors
-      deps.each do |beh|
-        add_behavior actor, beh unless actor.has_behavior?(beh)
+        deps = behavior_definition.required_behaviors
+        if deps
+          deps.each do |beh|
+            add_behavior actor, beh unless actor.has_behavior?(beh)
+          end
+        end
+        behavior.configure(opts)
+        behavior.instance_eval &behavior_definition.setup_block if behavior_definition.setup_block
+        actor.add_behavior behavior_name, behavior
       end
-      behavior.configure(opts)
-      behavior.instance_eval &behavior_definition.setup_block if behavior_definition.setup_block
-      actor.add_behavior behavior_name, behavior
     end
   end
 

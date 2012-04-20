@@ -1,7 +1,9 @@
 # available shape_types are :circle, :polygon, :aabb
 Behavior.define :collidable do
 
-  requires :stage, :director
+  requires_behaviors :positioned
+
+  requires :stage
   setup do
     shape_type = opts[:shape]
 
@@ -44,9 +46,14 @@ Behavior.define :collidable do
                           radius: shape.radius
                         )
 
-    # TODO watch for x, y, w, h changes instead?
-    director.when :update do |time|
-      shape.update(time)
+    stage.register_collidable actor
+
+    # TODO clean this up w/ the DSL?
+    define_singleton_method :removed do
+      stage.unregister_collidable actor
+    end
+    define_singleton_method :position_changed do
+      shape.recalculate_collidable_cache
       actor.center_x = shape.center_x
       actor.center_y = shape.center_y
       actor.cw_world_points = shape.cw_world_points
@@ -55,14 +62,7 @@ Behavior.define :collidable do
       actor.radius = shape.radius
     end
 
-    stage.register_collidable actor
-  end
-
-  react_to do |message, *args|
-    case message
-    when :remove
-      stage.unregister_collidable actor
-    end
+    reacts_with :remove, :position_changed
   end
 
   # TODO was this needed?
