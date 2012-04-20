@@ -1,26 +1,24 @@
+Actor.define :collidable_debugger do
+  has_behaviors :collider_container
+end
 
-
-
-class CollidableDebugger < Actor
-  
-  attr_reader :actor
-  def setup
-    @actor = opts[:collider]
-    @actor.when :remove_me do
-      remove_self
+Behavior.define :collider_container do
+  setup do
+    actor.has_attributes collider: actor.opts[:collider]
+    actor.collider.when :remove do
+      actor.remove
     end
-
   end
 end
 
-class CollidableDebuggerView < ActorView
+ActorView.define :collidable_debugger_view do
 
-  def setup
+  configure do
     @color = Color::WHITE
   end
 
-  def draw(target,x_off,y_off,z)
-    collider = @actor.actor
+  draw do |target,x_off,y_off,z|
+    collider = actor.collider
     case collider.shape_type
     when :circle
       target.draw_circle x_off+collider.center_x, y_off+collider.center_y, collider.radius, @color, z

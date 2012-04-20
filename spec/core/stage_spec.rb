@@ -2,7 +2,8 @@ require 'helper'
 
 describe Stage do
   inject_mocks :input_manager, :actor_factory, :resource_manager, 
-    :sound_manager, :config_manager, :director, :this_object_context
+    :sound_manager, :config_manager, :director, :this_object_context,
+    :timer_manager
   FakeDrawable = Struct.new :layer, :parallax
 
   before do
