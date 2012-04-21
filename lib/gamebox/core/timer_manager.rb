@@ -10,7 +10,6 @@ class TimerManager
   # TODO make this hash based on object => name => block
   # to clean up the timed behavior
   def add_timer(name, interval_ms, recurring = true, &block)
-    @new_timers = {}
     @new_timers[name] = {
       count: 0, recurring: recurring,
       interval_ms: interval_ms, callback: block}

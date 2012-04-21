@@ -90,9 +90,6 @@ class EventedStub
 end
 
 module GameboxAcceptanceSpecHelpers
-  def foo!
-    puts "AAAHHH"
-  end
   class ::MockGosuWindow
     include GosuWindowAPI
     extend Publisher
@@ -154,6 +151,10 @@ module GameboxAcceptanceSpecHelpers
       stage_manager.current_stage.instance_eval &blk
     end
 
+    def current_stage
+      stage_manager.current_stage
+    end
+
     def actor(actor_type)
       stage_manager.current_stage.actors.detect { |act| act.actor_type == actor_type }
     end
@@ -180,6 +181,12 @@ module GameboxAcceptanceSpecHelpers
       img.calls.first.first.should == :draw
     end
 
+    def see_stage_ivars(ivar_hash)
+      ivar_hash.each do |name, val|
+        game.current_stage.instance_variable_get("@#{name}").should == val
+      end
+    end
+
     def see_actor_attrs(actor_type, attrs)
       act = game.actor(actor_type)
       act.should be
@@ -190,11 +197,11 @@ module GameboxAcceptanceSpecHelpers
       gosu.update time
     end
 
-    def send_up(button_id)
+    def release_key(button_id)
       gosu.button_up button_id
     end
 
-    def send_down(button_id)
+    def press_key(button_id)
       gosu.button_down button_id
     end
 
@@ -232,5 +239,9 @@ end
 RSpec.configure do |configuration|
   configuration.include GameboxSpecHelpers
   configuration.include GameboxAcceptanceSpecHelpers
+  configuration.before(:each) do
+    # TODO why did conject drop the reset context idea?
+    Conject.instance_variable_set(:@default_object_context, nil)
+  end
 end
 

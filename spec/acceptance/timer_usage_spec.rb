@@ -34,21 +34,30 @@ describe "Using timers" do
 
   it 'allows behaviors to get fired from timers' do
     game.stage do |stage| # instance of TestingStage
+      @counter = 0
+      timer_manager.add_timer 'stage_timer', 2000 do
+        @counter += 1
+      end
       create_actor :volcano
     end
     see_actor_attrs :volcano, rocks_shot: 0
+    see_stage_ivars counter: 0
 
     update 100
     see_actor_attrs :volcano, rocks_shot: 0
+    see_stage_ivars counter: 0
 
     update 901
     see_actor_attrs :volcano, rocks_shot: 1
+    see_stage_ivars counter: 0
 
     update 2001
     see_actor_attrs :volcano, rocks_shot: 2
+    see_stage_ivars counter: 1
 
     update 1
     see_actor_attrs :volcano, rocks_shot: 3
+    see_stage_ivars counter: 1
   end
 
 end

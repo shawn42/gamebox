@@ -78,7 +78,7 @@ describe "The basic life cycle of an actor" do
     see_actor_attrs :mc_bane, bullets: 40
     game.should have_actor(:mc_bane)
 
-    send_up KbD
+    release_key KbD
 
     # should have removed himself
     game.should_not have_actor(:mc_bane)
