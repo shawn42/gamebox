@@ -16,6 +16,8 @@ class ActorFactory
 
         actor_definition = Actor.definitions[actor]
         raise "#{actor} not found in Actor.definitions" if actor_definition.nil?
+        model.configure(merged_opts)
+
         actor_definition.behaviors.each do |behavior|
           beh_opts = {}
           beh_key = behavior
@@ -27,8 +29,6 @@ class ActorFactory
 
           behavior_factory.add_behavior(model, beh_key, beh_opts)
         end
-
-        model.configure(merged_opts)
 
         actor_view_factory.build model, opts
       rescue Exception => e

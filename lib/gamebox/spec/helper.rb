@@ -134,6 +134,8 @@ module GameboxAcceptanceSpecHelpers
       @filename = filename
     end
 
+    def width; 10; end
+    def height; 20; end
     def method_missing(*args)
       @calls << args
     end
@@ -178,7 +180,12 @@ module GameboxAcceptanceSpecHelpers
     end
 
     def see_image_drawn(img)
+      img.calls.should_not be_empty
       img.calls.first.first.should == :draw
+    end
+
+    def see_image_not_drawn(img)
+      img.calls.should be_empty
     end
 
     def see_stage_ivars(ivar_hash)
@@ -195,6 +202,10 @@ module GameboxAcceptanceSpecHelpers
 
     def update(time)
       gosu.update time
+    end
+
+    def draw
+      gosu.draw 
     end
 
     def release_key(button_id)

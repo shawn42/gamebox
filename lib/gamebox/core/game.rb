@@ -10,7 +10,6 @@ class Game
 
   def update(time)
     stage_manager.update time
-    draw
   end
 
   def draw

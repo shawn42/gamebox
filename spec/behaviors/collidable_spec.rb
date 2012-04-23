@@ -1,13 +1,5 @@
 require 'helper'
 
-
-# 
-# 
-# class SizedActor < Actor
-#   def width;12;end
-#   def height;10;end
-# end
-
 describe :collidable do
   let(:opts) { {} }
   subject { subcontext[:behavior_factory].add_behavior actor, :collidable, opts }

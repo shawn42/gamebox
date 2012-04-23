@@ -20,7 +20,7 @@ class ResourceManager
 
   def load_animation_set(actor, action)
     actor_dir = Inflector.underscore(actor.class)
-    using_tileset = File.exist?("#{GFX_PATH}#{actor_dir}/#{action}.png")
+    using_tileset = File.exist?("#{Gamebox.configuration.gfx_path}#{actor_dir}/#{action}.png")
     if using_tileset
       load_tile_set(actor, action)
     else
@@ -53,11 +53,11 @@ class ResourceManager
     if h > w
       # down
       num_frames = h/w
-      action_imgs = Image.load_tiles @window, GFX_PATH+tileset_name, -1, -num_frames, true
+      action_imgs = Image.load_tiles @window, Gamebox.configuration.gfx_path+tileset_name, -1, -num_frames, true
     else
       # right
       num_frames = w/h
-      action_imgs = Image.load_tiles @window, GFX_PATH+tileset_name, -num_frames, -1, true
+      action_imgs = Image.load_tiles @window, Gamebox.configuration.gfx_path+tileset_name, -num_frames, -1, true
     end
 
     action_imgs
@@ -65,14 +65,13 @@ class ResourceManager
 
   def load_frame_set(actor, action)
     # use pngs only for now
-    actor_dir = Inflector.underscore(actor.class)
-    frames = Dir.glob("#{GFX_PATH}#{actor_dir}/#{action}/*.png")
+    frames = Dir.glob("#{Gamebox.configuration.gfx_path}#{actor.actor_type}/#{action}/*.png")
     action_imgs = []
 
     frames = frames.sort_by {|f| File.basename(f).to_i }
 
     for frame in frames
-      rel_path = frame.slice(GFX_PATH.size,frame.size)
+      rel_path = frame.slice(Gamebox.configuration.gfx_path.size,frame.size)
       action_imgs << load_image(rel_path)
     end
     action_imgs
@@ -82,10 +81,10 @@ class ResourceManager
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
       begin
-        full_name = GFX_PATH + file_name
+        full_name = Gamebox.configuration.gfx_path + file_name
         if ! File.exist? full_name
           #check global gamebox location
-          full_name = GAMEBOX_GFX_PATH + file_name
+          full_name = GAMEBOX_Gamebox.configuration.gfx_path + file_name
         end
         cached_img = Image.new(@window, full_name)
       rescue Exception => ex
@@ -152,7 +151,7 @@ class ResourceManager
   end
 
   def load_tiles(filename, tile_width, tile_height)
-    Image.load_tiles @window, GFX_PATH+filename, tile_width, tile_height, true
+    Image.load_tiles @window, Gamebox.configuration.gfx_path+filename, tile_width, tile_height, true
   end
 
 

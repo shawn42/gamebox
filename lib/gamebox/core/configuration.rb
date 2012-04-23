@@ -16,6 +16,7 @@ module Gamebox
     add_setting :config_path
     add_setting :music_path
     add_setting :sound_path
+    add_setting :gfx_path
     # add_setting :output, :alias => :output_stream
 
     def settings

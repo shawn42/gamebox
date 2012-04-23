@@ -73,6 +73,9 @@ describe "The basic life cycle of an actor" do
     see_actor_attrs :mc_bane, bullets: 50
 
     update 10
+    see_image_not_drawn mc_bane_png
+
+    draw
     see_image_drawn mc_bane_png
 
     see_actor_attrs :mc_bane, bullets: 40
@@ -83,8 +86,6 @@ describe "The basic life cycle of an actor" do
     # should have removed himself
     game.should_not have_actor(:mc_bane)
 
-    # TODO interaction of actors could get tested this way as well
-    # TODO rendering checks?
   end
 end
 
