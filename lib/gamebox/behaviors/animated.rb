@@ -5,27 +5,25 @@
 # data/graphics/actor_type/action/01..n.png
 Behavior.define :animated do
   requires :resource_manager, :director
-
-  setup do
-    # METHOD DEFS; TODO how to clean this up?
-    define_singleton_method :next_frame do
+  helpers do
+    def next_frame
       action_set = @images[actor.action]
       @frame_num = (@frame_num + 1) % action_set.size unless action_set.nil?
     end
 
     # load all the images for this action
-    define_singleton_method :load_action do |action|
+    def load_action(action)
       resource_manager.load_animation_set actor, action
     end
 
-    define_singleton_method :action_changed do |old_action, new_action|
+    def action_changed(old_action, new_action)
       @images[new_action] ||= load_action(new_action)
       actor.animating = @images[new_action].size > 1
       @frame_num = 0
       set_image
     end
 
-    define_singleton_method :set_image do
+    def set_image
       action_set = @images[actor.action]
       raise "unknown action set #{actor.action} for #{actor}" if action_set.nil?
 
@@ -34,8 +32,9 @@ Behavior.define :animated do
       actor.width = image.width
       actor.height = image.height
     end
+  end
 
-
+  setup do
     # REAL STUFF
     @images = {}
     @frame_update_time = @opts[:frame_update_time]

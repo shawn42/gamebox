@@ -45,5 +45,6 @@ describe BehaviorFactory do
     end
 
     it 'creates all required behaviors'
+    it 'mixes in helpers'
   end
 end

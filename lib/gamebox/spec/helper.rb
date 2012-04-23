@@ -130,7 +130,7 @@ module GameboxAcceptanceSpecHelpers
   class ::MockImage
     attr_accessor :filename, :calls
     def initialize(filename)
-      @calls = []
+      _reset!
       @filename = filename
     end
 
@@ -138,6 +138,10 @@ module GameboxAcceptanceSpecHelpers
     def height; 20; end
     def method_missing(*args)
       @calls << args
+    end
+
+    def _reset!
+      @calls = []
     end
   end
 
@@ -182,6 +186,7 @@ module GameboxAcceptanceSpecHelpers
     def see_image_drawn(img)
       img.calls.should_not be_empty
       img.calls.first.first.should == :draw
+      img._reset!
     end
 
     def see_image_not_drawn(img)

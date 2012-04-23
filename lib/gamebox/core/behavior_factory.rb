@@ -31,6 +31,12 @@ class BehaviorFactory
           end
         end
 
+        helpers = behavior_definition.helpers_block
+        if helpers
+          helpers_module = Module.new &helpers
+          behavior.extend helpers_module
+        end
+
         behavior.define_singleton_method :react_to, behavior_definition.react_to_block if behavior_definition.react_to_block
 
         deps = behavior_definition.required_behaviors
