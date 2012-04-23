@@ -11,13 +11,8 @@ Behavior.define :animated do
       @frame_num = (@frame_num + 1) % action_set.size unless action_set.nil?
     end
 
-    # load all the images for this action
-    def load_action(action)
-      resource_manager.load_animation_set actor, action
-    end
-
     def action_changed(old_action, new_action)
-      @images[new_action] ||= load_action(new_action)
+      @images[new_action] ||= resource_manager.load_animation_set actor, new_action
       actor.animating = @images[new_action].size > 1
       @frame_num = 0
       set_image
