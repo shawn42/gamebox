@@ -18,9 +18,9 @@ describe :animated do
   end
   let!(:actor) { subcontext[:actor] }
 
-  let(:image1) { stub('image 1', width: 5, height: 6) }
-  let(:image2) { stub('image 2', width: 7, height: 8) }
-  let(:images) { [image1, image2] }
+  let(:image0) { stub('image 1', width: 5, height: 6) }
+  let(:image1) { stub('image 2', width: 7, height: 8) }
+  let(:images) { [image0, image1] }
 
   before do
     @resource_manager.stubs(:load_animation_set).returns(images)
@@ -38,60 +38,48 @@ describe :animated do
     actor.should respond_to(:height=)
   end
 
-  # it 'shouldnt update frame for non-animating' do
-  #   subject.stop_animating
+  it 'shouldnt update frame for non-animating' do
+    subject
+    actor.animating = false
+    actor.image.should == image0
+    director.fire :update, 61
 
-  #   subject.update subject.frame_update_time+1
+    actor.image.should == image0
+  end
 
-  #   subject.frame_time.should equal(0)
-  #   subject.frame_num.should equal(0)
-  # end
+  it 'should update frame for animating' do
+    subject
+    actor.image.should == image0
 
-  # it 'should update frame for animating' do
-  #   time_passed = subject.frame_update_time-1
-  #   subject.update time_passed
-  #   subject.frame_time.should == time_passed
-  #   subject.frame_num.should == 0
+    director.fire :update, 61
+    actor.image.should == image1
 
-  #   time_passed_again = 2
-  #   subject.update time_passed_again
-  #   # we rolled over the time
-  #   subject.frame_time.should == 1
-  #   subject.frame_num.should == 1
+    director.fire :update, 60
+    actor.image.should == image0
 
-  #   time_passed_again = subject.frame_update_time
-  #   subject.update time_passed_again
-  #   # we rolled over the time
-  #   subject.frame_time.should == 1
-  #   subject.frame_num.should == 0
-  # end
+    director.fire :update, 30
+    actor.image.should == image0
+    director.fire :update, 30
+    actor.image.should == image1
 
-  # it 'should stop animating' do
-  #   subject.stop_animating
-  #   subject.animating.should equal(false)
-  # end
+  end
 
-  # it 'should start animating' do
-  #   subject.start_animating
-  #   subject.animating.should equal(true)
-  # end
+  it 'should set the action and animate accordingly for single frame' do
+    subject
+    actor.animating = true
+    @resource_manager.expects(:load_animation_set).with(actor, :foo).returns([image1])
+    actor.action = :foo
 
-  # it 'should set the action and animate accordingly for single frame' do
-  #   subject.animating = true
-  #   @resource_manager.expects(:load_animation_set).with(@actor, :foo).returns([image1])
-  #   subject.action_changed :idle, :foo
+    actor.animating.should be_false
+  end
 
-  #   subject.animating.should be_false
-  #   subject.frame_num.should == 0
-  # end
+  it 'should set the action and animate accordingly for many frames' do
+    subject
+    actor.animating = false
+    @resource_manager.expects(:load_animation_set).with(actor, :foo).returns(images)
+    actor.action = :foo
 
-  # it 'should set the action and animate accordingly for many frames' do
-  #   subject.animating = false
-  #   @resource_manager.expects(:load_animation_set).with(@actor, :foo).returns(images)
-  #   subject.action_changed :idle, :foo
-
-  #   subject.animating.should be_true
-  #   subject.frame_num.should == 0
-  # end
+    actor.animating.should be_true
+  end
 
 end

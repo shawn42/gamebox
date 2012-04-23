@@ -52,7 +52,6 @@ describe "Using timers" do
     see_image_drawn snelpling_idle_png
 
     press_key KbJ
-    update 60
     draw
 
     see_image_drawn snelpling_jump_1_png

@@ -8,14 +8,6 @@ Behavior.define :animated do
 
   setup do
     # METHOD DEFS; TODO how to clean this up?
-    define_singleton_method :start_animating do
-      actor.animating = true
-    end
-
-    define_singleton_method :stop_animating do
-      actor.animating = false
-    end
-
     define_singleton_method :next_frame do
       action_set = @images[actor.action]
       @frame_num = (@frame_num + 1) % action_set.size unless action_set.nil?
@@ -28,11 +20,7 @@ Behavior.define :animated do
 
     define_singleton_method :action_changed do |old_action, new_action|
       @images[new_action] ||= load_action(new_action)
-      if @images[new_action].size > 1
-        actor.react_to :start_animating
-      else
-        actor.react_to :stop_animating
-      end
+      actor.animating = @images[new_action].size > 1
       @frame_num = 0
       set_image
     end
@@ -77,9 +65,7 @@ Behavior.define :animated do
         set_image
       end
     end
-    reacts_with :start_animating, :stop_animating
-
-    actor.react_to :start_animating
+    actor.animating = true
   end
 
 end
