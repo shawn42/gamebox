@@ -27,7 +27,8 @@ describe ActorFactory do
 
     it 'configures the actor correctly' do
       subject.build(:some_actor, @opts).should == actor
-      actor.opts.should == @merged_opts
+      actor.foo.should == :bar
+      actor.actor_type.should == :some_actor
     end
 
     it 'creates the associated view class' do

@@ -10,16 +10,14 @@ class Actor
   public :this_object_context
 
   has_attribute :alive
-  attr_accessor :actor_type, :opts
 
   def initialize
     @behaviors = {}
-    @opts = {}
   end
 
   def configure(opts={}) # :nodoc:
-    @opts = opts
-    @actor_type = @opts[:actor_type]
+    has_attributes opts
+    self.actor_type = opts[:actor_type]
     self.alive = true
   end
 
@@ -63,11 +61,15 @@ class Actor
   # TODO should we support "inheritance" of components?
   class << self
 
-    def define(actor_type, &blk)
+    def define(actor_type, opts={}, &blk)
       @definitions ||= {}
       definition = ActorDefinition.new
       definition.instance_eval &blk if block_given?
       @definitions[actor_type] = definition
+
+      if definition.view
+        ActorView.define "#{actor_type}_view".to_sym, &definition.view
+      end
     end
 
     def definitions
@@ -77,7 +79,7 @@ class Actor
   end
 
   class ActorDefinition
-    attr_accessor :behaviors
+    attr_accessor :behaviors, :view
     def initialize
       @behaviors = []
     end
@@ -88,6 +90,11 @@ class Actor
       end
     end
     alias has_behavior has_behaviors
+
+    # TODO spec view helper on actor def
+    def view(&blk)
+      @view_blk = blk
+    end
   end
 
 end
