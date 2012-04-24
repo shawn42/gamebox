@@ -53,6 +53,6 @@ Behavior.define :curtain_operator do
 end
 
 Actor.define :curtain do
-  has_behavior layered:  {layer: 99_999}
+  has_behavior layered: 99_999
   has_behavior :curtain_operator
 end
