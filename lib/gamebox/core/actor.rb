@@ -38,6 +38,10 @@ class Actor
     @behaviors[name]
   end
 
+  def emit(event, *args)
+    fire event, *args
+  end
+
   # Tells the actor's Director that he wants to be removed; and unsubscribes
   # the actor from all input events.
   def remove

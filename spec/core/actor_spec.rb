@@ -48,6 +48,10 @@ describe Actor do
     it 'returns false if the actor does not have the behavior'
   end
 
+  describe "#emit" do
+    it 'allows firing of events w/ the actor as the source'
+  end
+
   describe ".define" do
     it 'adds an actor definition'  do
       Actor.define :mc_bane do |act|

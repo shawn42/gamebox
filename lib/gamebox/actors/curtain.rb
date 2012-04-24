@@ -1,58 +1,58 @@
-__END__
-
-require 'publisher'
-
-
-class CurtainView < ActorView
-  def draw(target,x_off,y_off,z)
-    target.fill 0,0,1024,800, [0,0,0,@actor.height], z
+ActorView.define :curtain_view do
+  draw do |target,x_off,y_off,z|
+    target.fill 0,0,1024,800, [0,0,0,actor.height], z
   end
 end
 
-class Curtain < Actor
-  extend Publisher
-
-  can_fire :curtain_up, :curtain_down
-
-  has_behavior :updatable, :layered => {:layer => 99_999}
-
-  attr_accessor :height
-
-  FULL_CURTAIN = 255
-  NO_CURTAIN = 0
-  def setup
-    @duration_in_ms = @opts[:duration]
+Behavior.define :curtain_operator do
+  requires :director
+  setup do
+    @duration_in_ms = actor.opts[:duration]
     @duration_in_ms ||= 1000
 
-    case @opts[:dir]
+    case actor.opts[:dir]
     when :up
-      @height = FULL_CURTAIN
+      height = FULL_CURTAIN
       @dir = -1
     when :down
-      @height = NO_CURTAIN
+      height = NO_CURTAIN
       @dir = 1
     end
+
+    actor.has_attributes height: height
+    director.when :update do |time|
+      update time
+    end
   end
 
-  # Update curtain height 0-255 (alpha)
-  def update(time)
-    perc_change = time.to_f/@duration_in_ms
-    amount = FULL_CURTAIN * perc_change * @dir
-    @height += amount.floor
+  helpers do
+    FULL_CURTAIN = 255
+    NO_CURTAIN = 0
 
-    if @height < 0
-      @height = 0
-      if alive?
-        fire :curtain_up
-        remove_self
-      end
-    elsif @height > 255
-      @height = 255
-      if alive?
-        fire :curtain_down
-        remove_self
+    # Update curtain height 0-255 (alpha)
+    def update(time)
+      perc_change = time.to_f/@duration_in_ms
+      amount = FULL_CURTAIN * perc_change * @dir
+      actor.height += amount.floor
+
+      if actor.height < 0
+        actor.height = 0
+        if actor.alive?
+          actor.emit :curtain_up
+          actor.remove
+        end
+      elsif actor.height > 255
+        actor.height = 255
+        if actor.alive?
+          actor.emit :curtain_down
+          actor.remove
+        end
       end
     end
-
   end
+end
+
+Actor.define :curtain do
+  has_behavior layered:  {layer: 99_999}
+  has_behavior :curtain_operator
 end
