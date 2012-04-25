@@ -17,6 +17,7 @@ begin
   desc "Run all rspecs"
   RSpec::Core::RakeTask.new(:spec) do |t|
     t.pattern = 'spec/**/*_spec.rb'
+    t.rspec_opts = '-c'
   end
 
   desc "Run all specs with rcov"
