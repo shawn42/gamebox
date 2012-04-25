@@ -118,19 +118,8 @@ class WrappedScreen
     c
   end
 
-  def size_text(text, font_file, font_size)
-    @font_cache ||= {}
-    @font_cache[font_file] ||= {}
-    font = @font_cache[font_file][font_size] ||= Font.new(@screen, font_file, font_size)
-
-    return [font.text_width(text),font.height]
-  end
-
-  def render_text(text, font_file, font_size, color)
-    @font_cache ||= {}
-    @font_cache[font_file] ||= {}
-    font = @font_cache[font_file][font_size] ||= Font.new(@screen, font_file, font_size)
-
-    DelayedText.new font, text
+  def print(text, x, y, z, font_style)
+    font_style.font.draw text, x, y, z, font_style.x_scale, font_style.y_scale, convert_color(font_style.color)
   end
 end
+  

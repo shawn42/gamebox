@@ -12,3 +12,4 @@ tags
 ctags
 .bundle
 *.lock
+vendor
