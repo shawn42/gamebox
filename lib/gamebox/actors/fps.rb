@@ -1,11 +1,13 @@
 Behavior.define :fps_label_updater do
   requires :director, :stage
   setup do
-    actor.has_attribute :label
-    actor.label = stage.spawn :label, actor.attributes
+    @label = stage.create_actor :label, actor.attributes
     director.when :update do |time|
-      label.text = fps
+      @label.text = Gosu.fps
     end
+  end
+  react_to do |msg, *args|
+    @label.remove if msg == :remove
   end
 end
 Actor.define :fps do

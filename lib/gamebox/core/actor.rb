@@ -67,8 +67,9 @@ class Actor
       definition.instance_eval &blk if block_given?
       @definitions[actor_type] = definition
 
-      if definition.view
-        ActorView.define "#{actor_type}_view".to_sym, &definition.view
+      view_blk = definition.view_blk
+      if view_blk
+        ActorView.define "#{actor_type}_view".to_sym, &view_blk
       end
     end
 
@@ -79,7 +80,7 @@ class Actor
   end
 
   class ActorDefinition
-    attr_accessor :behaviors, :view
+    attr_accessor :behaviors, :view_blk
     def initialize
       @behaviors = []
     end

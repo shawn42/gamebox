@@ -26,6 +26,14 @@ module EventedAttributes
     @evented_attributes.include? name
   end
 
+  def attributes
+    {}.tap do |atts|
+      @evented_attributes.each do |name|
+        atts[name] = self.send name
+      end
+    end
+  end
+
   def self.included(klass)
     klass.instance_eval do
       include Kvo

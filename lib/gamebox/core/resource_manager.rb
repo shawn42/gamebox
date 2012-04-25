@@ -134,7 +134,7 @@ class ResourceManager
       end
       return font
     rescue Exception => ex
-      debug "Cannot load font #{full_name}:#{ex}"
+      log "Cannot load font #{full_name}:#{ex}"
     end
     return nil
   end

@@ -1,4 +1,5 @@
 Behavior.define :label_stuff do
+  requires_behaviors :positioned
   requires :resource_manager
 
   setup do
@@ -11,14 +12,14 @@ Behavior.define :label_stuff do
                          height:    0,
                          layer:     1
 
-    font = resource_manager.load_font actor.font_name, actor.size
+    font = resource_manager.load_font actor.font_name, actor.font_size
     actor.has_attributes font: font
 
     actor.when :font_size_changed do
-      actor.font = resource_manager.load_font actor.font_name, actor.size
+      actor.font = resource_manager.load_font actor.font_name, actor.font_size
     end
     actor.when :font_name_changed do
-      actor.font = resource_manager.load_font actor.font_name, actor.size
+      actor.font = resource_manager.load_font actor.font_name, actor.font_size
     end
     actor.when :text_changed do
       actor.width = actor.font.text_width actor.text
@@ -28,11 +29,11 @@ Behavior.define :label_stuff do
   end
 
 end
+
 Actor.define :label do
   has_behavior layered: 1
   has_behavior :label_stuff
 
-  # TODO see if this works?
   view do
     draw do |target,x_off,y_off,z|
       @converted_color ||= target.convert_color(actor.color)

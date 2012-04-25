@@ -127,15 +127,8 @@ module GameboxAcceptanceSpecHelpers
     end
   end
 
-  class ::MockImage
-    attr_accessor :filename, :calls
-    def initialize(filename)
-      _reset!
-      @filename = filename
-    end
-
-    def width; 10; end
-    def height; 20; end
+  module MockCalls
+    attr_accessor :calls
     def method_missing(*args)
       @calls << args
     end
@@ -144,6 +137,35 @@ module GameboxAcceptanceSpecHelpers
       @calls = []
     end
   end
+
+  class ::MockImage
+    include MockCalls
+    attr_accessor :filename
+    def initialize(filename)
+      _reset!
+      @filename = filename
+    end
+
+    def width; 10; end
+    def height; 20; end
+  end
+
+  class ::MockFont
+    attr_accessor :name, :size, :calls
+    include MockCalls
+    def initialize(name, size)
+      _reset!
+      @name = name
+      @size = size
+    end
+    def text_width(text)
+      size * text.size
+    end
+    def height
+      size
+    end
+  end
+
 
   class ::TestingGame < Game
     construct_with *Game.object_definition.component_names
@@ -173,9 +195,9 @@ module GameboxAcceptanceSpecHelpers
     def mock_image(filename)
       context = Conject.default_object_context
       resource_manager = context[:resource_manager]
-      img = MockImage.new(filename)
-      resource_manager.stubs(:load_image).with(filename).returns(img)
-      img
+      MockImage.new(filename).tap do |img|
+        resource_manager.stubs(:load_image).with(filename).returns(img)
+      end
     end
 
     def see_actor_drawn(actor_type)
@@ -191,6 +213,21 @@ module GameboxAcceptanceSpecHelpers
 
     def see_image_not_drawn(img)
       img.calls.should be_empty
+    end
+
+    def see_text_drawn(text, opts)
+      font = opts[:in]
+      font.calls.should_not be_empty
+      font.calls.first.first.should == :draw
+      font._reset!
+    end
+
+    def mock_font(name, size)
+      context = Conject.default_object_context
+      resource_manager = context[:resource_manager]
+      MockFont.new(name, size).tap do |font|
+        resource_manager.stubs(:load_font).with(name, size).returns(font)
+      end
     end
 
     def see_stage_ivars(ivar_hash)
