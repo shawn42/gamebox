@@ -13,14 +13,17 @@ module EventedAttributes
   end
 
   def has_attribute(name, value=nil)
+    @evented_attributes ||= []
     unless has_attribute? name
+      @evented_attributes << name
       self.metaclass.send :kvo_attr_accessor, name
       self.send("#{name}=", value)
     end
   end
 
   def has_attribute?(name)
-    respond_to? name
+    @evented_attributes ||= []
+    @evented_attributes.include? name
   end
 
   def self.included(klass)

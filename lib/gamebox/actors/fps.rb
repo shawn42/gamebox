@@ -1,9 +1,10 @@
 Behavior.define :fps_label_updater do
-  requires :director
+  requires :director, :stage
   setup do
-    actor.has_attribute :text
+    actor.has_attribute :label
+    actor.label = stage.spawn :label, actor.attributes
     director.when :update do |time|
-      actor.text = fps
+      label.text = fps
     end
   end
 end
