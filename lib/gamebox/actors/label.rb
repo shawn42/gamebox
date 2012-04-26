@@ -1,6 +1,6 @@
 Behavior.define :label_stuff do
   requires_behaviors :positioned
-  requires :resource_manager
+  requires :font_style_factory
 
   setup do
     # will define attributes and set their values if no one else has
@@ -13,7 +13,7 @@ Behavior.define :label_stuff do
                          layer:     1
 
     
-    font_style = FontStyle.new resource_manager, actor.font_name, actor.font_size, actor.color
+    font_style = font_style_factory.build actor.font_name, actor.font_size, actor.color
     actor.has_attributes font_style: font_style
 
     actor.when :font_size_changed do

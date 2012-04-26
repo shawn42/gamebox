@@ -1,14 +1,14 @@
 
 class FontStyle
+  construct_with :resource_manager
+
   attr_accessor :font, :name, :size, :color, :x_scale, :y_scale
-  
-  def initialize(resource_manager, name, size, color, x_scale=1, y_scale=1)
+  def configure(name, size, color, x_scale, y_scale)
     @name = name
     @size = size
     @color = color
     @x_scale = x_scale
     @y_scale = y_scale
-    @resource_manager = resource_manager
     reload
   end
   
@@ -21,6 +21,6 @@ class FontStyle
   end
   
   def reload
-    @font = @resource_manager.load_font name, size
+    @font = resource_manager.load_font name, size
   end
 end

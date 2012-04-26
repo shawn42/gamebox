@@ -1,15 +1,12 @@
 require 'helper'
 
 describe FontStyle do
-  let(:resource_manager) { mock }
+  inject_mocks :resource_manager
   let(:font) { mock }
   
-  subject do
-    FontStyle.new resource_manager, "FooFace", 24, :aquamarine
-  end
-
   before do
-    resource_manager.expects(:load_font).with("FooFace", 24).returns font
+    @resource_manager.expects(:load_font).with("FooFace", 24).returns font
+    subject.configure "FooFace", 24, :aquamarine, 1, 1
   end
   
   it 'constructs a font from style specifications' do
@@ -34,7 +31,7 @@ describe FontStyle do
   it 'updates the font when the face or size change' do
     subject.name = "Bob"
     subject.size = 21
-    resource_manager.expects(:load_font).with("Bob", 21).returns :newfont
+    @resource_manager.expects(:load_font).with("Bob", 21).returns :newfont
     
     subject.reload
     subject.font.should == :newfont
