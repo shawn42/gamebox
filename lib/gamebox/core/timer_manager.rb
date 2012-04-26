@@ -45,12 +45,12 @@ class TimerManager
 
   def pause
     @paused_timers = @timers
-    @timers = nil
+    @timers = {}
   end
 
   def unpause
     @timers = @paused_timers
-    @paused_timers = nil
+    @paused_timers = {}
   end
 
 end

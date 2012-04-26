@@ -236,6 +236,14 @@ module GameboxAcceptanceSpecHelpers
       end
     end
 
+    def pause
+      game.current_stage.pause
+    end
+    
+    def unpause
+      game.current_stage.unpause
+    end
+
     def see_actor_attrs(actor_type, attrs)
       act = game.actor(actor_type)
       act.should be
