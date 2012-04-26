@@ -1,13 +1,13 @@
 require 'helper'
 
 describe HookedGosuWindow do
-  class Gosu::Window
-    def initialize(*args)
-      # TODO not sure how to handle this for travis-ci breakage..
-      # sometimes causes seg faults if running bundle exec rake
-      # autorelease garbage in output if I don't do this
-    end
-  end
+  # class Gosu::Window
+  #   def initialize(*args)
+  #     # TODO not sure how to handle this for travis-ci breakage..
+  #     # sometimes causes seg faults if running bundle exec rake
+  #     # autorelease garbage in output if I don't do this
+  #   end
+  # end
 
   subject { HookedGosuWindow.new 2, 3, false }
 
