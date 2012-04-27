@@ -26,3 +26,5 @@ module Gamebox
 
 end
 
+# EEK... dirty?
+include Gamebox

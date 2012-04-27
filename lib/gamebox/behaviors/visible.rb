@@ -1,5 +1,5 @@
 # in charge of registering / showing / hiding of actor views
-Gamebox.define_behavior :visible do
+define_behavior :visible do
   requires :stage
 
   react_to do |message, *args|
