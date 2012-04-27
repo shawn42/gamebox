@@ -1,80 +1,17 @@
 #!/usr/bin/env ruby
 
-Signal.trap("INT") { puts; exit }
-
-require 'yaml'
-require File.dirname(__FILE__) + '/../lib/gamebox/version'
+require 'active_support'
+require 'rubigen'
 
 def print_version
   puts "Gamebox #{Gamebox::VERSION::STRING}"
 end
 
-def print_usage
+if ARGV.include?('-v') || ARGV.include?('--version')
   print_version
-  puts "Usage:"
-  puts "gamebox [opts] game_name"
-  puts " -h, --help display this message"
-  puts " -v, --version display gamebox version"
+  exit 0
 end
 
-if %w(--version -v).include? ARGV.first
-  print_version
-  exit(0)
-end
-if %w(--help -h).include? ARGV.first
-  print_usage
-  exit(0)
-end
-if ARGV.empty?
-  print_usage
-  exit(0)
-end
-
-begin
-  # ruby 1.9
-  require 'ftools'
-  fklass = File
-rescue LoadError
-  # ruby 1.8
-  require 'fileutils'
-  fklass = FileUtils
-end
-
-PROJECT_NAME = ARGV[0]
-TARGET_DIR = File.expand_path(Dir.pwd + "/" + PROJECT_NAME)
-SOURCE_DIR = File.expand_path(File.dirname(__FILE__) + "/../lib/gamebox/templates")
-
-Dir.mkdir(TARGET_DIR) unless File.exist?(TARGET_DIR) && File.directory?(TARGET_DIR)
-
-# Generate the directory structure for the new application
-# Gems does not pull in empty directories so template_app only
-# contains populated directories
-Dir.mkdir(TARGET_DIR + "/config")
-Dir.mkdir(TARGET_DIR + "/data")
-Dir.mkdir(TARGET_DIR + "/data/graphics")
-Dir.mkdir(TARGET_DIR + "/data/sounds")
-Dir.mkdir(TARGET_DIR + "/data/music")
-Dir.mkdir(TARGET_DIR + "/doc")
-Dir.mkdir(TARGET_DIR + "/lib")
-Dir.mkdir(TARGET_DIR + "/script")
-Dir.mkdir(TARGET_DIR + "/src")
-Dir.mkdir(TARGET_DIR + "/spec")
-
-Dir.chdir(SOURCE_DIR + "/template_app")
-Dir.glob("**/*").each do |file|
-  puts "#{file} => #{TARGET_DIR + "/" + file}"
-  if File.directory?(file)
-    target_dir = TARGET_DIR + "/" + file
-    Dir.mkdir(target_dir) unless File.exists? target_dir
-  else
-    new_file = TARGET_DIR + "/" + file 
-    fklass.install file, new_file
-    fklass.chmod 0755, new_file if file =~ /script/
-  end
-end
-
-new_file = TARGET_DIR + "/config/gamebox_generator_version.yml"
-File.open(new_file,"w+") do |f|
-  f.write Gamebox::VERSION::ARRAY.to_yaml
-end
-
+require 'rubigen/scripts/generate'
+RubiGen::Base.use_application_sources!
+RubiGen::Scripts::Generate.new.run(ARGV, :generator => 'gamebox')

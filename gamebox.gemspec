@@ -22,6 +22,9 @@ Gem::Specification.new do |s|
   s.add_dependency "publisher"
   s.add_dependency "conject", ">= 0.0.5"
   s.add_dependency "tween"
+  s.add_dependency "activesupport", '3.0.0'
+  s.add_dependency "i18n"
+  s.add_dependency "rubigen"
   s.add_dependency "require_all"
   s.add_dependency "kvo", ">= 0.0.2"
 
