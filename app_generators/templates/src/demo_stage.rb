@@ -1,11 +1,7 @@
 class DemoStage < Stage
   def setup
     super
-    @my_actor = spawn :my_actor, :x => 10, :y => 10
-  end
-
-  def draw(target)
-    super
+    @player = spawn :player, x: 10, y:30
   end
 end
 

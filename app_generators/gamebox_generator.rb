@@ -48,7 +48,7 @@ class GameboxGenerator < RubiGen::Base
 
                                src/app.rb
                                src/demo_stage.rb
-                               src/my_actor.rb
+                               src/actors/player.rb
                              )
 
       m.readme 'NEXT_STEPS.txt'
@@ -84,7 +84,7 @@ EOS
   # Installation skeleton.  Intermediate directories are automatically
   # created so don't sweat their absence here.
   BASEDIRS = %w(
-    src
+    src/actors
     spec
     data/fonts
     data/graphics

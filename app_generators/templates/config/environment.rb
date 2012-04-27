@@ -1,14 +1,17 @@
 APP_ROOT = "#{File.join(File.dirname(__FILE__),"..")}/"
 
-# TODO update to use new Gamebox.configuration
-CONFIG_PATH = APP_ROOT + "config/"
+# TODO update to use new Gamebox.configuration for all of these
 DATA_PATH =  APP_ROOT + "data/"
-SOUND_PATH =  APP_ROOT + "data/sounds/"
-MUSIC_PATH =  APP_ROOT + "data/music/"
-GFX_PATH =  APP_ROOT + "data/graphics/"
 FONTS_PATH =  APP_ROOT + "data/fonts/"
 
 require 'gamebox'
+
+Gamebox.configure do |config|
+  config.config_path = APP_ROOT + "config/"
+  config.music_path = APP_ROOT + "data/music/"
+  config.sound_path = APP_ROOT + "data/sounds/"
+  config.gfx_path = APP_ROOT + "data/graphics/"
+end
 
 [GAMEBOX_PATH, APP_ROOT, File.join(APP_ROOT,'src')].each{|path| $: << path }
 require "gamebox_application"
@@ -22,3 +25,5 @@ GAMEBOX_GFX_PATH =  GAMEBOX_PATH + "data/graphics/"
 GAMEBOX_FONTS_PATH =  GAMEBOX_PATH + "data/fonts/"
 
 GAME_NAME = "UntitledGame"
+
+
