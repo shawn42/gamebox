@@ -1,4 +1,4 @@
-Gamebox.define_actor :player do
+define_actor :player do
   has_behavior :positioned
   view do
     draw do |target, x_off, y_off, z|

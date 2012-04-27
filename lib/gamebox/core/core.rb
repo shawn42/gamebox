@@ -21,7 +21,7 @@ module Gamebox
     ActorView.define name, &blk
   end
 
-  module_function :define_behavior, :define_actor, :define_actor_view
+  # module_function :define_behavior, :define_actor, :define_actor_view
 
 
 end
