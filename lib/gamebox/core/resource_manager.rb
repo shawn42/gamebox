@@ -84,7 +84,7 @@ class ResourceManager
         full_name = Gamebox.configuration.gfx_path + file_name
         if ! File.exist? full_name
           #check global gamebox location
-          full_name = GAMEBOX_Gamebox.configuration.gfx_path + file_name
+          full_name = Gamebox.configuration.gb_gfx_path + file_name
         end
         cached_img = Image.new(@window, full_name)
       rescue Exception => ex
@@ -115,6 +115,9 @@ class ResourceManager
 
   # loads fonts from the fonts dir and caches them for later
   def load_font(name, size)
+    config = Gamebox.configuration
+    fonts_path = config.fonts_path
+    gb_fonts_path = config.gb_fonts_path
     @loaded_fonts[name] ||= {}
     return @loaded_fonts[name][size] if @loaded_fonts[name][size]
     begin
@@ -122,12 +125,12 @@ class ResourceManager
         font = Font.new(@window, name, size)
         @loaded_fonts[name][size] = font
       else
-        full_name = FONTS_PATH + name
+        full_name = fonts_path + name
         if File.exist? full_name
           font = Font.new(@window, full_name, size)
           @loaded_fonts[name][size] = font
         else
-          full_name = GAMEBOX_FONTS_PATH + name
+          full_name = gb_fonts_path + name
           font = Font.new(@window, full_name, size)
           @loaded_fonts[name][size] = font
         end

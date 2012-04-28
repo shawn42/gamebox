@@ -13,11 +13,24 @@ module Gamebox
       end
     end
 
+    # add_setting :output, :alias => :output_stream
     add_setting :config_path
+    add_setting :data_path
     add_setting :music_path
     add_setting :sound_path
     add_setting :gfx_path
-    # add_setting :output, :alias => :output_stream
+    add_setting :fonts_path
+
+    add_setting :gb_config_path
+    add_setting :gb_data_path
+    add_setting :gb_music_path
+    add_setting :gb_sound_path
+    add_setting :gb_gfx_path
+    add_setting :gb_fonts_path
+  
+    add_setting :game_name, default: "Untitled Game"
+
+    add_setting :stages, default: [:demo]
 
     def settings
       @settings ||= {}

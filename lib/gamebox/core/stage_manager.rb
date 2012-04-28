@@ -8,16 +8,21 @@ class StageManager
   def initialize
     @stages = {}
 
-    stages = config_manager.load_config('stage_config')[:stages]
+    stages = Gamebox.configuration.stages
 
     @stage_names = []
     @stage_opts = []
     stages.each do |stage|
-      stage_name = stage.keys.first
-      opts = stage.values.first
-      @stage_names << stage_name
-      opts ||= {}
-      @stage_opts << opts
+      if stage.is_a? Hash
+        stage_name = stage.keys.first
+        opts = stage.values.first
+        @stage_names << stage_name
+        opts ||= {}
+        @stage_opts << opts
+      else
+        @stage_names << stage
+        @stage_opts << {}
+      end
     end
   end
 

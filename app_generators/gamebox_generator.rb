@@ -37,7 +37,6 @@ class GameboxGenerator < RubiGen::Base
                                Gemfile
                                config/boot.rb
                                config/game.yml
-                               config/stage_config.yml
 
                                data/fonts/FONTS_GO_HERE
                                data/graphics/GRAPHICS_GO_HERE

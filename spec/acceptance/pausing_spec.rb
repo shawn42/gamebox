@@ -6,6 +6,7 @@ describe "pausing in gamebox" do
       config.config_path = "spec/fixtures/"
       config.music_path = "spec/fixtures/"
       config.sound_path = "spec/fixtures/"
+      config.stages = [:testing]
     end
 
     Conject.instance_variable_set '@default_object_context', nil

@@ -11,11 +11,11 @@ describe StageManager do
   let(:bar_stage) { stub('bar stage', when: nil, curtain_raising: nil, curtain_dropping: nil) }
   let(:foo_stage_config) { {foo: {thing:1} } }
   let(:bar_stage_config) { {bar: {thing:2} } }
-  let(:stage_config) { {stages: [foo_stage_config, bar_stage_config]} }
+  let(:stages) { [foo_stage_config, bar_stage_config] }
   let(:subcontext) { stub 'subcontext' }
   before do
+    Gamebox.configuration.stages = stages
     @input_manager.stubs(:clear_hooks)
-    @config_manager.stubs(:load_config).returns(stage_config)
 
     # TODO sub context helper
     subcontext.stubs(:[]).with('foo_stage').returns(foo_stage)

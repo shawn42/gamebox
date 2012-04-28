@@ -7,12 +7,14 @@ describe "Using timers" do
       config.music_path = "spec/fixtures/"
       config.sound_path = "spec/fixtures/"
       config.gfx_path = "spec/fixtures/"
+      config.stages = [:testing]
     end
 
     Conject.instance_variable_set '@default_object_context', nil
     HookedGosuWindow.stubs(:new).returns(gosu)
   end
   let(:gosu) { MockGosuWindow.new }
+
   let!(:snelpling_idle_png) { mock_image('snelpling/idle/1.png') }
   let!(:snelpling_jump_1_png) { mock_image('snelpling/jump/1.png') }
   let!(:snelpling_jump_2_png) { mock_image('snelpling/jump/2.png') }
