@@ -58,7 +58,7 @@ describe :collidable do
 
   describe "polygon shape" do
     let(:opts) do
-      {:shape => :polygon, :points => [[0,0],[10,7],[20,10]]}
+      {shape: :polygon, points: [[0,0],[10,7],[20,10]]}
     end
 
     it 'should calculate center point for polygon' do

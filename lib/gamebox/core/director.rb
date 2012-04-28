@@ -49,9 +49,7 @@ class Director
       fire :actor_removed, act
     end
     @dead_actors = []
-    fire :update, time
-    # for act in @actors
-    #   act.update time if act.alive?
-    # end
+    time_in_seconds = time / 1000.to_f
+    fire :update, time, time_in_seconds
   end
 end

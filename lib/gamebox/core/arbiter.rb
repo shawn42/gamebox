@@ -65,12 +65,11 @@ module Arbiter
     collisions = {}
 
     collidable_actors.each do |first|
-      if first.is? :collidable
+      # if first.is? :collidable
         # HUH? it appears that querying modifies the tree somehow?
-        # aabb_tree.query(first.bb) do |second|
         aabb_tree.collisions(first) do |second|
 
-          if second.is? :collidable
+          # if second.is? :collidable
             if first != second &&
               interested_in_collision_of?(first.actor_type, second.actor_type) &&
               collide?(first, second)
@@ -78,8 +77,8 @@ module Arbiter
                 collisions[first] ||= []
                 collisions[first] << second
               end
-            end
-          end
+          #   end
+          # end
         end
       end
     end
@@ -96,9 +95,6 @@ module Arbiter
 
 
   def collide?(object, other)
-    if !other.is? :collidable
-      binding.pry
-    end
     case object.shape_type
     when :circle
       case other.shape_type

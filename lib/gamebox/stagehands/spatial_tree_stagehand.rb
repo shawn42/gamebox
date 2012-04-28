@@ -21,12 +21,7 @@ class SpatialTreeStagehand < Stagehand
     # item.when :width_changed do |old_w, new_w|
     # item.when :height_changed do |old_h, new_h|
 
-    actor.when :x_changed do |old_x, new_x|
-      move actor
-    end
-    actor.when :y_changed do |old_y, new_y|
-      move actor
-    end
+    actor.when :position_changed do move actor end
     actor.when :remove_me do
       remove actor
     end

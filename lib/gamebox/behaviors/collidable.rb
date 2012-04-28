@@ -13,18 +13,12 @@ Behavior.define :collidable do
     hh = h / 2
     x = (actor.do_or_do_not(:x) || 0) - hw
     y = (actor.do_or_do_not(:y) || 0) - hh
-    bb ||= Rect.new
-    bb.x = x
-    bb.y = y
-    bb.w = w
-    bb.h = h
 
     actor.has_attributes( shape_type: shape_type,
                           width: w,
                           height: h,
                           x: x,
-                          y: y,
-                          bb: bb )
+                          y: y )
 
     shape = 
       case shape_type
@@ -37,36 +31,52 @@ Behavior.define :collidable do
       end
     shape.setup
 
+    actor.width = shape.width
+    actor.height = shape.height
+    bb = Rect.new
+    bb.x = actor.x
+    bb.y = actor.y
+    bb.w = actor.width
+    bb.h = actor.height
+
+
     actor.has_attributes( shape: shape,
                           center_x: shape.center_x,
                           center_y: shape.center_y,
                           cw_world_points: shape.cw_world_points,
                           cw_world_lines: shape.cw_world_lines,
                           cw_world_edge_normals: shape.cw_world_edge_normals,
+                          bb: bb,
                           radius: shape.radius
                         )
 
     stage.register_collidable actor
 
-    # TODO clean this up w/ the DSL?
-    define_singleton_method :removed do
+    reacts_with :remove, :position_changed
+  end
+
+  helpers do
+    def removed
       stage.unregister_collidable actor
     end
-    define_singleton_method :position_changed do
+
+    def position_changed
+      shape = actor.shape
       shape.recalculate_collidable_cache
       actor.center_x = shape.center_x
       actor.center_y = shape.center_y
+      actor.width = shape.width
+      actor.height = shape.height
       actor.cw_world_points = shape.cw_world_points
       actor.cw_world_lines = shape.cw_world_lines
       actor.cw_world_edge_normals = shape.cw_world_edge_normals
       actor.radius = shape.radius
+
+      bb = actor.bb
+      bb.x = actor.x
+      bb.y = actor.y
+      bb.w = actor.width
+      bb.h = actor.height
     end
-
-    reacts_with :remove, :position_changed
   end
-
-  # TODO was this needed?
-  # def method_missing(name, *args)
-  #   @shape.send(name, *args)
-  # end
 end

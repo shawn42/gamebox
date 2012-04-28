@@ -21,6 +21,7 @@ class CollidableShape
     @actor.y + @y_offset
   end
 
+  # TODO find out if this is called
   def setup
   end
 

@@ -16,24 +16,24 @@ describe 'Arbiter' do
 
   describe '#collide?' do
     it 'should call the correct circle circle collision method' do
-      a = stub(:shape_type => :circle, :is? => true)
-      b = stub(:shape_type => :circle, :is? => true)
+      a = stub(:shape_type => :circle)
+      b = stub(:shape_type => :circle)
       @arbiter.expects(:collide_circle_circle?).with(a,b).returns(true)
 
       @arbiter.collide?(a,b).should be_true
     end
 
-    it 'should call the correct circle polygon collis?ion method' do
-      a = stub(:shape_type => :circle, :is? => true)
-      b = stub(:shape_type => :polygon, :is? => true)
+    it 'should call the correct circle polygon collision method' do
+      a = stub(:shape_type => :circle)
+      b = stub(:shape_type => :polygon)
       @arbiter.expects(:collide_circle_polygon?).with(a,b).returns(true)
 
       @arbiter.collide?(a,b).should be_true
     end
 
-    it 'should call the correct polygon circle collis?ion method' do
-      a = stub(:shape_type => :polygon, :is? => true)
-      b = stub(:shape_type => :circle, :is? => true)
+    it 'should call the correct polygon circle collision method' do
+      a = stub(:shape_type => :polygon)
+      b = stub(:shape_type => :circle)
       @arbiter.expects(:collide_circle_polygon?).with(b,a).returns(true)
 
       @arbiter.collide?(a,b).should be_true

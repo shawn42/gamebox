@@ -103,7 +103,7 @@ class DemoStage < Stage
   end
 
   def find_physical_obj(shape)
-    director.actors.select{|a|a.respond_to?(:shape) && a.shape==shape}.first
+    director.actors.select{|a|a.do_or_do_not(:shape) && a.shape == shape}.first
   end
 
   def curtain_up(*args)
