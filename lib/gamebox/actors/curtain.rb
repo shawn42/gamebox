@@ -7,16 +7,16 @@ end
 Behavior.define :curtain_operator do
   requires :director
   setup do
-    @duration_in_ms = actor.opts[:duration]
-    @duration_in_ms ||= 1000
+    actor.has_attributes duration_in_ms: 1000
+    actor.has_attributes dir: :down
 
-    case actor.opts[:dir]
+    case actor.dir
     when :up
       height = FULL_CURTAIN
-      @dir = -1
+      actor.dir = -1
     when :down
       height = NO_CURTAIN
-      @dir = 1
+      actor.dir = 1
     end
 
     actor.has_attributes height: height
@@ -31,19 +31,19 @@ Behavior.define :curtain_operator do
 
     # Update curtain height 0-255 (alpha)
     def update(time)
-      perc_change = time.to_f/@duration_in_ms
-      amount = FULL_CURTAIN * perc_change * @dir
+      perc_change = time.to_f/actor.duration_in_ms
+      amount = FULL_CURTAIN * perc_change * actor.dir
       actor.height += amount.floor
 
       if actor.height < 0
         actor.height = 0
-        if actor.alive?
+        if actor.alive
           actor.emit :curtain_up
           actor.remove
         end
       elsif actor.height > 255
         actor.height = 255
-        if actor.alive?
+        if actor.alive
           actor.emit :curtain_down
           actor.remove
         end

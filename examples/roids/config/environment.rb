@@ -20,12 +20,12 @@ Gamebox.configure do |config|
   # config.stages = [:demo]
   config.stages = [
     { intro: nil},
-    { demo1: {class: :demo, rocks: 3}},
-    { demo2: {class: :demo, rocks: 5}},
-    { demo3: {class: :demo, rocks: 7}},
+    { play1: {class: :play, rocks: 3}},
+    { play2: {class: :play, rocks: 5}},
+    { play3: {class: :play, rocks: 7}},
     { credits: nil},
   ]
-  # config.game_name = "Untitled Game"
+  config.game_name = "Roids"
 end
 
 [GAMEBOX_PATH, APP_ROOT, File.join(APP_ROOT,'src')].each{|path| $: << path }

@@ -1,28 +1,39 @@
+# TODO how to specify that animated means graphical actor view?
+# TODO ivars in behaviors? frowned upon?
 
-
-class Rock < Actor
-  has_behaviors :animated, :updatable, :physical => {:shape => :circle, 
-    :mass => 10,
-    :radius => 20}
-
-  def setup
-    @behaviors[:physical].body.a -= rand(10)
+define_behavior :rocky do
+  requires :director
+  setup do
+    actor.has_attributes view: 'graphical_actor_view'
+    actor.body.a -= rand(10)
     @speed = (rand(2)+1) * 20
     @turn_speed = rand(2)*0.0004 
     @dir = vec2(rand-0.5,rand-0.5)
+
+    director.when :update do |time|
+      update time
+    end
   end
 
-  def update(time)
-    physical.body.reset_forces
+  helpers do
+    def update(time)
+      actor.body.reset_forces
 
-    physical.body.p = CP::Vec2.new(physical.body.p.x % 1024, physical.body.p.y % 768)
-    physical.body.w += time*@turn_speed
+      actor.body.p = CP::Vec2.new(actor.body.p.x % 1024, actor.body.p.y % 768)
+      actor.body.w += time*@turn_speed
 
-    move_vec = @dir * time * @speed
+      move_vec = @dir * time * @speed
 
-    physical.body.apply_force(move_vec, ZERO_VEC_2) 
-
-    super time
+      actor.body.apply_force(move_vec, ZERO_VEC_2) 
+    end
   end
 
+end
+
+define_actor :rock do
+  has_behaviors :animated, :physical => {:shape => :circle, 
+    :mass => 10,
+    :radius => 20}
+  # TODO rocky needs to come _after_ physical, how do I enforce that?
+  has_behaviors :rocky
 end

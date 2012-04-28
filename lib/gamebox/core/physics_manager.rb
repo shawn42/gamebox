@@ -36,6 +36,10 @@ class PhysicsManager
   end
 
   def register_physical_object(obj,static=false)
+    obj.when :remove_me do
+      unregister_physical_object obj
+    end
+
     if static
       obj.shapes.each do |shape|
         @space.add_static_shape shape
@@ -59,13 +63,13 @@ class PhysicsManager
 
   def unregister_physical_object(obj,static=false)
     if static
-      obj.physical.shapes.each do |shape|
+      obj.shapes.each do |shape|
         @space.remove_static_shape shape
       end
     else
       @space.remove_body(obj.body)
       
-      obj.physical.shapes.each do |shape|
+      obj.shapes.each do |shape|
         @space.remove_shape shape
       end
     end
@@ -77,12 +81,12 @@ class PhysicsManager
   # later in the future.
   #
   # This block is called on each actor found
-  def pick(x, y, &block)
-    @space.shape_point_query(vec2(x, y)) do |found|
-      actor = @director.find_physical_obj(found)
-      block.call(actor)
-    end
-  end
+  # def pick(x, y, &block)
+  #   @space.shape_point_query(vec2(x, y)) do |found|
+  #     actor = @director.find_physical_obj(found)
+  #     block.call(actor)
+  #   end
+  # end
 
   def pause
     pause_physics

@@ -1,9 +1,9 @@
 define_behavior :physical_projectile do
-  require :director
+  requires :director
   setup do
-    actor.has_behaviors speed: 300,
-                        power: 500,
-                        dir: nil
+    actor.has_attributes speed: 300,
+                         power: 500,
+                         dir: nil
 
     director.when :update do |time|
       actor.power -= time

@@ -1,3 +1,4 @@
+__END__
 class ParticleSystemView < ActorView
   def draw(target, x_off, y_off, z)
     ax = @actor.x + x_off

@@ -11,13 +11,15 @@
 #    :moment => Float::INFINITY,
 #    :verts => [[-15,-20],[-15,20],[15,20],[15,-20]]}
 Behavior.define :physical do
-  
-  requires :physics_manager
+
+  requires :physics_manager, :director
   setup do
     @moment_of_inertia = @opts[:moment]
 
+    actor.has_attributes x: 0, y: 0
+
     actor.has_attributes :x, :y, :shape, :shapes, :body,
-      :rotation, :warp, :segment_groups, :physical,
+      :rotation, :segment_groups, :constraints,
       :pivot, :pin, :spring, :slide, :groove,
       :rotary_spring, :rotary_limit, :ratchet,
       :gear, :motor
@@ -38,20 +40,19 @@ Behavior.define :physical do
     register
 
     # TODO use positioned?
-    actor.when :x_changed do
-      actor.body.p = vec2(actor.x, actor.y)
-    end
-    actor.when :y_changed do 
+    actor.when :position_changed do
       actor.body.p = vec2(actor.x, actor.y)
     end
 
     director.when :update do |time|
       actor.x = actor.body.p.x
       actor.y = actor.body.p.y
-      actor.roation = rotation
+      actor.rotation = rotation
     end
 
     warp(vec2(actor.x,actor.y))
+
+    reacts_with :warp
   end
 
   helpers do
@@ -142,6 +143,7 @@ Behavior.define :physical do
     end
 
     def register
+      director.add_actor actor
       actor.when :remove_me do
         cleanup_constraints
       end

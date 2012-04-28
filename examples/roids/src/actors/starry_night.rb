@@ -1,3 +1,4 @@
+__END__
 class StarryNightView < ActorView
   def setup
     @color = [255,255,255,255]
