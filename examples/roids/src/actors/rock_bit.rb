@@ -30,7 +30,7 @@ end
 
 
 define_actor :rock_bit do
-  has_behaviors :animated, :updatable, :physical => {:shape => :circle, 
+  has_behaviors :animated, :physical => {:shape => :circle, 
     :mass => 0.5,
     :radius => 10}
   has_behaviors :rocky_bit

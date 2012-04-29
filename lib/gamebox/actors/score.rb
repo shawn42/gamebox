@@ -1,15 +1,3 @@
-class ScoreView < ActorView
-  def draw(target,x_off,y_off,z)
-    text = @actor.score.to_s
-    text = '0'*(6-text.size)+text
-
-    font = resource_manager.load_font 'Asimov.ttf', 30
-    x = @actor.x
-    y = @actor.y
-    font.draw text, x,y,z#, 1,1,target.convert_color([250,250,250,255])
-  end
-end
-
 define_behavior :score_keeper do
   requires :backstage, :stage
 
@@ -26,6 +14,7 @@ define_behavior :score_keeper do
       label.remove
     end
     update_text
+    reacts_with :subtract, :add
   end
 
   helpers do
@@ -37,16 +26,14 @@ define_behavior :score_keeper do
       backstage[:score] = 0
     end
 
-    def +(amount)
+    def add(amount)
       backstage[:score] += amount
       update_text
-      self
     end
 
-    def -(amount)
+    def subtract(amount)
       backstage[:score] -= amount
       update_text
-      self
     end
 
     def update_text

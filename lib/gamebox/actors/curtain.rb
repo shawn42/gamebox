@@ -4,6 +4,9 @@ ActorView.define :curtain_view do
   end
 end
 
+FULL_CURTAIN = 255
+NO_CURTAIN = 0
+
 Behavior.define :curtain_operator do
   requires :director
   setup do
@@ -26,9 +29,6 @@ Behavior.define :curtain_operator do
   end
 
   helpers do
-    FULL_CURTAIN = 255
-    NO_CURTAIN = 0
-
     # Update curtain height 0-255 (alpha)
     def update(time)
       perc_change = time.to_f/actor.duration_in_ms

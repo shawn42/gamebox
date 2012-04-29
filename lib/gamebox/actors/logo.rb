@@ -1,6 +1,3 @@
-__END__
-
-class Logo < Actor
-  has_behaviors :graphical, 
-  :layered => {:layer => 999}
+define_actor :logo do
+  has_behaviors :graphical, layered: 999
 end

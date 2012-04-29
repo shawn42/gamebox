@@ -11,7 +11,7 @@ class PlayStage < Stage
 
     sound_manager.play_music :roids
 
-    # create_actor :starry_night, :width => viewport.width, :height => viewport.height
+    create_actor :starry_night, :width => viewport.width, :height => viewport.height
 
     @physics_manager.elastic_iterations = 4
 
@@ -27,7 +27,8 @@ class PlayStage < Stage
     end
 
     score = create_actor :score, :x => 10, :y => 10
-    # create_actor :logo, :x => 900, :y => 600
+    create_actor :logo, :x => 900, :y => 600
+    create_actor :fps, :x => 800, :y => 10
 
     input_manager.reg :down, KbR do
       fire :next_stage
@@ -55,12 +56,9 @@ class PlayStage < Stage
         sound_manager.play_sound :implosion
 
         if shippy.alive
-          # explosion = create_actor :particle_system, :x => shippy.x, :y => shippy.y
-          # explosion.when :remove_me do
-          #   fire :prev_stage
-          # end
           shippy.remove
-          shippy.when :remove_me do
+          explosion = create_actor :particle_system, x: shippy.x, y: shippy.y
+          explosion.when :remove_me do
             fire :prev_stage
           end
         end
@@ -72,7 +70,7 @@ class PlayStage < Stage
 
       rocky = find_physical_obj rock
       rocky.when :remove_me do
-        score += 10
+        score.react_to :add, 10
       end
 
       if rocky.alive
@@ -80,7 +78,7 @@ class PlayStage < Stage
         x,y = rocky.x, rocky.y
         (10+rand(10)).times do
           bit = create_actor :rock_bit
-          bit.warp vec2(x,y)
+          bit.react_to :warp, vec2(x,y)
         end
       end
 

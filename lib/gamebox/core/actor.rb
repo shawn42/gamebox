@@ -80,9 +80,10 @@ class Actor
   end
 
   class ActorDefinition
-    attr_accessor :behaviors, :view_blk
+    attr_accessor :behaviors, :attributes, :view_blk
     def initialize
       @behaviors = []
+      @attributes = []
     end
 
     def has_behaviors(*behaviors)
