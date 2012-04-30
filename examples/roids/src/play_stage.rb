@@ -51,13 +51,12 @@ class PlayStage < Stage
 
     # ship rock collision
     @physics_manager.add_collision_func(:rock, :ship) do |rock, ship|
-      shippy = ship.actor
-      unless shippy.invincible
+      unless ship.invincible
         sound_manager.play_sound :implosion
 
-        if shippy.alive
-          shippy.remove
-          explosion = create_actor :particle_system, x: shippy.x, y: shippy.y
+        if ship.alive
+          ship.remove
+          explosion = create_actor :particle_system, x: ship.x, y: ship.y
           explosion.when :remove_me do
             fire :prev_stage
           end
@@ -68,23 +67,21 @@ class PlayStage < Stage
     @physics_manager.add_collision_func(:rock, :bullet) do |rock, bullet|
       sound_manager.play_sound :implosion
 
-      rocky = rock.actor
-      rocky.when :remove_me do
+      rock.when :remove_me do
         score.react_to :add, 10
       end
 
-      if rocky.alive
-        rocky.remove
-        x,y = rocky.x, rocky.y
+      if rock.alive
+        rock.remove
+        x,y = rock.x, rock.y
         (10+rand(10)).times do
           bit = create_actor :rock_bit
           bit.react_to :warp, vec2(x,y)
         end
       end
 
-      @rocks.delete rocky
-
-      bullet.actor.remove
+      @rocks.delete rock
+      bullet.remove
     end
 
     @stars = []

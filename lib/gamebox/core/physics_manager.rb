@@ -1,7 +1,7 @@
 # PhysicsManager creates and manages chipmunks space.
 class PhysicsManager
   extend Forwardable
-  def_delegators :@space, :elastic_iterations=, :damping=, :add_collision_func
+  def_delegators :@space, :elastic_iterations=, :damping=
 
   attr_accessor :space
   def configure
@@ -33,6 +33,12 @@ class PhysicsManager
   def update(time)
     update_physics time 
     super
+  end
+
+  def add_collision_func(type1, type2, &blk)
+    @space.add_collision_func(type1, type2) do |a, b|
+      blk.call a.actor, b.actor
+    end
   end
 
   def register_physical_object(obj,static=false)

@@ -145,7 +145,6 @@ Behavior.define :physical do
     end
 
     def register
-      director.add_actor actor
       actor.when :remove_me do
         cleanup_constraints
       end
