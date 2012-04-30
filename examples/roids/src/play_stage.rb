@@ -51,7 +51,7 @@ class PlayStage < Stage
 
     # ship rock collision
     @physics_manager.add_collision_func(:rock, :ship) do |rock, ship|
-      shippy = find_physical_obj ship
+      shippy = ship.actor
       unless shippy.invincible
         sound_manager.play_sound :implosion
 
@@ -68,7 +68,7 @@ class PlayStage < Stage
     @physics_manager.add_collision_func(:rock, :bullet) do |rock, bullet|
       sound_manager.play_sound :implosion
 
-      rocky = find_physical_obj rock
+      rocky = rock.actor
       rocky.when :remove_me do
         score.react_to :add, 10
       end
@@ -84,8 +84,7 @@ class PlayStage < Stage
 
       @rocks.delete rocky
 
-      act = find_physical_obj bullet
-      act.remove
+      bullet.actor.remove
     end
 
     @stars = []
@@ -99,10 +98,6 @@ class PlayStage < Stage
     end
 
     end
-
-  def find_physical_obj(shape)
-    director.actors.select{|a|a.do_or_do_not(:shape) && a.shape == shape}.first
-  end
 
   def curtain_up(*args)
     @running = true

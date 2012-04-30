@@ -4,6 +4,12 @@ if defined? CP
     CP::Vec2.new *args
   end
 
+  module CP::Shape
+    def self.included(klass)
+      klass.attr_accessor :actor
+    end
+  end
+
   class CP::Space
     alias :add_collision_func_old :add_collision_func
     

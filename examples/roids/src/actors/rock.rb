@@ -30,6 +30,10 @@ define_behavior :rocky do
 
 end
 
+class CP::Shape::Circle
+  attr_accessor :actor
+end
+
 define_actor :rock do
   has_behaviors :animated, :physical => {:shape => :circle, 
     :mass => 10,

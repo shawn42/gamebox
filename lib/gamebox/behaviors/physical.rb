@@ -107,6 +107,7 @@ Behavior.define :physical do
         actor.segment_groups << verts
       end
 
+      actor.shape.actor = actor
       actor.shapes << actor.shape
 
       actor.body.p = vec2(actor.x,actor.y)
@@ -136,6 +137,7 @@ Behavior.define :physical do
               raise "unsupported sub shape type"
             end
             part_shape.collision_type = part_name.to_sym
+            part_shape.actor = actor
             actor.shapes << part_shape
           end
         end
