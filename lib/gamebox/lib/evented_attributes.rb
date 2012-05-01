@@ -17,6 +17,9 @@ module EventedAttributes
     unless has_attribute? name
       @evented_attributes << name
       self.metaclass.send :kvo_attr_accessor, name
+      self.define_singleton_method "#{name}?" do
+        self.send name
+      end
       self.send("#{name}=", value)
     end
   end

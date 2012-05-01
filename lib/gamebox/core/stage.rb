@@ -18,6 +18,7 @@ class Stage
   def configure(backstage, opts)
     res = config_manager[:screen_resolution]
     @viewport = Viewport.new res[0], res[1]
+    this_object_context[:viewport] = @viewport
 
     @stagehands = {}
     @backstage = backstage

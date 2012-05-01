@@ -5,6 +5,38 @@
 # data/graphics/actor_type/action/01..n.png
 Behavior.define :animated do
   requires :resource_manager, :director
+  setup do
+    @images = {}
+    @frame_update_time = @opts[:frame_update_time]
+    @frame_update_time ||= 60
+    @frame_time = 0
+
+    # all animated actors have to have an idle animation
+    # data/graphics/ship/idle/1.png
+    @frame_num = 0
+
+    actor.has_attributes action: :idle, 
+                         animating: true
+    actor.has_attributes :image, :width, :height
+
+    actor.when :action_changed do |old_action, new_action|
+      action_changed old_action, new_action
+      actor.animating = @images[new_action].size > 1
+    end
+
+    action_changed nil, actor.action
+
+    director.when :update do |time|
+      if actor.animating
+        @frame_time += time
+        if @frame_time > @frame_update_time
+          next_frame
+        end
+        set_image
+      end
+    end
+  end
+
   helpers do
     def next_frame
       action_set = @images[actor.action]
@@ -13,7 +45,6 @@ Behavior.define :animated do
 
     def action_changed(old_action, new_action)
       @images[new_action] ||= resource_manager.load_animation_set actor, new_action
-      actor.animating = @images[new_action].size > 1
       @frame_num = 0
       set_image
     end
@@ -29,37 +60,5 @@ Behavior.define :animated do
     end
   end
 
-  setup do
-    # REAL STUFF
-    @images = {}
-    @frame_update_time = @opts[:frame_update_time]
-    @frame_update_time ||= 60
-    # @action = @opts[:action] ||= :idle
-    @frame_time = 0
-
-    # all animated actors have to have an idle animation
-    # data/graphics/ship/idle/1.png
-    @frame_num = 0
-
-    actor.has_attributes :animating, :action, :image, :width, :height
-
-    actor.when :action_changed do |old_action, new_action|
-      action_changed old_action, new_action
-    end
-
-    actor.action = :idle
-
-    director.when :update do |time|
-      if actor.animating
-        @frame_time += time
-        if @frame_time > @frame_update_time
-          next_frame
-          @frame_time = @frame_time-@frame_update_time
-        end
-        set_image
-      end
-    end
-    actor.animating = true
-  end
 
 end

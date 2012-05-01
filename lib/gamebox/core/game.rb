@@ -5,7 +5,7 @@ class Game
     :stage_manager
 
   def configure
-    stage_manager.change_stage_to :demo
+    stage_manager.change_stage_to stage_manager.default_stage
   end
 
   def update(time)

@@ -1,16 +1,14 @@
 
-require 'map'
-require 'dungeon_generator'
-require 'publisher'
-
 # loads maps from given string array
 class MapLoader
   extend Publisher
   can_fire :monster_spawned
   attr_accessor :rague
   
-  def initialize(config)
+  # TODO thin wrapper around conject to get the stage here?
+  def initialize(config, stage)
     @config = config
+    @stage = stage
   end
   
   def build_random_map(map, walk_length=400)
@@ -38,6 +36,7 @@ class MapLoader
   def build_map(map, map_lines)
     log "Building map..."
     map.size = [map_lines[0].length-1, map_lines.size-1]
+
     
     map_lines.each_with_index do |row_str, row|
       row_str.strip.length.times do |col|
@@ -45,29 +44,35 @@ class MapLoader
         y = (row-0.5) * map.tile_height
         
         tile_klass = @config[:tiles][row_str[col].chr]
-        tile = map.spawn :tile, :x => x, :y => y, :action => tile_klass,
-          :tile_x => col, :tile_y => row, :hide => true
-        tile.lit = false
-        tile.solid = true if tile_klass == :wall
-        map.place tile.location, tile
+
+        tile = @stage.spawn :tile, 
+          x: x, 
+          y: y, 
+          action: tile_klass || :floor,
+          tile_x: col, 
+          tile_y: row, 
+          hide: true, 
+          lit: false, 
+          solid: (tile_klass == :wall)
+        map.react_to :place, tile.location, tile
         
         if tile_klass.nil?
           monster_name = @config[:monsters][row_str[col].chr]
           if monster_name == :rague
-            act = map.spawn :rague
+            act = @stage.spawn :rague
             @rague = act
           else
             if monster_name.nil?
               item_name = @config[:items][row_str[col].chr]
               unless item_name.nil?
-                act = map.spawn :item, :name=>item_name, :hide => true
+                act = @stage.spawn :item, name: item_name, hide: true
               end
             else
-              act = map.spawn :monster, :name=>monster_name, :hide => true
+              act = @stage.spawn :monster, name: monster_name, hide: true
               fire :monster_spawned, act
             end
           end
-          map.move_to act, loc2(col,row) if act              
+          map.react_to :move_to, act, loc2(col,row) if act              
         end
         
       end

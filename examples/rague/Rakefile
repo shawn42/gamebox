@@ -4,7 +4,8 @@ confdir = File.dirname(__FILE__)+"/config"
 $: << confdir
 
 require 'environment'
-require 'gamebox/tasks/gamebox_tasks.rake'
+$: << GAMEBOX_PATH
+load "tasks/gamebox_tasks.rake"
 STATS_DIRECTORIES = [
   %w(Source            src/), 
   %w(Config            config/), 

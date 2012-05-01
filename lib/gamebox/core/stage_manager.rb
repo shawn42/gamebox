@@ -26,6 +26,10 @@ class StageManager
     end
   end
 
+  def default_stage
+    @stage_names.first
+  end
+
   def next_stage(*args)
     index = @stage_names.index @stage
     if index == @stage_names.size-1

@@ -5,6 +5,9 @@ TAKE YOUR PICK:
  - highscore upload system (use from chingu) (takes json now)
  - solidify rdocs (including tutorial)
  - collidable "grouping"
+ - framerate setting should come from Gamebox.configuration.target_framerate?
+ - game.yml settings ..                 ^^^
+ - input_manager should accept symbols for look up.. :space => KbSpace
 
 EXAMPLES:
  - move to separate repo?
