@@ -8,6 +8,9 @@ TAKE YOUR PICK:
  - framerate setting should come from Gamebox.configuration.target_framerate?
  - game.yml settings ..                 ^^^
  - input_manager should accept symbols for look up.. :space => KbSpace
+ - acceptance spec helpers
+ - physics acceptance spec
+ - ZERO PENDING SPECS
 
 EXAMPLES:
  - move to separate repo?
@@ -20,8 +23,6 @@ SOMEDAY:
 
  - make complex Phyiscal behaviors 
   * made up by a group of bodies pinned together
- - physical objects should have bodies and shapes body/shape should be shorthand for bodies.first/shapes.first
-
  - create a DynamicPhysicalActor that can be built from external verts (SVG)
 
  - add nice actor debugging
