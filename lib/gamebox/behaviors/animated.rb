@@ -31,6 +31,7 @@ Behavior.define :animated do
         @frame_time += time
         if @frame_time > @frame_update_time
           next_frame
+          @frame_time = @frame_time-@frame_update_time
         end
         set_image
       end

@@ -9,6 +9,9 @@ describe Stage do
   before do
     @config_manager.stubs(:[]).with(:screen_resolution).returns([800,600])
     @actor_factory.stubs(:director=)
+    @viewport = stub
+    Viewport.stubs(:new).with(800, 600).returns(@viewport)
+    @this_object_context.expects(:[]=).with(:viewport, @viewport)
     subject.configure(:backstage, {})
   end
 
