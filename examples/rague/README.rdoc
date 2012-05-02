@@ -1,0 +1,24 @@
+== Welcome to Gamebox
+Description of your game here.
+
+== Description of Contents
+
+src
+  Holds all the code that's specific to this particular application.
+
+config
+  Configuration files for the Gamebox environment and other dependencies.
+
+doc
+  This directory is where your application documentation.
+
+lib
+  Application specific libraries. Basically, any kind of custom code that doesn't
+  belong under controllers, models, or helpers. This directory is in the load path.
+
+script
+  Helper scripts for automation and generation.
+
+spec
+  Unit and functional tests along with fixtures. When using the script/generate scripts, template
+  test files will be generated for you and placed in this directory.
