@@ -1,7 +1,7 @@
 # PhysicsManager creates and manages chipmunks space.
 class PhysicsManager
   extend Forwardable
-  def_delegators :@space, :elastic_iterations=, :damping=
+  def_delegators :@space, :elastic_iterations=, :damping=, :gravity=
 
   attr_accessor :space
   def configure

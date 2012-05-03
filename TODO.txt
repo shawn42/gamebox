@@ -8,8 +8,6 @@ TAKE YOUR PICK:
  - framerate setting should come from Gamebox.configuration.target_framerate?
  - game.yml settings ..                 ^^^
  - input_manager should accept symbols for look up.. :space => KbSpace
- - acceptance spec helpers
- - physics acceptance spec
  - ZERO PENDING SPECS
 
 EXAMPLES:
