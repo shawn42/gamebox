@@ -32,12 +32,24 @@ class PhysicsManager
 
   def update(time)
     update_physics time 
-    super
   end
 
-  def add_collision_func(type1, type2, &blk)
-    @space.add_collision_func(type1, type2) do |a, b|
-      blk.call a.actor, b.actor
+  # allows for passing arrays of collision types not just single ones
+  # add_collision_func([:foo,:bar], [:baz,:yar]) becomes:
+  # add_collision_func(:foo, :baz)
+  # add_collision_func(:foo, :yar)
+  # add_collision_func(:bar, :baz)
+  # add_collision_func(:bar, :yar)
+  def add_collision_func(first_objs, second_objs, &block)
+    firsts = [first_objs].flatten
+    seconds = [second_objs].flatten
+    
+    firsts.each do |f|
+      seconds.each do |s|
+        @space.add_collision_func(f,s) do |a, b|
+          block.call a.actor, b.actor
+        end
+      end
     end
   end
 
@@ -96,11 +108,9 @@ class PhysicsManager
 
   def pause
     pause_physics
-    super
   end
 
   def unpause
-    super
     restart_physics
   end
 end

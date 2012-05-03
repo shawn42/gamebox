@@ -125,6 +125,11 @@ module GameboxAcceptanceSpecHelpers
         end
       end
     end
+
+    def update(time)
+      @physics_manager.update time if @physics_manager
+      super
+    end
   end
 
   module MockCalls
