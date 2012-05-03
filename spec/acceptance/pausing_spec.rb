@@ -1,18 +1,6 @@
 require 'helper'
 
-describe "pausing in gamebox" do
-  before do
-    Gamebox.configure do |config|
-      config.config_path = "spec/fixtures/"
-      config.music_path = "spec/fixtures/"
-      config.sound_path = "spec/fixtures/"
-      config.stages = [:testing]
-    end
-
-    Conject.instance_variable_set '@default_object_context', nil
-    HookedGosuWindow.stubs(:new).returns(gosu)
-  end
-  let(:gosu) { MockGosuWindow.new }
+describe "pausing in gamebox", acceptance: true do
 
   define_behavior :shoot_rock do |beh|
     beh.requires :timer_manager

@@ -6,7 +6,7 @@ describe :animated do
   let(:opts) { {} }
   subject { subcontext[:behavior_factory].add_behavior actor, :animated, opts }
   let(:director) { evented_stub(stub_everything('director')) }
-  let!(:subcontext) do 
+  let(:subcontext) do 
     it = nil
     Conject.default_object_context.in_subcontext{|ctx|it = ctx}; 
     _mocks = create_mocks *(Actor.object_definition.component_names + ActorView.object_definition.component_names - [:actor, :behavior, :this_object_context])

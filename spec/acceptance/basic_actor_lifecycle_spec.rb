@@ -1,6 +1,6 @@
 require 'helper'
 
-describe "The basic life cycle of an actor" do
+describe "The basic life cycle of an actor", acceptance: true do
   before do
     Gamebox.configure do |config|
       config.config_path = "spec/fixtures/"

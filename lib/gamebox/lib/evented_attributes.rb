@@ -25,14 +25,15 @@ module EventedAttributes
   end
 
   def has_attribute?(name)
-    @evented_attributes ||= []
-    @evented_attributes.include? name
+    @evented_attributes && @evented_attributes.include?(name)
   end
 
   def attributes
     {}.tap do |atts|
-      @evented_attributes.each do |name|
-        atts[name] = self.send name
+      if @evented_attributes
+        @evented_attributes.each do |name|
+          atts[name] = self.send name
+        end
       end
     end
   end

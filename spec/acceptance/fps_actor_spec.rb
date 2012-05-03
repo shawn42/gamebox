@@ -1,20 +1,6 @@
 require 'helper'
 
-describe "Using fps actor" do
-  before do
-    Gamebox.configure do |config|
-      config.config_path = "spec/fixtures/"
-      config.music_path = "spec/fixtures/"
-      config.sound_path = "spec/fixtures/"
-      config.stages = [:testing]
-    end
-
-    Conject.instance_variable_set '@default_object_context', nil
-    HookedGosuWindow.stubs(:new).returns(gosu)
-  end
-  let(:gosu) { MockGosuWindow.new }
-
-
+describe "Using fps actor", acceptance: true do
   it 'draws and updates the fps label' do
     game.stage do |stage| # instance of TestingStage
       @fps = create_actor :fps, font_name: 'arial', font_size: 20

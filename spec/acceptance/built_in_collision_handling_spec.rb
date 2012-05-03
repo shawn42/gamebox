@@ -1,18 +1,6 @@
 require 'helper'
 
-describe "Using gamebox's built in collision handling" do
-  before do
-    Gamebox.configure do |config|
-      config.config_path = "spec/fixtures/"
-      config.music_path = "spec/fixtures/"
-      config.sound_path = "spec/fixtures/"
-      config.stages = [:testing]
-    end
-
-    Conject.instance_variable_set '@default_object_context', nil
-    HookedGosuWindow.stubs(:new).returns(gosu)
-  end
-  let(:gosu) { MockGosuWindow.new }
+describe "Using gamebox's built in collision handling", acceptance: true do
 
   define_actor :frickin_laser do
     has_behavior :projectile

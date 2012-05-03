@@ -19,8 +19,7 @@ class ResourceManager
   end
 
   def load_animation_set(actor, action)
-    actor_dir = Inflector.underscore(actor.class)
-    using_tileset = File.exist?("#{Gamebox.configuration.gfx_path}#{actor_dir}/#{action}.png")
+    using_tileset = File.exist?("#{Gamebox.configuration.gfx_path}#{actor.actor_type}/#{action}.png")
     if using_tileset
       load_tile_set(actor, action)
     else

@@ -1,19 +1,6 @@
 require 'helper'
 
-describe "Using timers" do
-  before do
-    Gamebox.configure do |config|
-      config.config_path = "spec/fixtures/"
-      config.music_path = "spec/fixtures/"
-      config.sound_path = "spec/fixtures/"
-      config.gfx_path = "spec/fixtures/"
-      config.stages = [:testing]
-    end
-
-    Conject.instance_variable_set '@default_object_context', nil
-    HookedGosuWindow.stubs(:new).returns(gosu)
-  end
-  let(:gosu) { MockGosuWindow.new }
+describe "Using animation", acceptance: true do
 
   let!(:snelpling_idle_png) { mock_image('snelpling/idle/1.png') }
   let!(:snelpling_jump_1_png) { mock_image('snelpling/jump/1.png') }
@@ -34,7 +21,6 @@ describe "Using timers" do
     end
   end
   define_actor :snelpling do
-    # TODO how to hook up "if no view defined use graphical_actor_view"?
     has_behavior :jump_on_j
     has_behavior :animated
   end

@@ -275,6 +275,10 @@ module GameboxAcceptanceSpecHelpers
       end
     end
 
+    def gosu
+      @gosu ||= MockGosuWindow.new
+    end
+
   end
 
   def self.included(base)
@@ -300,9 +304,22 @@ end
 RSpec.configure do |configuration|
   configuration.include GameboxSpecHelpers
   configuration.include GameboxAcceptanceSpecHelpers
+
   configuration.before(:each) do
-    # TODO why did conject drop the reset context idea?
     Conject.instance_variable_set(:@default_object_context, nil)
+  end
+
+  configuration.before(:each, acceptance: true) do
+    Gamebox.configure do |config|
+      config.config_path = "spec/fixtures/"
+      config.gfx_path = "spec/fixtures/"
+      config.fonts_path = "spec/fixtures/"
+      config.music_path = "spec/fixtures/"
+      config.sound_path = "spec/fixtures/"
+      config.stages = [:testing]
+    end
+
+    HookedGosuWindow.stubs(:new).returns(gosu)
   end
 end
 
