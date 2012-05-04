@@ -56,7 +56,7 @@ Behavior.define :collidable do
   end
 
   helpers do
-    def removed
+    def remove
       stage.unregister_collidable actor
     end
 
