@@ -37,6 +37,13 @@ describe StageManager do
     end
   end
 
+  describe "#default_stage" do
+
+    it 'returns the first stage in the stage_config' do
+      subject.default_stage.should == :foo
+    end
+  end
+
   describe "#switch_to_stage" do
 
     it 'activates the new stage' do

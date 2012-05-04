@@ -55,15 +55,9 @@ Behavior.define :animated do
       raise "unknown action set #{actor.action} for #{actor}" if action_set.nil?
 
       image = action_set[@frame_num]
-      if image
-        actor.image = image
-        actor.width = image.width
-        actor.height = image.height
-      else
-        # TODO track down how this happens?
-        actor.width = 0
-        actor.height = 0
-      end
+      actor.image = image
+      actor.width = image.width
+      actor.height = image.height
     end
   end
 
