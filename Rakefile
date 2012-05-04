@@ -20,11 +20,6 @@ begin
     t.rspec_opts = '-c'
   end
 
-  desc "Run all specs with rcov"
-  RSpec::Core::RakeTask.new(:rcov) do |t|
-      t.rcov = true
-  end
-
   task :default => :spec
 rescue LoadError
   puts "please install rspec to run tests"
