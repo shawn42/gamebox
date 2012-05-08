@@ -7,8 +7,8 @@ class ActorView
     @layer = actor.do_or_do_not(:layer) || 0
     @parallax = actor.do_or_do_not(:parallax) || 1
 
+    # TODO clean up the show/hide here make nice with visible behavior?
     actor.when :remove_me do unregister  end
-    # TODO clean up the show/hide here
     actor.when :hide_me   do unregister  end
     actor.when :show_me   do register    end
     
