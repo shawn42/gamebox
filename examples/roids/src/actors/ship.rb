@@ -35,6 +35,12 @@ define_behavior :shiplike do
       actor.action = :idle
     end
 
+    # TODO do this automagically?
+    actor.when :remove_me do
+      puts "CLEARING"
+      i.clear_hooks self
+    end
+
     director.when :update do |time|
       update time
     end

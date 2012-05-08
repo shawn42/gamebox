@@ -2,6 +2,7 @@
 
 require 'active_support'
 require 'rubigen'
+require 'gamebox'
 
 def print_version
   puts "Gamebox #{Gamebox::VERSION::STRING}"

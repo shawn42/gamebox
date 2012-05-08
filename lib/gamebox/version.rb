@@ -3,8 +3,13 @@ module Gamebox
     MAJOR = 0
     MINOR = 4
     TINY  = 0
+    RC    = 1
 
-    ARRAY = [MAJOR, MINOR, TINY]
+    if RC > 0
+      ARRAY = [MAJOR, MINOR, TINY, "rc#{RC}"]
+    else
+      ARRAY = [MAJOR, MINOR, TINY]
+    end
     STRING = ARRAY.join('.')
   end
 end
