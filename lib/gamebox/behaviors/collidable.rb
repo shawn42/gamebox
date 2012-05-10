@@ -52,14 +52,14 @@ Behavior.define :collidable do
 
     stage.register_collidable actor
 
-    reacts_with :remove, :position_changed
-  end
-
-  helpers do
-    def remove
+    actor.when :remove_me do
       stage.unregister_collidable actor
     end
 
+    reacts_with :position_changed
+  end
+
+  helpers do
     def position_changed
       shape = actor.shape
       shape.recalculate_collidable_cache

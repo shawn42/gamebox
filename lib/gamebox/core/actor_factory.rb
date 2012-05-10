@@ -18,6 +18,10 @@ class ActorFactory
         raise "#{actor} not found in Actor.definitions" if actor_definition.nil?
         model.configure(merged_opts)
 
+        actor_definition.attributes.each do |attr|
+          model.has_attributes attr
+        end
+
         actor_definition.behaviors.each do |behavior|
           beh_opts = {}
           beh_key = behavior

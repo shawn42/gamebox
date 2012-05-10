@@ -41,8 +41,7 @@ class ResourceManager
   #       -------------
   #
   def load_tile_set(actor, action)
-    actor_dir = Inflector.underscore(actor.class)
-    tileset_name = "#{actor_dir}/#{action}.png"
+    tileset_name = "#{actor.actor_type}/#{action}.png"
     tileset = load_image tileset_name
 
     action_imgs = []

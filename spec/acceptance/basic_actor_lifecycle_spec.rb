@@ -88,5 +88,7 @@ describe "The basic life cycle of an actor", acceptance: true do
     game.should_not have_actor(:mc_bane)
 
   end
+
+  it 'uses default values from actor definition'
 end
 

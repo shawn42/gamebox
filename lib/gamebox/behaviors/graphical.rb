@@ -4,6 +4,7 @@
 # data/graphics/classname.png
 Behavior.define :graphical do
 
+  requires_behaviors :layered
   requires :resource_manager
   setup do 
     image = resource_manager.load_actor_image(actor)

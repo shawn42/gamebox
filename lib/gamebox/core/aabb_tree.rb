@@ -38,8 +38,10 @@ class AABBTree
 
   def remove(item)
     leaf = @items.delete item
-    @root = @root.remove_subtree leaf if leaf
-    clear_cached_collisions leaf
+    if leaf
+      @root = @root.remove_subtree leaf 
+      clear_cached_collisions leaf
+    end
   end
 
   def update(item)

@@ -9,9 +9,8 @@ class Actor
   construct_with :this_object_context
   public :this_object_context
 
-  has_attribute :alive
-
   def initialize
+    has_attribute :alive
     @behaviors = {}
   end
 
@@ -58,7 +57,6 @@ class Actor
   end
 
   # TODO should this live somewhere else?
-  # TODO should we support "inheritance" of components?
   class << self
 
     def define(actor_type, opts={}, &blk)
@@ -71,6 +69,12 @@ class Actor
       if view_blk
         ActorView.define "#{actor_type}_view".to_sym, &view_blk
       end
+
+      behavior_blk = definition.behavior_blk
+      if behavior_blk
+        Behavior.define actor_type, &behavior_blk
+        definition.has_behavior actor_type
+      end
     end
 
     def definitions
@@ -80,7 +84,7 @@ class Actor
   end
 
   class ActorDefinition
-    attr_accessor :behaviors, :attributes, :view_blk
+    attr_accessor :behaviors, :attributes, :view_blk, :behavior_blk
     def initialize
       @behaviors = []
       @attributes = []
@@ -93,9 +97,19 @@ class Actor
     end
     alias has_behavior has_behaviors
 
-    # TODO spec view helper on actor def
+    def has_attributes(*attributes)
+      attributes.each do |att|
+        @attributes << att
+      end
+    end
+    alias has_behavior has_behaviors
+
     def view(&blk)
       @view_blk = blk
+    end
+
+    def behavior(&blk)
+      @behavior_blk = blk
     end
   end
 

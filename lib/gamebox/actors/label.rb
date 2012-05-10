@@ -17,6 +17,7 @@ Behavior.define :label_stuff do
     actor.has_attributes font_style: font_style
 
     actor.when :font_size_changed do
+      actor.font_style.size = actor.font_size
       actor.font_style.reload
       recalculate_size
     end
@@ -26,6 +27,9 @@ Behavior.define :label_stuff do
     end
     actor.when :text_changed do
       recalculate_size
+    end
+    actor.when :color_changed do
+      actor.font_style.color = actor.color
     end
 
   end
@@ -39,7 +43,7 @@ Behavior.define :label_stuff do
 end
 
 Actor.define :label do
-  has_behavior layered: 1
+  has_attributes layered: 1
   has_behavior :label_stuff
 
   view do

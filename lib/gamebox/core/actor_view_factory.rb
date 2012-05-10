@@ -8,6 +8,7 @@ class ActorViewFactory
   def build(actor, opts={})
     # TODO  have animated, graphical, physical set a view attr on actor
     view_klass = opts[:view] || actor.do_or_do_not(:view) || "#{actor.actor_type}_view"
+
     view_definition = ActorView.definitions[view_klass.to_sym]
     view = nil
     if view_definition

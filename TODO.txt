@@ -1,4 +1,6 @@
 TAKE YOUR PICK:
+ - add define_style that defines a bucket of behaviors
+ - add helper for has_required_attributes on an actor from a behavior (checking that opts for the behavior has said key)
  - move all classes into Gamebox module
  - collision detection performance for tiles?
  - collision detection honoring rotation?
