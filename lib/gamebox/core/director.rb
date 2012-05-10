@@ -4,51 +4,19 @@ class Director
   can_fire_anything
   attr_accessor :actors
 
-  def initialize
-    @actors = []
-    @dead_actors = []
-    setup
-  end
-
-  def setup
-  end
-
-  def add_actor(actor)
-    @actors << actor
-    actor.when :remove_me do
-      remove_actor actor
-    end
-    fire :actor_added, actor
-    actor
-  end
-
-  def remove_actor(actor)
-    @dead_actors << actor
-  end
-
-  def empty?
-    @actors.empty?
-  end
-
   def pause
-    @paused_actors = @actors
-    @actors = []
+    @paused_subscriptions = @subscriptions
+    @subscriptions = {}
   end
 
   def unpause
-    unless @paused_actors.nil?
-      @actors.each{|actor| actor.remove_self }
-      @actors = @paused_actors
-      @paused_actors = nil
+    unless @paused_subscriptions.nil?
+      @subscriptions = @paused_subscriptions
+      @paused_subscriptions = nil
     end
   end
 
   def update(time)
-    for act in @dead_actors
-      @actors.delete act
-      fire :actor_removed, act
-    end
-    @dead_actors = []
     time_in_seconds = time / 1000.to_f
     fire :update, time, time_in_seconds
   end

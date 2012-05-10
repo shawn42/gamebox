@@ -78,6 +78,14 @@ class SoundManager
       @music[what].stop if @music[what]
     end
   end
+
+  # pause the music file that is passed in.
+  # pause_music :foo
+  def pause_music(what)
+    if @enabled
+      @music[what].pause if @music[what]
+    end
+  end
   
   # stops the sound that is passed in.
   # stop_sound :foo
