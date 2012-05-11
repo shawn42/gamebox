@@ -6,7 +6,7 @@ Why use Gamebox? Gamebox was designed to spring board game development. It allow
 
 The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.  
 
-The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing competitions and second, to allow me to write simple educational games for my kid(s).
+The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing competitions and second, to allow me to write simple educational games for my kids.
 
 == Installation
 
@@ -14,6 +14,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 - or tar from http://shawn42.github.com/gamebox
 - or git pull from git://github.com/shawn42/gamebox.git
 - required gems
+  - rake
   - bundler
   - gosu 
   - conject
@@ -25,58 +26,50 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 - gamebox zapper
 - this will create the directory structure and needed files to get a basic actor up on the screen
 	zapper
-	|-- README
-	|-- Rakefile
-	|-- config
-	|   |-- boot.rb
-	|   |-- environment.rb
-	|   |-- game.yml
-	|   |-- gamebox_generator_version.yml
-	|   `-- stage_config.yml
-	|-- data
-	|   |-- fonts
-	|   |   `-- FONTS_GO_HERE
-	|   |-- graphics
-	|   |   `-- GRAPHICS_GO_HERE
-	|   |-- music
-	|   |   `-- MUSIC_GOES_HERE
-	|   `-- sounds
-	|       `-- SOUND_FX_GO_HERE
-	|-- doc
-	|   `-- README_FOR_APP
-	|-- lib
-	|   |-- code_statistics.rb
-	|   `-- platform.rb
-  |-- script
-  |   `-- generate
-  |-- spec
-  |   `-- helper.rb
-	`-- src
-	    |-- app.rb
-	    |-- demo_stage.rb
-	    |-- game.rb
-	    `-- my_actor.rb
+    ├── Gemfile
+    ├── README.rdoc
+    ├── Rakefile
+    ├── config
+    │   ├── boot.rb
+    │   ├── environment.rb
+    │   └── game.yml
+    ├── data
+    │   ├── fonts
+    │   │   └── FONTS_GO_HERE
+    │   ├── graphics
+    │   │   └── GRAPHICS_GO_HERE
+    │   ├── music
+    │   │   └── MUSIC_GOES_HERE
+    │   └── sounds
+    │       └── SOUND_FX_GO_HERE
+    ├── spec
+    │   └── helper.rb
+    └── src
+        ├── actors
+        │   └── player.rb
+        ├── app.rb
+        └── demo_stage.rb
 
 - you now have a runnable gamebox game
 
 	cd zapper
-	ruby src/app.rb
+	rake
 
 == Actors to the Stage
 
-An Actor is the base class for any game object. A building, the player, the score, the bullet are all examples of actors. Actors can even be invisible. Any number of Behavior s can be added to an Actor to define how it will react to the world via the Actor.has_behaviors method.
+An actor is the base class for any game object. A building, the player, the score, the bullet are all examples of actors. Actors can even be invisible. Any number of behaviors can be added to an actor to define how it will react to the world via the define_actor method. Actors are simply buckets of data and behaviors. The interactions with system are all driven by their behaviors.
 
-So Actors sound fun, how do I get one? That's where the ActorFactory comes in. In your Stage class (demo_stage.rb by default) you can use the spawn helper method as shown below.
+So Actors sound fun, how do I get one? That's where the ActorFactory comes in. In your Stage class (demo_stage.rb by default) you can use the create_actor helper method as shown below.
 
-	@score = spawn :score, :x => 10, :y => 10
+	@score = create_actor :score, x: 10, y: 10
 	
-This call will return an instance of the Score class (the first arg is the symbolized version of the classname).  It will also create the view for the actor and register it to be drawn.  Which view is instantiated depends on the actor requested.  The factory will always look for a class named the same as the actor with View on the end. So the actor Score will look for ScoreView.  If ScoreView does not exist, a generic view class will be used based on the behaviors of the actor. Each ActorView class is constructed with a reference to the actor it is displaying. See ActorFactor#build for more details.
+This call will return an instance of a score (the first arg is the symbolized version of the actor type).  It will also create the view for the actor and register it to be drawn.  Which view is instantiated depends on the actor requested.  The factory will always look for a view named the same as the actor with _view on the end. So the actor score will look for score_view.  If score_view does not exist, a generic view class will be used based on the behaviors of the actor. Each view is constructed with a reference to the actor it is displaying. See ActorFactor#build for more details.
 
-That's great, but how do I tell my actors what to do?  They can register for events of course! A common place for this is in your actor's setup method. Here is an example from the roids example.
+That's great, but how do I tell my actors what to do? By defining their behaviors!
 
-	input_manager.reg KeyDownEvent, K_SPACE do
-		shoot
-	end
+define_actor :score do
+  has_behaviors :positioned, :score_keeping
+end
 
 == Sound
 
@@ -92,7 +85,7 @@ or
 
 	# from an actor
   has_behavior :audible
-	play_sound :jump
+	actor.react_to :play_sound, :jump
 
 == Resources
 
@@ -103,9 +96,22 @@ All file loading is handled by the ResourceManager.  It handles loading images, 
 == Behaviors
 
 Behaviors are designed to allow you to build Actors from previously built chunks of code. Lets look at the built in Animated behavior.
-  class SuperHero < Actor
-    has_behaviors :animated, :updatable
+  define_behavior :shooting do
+    requires :input_manager
+    setup do
+      input_manager.reg :down, KbSpace do
+        shoot
+      end
+    end
+
+    helpers do
+      def shoot
+        # shoot
+      end
+    end
   end
+
+
 
 This snippet show us that our Actor wants to be updated on every gameloop and that it wants to be animated.  Gamebox favors convention over configuration. This means that there are default locations and setting for most things. They can be overridden but you are not required to do so. The animated behavior assumes that your animated images are in a directory structure based on the Actor's underscored name and its current action.
 
