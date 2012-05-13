@@ -50,19 +50,11 @@ describe "The basic life cycle of an actor", acceptance: true do
   # no code is allowed in the actor!
   # all done through behaviors
   define_actor :mc_bane do
-    has_behavior  shooty: { bullets: 50 }
-    has_behavior :death_on_d
     # actor.has_behavior :graphical
-
-    # FEATURE REQUEST
-    # actor.has_view do |view|
-    #   view.uses :resource_manager
-    #   view.configure do
-    #   end
-
-    #   view.draw do |target, x_off, y_off, z|
-    #   end
-    # end
+    has_behaviors do
+      shooty bullets: 50
+      death_on_d
+    end
   end
 
 

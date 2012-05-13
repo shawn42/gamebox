@@ -90,7 +90,18 @@ class Actor
       @attributes = []
     end
 
-    def has_behaviors(*behaviors)
+    def has_behaviors(*behaviors, &blk)
+      if block_given?
+        collector = MethodMissingCollector.new
+        collector.instance_eval &blk
+        collector.calls.each do |name, args|
+          if args.empty?
+            @behaviors << name
+          else
+            @behaviors << {name => args.first}
+          end
+        end
+      end
       behaviors.each do |beh|
         @behaviors << beh
       end
@@ -113,4 +124,15 @@ class Actor
     end
   end
 
+end
+
+class MethodMissingCollector
+  attr_accessor :calls
+  def initialize
+    @calls = {}
+  end
+
+  def method_missing(name, *args)
+    @calls[name] = args
+  end
 end
