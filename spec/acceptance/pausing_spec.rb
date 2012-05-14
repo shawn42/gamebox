@@ -28,7 +28,23 @@ describe "pausing in gamebox", acceptance: true do
         @counter += 1
       end
       create_actor :volcano
+
+      input_manager.reg :down, KbP do
+        pause
+      end
+
+      on_pause do
+        @pause_label = create_actor :label, text: "pause"
+        input_manager.reg :down, KbP do
+          unpause
+        end
+      end
+
+      on_unpause do
+        @pause_label.remove
+      end
     end
+    game.should_not have_actor(:label)
     see_actor_attrs :volcano, rocks_shot: 0
     see_stage_ivars counter: 0
 
@@ -40,7 +56,8 @@ describe "pausing in gamebox", acceptance: true do
     see_actor_attrs :volcano, rocks_shot: 1
     see_stage_ivars counter: 0
 
-    pause
+    press_key KbP
+    game.should have_actor(:label)
     update 2001
     see_actor_attrs :volcano, rocks_shot: 1
     see_stage_ivars counter: 0
@@ -49,12 +66,11 @@ describe "pausing in gamebox", acceptance: true do
     see_actor_attrs :volcano, rocks_shot: 1
     see_stage_ivars counter: 0
 
-    unpause
+    press_key KbP
+    game.should_not have_actor(:label)
     update 2001
     see_actor_attrs :volcano, rocks_shot: 2
     see_stage_ivars counter: 1
-    
-    pending "add more actors _during_ the pause"
   end
 
 end
