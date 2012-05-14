@@ -1,7 +1,10 @@
 TAKE YOUR PICK:
+ - add input_stater behavior to core
  - framerate setting should come from Gamebox.configuration.target_framerate?
  - game.yml settings ..                 ^^^
  - nice helpers for testing behaviors
+ - update README.rdoc in template app
+ - generate sample Gemfile with current gamebox version
 
  - add define_style that defines a bucket of behaviors
  - add helper for has_required_attributes on an actor from a behavior (checking that opts for the behavior has said key)
