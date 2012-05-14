@@ -5,8 +5,7 @@ describe Actor do
   let(:behavior) { stub(react_to: nil) }
 
   it 'is alive' do
-    subject.alive.should be_true
-    subject.alive?.should be_true
+    subject.should be_alive
   end
 
   it 'has the correct type' do
@@ -68,17 +67,68 @@ describe Actor do
       subject.has_attribute?(:foo).should be_true
     end
 
-    it 'returns false if the actor does not have the attribute'
+    it 'returns false if the actor does not have the attribute' do
+      subject.has_attribute?(:foo).should be_false
+    end
   end
 
   describe "#has_behavior?" do
-    it 'returns true if the actor has the behavior'
-    it 'returns false if the actor does not have the behavior'
+    it 'returns true if the actor has the behavior' do
+      subject.add_behavior :jumper, behavior
+      subject.has_behavior?(:jumper).should be_true
+    end
+
+    it 'returns false if the actor does not have the behavior' do
+      subject.has_behavior?(:jumper).should be_false
+    end
   end
 
   describe "#emit" do
-    it 'allows firing of events w/ the actor as the source'
+    it 'allows firing of events w/ the actor as the source' do
+      expects_event(subject, :foopy, [[87]]) do
+        subject.emit :foopy, 87
+      end
+    end
   end
+
+  describe "#react_to" do
+    let(:foo) { mock }
+    let(:bar) { mock }
+    it 'sends the message to all its behaviors' do
+      foo.expects(:react_to).with(:hello, :world)
+      bar.expects(:react_to).with(:hello, :world)
+      subject.add_behavior :foo, foo
+      subject.add_behavior :bar, bar
+
+      subject.react_to :hello, :world
+    end
+  end
+
+  describe "#remove" do
+    let(:foo) { mock }
+
+    it 'kills the actor' do
+      subject.remove
+      subject.should_not be_alive
+    end
+
+    it 'sends :remove to behaviors' do
+      foo.expects(:react_to).with(:remove)
+      subject.add_behavior :foo, foo
+
+      subject.remove
+    end
+
+    it 'fires :remove me' do
+      foo.expects(:react_to).with(:remove)
+      subject.add_behavior :foo, foo
+
+      expects_event(subject, :remove_me) do
+        subject.remove
+      end
+    end
+  end
+
 
   describe ".define" do
     it 'adds an actor definition'  do
@@ -92,5 +142,6 @@ describe Actor do
       definition.behaviors.should == [{shooty: {bullets:50}}, :death_on_d]
     end
   end
+
 
 end

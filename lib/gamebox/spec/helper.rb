@@ -55,7 +55,7 @@ module GameboxSpecHelpers
       end
     end
 
-    def expects_event(target, event_name, expected_args)
+    def expects_event(target, event_name, expected_args=[[]])
       args = []
       target.when event_name do |*event_args|
         args << event_args

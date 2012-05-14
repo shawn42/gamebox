@@ -10,14 +10,13 @@ class Actor
   public :this_object_context
 
   def initialize
-    has_attribute :alive
+    has_attribute :alive, true
     @behaviors = {}
   end
 
   def configure(opts={}) # :nodoc:
     has_attributes opts
     self.actor_type = opts[:actor_type]
-    self.alive = true
   end
 
   def add_behavior(name, behavior)
