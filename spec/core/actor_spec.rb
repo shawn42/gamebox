@@ -2,16 +2,18 @@ require 'helper'
 describe Actor do
 
   subject { create_actor :actor }
+  let(:behavior) { stub(react_to: nil) }
 
-  it 'should be alive' do
+  it 'is alive' do
     subject.alive.should be_true
+    subject.alive?.should be_true
   end
 
-  it 'should be the correct type' do
+  it 'has the correct type' do
     subject.actor_type.should == :actor
   end
 
-  it 'should fire anything' do
+  it 'fires anything' do
     Proc.new {
       subject.when :foofoo_bar do
         "blah"
@@ -19,27 +21,53 @@ describe Actor do
     }.should_not raise_error
   end
 
-  # it 'should inherit parents behaviors' do
-  #   @shawn = create_actor :shawn
-  #   @shawn.is?(:smart).should be_true
-  # end
-
-  # it 'should be able to override parents behaviors' do
-  #   @james = create_actor :james_kilton
-  #   @james.is?(:smart).should be_true
-  #   @james.instance_variable_get('@behaviors')[:smart].instance_variable_get('@opts').should == {:really=>true}
-  # end
-
   describe "#add_behavior" do
-    it 'can add a behavior to the actors list of behaviors'
+    it 'adds a behavior to the actors list of behaviors' do
+      subject.add_behavior :foo, :bar
+      subject.has_behavior?(:foo).should be_true
+    end
+  end
+
+  describe "#remove_behavior" do
+    it 'removes a behavior to the actors list of behaviors' do
+      subject.add_behavior :foo, behavior
+      subject.has_behavior?(:foo).should be_true
+
+      subject.remove_behavior :foo
+      subject.has_behavior?(:foo).should be_false
+    end
+
+    it 'doesnt raise if behavior already exists' do
+      subject.remove_behavior :foo
+      subject.has_behavior?(:foo).should be_false
+    end
   end
 
   describe "#has_attribute" do
-    it 'adds an evented attribute'
+    it 'adds an evented attribute' do
+      subject.has_attribute :foo, :default_value
+      subject.foo.should == :default_value
+    end
+
+    it 'ignores default value if the attribute already exists' do
+      subject.has_attribute :foo, :first_value
+      subject.has_attribute :foo, :second_value
+      subject.foo.should == :first_value
+    end
+
+    it 'adds attr w/o default' do
+      subject.has_attribute :foo
+      subject.foo.should be_nil
+      subject.foo?.should be_false
+    end
   end
 
   describe "#has_attribute?" do
-    it 'returns true if the actor has the attribute'
+    it 'returns true if the actor has the attribute' do
+      subject.has_attribute :foo
+      subject.has_attribute?(:foo).should be_true
+    end
+
     it 'returns false if the actor does not have the attribute'
   end
 
@@ -66,13 +94,3 @@ describe Actor do
   end
 
 end
-# 
-# class Cool < Behavior; end
-# class Smart < Behavior; end
-# class Coder < Actor
-#   has_behavior :smart, :cool
-# end
-# class Shawn < Coder; end
-# class JamesKilton < Coder
-#   has_behavior :smart => {:really => true}
-# end

@@ -23,6 +23,12 @@ class Actor
   def add_behavior(name, behavior)
     @behaviors[name] = behavior
   end
+  
+  def remove_behavior(name)
+    @behaviors.delete(name).tap do |behavior|
+      behavior.react_to :remove if behavior
+    end
+  end
 
   def react_to(message, *opts)
     # TODO cache the values array?
