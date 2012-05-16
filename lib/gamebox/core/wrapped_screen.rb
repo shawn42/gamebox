@@ -24,6 +24,10 @@ class WrappedScreen
     @screen.fullscreen? ? screen_height : @screen.height
   end
 
+  def record(width, height, &blk)
+    @screen.record width, height, &blk
+  end
+
   def draw_box(x1,y1,x2,y2,color, z)
     c = convert_color(color)
     @screen.draw_line x1, y1, c, x2, y1, c, z
