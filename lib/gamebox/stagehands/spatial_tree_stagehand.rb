@@ -1,5 +1,3 @@
-require 'forwardable'
-
 class SpatialTreeStagehand < Stagehand
   extend Forwardable
   def_delegators :@tree, :calculate_bb, :to_s, :each, :collisions, :query, :valid?

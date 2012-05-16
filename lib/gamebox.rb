@@ -5,6 +5,8 @@ require 'tween'
 require 'gosu'
 include Gosu
 
+require 'forwardable'
+
 # TODO move this to some logging class
 def log(output, level = :debug)
   t = Time.now
