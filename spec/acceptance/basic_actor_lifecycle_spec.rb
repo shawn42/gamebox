@@ -43,7 +43,7 @@ describe "The basic life cycle of an actor", acceptance: true do
 
     draw do |target, x_off, y_off, z|
       # TODO TRACK THESE DRAWINGS
-      @image.draw #offset_x, offset_y, z, x_scale, y_scale, color
+      target.draw_image @image, 1, 2, 3
     end
   end
 

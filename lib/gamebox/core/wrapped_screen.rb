@@ -121,5 +121,9 @@ class WrappedScreen
   def print(text, x, y, z, font_style)
     font_style.font.draw text, x, y, z, font_style.x_scale, font_style.y_scale, convert_color(font_style.color)
   end
+
+  def draw_image(image, x, y, z, x_scale = 1, y_scale = 1, color = 0xffffffff, mode = :default)
+    image.draw x, y, z, x_scale, y_scale, color, mode
+  end
 end
   
