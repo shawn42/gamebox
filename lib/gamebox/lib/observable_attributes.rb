@@ -1,4 +1,4 @@
-module EventedAttributes
+module ObservableAttributes
 
   def has_attributes(*names)
     if names.first.is_a? Hash

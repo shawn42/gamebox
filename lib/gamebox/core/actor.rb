@@ -3,7 +3,7 @@
 # They are created and hooked up to their optional View class in Stage#create_actor.
 class Actor
   extend Publisher
-  include EventedAttributes
+  include ObservableAttributes
   include Gamebox::Extensions::Object::Yoda
   can_fire_anything
   construct_with :this_object_context
