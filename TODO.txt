@@ -1,5 +1,4 @@
 TAKE YOUR PICK:
- - add input_stater behavior to core
  - framerate setting should come from Gamebox.configuration.target_framerate?
  - game.yml settings ..                 ^^^
  - nice helpers for testing behaviors
