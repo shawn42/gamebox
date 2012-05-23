@@ -67,8 +67,7 @@ describe "The basic life cycle of an actor", acceptance: true do
 
 
   it 'creates an actor from within stage with the correct behaviors and updates' do
-    # going for a capybara style "page" reference for the game
-    game.stage do |stage| # instance of TestingStage
+    game.stage do |stage|
       create_actor :mc_bane, x: 250, y: 400
     end
     see_actor_attrs :mc_bane, bullets: 50
@@ -90,8 +89,7 @@ describe "The basic life cycle of an actor", acceptance: true do
   end
 
   it 'can dynamically add behaviors' do
-    # going for a capybara style "page" reference for the game
-    game.stage do |stage| # instance of TestingStage
+    game.stage do |stage|
       create_actor :mc_bane
     end
     see_no_actor_attrs :mc_bane, :x, :y
