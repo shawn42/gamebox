@@ -255,6 +255,12 @@ module GameboxAcceptanceSpecHelpers
       act.should have_attrs(attrs)
     end
 
+    def see_no_actor_attrs(actor_type, *attrs)
+      act = game.actor(actor_type)
+      act.should be
+      act.should have_no_attrs(attrs)
+    end
+
     def update(time)
       gosu.update time
     end
@@ -300,6 +306,14 @@ module GameboxAcceptanceSpecHelpers
       match do |actor|
         expected_attributes.each do |key, val|
           actor.send(key).should == val
+        end
+      end
+    end
+
+    RSpec::Matchers.define :have_no_attrs do |expected_attributes|
+      match do |actor|
+        expected_attributes.each do |name|
+          actor.has_attribute?(name).should be_false
         end
       end
     end

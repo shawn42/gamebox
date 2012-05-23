@@ -27,10 +27,18 @@ describe "The basic life cycle of an actor", acceptance: true do
 
   define_behavior :death_on_d do
     requires :input_manager
-    # TODO can we rename this to configure?
     setup do
       input_manager.reg :up, KbD do
         actor.remove
+      end
+    end
+  end
+
+  define_behavior :positioned_on_p do
+    requires :input_manager
+    setup do
+      input_manager.reg :up, KbP do
+        add_behavior :positioned, x: 500, y:30
       end
     end
   end
@@ -50,10 +58,10 @@ describe "The basic life cycle of an actor", acceptance: true do
   # no code is allowed in the actor!
   # all done through behaviors
   define_actor :mc_bane do
-    # actor.has_behavior :graphical
     has_behaviors do
       shooty bullets: 50
       death_on_d
+      positioned_on_p
     end
   end
 
@@ -79,6 +87,17 @@ describe "The basic life cycle of an actor", acceptance: true do
     # should have removed himself
     game.should_not have_actor(:mc_bane)
 
+  end
+
+  it 'can dynamically add behaviors' do
+    # going for a capybara style "page" reference for the game
+    game.stage do |stage| # instance of TestingStage
+      create_actor :mc_bane
+    end
+    see_no_actor_attrs :mc_bane, :x, :y
+    
+    release_key KbP
+    see_actor_attrs :mc_bane, x: 500, y: 30
   end
 
   it 'uses default values from actor definition'

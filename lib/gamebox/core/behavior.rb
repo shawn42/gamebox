@@ -1,6 +1,6 @@
 # Behavior is any type of behavior an actor can exibit.
 class Behavior
-  construct_with :actor
+  construct_with :actor, :behavior_factory
 
   attr_accessor :opts
 
@@ -21,6 +21,10 @@ class Behavior
     if @message_handlers && @message_handlers.include?(message_type)
       send message_type, *opts
     end
+  end
+
+  def add_behavior(behavior_name, opts = {})
+    behavior_factory.add_behavior actor, behavior_name, opts
   end
 
   class << self

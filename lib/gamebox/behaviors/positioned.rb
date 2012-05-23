@@ -1,7 +1,9 @@
 define_behavior :positioned do
   requires :director
   setup do
-    actor.has_attributes x: 0, y: 0
+    x = opts[:x] || 0
+    y = opts[:y] || 0
+    actor.has_attributes x: x, y: y
     director.when :update do |time|
       if @x_dirty || @y_dirty
         actor.react_to :position_changed
