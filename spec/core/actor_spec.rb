@@ -132,12 +132,12 @@ describe Actor do
 
   describe ".define" do
     it 'adds an actor definition'  do
-      Actor.define :mc_bane do |act|
+      Actor.define :mc_bane2 do |act|
         act.has_behavior  shooty: { bullets: 50 }
         act.has_behavior :death_on_d
       end
 
-      definition = Actor.definitions[:mc_bane]
+      definition = Actor.definitions[:mc_bane2]
       definition.should be
       definition.behaviors.should == [{shooty: {bullets:50}}, :death_on_d]
     end

@@ -1,4 +1,3 @@
-require 'publisher'
 module GosuWindowAPI
   def initialize(width, height, fullscreen)
     super(width, height, fullscreen)
@@ -29,8 +28,8 @@ module GosuWindowAPI
 end
 
 class HookedGosuWindow < Window
-  include GosuWindowAPI
   extend Publisher
+  include GosuWindowAPI
   can_fire :update, :draw, :button_down, :button_up
 
 end

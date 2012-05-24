@@ -3,6 +3,14 @@
 #   # nothing for specs!
 # end
 include Gamebox
+class Gosu::Window
+  def initialize(*args, &blk)
+    # TODO not sure how to handle this for travis-ci breakage..
+    # hopefully travis ci starts working again some day...
+    # sometimes causes seg faults if running bundle exec rake
+    # autorelease garbage in output if I don't do this
+  end
+end
 
 module GameboxSpecHelpers
   module ClassMethods

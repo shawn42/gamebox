@@ -66,6 +66,8 @@ class Actor
 
     def define(actor_type, opts={}, &blk)
       @definitions ||= {}
+      raise "Actor [#{actor_type}] already defined!" if @definitions[actor_type]
+
       definition = ActorDefinition.new
       definition.instance_eval &blk if block_given?
       @definitions[actor_type] = definition
