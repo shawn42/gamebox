@@ -66,9 +66,11 @@ class Actor
 
     def define(actor_type, opts={}, &blk)
       @definitions ||= {}
-      raise "Actor [#{actor_type}] already defined!" if @definitions[actor_type]
+      raise "Actor [#{actor_type}] already defined at #{@definitions[actor_type].source}" if @definitions[actor_type]
 
       definition = ActorDefinition.new
+      # TODO evaluate the perf of doing this
+      definition.source = caller.detect{|c|!c.match /core/}
       definition.instance_eval &blk if block_given?
       @definitions[actor_type] = definition
 
@@ -91,7 +93,7 @@ class Actor
   end
 
   class ActorDefinition
-    attr_accessor :behaviors, :attributes, :view_blk, :behavior_blk
+    attr_accessor :behaviors, :attributes, :view_blk, :behavior_blk, :source
     def initialize
       @behaviors = []
       @attributes = []

@@ -16,7 +16,7 @@ describe "pausing in gamebox", acceptance: true do
     end
   end
 
-  define_actor :volcano do
+  define_actor :mountain do
     has_behavior :shoot_rock
   end
 
@@ -27,7 +27,7 @@ describe "pausing in gamebox", acceptance: true do
       timer_manager.add_timer 'stage_timer', 2000 do
         @counter += 1
       end
-      create_actor :volcano
+      create_actor :mountain
 
       input_manager.reg :down, KbP do
         pause
@@ -45,31 +45,31 @@ describe "pausing in gamebox", acceptance: true do
       end
     end
     game.should_not have_actor(:label)
-    see_actor_attrs :volcano, rocks_shot: 0
+    see_actor_attrs :mountain, rocks_shot: 0
     see_stage_ivars counter: 0
 
     update 100
-    see_actor_attrs :volcano, rocks_shot: 0
+    see_actor_attrs :mountain, rocks_shot: 0
     see_stage_ivars counter: 0
 
     update 901
-    see_actor_attrs :volcano, rocks_shot: 1
+    see_actor_attrs :mountain, rocks_shot: 1
     see_stage_ivars counter: 0
 
     press_key KbP
     game.should have_actor(:label)
     update 2001
-    see_actor_attrs :volcano, rocks_shot: 1
+    see_actor_attrs :mountain, rocks_shot: 1
     see_stage_ivars counter: 0
 
     update 2001
-    see_actor_attrs :volcano, rocks_shot: 1
+    see_actor_attrs :mountain, rocks_shot: 1
     see_stage_ivars counter: 0
 
     press_key KbP
     game.should_not have_actor(:label)
     update 2001
-    see_actor_attrs :volcano, rocks_shot: 2
+    see_actor_attrs :mountain, rocks_shot: 2
     see_stage_ivars counter: 1
   end
 
