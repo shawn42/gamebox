@@ -63,6 +63,15 @@ module GameboxSpecHelpers
       end
     end
 
+    def expects_no_event(target, event_name)
+      args = []
+      target.when event_name do |*event_args|
+        args << event_args
+      end
+      yield
+      args.should be_empty
+    end
+
     def expects_event(target, event_name, expected_args=[[]])
       args = []
       target.when event_name do |*event_args|
@@ -108,8 +117,14 @@ module GameboxAcceptanceSpecHelpers
     end
 
     def update(millis)
+      if @total_millis == 0
+        Gosu.stubs(:milliseconds).returns 0
+        super()
+      end
       @total_millis += millis
       Gosu.stubs(:milliseconds).returns @total_millis
+      @first_update = false
+
       super()
     end
 

@@ -5,8 +5,9 @@ module GosuWindowAPI
 
   def update
     millis = Gosu::milliseconds
-    @last_millis ||= 0
-    fire :update, (millis - @last_millis)
+
+    # ignore the first update
+    fire :update, (millis - @last_millis) if @last_millis
     @last_millis = millis
   end
 

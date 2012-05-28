@@ -20,10 +20,10 @@ describe HookedGosuWindow do
   end
 
   describe "#update" do
-    it 'fires initial update with full millis' do
+    it 'does not fire initial update with full millis' do
       Gosu.stubs(:milliseconds).returns 58
 
-      expects_event subject, :update, [[58]] do
+      expects_no_event subject, :update do
         subject.update
       end
     end
