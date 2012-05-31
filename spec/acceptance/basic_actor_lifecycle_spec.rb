@@ -65,6 +65,10 @@ describe "The basic life cycle of an actor", acceptance: true do
     end
   end
 
+  define_actor :monkey do
+    has_attributes bananas: 3
+  end
+
 
   it 'creates an actor from within stage with the correct behaviors and updates' do
     game.stage do |stage|
@@ -98,6 +102,12 @@ describe "The basic life cycle of an actor", acceptance: true do
     see_actor_attrs :mc_bane, x: 500, y: 30
   end
 
-  it 'uses default values from actor definition'
+  it 'uses default values from actor definition' do
+    game.stage do |stage|
+      create_actor :monkey
+    end
+    see_actor_attrs :monkey, bananas: 3
+  end
+
 end
 

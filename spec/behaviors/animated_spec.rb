@@ -1,8 +1,6 @@
 require 'helper'
 
 describe :animated do
-  it 'needs updated tests'
-
   let(:opts) { {} }
   subject { subcontext[:behavior_factory].add_behavior actor, :animated, opts }
   let(:director) { evented_stub(stub_everything('director')) }
