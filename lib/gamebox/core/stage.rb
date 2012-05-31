@@ -194,7 +194,7 @@ class Stage
   #  modal_actor :dialog, x: 40, y: 50, message: "WOW"
   def modal_actor(*args)
     on_pause do
-      pause_actor = spawn *args
+      pause_actor = create_actor *args
       pause_actor.when :remove_me do
         @pause_listeners = nil
         unpause

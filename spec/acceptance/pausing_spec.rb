@@ -22,7 +22,7 @@ describe "pausing in gamebox", acceptance: true do
 
 
   it 'allows timers and all updates from the director to be paused / unpaused' do
-    game.stage do |stage| # instance of TestingStage
+    game.stage do |stage|
       @counter = 0
       timer_manager.add_timer 'stage_timer', 2000 do
         @counter += 1
@@ -73,5 +73,26 @@ describe "pausing in gamebox", acceptance: true do
     see_stage_ivars counter: 1
   end
 
+  it 'modal actor pauses, shows actor, unpauses when that actor dies' do
+    game.stage do |stage|
+      modal_actor :label, text: "pause" do
+        @some_unpause_indicator = true
+      end
+    end
+
+    see_stage_ivars some_unpause_indicator: nil
+    game.should have_actor(:label)
+    see_actor_attrs :label, text: "pause"
+
+    remove_actor :label
+
+    game.should_not have_actor(:label)
+    see_stage_ivars some_unpause_indicator: true
+  end
+
 end
+
+
+
+
 

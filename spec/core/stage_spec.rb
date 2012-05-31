@@ -45,6 +45,7 @@ describe Stage do
     subject.drawables[6][7].should == [a,b,c]
     subject.drawables[2][3].should be_nil
   end
+
   it 'should move drawables layers' do 
 
     a = FakeDrawable.new
@@ -67,7 +68,4 @@ describe Stage do
     subject.drawables[2][3].should be_nil
   end
 
-  describe "#modal_actor" do
-    it 'pauses, shows actor, unpauses when that actor dies; ug, how to test this?'
-  end
 end
