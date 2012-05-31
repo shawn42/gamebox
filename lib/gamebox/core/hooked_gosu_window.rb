@@ -7,7 +7,16 @@ module GosuWindowAPI
     millis = Gosu::milliseconds
 
     # ignore the first update
-    fire :update, (millis - @last_millis) if @last_millis
+    if @last_millis
+      if millis > @last_millis
+        fire :update, (millis - @last_millis)
+      else
+        # we rolled over, we drop a few millis because Gosu doesn't publish max
+        # millis
+        fire :update, millis
+      end
+    end
+
     @last_millis = millis
   end
 
