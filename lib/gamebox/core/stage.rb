@@ -13,7 +13,7 @@ class Stage
     kid.construct_with *self.object_definition.component_names
   end
 
-  attr_accessor :drawables, :opts, :viewport, :backstage
+  attr_accessor :opts, :viewport, :backstage
 
   def configure(backstage, opts)
     res = config_manager[:screen_resolution]
@@ -133,19 +133,14 @@ class Stage
   # move all actors from one layer to another
   # note, this will remove all actors in that layer!
   def move_layer(from_parallax, from_layer, to_parallax, to_layer)
-    drawable_list = @drawables[from_parallax].delete from_layer
+    drawable_list = @drawables[from_parallax][from_layer].dup
 
-
-    if drawable_list
-      prev_drawable_list = @drawables[to_parallax].delete to_layer
-      @drawables[to_parallax][to_layer] = drawable_list
-      drawable_list.each do |drawable|
-        drawable.parallax = to_parallax
-        drawable.layer = to_layer
-      end
+    drawable_list.each do |drawable|
+      unregister_drawable drawable      
+      drawable.parallax = to_parallax
+      drawable.layer = to_layer
+      register_drawable drawable      
     end
-    prev_drawable_list
-
   end
 
   def on_pause(&block)
