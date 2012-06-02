@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'active_support'
-require 'rubigen'
+require 'thor'
 require 'gamebox'
 
 def print_version
@@ -13,6 +12,30 @@ if ARGV.include?('-v') || ARGV.include?('--version')
   exit 0
 end
 
-require 'rubigen/scripts/generate'
-RubiGen::Base.use_application_sources!
-RubiGen::Scripts::Generate.new.run(ARGV, :generator => 'gamebox')
+class GameboxThorCommand < Thor
+  include Thor::Actions
+
+  def self.source_root
+    File.join(File.dirname(__FILE__), "../templates/")
+  end
+
+  desc "new PATH", "Generates a new gamebox game at PATH."
+  def new(*args)
+    game_name = args[0]
+    self.destination_root = game_name
+
+    if Gamebox::VERSION::RC > 0
+      @gamebox_version = Gamebox::VERSION::STRING
+    else
+      @gamebox_version = "~> "+[Gamebox::VERSION::MAJOR, Gamebox::VERSION::MINOR, '0'].join('.')
+    end
+
+    directory "app", "."
+
+  end
+  
+
+
+end
+
+GameboxThorCommand.start
