@@ -7,7 +7,6 @@ TAKE YOUR PICK:
  - game.yml settings ..                 ^^^
 
  - nice helpers for testing behaviors
-
  - add define_style that defines a bucket of behaviors
  - add helper for has_required_attributes on an actor from a behavior (checking that opts for the behavior has said key)
 
