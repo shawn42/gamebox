@@ -1,5 +1,4 @@
 TAKE YOUR PICK:
- - convert generators to thor
  - update README.rdoc in template app
  - generate sample Gemfile with current gamebox version
 
