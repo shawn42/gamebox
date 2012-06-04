@@ -4,7 +4,7 @@ describe "Using input stater", acceptance: true do
 
 
   define_actor :foxy do
-    has_behavior input_stater: {
+    has_behavior input_mapper: {
       [KbLeft] => :move_left,
       [KbRight, KbD] => :move_right
     }

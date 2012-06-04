@@ -1,4 +1,4 @@
-define_behavior :input_stater do
+define_behavior :input_mapper do
   requires :input_manager
 
   setup do
