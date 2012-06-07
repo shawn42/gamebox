@@ -6,7 +6,7 @@ describe "Using timers", acceptance: true do
     beh.requires :timer_manager
     beh.setup do
       actor.has_attributes rocks_shot: 0
-      timer_manager.add_timer 'shoot_rock', 1_000 do
+      timer_manager.add_timer 'shoot_rock', 100 do
         actor.react_to :shoot_rock
       end
     end
@@ -24,7 +24,7 @@ describe "Using timers", acceptance: true do
   it 'allows behaviors to get fired from timers' do
     game.stage do |stage| # instance of TestingStage
       @counter = 0
-      timer_manager.add_timer 'stage_timer', 2000 do
+      timer_manager.add_timer 'stage_timer', 200 do
         @counter += 1
       end
       create_actor :volcano
@@ -32,15 +32,15 @@ describe "Using timers", acceptance: true do
     see_actor_attrs :volcano, rocks_shot: 0
     see_stage_ivars counter: 0
 
-    update 100
+    update 10
     see_actor_attrs :volcano, rocks_shot: 0
     see_stage_ivars counter: 0
 
-    update 901
+    update 91
     see_actor_attrs :volcano, rocks_shot: 1
     see_stage_ivars counter: 0
 
-    update 2001
+    update 201
     see_actor_attrs :volcano, rocks_shot: 2
     see_stage_ivars counter: 1
 

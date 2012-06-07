@@ -28,6 +28,16 @@ describe HookedGosuWindow do
       end
     end
 
+    it 'truncates an update to 500 millis in case of computer sleep' do
+      subject.instance_variable_set('@last_millis', 0)
+      Gosu.stubs(:milliseconds).returns 501
+
+      expects_event subject, :update, [[500]] do
+        subject.update
+      end
+
+    end
+
     it 'fires initial update with deltas' do
       subject.instance_variable_set('@last_millis', 30)
       Gosu.stubs(:milliseconds).returns 58

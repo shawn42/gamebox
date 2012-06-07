@@ -6,7 +6,7 @@ describe "pausing in gamebox", acceptance: true do
     beh.requires :timer_manager
     beh.setup do
       actor.has_attributes rocks_shot: 0
-      timer_manager.add_timer 'shoot_rock', 1_000 do
+      timer_manager.add_timer 'shoot_rock', 100 do
         actor.react_to :shoot_rock
       end
     end
@@ -24,7 +24,7 @@ describe "pausing in gamebox", acceptance: true do
   it 'allows timers and all updates from the director to be paused / unpaused' do
     game.stage do |stage|
       @counter = 0
-      timer_manager.add_timer 'stage_timer', 2000 do
+      timer_manager.add_timer 'stage_timer', 200 do
         @counter += 1
       end
       create_actor :mountain
@@ -48,27 +48,27 @@ describe "pausing in gamebox", acceptance: true do
     see_actor_attrs :mountain, rocks_shot: 0
     see_stage_ivars counter: 0
 
-    update 100
+    update 10
     see_actor_attrs :mountain, rocks_shot: 0
     see_stage_ivars counter: 0
 
-    update 901
+    update 91
     see_actor_attrs :mountain, rocks_shot: 1
     see_stage_ivars counter: 0
 
     press_key KbP
     game.should have_actor(:label)
-    update 2001
+    update 201
     see_actor_attrs :mountain, rocks_shot: 1
     see_stage_ivars counter: 0
 
-    update 2001
+    update 201
     see_actor_attrs :mountain, rocks_shot: 1
     see_stage_ivars counter: 0
 
     press_key KbP
     game.should_not have_actor(:label)
-    update 2001
+    update 201
     see_actor_attrs :mountain, rocks_shot: 2
     see_stage_ivars counter: 1
   end

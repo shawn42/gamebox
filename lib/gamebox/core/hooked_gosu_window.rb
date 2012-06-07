@@ -1,4 +1,5 @@
 module GosuWindowAPI
+  MAX_UPDATE_SIZE_IN_MILLIS = 500
   def initialize(width, height, fullscreen)
     super(width, height, fullscreen)
   end
@@ -8,13 +9,11 @@ module GosuWindowAPI
 
     # ignore the first update
     if @last_millis
-      if millis > @last_millis
-        fire :update, (millis - @last_millis)
-      else
-        # we rolled over, we drop a few millis because Gosu doesn't publish max
-        # millis
-        fire :update, millis
-      end
+      delta = millis
+      delta -= @last_millis if millis > @last_millis
+      delta = MAX_UPDATE_SIZE_IN_MILLIS if millis > MAX_UPDATE_SIZE_IN_MILLIS
+
+      fire :update, delta
     end
 
     @last_millis = millis
