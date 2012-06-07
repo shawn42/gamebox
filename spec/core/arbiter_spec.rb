@@ -241,7 +241,25 @@ describe 'Arbiter' do
   end
 
   describe '#collide_aabb_circle' do
-    it 'should collide overlapping box and circle' 
+    it 'should collide overlapping box and circle' do
+      a = stub(:center_x => 0, :center_y => 0, :width => 30, :height => 20, 
+          :shape_type => :aabb, :radius => 10,
+          :cw_world_points => [
+            [-15,10],[15,10],
+            [15,-10], [-15,10]
+          ],
+          :cw_world_lines => [
+            [[-15,10],[15,10]],
+            [[15,10],[15,-10]],
+            [[15,-10],[-15,10]],
+            [[-15,10],[-15,10]]
+          ],
+          :cw_world_edge_normals => [[1,0],[0,1]])
+      b = stub(:center_x => 5, :center_y => 5, :width => 10, :height => 2, 
+          :shape_type => :circle, :radius => 10)
+
+      @arbiter.collide_aabb_circle?(a,b).should be_true
+    end
   end
 
   describe "#find_collisions" do
