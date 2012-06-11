@@ -11,7 +11,7 @@ module GosuWindowAPI
     if @last_millis
       delta = millis
       delta -= @last_millis if millis > @last_millis
-      delta = MAX_UPDATE_SIZE_IN_MILLIS if millis > MAX_UPDATE_SIZE_IN_MILLIS
+      delta = MAX_UPDATE_SIZE_IN_MILLIS if delta > MAX_UPDATE_SIZE_IN_MILLIS
 
       fire :update, delta
     end
