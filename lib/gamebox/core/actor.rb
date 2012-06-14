@@ -19,6 +19,8 @@ class Actor
     self.actor_type = opts[:actor_type]
   end
 
+  # Used by BehaviorFactory#add_behavior.
+  # That's probably what you want to use from within another behavior
   def add_behavior(name, behavior)
     @behaviors[name] = behavior
   end

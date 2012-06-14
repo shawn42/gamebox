@@ -5,10 +5,9 @@
 #   or by dynamically creating one at runtime via another behavior.
 class BehaviorFactory
 
-  # Build a behavior. Takes a symbol or a Hash.
-  #  add_behavior(:shootable) or add_behavior(:shootable => {:range=>3})
-  #  this will create a new instance of Shootable and pass
-  #  :range=>3 to it
+  # Build a behavior.
+  #  add_behavior(actor, :shootable) or add_behavior(actor, :shootable, :range=>3)
+  #  this will create a new instance of Shootable and pass :range=>3 to it
   def add_behavior(actor, behavior_name, opts = {})
     raise "nil actor" if actor.nil?
     raise "nil behavior definition" if behavior_name.nil?
