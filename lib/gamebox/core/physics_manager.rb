@@ -1,13 +1,15 @@
 # PhysicsManager creates and manages chipmunks space.
 class PhysicsManager
   extend Forwardable
-  def_delegators :@space, :elastic_iterations=, :damping=, :gravity=
+  def_delegators( :@space,
+                  :damping,            :damping=,
+                  :gravity,            :gravity=,
+                  :iterations,         :iterations= )
 
   attr_accessor :space
   def configure
     @space = CP::Space.new
     @space.iterations = 10
-    @space.elastic_iterations = 5
     self.step_size = 15
     @leftover_step_time = 0
   end
