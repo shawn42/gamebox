@@ -8,12 +8,11 @@ class PlayStage < Stage
     super
     @physics_manager = this_object_context[:physics_manager]
     @physics_manager.configure
+    @physics_manager.damping = 0.4
 
     sound_manager.play_music :roids
 
     create_actor :starry_night, :width => viewport.width, :height => viewport.height
-
-    @physics_manager.elastic_iterations = 4
 
     @ship = create_actor :ship, :x => 300, :y => 300
 
@@ -42,7 +41,6 @@ class PlayStage < Stage
       rock.react_to :warp, vec2(x,y)
     end
 
-    @physics_manager.damping = 0.4
 
     # TODO get this from screen config
     # pass it into the ship as well
