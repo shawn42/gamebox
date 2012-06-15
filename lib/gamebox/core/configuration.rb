@@ -13,7 +13,6 @@ module Gamebox
       end
     end
 
-    # add_setting :output, :alias => :output_stream
     add_setting :config_path
     add_setting :data_path
     add_setting :music_path

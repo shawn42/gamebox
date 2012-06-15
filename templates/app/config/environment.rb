@@ -8,14 +8,14 @@ Gamebox.configure do |config|
   config.music_path = APP_ROOT + "data/music/"
   config.sound_path = APP_ROOT + "data/sounds/"
   config.gfx_path = APP_ROOT + "data/graphics/"
-  config.fonts_path = APP_ROOT + "data/fonts"
+  config.fonts_path = APP_ROOT + "data/fonts/"
 
   config.gb_config_path = GAMEBOX_PATH + "config/"
   config.gb_data_path = GAMEBOX_PATH + "data/"
   config.gb_music_path = GAMEBOX_PATH + "data/music/"
   config.gb_sound_path = GAMEBOX_PATH + "data/sounds/"
   config.gb_gfx_path = GAMEBOX_PATH + "data/graphics/"
-  config.gb_fonts_path = GAMEBOX_PATH + "data/fonts"
+  config.gb_fonts_path = GAMEBOX_PATH + "data/fonts/"
   
   # config.stages = [:demo]
   # config.game_name = "Untitled Game"
