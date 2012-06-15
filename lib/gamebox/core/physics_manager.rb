@@ -6,19 +6,30 @@ class PhysicsManager
   attr_accessor :space
   def configure
     @space = CP::Space.new
-    @space.iterations = 20
+    @space.iterations = 10
     @space.elastic_iterations = 5
+    self.step_size = 15
+    @leftover_step_time = 0
   end
 
-  PHYSICS_STEP = 25.0
+  # Time per physics step, in milliseconds (default 15). Small steps
+  # make the simulation more stable than large steps, but if the step
+  # is too small, it may negatively affect performance, i.e. cause
+  # very high CPU use and/or low framerate.
+  attr_reader :step_size
+  def step_size=(new_step_size)
+    @step_size = new_step_size.to_f
+    @step_size_seconds = @step_size / 1000
+  end
+
   def update_physics(time)
     unless @physics_paused
-      steps = (time/PHYSICS_STEP).ceil
-      # from chipmunk demo
-      dt = 1.0/60/steps
+      @leftover_step_time += time
+      steps = (@leftover_step_time / @step_size).ceil
       steps.times do
-        @space.step dt
+        @space.step @step_size_seconds
       end
+      @leftover_step_time -= (steps * @step_size).round
     end
   end
   
