@@ -16,6 +16,10 @@ end
 begin
   require 'pry'
   require 'pry-remote'
+rescue LoadError
+end
+
+begin
   require 'chipmunk'
 rescue LoadError
 end
