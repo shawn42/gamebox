@@ -35,7 +35,6 @@ describe "Using chipmunks collision handling", acceptance: true do
       @physics_manager = this_object_context[:physics_manager]
       @physics_manager.configure
       # TODO move these optionally to configure?
-      @physics_manager.elastic_iterations = 4
       @physics_manager.damping = 0.4
 
       rock = create_actor :rock, x: 0, y: 0
@@ -63,7 +62,6 @@ describe "Using chipmunks collision handling", acceptance: true do
       @physics_manager = this_object_context[:physics_manager]
       @physics_manager.configure
       # TODO move these optionally to configure?
-      @physics_manager.elastic_iterations = 4
       @physics_manager.damping = 0.4
       @physics_manager.gravity = vec2(0,500)
 

@@ -54,8 +54,6 @@ class PlaygroundStage < PhysicalStage
       @grabbed = nil
       unregister_physical_constraint @pin if @pin
     end
-
-    space.elastic_iterations = 3
   end
 
   def draw(target)
