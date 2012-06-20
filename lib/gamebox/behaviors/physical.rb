@@ -105,6 +105,13 @@ Behavior.define :physical do
         verts = @opts[:verts].dup
         verts << @opts[:verts][0]
         actor.segment_groups << verts
+
+      when :segment
+        @radius = @opts[:radius] || 0
+        @endpoints = @opts[:endpoints].collect{ |pt| vec2(*pt.to_a) }
+        @moment_of_inertia ||= @opts[:fixed] ? Float::INFINITY : CP::moment_for_segment(@mass, @endpoints[0], @endpoints[1])
+        actor.body = CP::Body.new(@mass, @moment_of_inertia)
+        actor.shape = CP::Shape::Segment.new(actor.body, @endpoints[0], @endpoints[1], @radius)
       end
 
       actor.shape.actor = actor
@@ -133,6 +140,10 @@ Behavior.define :physical do
               actor.segment_groups << verts
             when :circle
               part_shape = CP::Shape::Circle.new(actor.body, part_def[:radius], part_def[:offset])
+            when :segment
+              radius = part_def[:radius] || 0
+              endpoints = part_def[:endpoints].collect{ |pt| vec2(*pt.to_a) }
+              part_shape = CP::Shape::Segment.new(endpoints[0], endpoints[1], radius)
             else
               raise "unsupported sub shape type"
             end
