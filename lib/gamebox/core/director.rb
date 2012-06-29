@@ -3,7 +3,7 @@ class Director
   attr_accessor :actors, :update_slots
 
   def initialize
-    @update_slots = [ :pre, :update, :post ]
+    @update_slots = [ :pre_update, :update, :post_update ]
     clear_subscriptions
   end
 
@@ -23,26 +23,21 @@ class Director
     end
   end
 
-  def when(event, slot=:update, &callback)
-    raise 'director can only fire :update events' unless event == :update
-    @subscriptions[slot] << callback
+  def when(event=:update, &callback)
+    @subscriptions[event] << callback
   end
 
   def update(time)
     time_in_seconds = time / 1000.to_f
-    fire :update, time, time_in_seconds
-  end
-
-  private
-  def fire(event, *args)
-    raise 'director can only fire :update events' unless event == :update
     @update_slots.each do |slot|
       @subscriptions[slot].each do |callback|
-        callback.call *args
+        callback.call time, time_in_seconds
       end
     end
   end
 
+
+  private
   def unsubscribe_all(listener)
     if @subscriptions
       for slot in @subscriptions.keys

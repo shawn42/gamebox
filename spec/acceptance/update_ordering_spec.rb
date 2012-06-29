@@ -6,7 +6,7 @@ describe "Updates and their order", acceptance: true do
     beh.requires :director
     beh.setup do
       actor.has_attributes value: 1
-      director.when :update, :pre do |time|
+      director.when :pre_update do |time|
         actor.value *= 2
       end
     end
@@ -16,7 +16,7 @@ describe "Updates and their order", acceptance: true do
     beh.requires :director
     beh.setup do
       actor.has_attributes value: 1
-      director.when :update, :update do |time|
+      director.when :update do |time|
         actor.value += 1
       end
     end
@@ -26,7 +26,7 @@ describe "Updates and their order", acceptance: true do
     beh.requires :director
     beh.setup do
       actor.has_attributes value: 1
-      director.when :update, :post do |time|
+      director.when :post_update do |time|
         actor.value *= 3
       end
     end
@@ -51,7 +51,7 @@ describe "Updates and their order", acceptance: true do
 
   it 'modifies update order from the stage' do
     game.stage do |stage| # instance of TestingStage
-      director.update_slots = [:update, :post, :pre ]
+      director.update_slots = [:update, :post_update, :pre_update ]
       create_actor :math_man
     end
 
