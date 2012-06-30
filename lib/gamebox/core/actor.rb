@@ -19,12 +19,76 @@ class Actor
     self.actor_type = opts[:actor_type]
   end
 
-  # Used by BehaviorFactory#add_behavior.
-  # That's probably what you want to use from within another behavior
-  def add_behavior(name, behavior)
-    @behaviors[name] = behavior
+  # Add a behavior to the actor, perhaps with certain options.
+  #
+  # Examples:
+  #   add_behavior(:shootable)
+  #   add_behavior(:shootable, :range=>3)
+  def add_behavior(behavior_name, opts={})
+    raise "nil behavior definition" if behavior_name.nil?
+
+    # For backward compatibility. The second arg used to be an already
+    # built behavior, passed from BehaviorFactory#add_behavior.
+    unless opts.is_a?(Hash)
+      @behaviors[behavior_name] = opts
+      return
+    end
+
+    bdef = Behavior.definitions[behavior_name]
+    raise "unknown behavior #{behavior_name}" unless bdef
+    deps = bdef.required_behaviors
+    if deps
+      deps.each do |dep|
+        add_behavior(dep) unless has_behavior?(dep)
+      end
+    end
+
+    @behaviors[behavior_name] = build_behavior(behavior_name, opts)
   end
-  
+
+  # Build and return a new behavior using the given behavior_name and
+  # opts. The returned behavior should only be used with this actor.
+  def build_behavior(behavior_name, opts)
+    bdef = Behavior.definitions[behavior_name]
+    raise "unknown behavior #{behavior_name}" unless bdef
+
+    context = this_object_context
+    behavior = context.in_subcontext do |sub|
+      sub[:behavior]
+    end
+
+    reqs = bdef.required_injections
+    if reqs
+      reqs.each do |req|
+        object = context[req]
+        behavior.define_singleton_method(req) do
+          components[req]
+        end
+        components = behavior.send :components
+        components[req] = object
+      end
+    end
+
+    helpers = bdef.helpers_block
+    if helpers
+      helpers_module = Module.new &helpers
+      behavior.extend helpers_module
+    end
+
+    if bdef.react_to_block
+      behavior.define_singleton_method :react_to, bdef.react_to_block
+    end
+
+    behavior.configure(opts)
+
+    if bdef.setup_block
+      behavior.instance_eval &bdef.setup_block
+    end
+
+    behavior
+  end
+  private :build_behavior
+
   def remove_behavior(name)
     @behaviors.delete(name).tap do |behavior|
       behavior.react_to :remove if behavior

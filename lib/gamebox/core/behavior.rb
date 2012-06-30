@@ -24,7 +24,7 @@ class Behavior
   end
 
   def add_behavior(behavior_name, opts = {})
-    behavior_factory.add_behavior actor, behavior_name, opts
+    actor.add_behavior behavior_name, opts
   end
 
   class << self
