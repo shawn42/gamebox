@@ -21,10 +21,42 @@ describe Actor do
   end
 
   describe "#add_behavior" do
-    it 'adds a behavior to the actors list of behaviors' do
-      subject.add_behavior :foo, :bar
-      subject.has_behavior?(:foo).should be_true
+    before do
+      define_behavior :test_behavior do
+        setup do
+          actor.has_attributes(test_attr: opts[:test_attr])
+        end
+      end
     end
+
+    it 'adds a behavior to the actor\'s list of behaviors' do
+      pending "jacius doesn't understand conjected objects"
+      subject.add_behavior :test_behavior
+      subject.has_behavior?(:test_behavior).should be_true
+    end
+
+    it 'sets up the behavior on the actor' do
+      pending "jacius doesn't understand conjected objects"
+      subject.add_behavior :test_behavior
+      subject.has_attribute?(:test_attr).should be_true
+    end
+
+    it 'configures the behavior with the given opts' do
+      pending "jacius doesn't understand conjected objects"
+      subject.add_behavior :test_behavior, test_attr: 'test'
+      subject.test_attr.should == 'test'
+    end
+
+    it 'raises on nil behavior def' do
+      lambda { subject.add_behavior nil }.should raise_exception(/nil behavior definition/)
+    end
+
+    it 'raises for missing behavior' do
+      lambda { subject.add_behavior :undefined_behavior }.should raise_exception
+    end
+
+    it 'creates all required behaviors'
+    it 'mixes in helpers'
   end
 
   describe "#remove_behavior" do
