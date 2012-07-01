@@ -31,7 +31,7 @@ class ActorFactory
             beh_key = behavior.keys.first
           end
 
-          behavior_factory.add_behavior(model, beh_key, beh_opts)
+          model.add_behavior(beh_key, beh_opts)
         end
 
         actor_view_factory.build model, opts
