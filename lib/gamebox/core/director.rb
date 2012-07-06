@@ -24,6 +24,7 @@ class Director
   end
 
   def when(event=:update, &callback)
+    @subscriptions[event] ||= []
     @subscriptions[event] << callback
   end
 
