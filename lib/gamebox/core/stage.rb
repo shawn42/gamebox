@@ -87,19 +87,33 @@ class Stage
   end
 
   def draw(target)
-    z = 0
-    @parallax_layers.each do |parallax_layer|
-      drawables_on_parallax_layer = @drawables[parallax_layer]
+    following = @viewport.follow_target
 
-      if drawables_on_parallax_layer
-        @layer_orders[parallax_layer].each do |layer|
+    center_x = nil
+    center_y = nil
+    if following.nil?
+      view_bounds = @viewport.bounds
+      center_x = view_bounds.centerx
+      center_y = view_bounds.centery
+    else
+      center_x = following.x
+      center_y = following.y
+    end
+    target.rotate(@viewport.rotation, center_x, center_y) do
+      z = 0
+      @parallax_layers.each do |parallax_layer|
+        drawables_on_parallax_layer = @drawables[parallax_layer]
 
-          trans_x = @viewport.x_offset parallax_layer
-          trans_y = @viewport.y_offset parallax_layer
+        if drawables_on_parallax_layer
+          @layer_orders[parallax_layer].each do |layer|
 
-          z += 1
-          drawables_on_parallax_layer[layer].each do |drawable|
-            drawable.draw target, trans_x, trans_y, z
+            trans_x = @viewport.x_offset parallax_layer
+            trans_y = @viewport.y_offset parallax_layer
+
+            z += 1
+            drawables_on_parallax_layer[layer].each do |drawable|
+              drawable.draw target, trans_x, trans_y, z
+            end
           end
         end
       end

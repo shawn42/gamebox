@@ -5,7 +5,7 @@ class Viewport
   can_fire :scrolled
   
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
-    :height, :x_offset_range, :y_offset_range, :boundary
+    :height, :x_offset_range, :y_offset_range, :boundary, :rotation
 
   attr_reader :speed
 
@@ -14,6 +14,7 @@ class Viewport
   end
 
   def initialize(width, height)
+    @rotation = 0
     @speed = 1
     @x_offset = 0
     @y_offset = 0

@@ -12,8 +12,8 @@ class WrappedScreen
     end
   end
 
-  def method_missing(name,*args)
-    @screen.send name, *args
+  def method_missing(name,*args, &blk)
+    @screen.send name, *args, &blk
   end
 
   def width
