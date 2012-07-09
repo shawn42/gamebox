@@ -87,18 +87,9 @@ class Stage
   end
 
   def draw(target)
-    following = @viewport.follow_target
+    center_x = @viewport.width / 2
+    center_y = @viewport.height / 2
 
-    center_x = nil
-    center_y = nil
-    if following.nil?
-      view_bounds = @viewport.bounds
-      center_x = view_bounds.centerx
-      center_y = view_bounds.centery
-    else
-      center_x = following.x
-      center_y = following.y
-    end
     target.rotate(@viewport.rotation, center_x, center_y) do
       z = 0
       @parallax_layers.each do |parallax_layer|
