@@ -368,6 +368,7 @@ RSpec.configure do |configuration|
       config.fonts_path = "spec/fixtures/"
       config.music_path = "spec/fixtures/"
       config.sound_path = "spec/fixtures/"
+      config.game_name = "Some Title!"
       config.stages = [:testing]
     end
 

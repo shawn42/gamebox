@@ -6,7 +6,6 @@ describe WrappedScreen do
   before do
     @config_manager.stubs(:[]).with(:screen_resolution).returns [800,555]
     @config_manager.stubs(:[]).with(:fullscreen).returns false
-    @config_manager.stubs(:[]).with(:title).returns "Some Title!"
     @config_manager.stubs(:[]).with(:needs_cursor).returns nil
 
     @gosu_window = stub('gosu window', :caption= => nil, :needs_cursor= => nil)

@@ -7,7 +7,7 @@ class WrappedScreen
     needs_cursor = config_manager[:needs_cursor]
     @screen = HookedGosuWindow.new width, height, fullscreen
     @screen.tap do |screen|
-      screen.caption = config_manager[:title]
+      screen.caption = Gamebox.configuration.game_name
       screen.needs_cursor = config_manager[:needs_cursor]
     end
   end
