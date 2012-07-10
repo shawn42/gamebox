@@ -129,5 +129,9 @@ class WrappedScreen
   def draw_image(image, x, y, z, x_scale = 1, y_scale = 1, color = 0xffffffff, mode = :default)
     image.draw x, y, z, x_scale, y_scale, color, mode
   end
+
+  def draw_rotated_image(image, x, y, z, angle, center_x = 0.5, center_y = 0.5, x_scale = 1, y_scale = 1, color = 0xffffffff, mode = :default)
+    image.draw_rot x, y, z, angle, center_x, center_y, x_scale, y_scale, color, mode
+  end
 end
   
