@@ -130,6 +130,10 @@ module GameboxAcceptanceSpecHelpers
 
     def caption=(new_caption)
     end
+
+    def rotate(*args)
+      yield
+    end
   end
 
 

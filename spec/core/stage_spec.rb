@@ -18,9 +18,10 @@ describe Stage do
 
   let(:z) { stub('z', layer: 0, parallax: 3) }
   let(:target) { stub }
-  let(:viewport) { stub }
+  let(:viewport) { stub width: 400, height: 300, rotation: Math::PI }
 
   before do
+    target.stubs(:rotate).yields
     @config_manager.stubs(:[]).with(:screen_resolution).returns([800,600])
     @actor_factory.stubs(:director=)
     Viewport.stubs(:new).with(800, 600).returns(viewport)
@@ -44,6 +45,7 @@ describe Stage do
   end
 
   it 'registers and draws drawables by parallax and layers' do
+    target.expects(:rotate).with(Math::PI, 200, 150).yields
     subject.register_drawable a
     subject.register_drawable b
     subject.register_drawable c
