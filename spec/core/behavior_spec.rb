@@ -8,5 +8,8 @@ describe Behavior do
   describe "#add_behavior" do
     it 'uses the behavior factory to add the behavior to the actor'
   end
+  describe "#remove_behavior" do
+    it 'tells the actor to drop a behavior by name'
+  end
 
 end

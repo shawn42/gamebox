@@ -27,6 +27,10 @@ class Behavior
     behavior_factory.add_behavior actor, behavior_name, opts
   end
 
+  def remove_behavior(behavior_name)
+    actor.remove_behavior(behavior_name)
+  end
+
   class << self
 
     def define(behavior_type, &blk)
