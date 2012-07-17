@@ -37,8 +37,6 @@ class Director
     end
   end
 
-
-  private
   def unsubscribe_all(listener)
     if @subscriptions
       for slot in @subscriptions.keys
