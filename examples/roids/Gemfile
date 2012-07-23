@@ -1,10 +1,15 @@
 source "http://rubygems.org"
-gem "require_all"
+gem 'require_all'
+gem 'tmx'
+gem 'pry'
+gem 'pry-remote'
+gem "gamebox", '>= 0.4.0.rc5'
 gem "conject"
-gem "chipmunk"
-gem "gamebox", "0.4.0.rc1"
-gem "pry"
-gem "pry-stack_explorer"
-gem "pry-doc"
-gem "pry-git"
-gem "pry-remote"
+gem 'chipmunk'
+
+gem "mocha"
+gem "rspec"
+gem "rspec-core"
+gem "rspec-mocks"
+gem "rspec-expectations"
+gem "rake"
