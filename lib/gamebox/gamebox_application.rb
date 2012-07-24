@@ -28,7 +28,11 @@ class GameboxApp
     self.class.send(:include, DebugHelpers)
     Thread.new do
       loop do
-        binding.remote_pry
+        begin
+          binding.remote_pry
+        rescue
+          log "finished remote pry"
+        end
       end
     end
   end
