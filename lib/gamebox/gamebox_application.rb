@@ -21,13 +21,18 @@ class GameboxApp
     @game = @context[:game]
     @game.configure
     @config_manager = @context[:config_manager]
-    setup_debug_server if @config_manager[:debug_server] || ARGV.include?("-debug-server")
+    setup_debug_server if @config_manager[:debug] || ARGV.include?("--debug")
   end
 
   def setup_debug_server
+    self.class.send(:include, DebugHelpers)
     Thread.new do
       loop do
-        binding.remote_pry
+        begin
+          binding.remote_pry
+        rescue
+          log "finished remote pry"
+        end
       end
     end
   end
