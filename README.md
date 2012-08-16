@@ -32,6 +32,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 
 ```$ this will create the directory structure and needed files to get a basic actor up on the screen```
 
+```
 zapper
     ├── Gemfile  
     ├── README.rdoc  
@@ -56,12 +57,19 @@ zapper
         │   └── player.rb  
         ├── app.rb  
         └── demo_stage.rb  
-
+```
 
  you now have a runnable gamebox game
-`
-`	cd zapper  
+
+```
+	cd zapper 
+  bundle 
 	rake  
+```
+
+## Stages
+
+A Stage is where all the magic happens. A Stage can be any gameplay mode in your game. The main menu has a different interactions than the _real_ game.  In Gamebox, each should have their own Stage. Stages are configured via the stage_config.yml file in config. Listing :demo there will create DemoStage for you.  Game.rb decides which stage to start on. 
 
 ## Actors to the Stage
 
@@ -149,10 +157,6 @@ The animation will cycle through all the numbered png files for the current acti
 
 
 Animated and Updatable are just two behaviors available in Gamebox. Other include	graphical, audible, layered, and physical. You can easily add your own game specific behaviors by extending Behavior. (see Wanderer in rague example for a simple behavior).
-
-## Stages
-
-A Stage is where all the magic happens. A Stage can be any gameplay mode in your game. The main menu has a different interactions than the _real_ game.  In Gamebox, each should have their own Stage. Stages are configured via the stage_config.yml file in config. Listing :demo there will create DemoStage for you.  Game.rb decides which stage to start on. 
 
 ## StageManager
 

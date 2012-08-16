@@ -55,12 +55,32 @@ class Actor
   end
 
   def to_s
-    atts = methods.sort - Actor.instance_methods
-    atts_hash = {}
-    atts.each do |att|
-      atts_hash[att] = send(att) unless att.to_s.end_with? "="
+    attrs = []
+    attributes.each do |name, value|
+      attrs << "#{name}: #{printable_value(value)}"
     end
-    "#{self.actor_type}:#{self.object_id} with attributes\n#{atts_hash.inspect}"
+    """
+    #{actor_type}:#{self.object_id}
+    Behaviors:
+    #{@behaviors.keys.sort}
+    Attributes:
+    #{attrs.join("\n")}
+    """
+  end
+  alias pretty_inspect to_s
+
+  private
+  def printable_value(value)
+    case value
+    when String, Float, Fixnum, TrueClass, FalseClass, Ftor
+      value
+    when Array
+      value.map do |pv|
+        printable_value(pv)
+      end
+    else
+      value.class
+    end
   end
 
   # TODO should this live somewhere else?

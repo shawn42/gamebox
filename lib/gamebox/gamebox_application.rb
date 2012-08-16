@@ -29,8 +29,13 @@ class GameboxApp
     Thread.new do
       loop do
         begin
+          if th = DRb.thread
+            th.kill
+          end
+
           binding.remote_pry
-        rescue
+          log "remote_pry returned"
+        rescue Exception => e
           log "finished remote pry"
         end
       end

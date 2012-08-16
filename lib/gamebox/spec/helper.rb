@@ -224,6 +224,19 @@ module GameboxAcceptanceSpecHelpers
   end
 
   module InstanceMethods
+    def mock_tiles(filename, width, height)
+      context = Conject.default_object_context
+      resource_manager = context[:resource_manager]
+
+      [].tap do |tiles|
+        (width * height).times do |i|
+          tiles << MockImage.new("#{filename}_#{i}")
+        end
+
+        resource_manager.stubs(:load_tiles).returns(tiles)
+      end
+    end
+
     def mock_image(filename)
       context = Conject.default_object_context
       resource_manager = context[:resource_manager]
