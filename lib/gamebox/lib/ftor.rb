@@ -243,7 +243,7 @@ class Ftor
 	end
 
 	alias :a  :angle
-	alias :a= :angle= ;
+	alias :a= :angle=
 
 	# Returns the magnitude of the Ftor, i.e. its length from tail to head.
   # This is the same as the Ftor's magnitude in a polar coordinate system.

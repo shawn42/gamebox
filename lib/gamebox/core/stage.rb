@@ -90,7 +90,7 @@ class Stage
     center_x = @viewport.width / 2
     center_y = @viewport.height / 2
 
-    target.rotate(@viewport.rotation, center_x, center_y) do
+    target.rotate(-@viewport.rotation, center_x, center_y) do
       z = 0
       @parallax_layers.each do |parallax_layer|
         drawables_on_parallax_layer = @drawables[parallax_layer]

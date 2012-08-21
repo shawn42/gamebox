@@ -56,8 +56,8 @@ class Actor
 
   def to_s
     attrs = []
-    attributes.each do |name, value|
-      attrs << "#{name}: #{printable_value(value)}"
+    attributes.keys.sort.each do |name|
+      attrs << "#{name}: #{printable_value(attributes[name])}"
     end
     """
     #{actor_type}:#{self.object_id}
