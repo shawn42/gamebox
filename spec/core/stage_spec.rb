@@ -45,7 +45,7 @@ describe Stage do
   end
 
   it 'registers and draws drawables by parallax and layers' do
-    target.expects(:rotate).with(Math::PI, 200, 150).yields
+    target.expects(:rotate).with(-Math::PI, 200, 150).yields
     subject.register_drawable a
     subject.register_drawable b
     subject.register_drawable c
