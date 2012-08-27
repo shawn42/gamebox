@@ -20,3 +20,7 @@ else
 end
 
 ZERO_VEC_2 = vec2(0,0)
+
+module Math
+  HALF_PI = PI / 2.0
+end
