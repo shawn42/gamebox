@@ -40,7 +40,7 @@ define_behavior :particles do
       part.b = rand(155)
       part.a = 100+rand(155)
       rot = rand(Math::PI*100*2)/100.0
-      part.dir = Ftor.new(-1,0).rotate(rot)
+      part.dir = Vector2.new(-1,0).rotate(rot)
       part.speed = rand(10)*0.5
 
       part.ttl = 1000

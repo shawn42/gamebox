@@ -1,5 +1,4 @@
 if defined? CP
-  ZERO_VEC_2 = vec2(0,0) unless defined? ZERO_VEC_2
   def vec2(*args)
     CP::Vec2.new *args
   end
@@ -15,8 +14,9 @@ if defined? CP
   end
 
 else
-  ZERO_VEC_2 = Ftor.new(0,0)
   def vec2(*args)
-    Ftor.new *args
+    Vector2.new *args
   end
 end
+
+ZERO_VEC_2 = vec2(0,0)
