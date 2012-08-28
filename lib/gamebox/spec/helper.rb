@@ -382,6 +382,7 @@ RSpec.configure do |configuration|
       config.music_path = "spec/fixtures/"
       config.sound_path = "spec/fixtures/"
       config.game_name = "Some Title!"
+      config.needs_cursor = true
       config.stages = [:testing]
     end
 

@@ -6,7 +6,6 @@ describe WrappedScreen do
   before do
     @config_manager.stubs(:[]).with(:screen_resolution).returns [800,555]
     @config_manager.stubs(:[]).with(:fullscreen).returns false
-    @config_manager.stubs(:[]).with(:needs_cursor).returns nil
 
     @gosu_window = stub('gosu window', :caption= => nil, :needs_cursor= => nil)
     HookedGosuWindow.stubs(:new).with(800, 555, false).returns @gosu_window
@@ -15,8 +14,8 @@ describe WrappedScreen do
   describe "#setup" do
     it 'creates a new Gosu Window with opts from config manager' do
 
-      @gosu_window.expects(:caption=).with("Some Title!")
-      @gosu_window.expects(:needs_cursor=).with(nil)
+      @gosu_window.expects(:caption=).with(Gamebox.configuration.game_name)
+      @gosu_window.expects(:needs_cursor=).with(Gamebox.configuration.needs_cursor?)
 
       subject.screen.should == @gosu_window
     end

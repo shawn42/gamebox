@@ -28,6 +28,7 @@ module Gamebox
     add_setting :gb_fonts_path
   
     add_setting :game_name, default: "Untitled Game"
+    add_setting :needs_cursor, default: false
 
     add_setting :stages, default: [:demo]
 
