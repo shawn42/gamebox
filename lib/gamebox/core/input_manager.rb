@@ -25,7 +25,7 @@ class InputManager
   DOWN_EVENTS = [:mouse_down, :keyboard_down, :game_pad_down]
   UP_EVENTS = [:mouse_up, :keyboard_up, :game_pad_up]
 
-  attr_accessor :window
+  attr_accessor :window, :down_ids
   construct_with :config_manager, :wrapped_screen
 
   # Sets up the clock and main event loop. You should never call this method, 
