@@ -204,7 +204,7 @@ module GameboxAcceptanceSpecHelpers
     public *Game.object_definition.component_names
 
     def configure
-      stage_manager.change_stage_to :testing
+      stage_manager.change_stage_to stage_manager.default_stage
     end
 
     def stage(&blk)
@@ -213,6 +213,10 @@ module GameboxAcceptanceSpecHelpers
 
     def current_stage
       stage_manager.current_stage
+    end
+
+    def actors(actor_type)
+      stage_manager.current_stage.actors.select { |act| act.actor_type == actor_type }
     end
 
     def actor(actor_type)
@@ -307,8 +311,15 @@ module GameboxAcceptanceSpecHelpers
       act.should have_no_attrs(attrs)
     end
 
-    def update(time)
-      gosu.update time
+    def update(time, opts={})
+      step = opts[:step] || time
+
+      num_updates = time / step
+      num_updates.times do
+        gosu.update step
+      end
+      left_over = time % step
+      gosu.update left_over unless left_over == 0
     end
 
     def draw

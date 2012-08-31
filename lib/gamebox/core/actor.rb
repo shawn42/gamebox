@@ -72,7 +72,7 @@ class Actor
   private
   def printable_value(value)
     case value
-    when String, Float, Fixnum, TrueClass, FalseClass, Ftor
+    when String, Float, Fixnum, TrueClass, FalseClass, Vector2
       value
     when Array
       value.map do |pv|
