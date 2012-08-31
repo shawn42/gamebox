@@ -137,18 +137,17 @@ module GameboxAcceptanceSpecHelpers
   end
 
 
-  class ::TestingStage < Stage
+  module ::TestStageHelpers
     attr_accessor :actors
-
-    def initialize
-      @actors = []
+    def actors
+      @actors ||= []
     end
 
     def create_actor(actor_type, *args)
       super.tap do |act|
-        @actors << act
+        actors << act
         act.when :remove_me do
-          @actors.delete act
+          actors.delete act
         end
       end
     end
@@ -157,6 +156,10 @@ module GameboxAcceptanceSpecHelpers
       @physics_manager.update time if @physics_manager
       super
     end
+  end
+
+  class ::TestingStage < Stage
+    include TestStageHelpers
   end
 
   module MockCalls
