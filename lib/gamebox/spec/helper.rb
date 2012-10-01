@@ -175,14 +175,13 @@ module GameboxAcceptanceSpecHelpers
 
   class ::MockImage
     include MockCalls
-    attr_accessor :filename
-    def initialize(filename)
+    attr_accessor :filename, :width, :height
+    def initialize(filename, w, h)
       _reset!
       @filename = filename
+      @width = w
+      @height = h
     end
-
-    def width; 10; end
-    def height; 20; end
   end
 
   class ::MockFont
@@ -244,10 +243,10 @@ module GameboxAcceptanceSpecHelpers
       end
     end
 
-    def mock_image(filename)
+    def mock_image(filename, w=10, h=20)
       context = Conject.default_object_context
       resource_manager = context[:resource_manager]
-      MockImage.new(filename).tap do |img|
+      MockImage.new(filename, w, h).tap do |img|
         resource_manager.stubs(:load_image).with(filename).returns(img)
       end
     end
