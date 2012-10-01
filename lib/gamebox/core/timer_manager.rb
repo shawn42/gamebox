@@ -9,14 +9,12 @@ class TimerManager
   # add block to be executed every interval_ms millis
   def add_timer(name, interval_ms, recurring = true, &block)
     raise "timer [#{name}] already exists" if @timers[name]
-    log "adding timer #{name}"
     @timers[name] = {
       count: 0, recurring: recurring,
       interval_ms: interval_ms, callback: block}
   end
 
   def remove_timer(name)
-    log "removing timer #{name}"
     @timers.delete name
   end
 
@@ -30,7 +28,6 @@ class TimerManager
     @dead_timers.clear
 
     @timers.each do |name, timer_hash|
-      log "updating timer #{name} #{timer_hash}"
       timer_hash[:count] += time_delta
       if timer_hash[:count] > timer_hash[:interval_ms]
         timer_hash[:count] -= timer_hash[:interval_ms]
