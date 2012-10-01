@@ -236,7 +236,7 @@ module GameboxAcceptanceSpecHelpers
 
       [].tap do |tiles|
         (width * height).times do |i|
-          tiles << MockImage.new("#{filename}_#{i}")
+          tiles << MockImage.new("#{filename}_#{i}", 16, 16)
         end
 
         resource_manager.stubs(:load_tiles).returns(tiles)
