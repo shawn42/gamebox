@@ -13,13 +13,14 @@ class Behavior
   end
 
   def reacts_with(*messages_with_methods)
+    # TODO do a merge here..
     @message_handlers = messages_with_methods
   end
 
-  def react_to(message_type, *opts)
+  def react_to(message_type, *opts, &blk)
     # TODO perf analysis, should I use a hash here?
     if @message_handlers && @message_handlers.include?(message_type)
-      send message_type, *opts
+      send message_type, *opts, &blk
     end
   end
 

@@ -31,10 +31,10 @@ class Actor
     end
   end
 
-  def react_to(message, *opts)
+  def react_to(message, *opts, &blk)
     # TODO cache the values array?
     @behaviors.values.each do |behavior|
-      behavior.react_to(message, *opts)
+      behavior.react_to(message, *opts, &blk)
     end
   end
 
