@@ -18,7 +18,11 @@ module DebugHelpers
 
   def reload_behavior(behavior_name)
     behavior = behavior_name.to_sym
+    log "reloading behavior: [#{behavior}]"
+    load "behaviors/#{behavior}.rb"
+
     actors.each do |act|
+
       if act.has_behavior?(behavior)
         behaviors = act.instance_variable_get('@behaviors')
         beh_opts = behaviors[behavior].opts
@@ -26,11 +30,17 @@ module DebugHelpers
         factory = act.this_object_context[:behavior_factory]
         act.remove_behavior behavior
 
-        load "behaviors/#{behavior}.rb"
-
         factory.add_behavior(act, behavior, beh_opts)
       end
     end
   end
+
+  def load_actor(actor_type)
+    type = actor_type.to_sym
+    log "loading actor: [#{type}]"
+    load "actors/#{type}.rb"
+  end
+
+  module_function :reload_behavior, :actors, :load_actor
 
 end

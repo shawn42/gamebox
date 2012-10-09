@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "thor", ">= 0.15.2"
   s.add_dependency "require_all"
   s.add_dependency "kvo", ">= 0.0.2"
+  s.add_dependency "listen", ">= 0.5.3"
 
   s.add_development_dependency "pry", '~>0.9.7'
   s.add_development_dependency "pry-remote"

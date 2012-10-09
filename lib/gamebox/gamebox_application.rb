@@ -25,6 +25,8 @@ class GameboxApp
   end
 
   def setup_debug_server
+    Thread.abort_on_exception = true
+
     self.class.send(:include, DebugHelpers)
     Thread.new do
       loop do
@@ -37,6 +39,22 @@ class GameboxApp
           log "remote_pry returned"
         rescue Exception => e
           log "finished remote pry"
+        end
+      end
+    end
+
+    Thread.new do
+      require 'listen'
+      Listen.to("src/behaviors/", "src/actors", filter: /\.rb$/) do |modified, added, removed|
+        (modified + added).each do |path|
+          path[/([^\/]*)\.rb/]
+          filename = $1
+          case path
+          when /behaviors/
+            reload_behavior filename
+          when /actors/
+            load_actor filename
+          end
         end
       end
     end
