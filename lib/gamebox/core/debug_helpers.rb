@@ -13,7 +13,7 @@ module DebugHelpers
   end
 
   def current_stage
-    stage_manager.current_stage
+    game.stage_manager.current_stage
   end
 
   def reload_behavior(behavior_name)

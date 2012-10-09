@@ -36,6 +36,7 @@ class Actor
     @behaviors.values.each do |behavior|
       behavior.react_to(message, *opts, &blk)
     end
+    nil
   end
 
   def has_behavior?(name)
