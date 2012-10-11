@@ -132,7 +132,7 @@ class AABBTree
       w ||= 2
       h ||= 2
 
-      expand_bb_by!(Rect.new item.x, item.y, w, h, DEFAULT_BB_SCALE)
+      expand_bb_by!(Rect.new(item.x, item.y, w, h), DEFAULT_BB_SCALE)
     end
   end
 end

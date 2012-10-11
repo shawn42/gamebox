@@ -15,14 +15,18 @@ class BoxedActor
     @h = h
   end
 
+  def bb
+    Rect.new(x,y,w,h)
+  end
+
 end
-require 'perftools'
-PerfTools::CpuProfiler.start("/tmp/perf.txt")
+# require 'perftools'
+# PerfTools::CpuProfiler.start("/tmp/perf.txt")
 
 
 NUM = 1_000
-# Benchmark.bm(60) do |b|
-#   b.report("full") do
+Benchmark.bm(60) do |b|
+  b.report("full") do
     tree = SpatialTreeStagehand.new :thing, :thing
 
     thing = BoxedActor.new 1, 2, 3, 4
@@ -43,14 +47,15 @@ NUM = 1_000
         t.x += rand(40)-20
       end
 
-      tree.neighbors_of thing do
+      tree.query thing.bb do
       end
+
       tree.remove it
     end
-#   end
-# end
+  end
+end
 
-PerfTools::CpuProfiler.stop
+# PerfTools::CpuProfiler.stop
 # be pprof.rb --text /tmp/perf.txt
 
 
