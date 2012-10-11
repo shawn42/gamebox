@@ -16,7 +16,7 @@ class BoxedActor
   end
 
   def bb
-    Rect.new(x,y,w,h)
+    @bb ||= Rect.new(x,y,w,h)
   end
 
 end
