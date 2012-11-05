@@ -1,42 +1,57 @@
 class ConfigManager
 
-  attr_accessor :settings
-  GAME_SETTINGS_FILE = "game"
-
-  def initialize
-    @settings = load_config(GAME_SETTINGS_FILE)
-  end
-
-  def save
-    save_settings(GAME_SETTINGS_FILE, @settings)
+  def settings
+    @settings ||= base_configuration.merge(user_configuration)
   end
 
   def [](key)
-    @settings[key]
+    settings[key]
   end
 
   def []=(key,val)
-    @settings[key] = val
+    settings[key] = val
   end
 
-  # TODO make this path include that app name?
-  def load_config(name)
-    conf = YAML::load_file("#{Gamebox.configuration.config_path}#{name}.yml")
-    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
-    if File.exist? user_file
-      user_conf = YAML::load_file user_file
-      conf = conf.merge user_conf
-    end
-    conf
+
+  def game_settings_file
+    "game.yml"
   end
 
-  def save_settings(name, settings)
-    user_gamebox_dir = "#{ENV['HOME']}/.gamebox"
-    FileUtils.mkdir_p user_gamebox_dir
-    user_file = "#{ENV['HOME']}/.gamebox/#{name}.yml"
-    File.open user_file, "w" do |f|
-      f.write settings.to_yaml
-    end
+  def user_configuration_directory
+    File.join(ENV['HOME'], ".gamebox")
+  end
+
+  def base_configuration_directory
+    Gamebox.configuration.config_path
+  end
+
+  def user_configuration_filepath
+    File.join(user_configuration_directory, game_settings_file)
+  end
+
+  def base_configuration_filepath
+    File.join(base_configuration_directory, game_settings_file)
+  end
+
+  def base_configuration
+    load base_configuration_filepath
+  end
+
+  def user_configuration
+    load user_configuration_filepath
+  end
+
+  def load(configuration_filepath)
+    File.exist?(configuration_filepath) ? YAML::load_file(configuration_filepath) : {}
+  end
+
+  def save
+    save_to_file(user_configuration_filepath,settings.to_yaml)
+  end
+
+  def save_to_file(filepath,settings)
+    FileUtils.mkdir_p File.dirname(filepath)
+    File.write(filepath,settings)
   end
 
 end
