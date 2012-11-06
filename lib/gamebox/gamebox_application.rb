@@ -3,12 +3,13 @@ $: << "#{File.dirname(__FILE__)}/../config"
 
 begin
   # optional file
-  require "environment" 
+  require "environment"
 rescue LoadError => err
 end
 
 class GameboxApp
   attr_reader :context, :game
+
   def self.run(argv,env)
     GameboxApp.new.start argv, env
   end
@@ -17,47 +18,17 @@ class GameboxApp
     @context = Conject.default_object_context
   end
 
-  def setup
+  def start(argv,env)
+    setup(argv,env)
+    main_loop
+    shutdown
+  end
+
+  def setup(argv,env)
     @game = @context[:game]
     @game.configure
     @config_manager = @context[:config_manager]
-    setup_debug_server if @config_manager[:debug] || ARGV.include?("--debug")
-  end
-
-  def setup_debug_server
-    Thread.abort_on_exception = true
-
-    self.class.send(:include, DebugHelpers)
-    Thread.new do
-      loop do
-        begin
-          if th = DRb.thread
-            th.kill
-          end
-
-          binding.remote_pry
-          log "remote_pry returned"
-        rescue Exception => e
-          log "finished remote pry"
-        end
-      end
-    end
-
-    Thread.new do
-      require 'listen'
-      Listen.to("src/behaviors/", "src/actors", filter: /\.rb$/) do |modified, added, removed|
-        (modified + added).each do |path|
-          path[/([^\/]*)\.rb/]
-          filename = $1
-          case path
-          when /behaviors/
-            reload_behavior filename
-          when /actors/
-            load_actor filename
-          end
-        end
-      end
-    end
+    self.class.post_setup_handlers.each { |handler| handler.setup(argv,env,@config_manager) }
   end
 
   def main_loop
@@ -66,17 +37,21 @@ class GameboxApp
     @input_manager.show
   end
 
-  def shutdown
+  def shutdown ; end
+
+  def self.register_post_setup_handler(handler)
+    post_setup_handlers.push handler
   end
 
-  def start(argv,env)
-    setup
-
-    main_loop
-
-    shutdown
+  def self.post_setup_handlers
+    @post_setup_handlers ||= [ ]
   end
+
 end
+
+require 'gamebox/post_setup_handlers/gamebox_debug_helpers'
+require 'gamebox/post_setup_handlers/file_watcher'
+require 'gamebox/post_setup_handlers/pry_remote_server'
 
 if $0 == __FILE__
   GameboxApp.run ARGV, ENV
