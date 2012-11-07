@@ -27,8 +27,7 @@ class GameboxApp
   def setup(argv,env)
     @game = @context[:game]
     @game.configure
-    config_manager = @game.config_manager
-    self.class.post_setup_handlers.each { |handler| handler.setup(argv, env, config_manager) }
+    self.class.post_setup_handlers.each { |handler| handler.setup(argv, env, @context[:config_manager]) }
   end
 
   def main_loop
