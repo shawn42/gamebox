@@ -49,6 +49,10 @@ class GameboxApp
 
 end
 
+GameboxApp.register_post_setup_handler PostSetupHandlers::FileWatcher
+GameboxApp.register_post_setup_handler PostSetupHandlers::GameboxAppAddDebugHelpers
+GameboxApp.register_post_setup_handler PostSetupHandlers::PryRemoteServer
+
 if $0 == __FILE__
   GameboxApp.run ARGV, ENV
 end

@@ -34,6 +34,4 @@ module PostSetupHandlers
 
   end
 
-  GameboxApp.register_post_setup_handler FileWatcher
-
 end

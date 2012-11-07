@@ -26,6 +26,4 @@ module PostSetupHandlers
 
     end
   end
-
-  GameboxApp.register_post_setup_handler PryRemoteServer
 end
