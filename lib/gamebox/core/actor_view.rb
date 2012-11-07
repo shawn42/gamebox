@@ -1,6 +1,7 @@
 class ActorView
-  construct_with :stage, :wrapped_screen, :resource_manager, :actor
-  public :stage, :wrapped_screen, :resource_manager, :actor
+  # TODO remove stage
+  construct_with :renderer, :wrapped_screen, :resource_manager, :actor, :stage
+  public :wrapped_screen, :resource_manager, :actor, :stage
 
   attr_accessor :layer, :parallax
   def initialize
@@ -15,11 +16,11 @@ class ActorView
   end
 
   def register
-    stage.register_drawable self
+    renderer.register_drawable self
   end
   
   def unregister
-    stage.unregister_drawable self
+    renderer.unregister_drawable self
   end
 
   def screen_width
@@ -42,22 +43,5 @@ class ActorView
       @definitions ||= {}
     end
   end
-
-  # TODO can these defs be unified?
-  class ActorViewDefinition
-    attr_accessor :draw_block, :configure_block, :required_injections
-    def requires(*injections_needed)
-      @required_injections = injections_needed
-    end
-
-    def configure(&configure_block)
-      @configure_block = configure_block
-    end
-
-    def draw(&draw_block)
-      @draw_block = draw_block
-    end
-  end
-
 
 end

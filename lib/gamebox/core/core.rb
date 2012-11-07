@@ -9,6 +9,10 @@ module Gamebox
     yield configuration if block_given?
   end
 
+  def define_stage(name, &blk)
+    Stage.define name, &blk
+  end
+
   def define_behavior(name, &blk)
     Behavior.define name, &blk
   end

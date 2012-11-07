@@ -1,5 +1,5 @@
 
-ActorView.define :graphical_actor_view do
+define_actor_view :graphical_actor_view do
 
   draw do |target, x_off, y_off, z|
     img = actor.do_or_do_not(:image)
@@ -17,7 +17,6 @@ ActorView.define :graphical_actor_view do
     x_scale = actor.do_or_do_not(:x_scale) || 1
     y_scale = actor.do_or_do_not(:y_scale) || 1
 
-    # TODO add ? ableness to actor attributes
     if actor.do_or_do_not(:tiled)
       x_tiles = actor.num_x_tiles
       y_tiles = actor.num_y_tiles
@@ -26,12 +25,12 @@ ActorView.define :graphical_actor_view do
       x_tiles.times do |col|
         y_tiles.times do |row|
           # TODO why is there a nasty black line between these that jitters?
-          img.draw_rot offset_x+col*img_w, offset_y+row*img_h, z, actor.rotation, x_scale, y_scale
+          img.draw offset_x+col*img_w, offset_y+row*img_h, z, x_scale, y_scale
         end
       end
     else
-      if actor.respond_to? :rotation
-        rot = actor.rotation || 0.0
+      rot = actor.do_or_do_not :rotation
+      if rot
         img.draw_rot offset_x, offset_y, z, rot, 0.5, 0.5, x_scale, y_scale, color
       else
         img.draw offset_x, offset_y, z, x_scale, y_scale, color

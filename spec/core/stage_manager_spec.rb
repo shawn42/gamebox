@@ -1,7 +1,7 @@
 require 'helper'
 
 describe StageManager do
-  inject_mocks :input_manager, :config_manager, :backstage,
+  inject_mocks :input_manager, :config_manager, :stage_factory,
     :this_object_context
 
   class FooStage; end
@@ -21,9 +21,9 @@ describe StageManager do
     subcontext.stubs(:[]).with('foo_stage').returns(foo_stage)
     subcontext.stubs(:[]).with('bar_stage').returns(bar_stage)
     subcontext.stubs(:[]=)
-    foo_stage.stubs(:configure).with(@backstage, {thing:1})
-    bar_stage.stubs(:configure).with(@backstage, {thing:2})
     @this_object_context.stubs(:in_subcontext).yields(subcontext)
+    @stage_factory.stubs(:build).with(:foo, anything).returns(foo_stage)
+    @stage_factory.stubs(:build).with(:bar, anything).returns(bar_stage)
   end
 
   describe '#setup' do
@@ -123,7 +123,7 @@ describe StageManager do
 
     it 'draws the current stage' do
 
-      subcontext.expects(:[]=).with(:stage, foo_stage)
+      @stage_factory.stubs(:build).with(:foo, :args).returns(foo_stage)
       subject.switch_to_stage :foo, :args
       foo_stage.expects(:draw).with(:target)
 

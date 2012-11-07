@@ -3,6 +3,8 @@
 class Viewport
   extend Publisher
   can_fire :scrolled
+
+  construct_with :config_manager
   
   attr_accessor :x_offset, :y_offset, :follow_target, :width,
     :height, :x_offset_range, :y_offset_range, :boundary, :rotation
@@ -13,14 +15,18 @@ class Viewport
     "xoff:#{@x_offset} yoff:#{@y_offset}"
   end
 
-  def initialize(width, height)
+  def initialize
+    res = config_manager[:screen_resolution]
+    @width = res[0]
+    @height = res[1]
+    reset
+  end
+
+  def reset
     @rotation = 0
     @speed = 1
     @x_offset = 0
     @y_offset = 0
-
-    @width = width
-    @height = height
   end
 
   def scroll(x_delta,y_delta)

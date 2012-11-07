@@ -18,9 +18,37 @@ module GameboxSpecHelpers
       before { @_mocks_created = create_mocks(*mock_names_array) }
       subject { described_class.new @_mocks_created }
     end
+
+    def subjectify_actor_view(view_name)
+      view_definition = ActorView.definitions[view_name]
+      before { 
+        reqs = view_definition.required_injections || []
+
+        @_mocks_created = create_mocks( *ActorView.object_definition.component_names + reqs)
+        @_mocks_created[:actor] = evented_stub(@_mocks_created[:actor])
+
+      }
+      subject { 
+        ActorView.new(@_mocks_created).tap do |view|
+          view.define_singleton_method :draw, &view_definition.draw_block if view_definition.draw_block
+          if view_definition.configure_block
+            view.define_singleton_method :configure, &view_definition.configure_block 
+            view.configure
+          end
+        end
+      }
+    end
   end
 
   module InstanceMethods
+
+    def actor_stubs(actor, attributes={})
+      attributes.each do |att, value|
+        actor.stubs(att).returns(value)
+        actor.stubs(:do_or_do_not).with(att).returns(value)
+      end
+    end
+
 
     def create_actor(type=:actor, args={})
       act = create_conjected_object type, nil, false
@@ -158,8 +186,10 @@ module GameboxAcceptanceSpecHelpers
     end
   end
 
-  class ::TestingStage < Stage
-    include TestStageHelpers
+  define_stage :testing do
+    helpers do
+      include TestStageHelpers
+    end
   end
 
   module MockCalls

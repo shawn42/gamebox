@@ -32,6 +32,12 @@ class ActorViewFactory
         view.configure
       end
 
+      helpers = view_definition.helpers_block
+      if helpers
+        helpers_module = Module.new &helpers
+        behavior.extend helpers_module
+      end
+
       behavior_factory.add_behavior(actor, :visible, view: view)
       actor.react_to :show unless opts[:hide]
     end

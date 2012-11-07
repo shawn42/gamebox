@@ -7,28 +7,17 @@ class Stage
 
   construct_with :input_manager, :actor_factory, :resource_manager, 
     :sound_manager, :config_manager, :director, :timer_manager, 
-    :this_object_context
+    :viewport, :this_object_context
 
-  def self.inherited(kid)
-    kid.construct_with *self.object_definition.component_names
-  end
-
-  attr_accessor :opts, :viewport, :backstage
+  attr_accessor :opts, :backstage
 
   def configure(backstage, opts)
-    res = config_manager[:screen_resolution]
-    @viewport = Viewport.new res[0], res[1]
-    this_object_context[:viewport] = @viewport
+    viewport.reset
 
     @stagehands = {}
     @backstage = backstage
     @opts = opts
-
-    setup
-  end
-
-  def setup
-    clear_drawables
+    renderer.clear_drawables
   end
 
   def create_actor(type, args={})
@@ -61,10 +50,14 @@ class Stage
 
     dynamic_actors
   end
+  
+  def draw(target)
+    renderer.draw target
+  end
 
   def update(time)
     director.update time
-    @viewport.update time
+    viewport.update time
     @stagehands.each do |name, stagehand|
       stagehand.update time 
     end
@@ -84,68 +77,6 @@ class Stage
   end
 
   def curtain_down(*args)
-  end
-
-  def draw(target)
-    center_x = @viewport.width / 2
-    center_y = @viewport.height / 2
-
-    target.rotate(-@viewport.rotation, center_x, center_y) do
-      z = 0
-      @parallax_layers.each do |parallax_layer|
-        drawables_on_parallax_layer = @drawables[parallax_layer]
-
-        if drawables_on_parallax_layer
-          @layer_orders[parallax_layer].each do |layer|
-
-            trans_x = @viewport.x_offset parallax_layer
-            trans_y = @viewport.y_offset parallax_layer
-
-            z += 1
-            drawables_on_parallax_layer[layer].each do |drawable|
-              drawable.draw target, trans_x, trans_y, z
-            end
-          end
-        end
-      end
-    end
-  end
-
-  def unregister_drawable(drawable)
-    @drawables[drawable.parallax][drawable.layer].delete drawable
-  end
-
-  def clear_drawables
-    @drawables = {}
-    @layer_orders = {}
-    @parallax_layers = []
-  end
-
-  def register_drawable(drawable)
-    layer = drawable.layer
-    parallax = drawable.parallax
-    unless @drawables[parallax]
-      @drawables[parallax] = {}
-      @parallax_layers = @drawables.keys.sort.reverse
-    end
-    unless @drawables[parallax][layer]
-      @drawables[parallax][layer] = []
-      @layer_orders[parallax] = @drawables[parallax].keys.sort
-    end
-    @drawables[parallax][layer] << drawable
-  end
-
-  # move all actors from one layer to another
-  # note, this will remove all actors in that layer!
-  def move_layer(from_parallax, from_layer, to_parallax, to_layer)
-    drawable_list = @drawables[from_parallax][from_layer].dup
-
-    drawable_list.each do |drawable|
-      unregister_drawable drawable      
-      drawable.parallax = to_parallax
-      drawable.layer = to_layer
-      register_drawable drawable      
-    end
   end
 
   def on_pause(&block)
@@ -212,6 +143,21 @@ class Stage
     klass.new self, opts
   end
 
+  class << self
+
+    def define(stage_name, opts={}, &blk)
+      @definitions ||= {}
+      raise "Stage [#{stage_name}] already defined at #{@definitions[stage_name].source}" if @definitions[stage_name]
+
+      definition = StageDefinition.new
+      definition.instance_eval &blk if block_given?
+      @definitions[stage_name] = definition
+    end
+
+    def definitions
+      @definitions ||= {}
+    end
+  end
 
 end
 

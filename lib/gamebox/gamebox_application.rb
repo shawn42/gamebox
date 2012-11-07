@@ -27,8 +27,8 @@ class GameboxApp
   def setup(argv,env)
     @game = @context[:game]
     @game.configure
-    @config_manager = @context[:config_manager]
-    self.class.post_setup_handlers.each { |handler| handler.setup(argv,env,@config_manager) }
+    config_manager = @game.config_manager
+    self.class.post_setup_handlers.each { |handler| handler.setup(argv, env, config_manager) }
   end
 
   def main_loop
@@ -48,10 +48,6 @@ class GameboxApp
   end
 
 end
-
-require 'gamebox/post_setup_handlers/gamebox_debug_helpers'
-require 'gamebox/post_setup_handlers/file_watcher'
-require 'gamebox/post_setup_handlers/pry_remote_server'
 
 if $0 == __FILE__
   GameboxApp.run ARGV, ENV

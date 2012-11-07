@@ -26,7 +26,7 @@ describe "Using animation", acceptance: true do
   end
 
   it 'animates correctly' do
-    game.stage do |stage| # instance of TestingStage
+    game.stage do |stage|
       create_actor :snelpling
     end
 

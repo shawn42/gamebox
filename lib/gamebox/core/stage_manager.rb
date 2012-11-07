@@ -1,7 +1,7 @@
 class StageManager
 
-  construct_with :input_manager, :config_manager, :backstage,
-    :this_object_context
+  construct_with :input_manager, :config_manager,
+    :stage_factory, :this_object_context
 
   attr_reader :stage_names, :stage_opts
 
@@ -93,13 +93,7 @@ class StageManager
   end
 
   def create_stage(name, opts)
-    stage_instance = nil
-    this_object_context.in_subcontext do |stage_context|
-      name_or_klass = opts[:class] || name
-      stage_instance = stage_context["#{name_or_klass}_stage"]
-      stage_context[:stage] = stage_instance 
-    end
-    stage_instance.configure(backstage, opts)
+    stage_instance = stage_factory.build(name, opts)
 
     stage_instance.when :next_stage do |*args|
       next_stage *args

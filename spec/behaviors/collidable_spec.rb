@@ -8,11 +8,15 @@ describe :collidable do
   let!(:subcontext) do 
     it = nil
     Conject.default_object_context.in_subcontext{|ctx|it = ctx}; 
-    _mocks = create_mocks *(Actor.object_definition.component_names + ActorView.object_definition.component_names - [:actor, :behavior, :this_object_context])
+    _mocks = create_mocks *(
+      [:stage] +
+      Actor.object_definition.component_names + 
+      ActorView.object_definition.component_names - 
+      [:actor, :behavior, :this_object_context])
     _mocks.each do |k,v|
       it[k] = v
-      it[:director] = director
     end
+    it[:director] = director
     it
   end
   let!(:actor) { subcontext[:actor] }

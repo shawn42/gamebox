@@ -8,8 +8,11 @@ class Vec
   end
 end
 
-describe 'A new viewport' do
-  subject { Viewport.new 800, 600 }
+describe Viewport do
+  inject_mocks :config_manager
+  before do
+    @config_manager.stubs(:[]).with(:screen_resolution).returns([800, 600])
+  end
 
   it 'should construct with width and height' do
     subject.width.should == 800
