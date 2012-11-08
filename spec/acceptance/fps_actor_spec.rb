@@ -2,7 +2,7 @@ require 'helper'
 
 describe "Using fps actor", acceptance: true do
   it 'draws and updates the fps label' do
-    game.stage do |stage| # instance of TestingStage
+    game.stage do |stage|
       @fps = create_actor :fps, font_name: 'arial', font_size: 20
     end
 

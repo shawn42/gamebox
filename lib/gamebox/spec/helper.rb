@@ -19,6 +19,33 @@ module GameboxSpecHelpers
       subject { described_class.new @_mocks_created }
     end
 
+    def subjectify_actor(actor_type)
+      actor_definition = Actor.definitions[actor_type]
+      before { 
+        @_mocks_created = create_mocks *Actor.object_definition.component_names
+      }
+      subject { 
+        Actor.new(@_mocks_created).tap do |actor|
+
+          actor_definition.behaviors.each do |behavior|
+            beh_opts = {}
+            beh_key = behavior
+
+            if behavior.is_a?(Hash)
+              beh_opts = behavior.values.first
+              beh_key = behavior.keys.first
+            end
+
+            actor_definition.attributes.each do |attr|
+              actor.has_attributes attr
+            end
+
+            actor.add_behavior beh_key, beh_opts
+          end
+        end
+      }
+    end
+
     def subjectify_actor_view(view_name)
       view_definition = ActorView.definitions[view_name]
       before { 

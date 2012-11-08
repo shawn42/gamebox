@@ -1,10 +1,11 @@
 require 'helper'
 
-describe 'a new Label' do
-  before do 
-#    opts = {:stage=>"stage", :input=>"input", :resources=>"resource"}
-#    @test_me = Label.new opts
-  end
+describe :label do
 
-  it 'should do something'
+  subjectify_actor(:label)
+
+  it 'has the label behavior' do
+    behaviors = subject.instance_variable_get('@behaviors')
+    behaviors.should include(:label)
+  end
 end
