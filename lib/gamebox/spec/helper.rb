@@ -19,6 +19,54 @@ module GameboxSpecHelpers
       subject { described_class.new @_mocks_created }
     end
 
+    def subjectify_behavior(behavior_name)
+      before { 
+        @_beh_mock_names = Behavior.object_definition.component_names
+        @actor = evented_stub(mock("actor_for_#{behavior_name}"))
+        @_mocks_created = create_mocks *(@_beh_mock_names - [:actor])
+        @_mocks_created[:actor] = @actor
+
+
+        @behavior_definition = Behavior.definitions[behavior_name]
+        reqs = @behavior_definition.required_injections || []
+        reqs -= @_beh_mock_names
+        @_req_mocks = create_mocks(*reqs)
+      }
+      let (:opts) { {} }
+      subject { 
+
+        # TODO so much duplication here from the *Factories
+        Behavior.new(@_mocks_created).tap do |behavior|
+          @_req_mocks.keys.each do |req|
+            object = @_req_mocks[req]
+            behavior.define_singleton_method req do
+              components[req] 
+            end
+            components = behavior.send :components
+            components[req] = object
+          end
+
+          helpers = @behavior_definition.helpers_block
+          if helpers
+            helpers_module = Module.new &helpers
+            behavior.extend helpers_module
+          end
+
+          behavior.define_singleton_method :react_to, @behavior_definition.react_to_block if @behavior_definition.react_to_block
+
+          # TODO not sure the right way to mock this out
+          # deps = @behavior_definition.required_behaviors
+          # if deps
+          #   deps.each do |beh|
+          #     _add_behavior actor, beh unless actor.has_behavior?(beh)
+          #   end
+          # end
+          behavior.configure(opts)
+          behavior.instance_eval &@behavior_definition.setup_block if @behavior_definition.setup_block
+        end
+      }
+    end
+
     def subjectify_actor(actor_type)
       actor_definition = Actor.definitions[actor_type]
       before { 
@@ -68,6 +116,7 @@ module GameboxSpecHelpers
   end
 
   module InstanceMethods
+
 
     def actor_stubs(actor, attributes={})
       attributes.each do |att, value|
