@@ -128,95 +128,103 @@ Actor views are the mechanism for drawing an actor in Gamebox. When an actor is 
 To get an actor on the stage, use the `create_actor` method on stage. This can be done directly from a stage or from a behavior that has required stage via `requires :stage`. 
 
         setup do
-            @player = create_actor :label, x: 20, y: 30, text: "Hello World!"
+          @player = create_actor :label, x: 20, y: 30, text: "Hello World!"
         end
+        
+        # or
+        stage.create_actor ..
+        
 
 
 ## Input
 
-Input comes from the InputManager. The stage has direct access via `input_manager`, actors have something built-in called input? (check out foxy vs gamebox here)    
+Input comes from the InputManager. The stage has direct access via the `input_manager` method. Behaviors can request that they get the `input_manager` via `requires :input_manager`. The preferred way of getting input to your actors is via the actor's `input` method. It returns an InputMapper that can be built with a hash of events. Behaviors then subscribe for those events from the actor's input, or ask for it during updates.
 
 
+        actor.input.map_input '+space' => :shoot,
+                              '+w' => :jump,
+                              '+a' => :walk_left
+                              '+s' => :duck
+                              '+d' => :walk_right
+                              
+        actor.input.when :shoot do
+          # shoot code
+        end
+        
+        # or
+        if actor.input.walk_left?
+          # walk left
+        end
+    
+                              
+      
+## Updates
+
+Updates all come from the Director. Again, the stage has direct access via `director` and behaviors must `requires :director`.
+
+        director.when :update do |t_ms, t_sec|
+          # update something
+        end
+        
+        
+## Sound and Music
+
+SoundManager handles the autoloading of sounds from `data/sounds` and `data/music`. The stage has direct access via `sound_manager`. To allow an actor to emit sounds or music, give them the `audible` behavior.  See Reactions below for usage from actors.
+
+    
+     	# music
+    	sound_manager.play_music :overworld
+    	
+    	# sounds
+    	sound_manager.play_sound :death
+        
+
+## Reactions
+
+To ask to react to something we use the `react_to` method. It sends your message to all of the actors behaviors, giving them a chance to (you guessed it), react.
+
+        actor.react_to :play_sound, :jump
+
+If the actor has an audible behavior listening, he'll play the jump sound. But what if something else wants to know about playing sounds. Maybe the actor triggers an effect by making sound. If the actor had a `noise_alert` behavior, it too would be notified of the `:play_sound` event.
+
+        define_behavior :noise_alert do
+          setup do
+            reacts_with :play_sound
+          end
+          
+          helpers do
+            def play_sound(*args)
+              # react here
+            end
+          end
+        end
+        
+The `reacts_with` helper takes a list of events that your behavior is interested in, and maps them to helper methods.
 
 
-# STOP READING HERE.. TODO BELOW  :)
+ 
 
 
-## Sound
-
-There are two ways to play sounds in Gamebox. From your stage you can simple access the SoundManager via the sound_manager method. From your actors, you can play sounds via the play_sound helper method in the audible behavior.
-`
-`	# music
-	sound_manager.play_music :overworld
-	
-	# sounds
-	sound_manager.play_sound :death
-
-or
-`
-`	# from an actor
-        has_behavior :audible
-	actor.react_to :play_sound, :jump
+# TODO (finish)
+## Configuration
+1. `Gamebox.configuration`
 
 ## Resources
-
-All file loading is handled by the ResourceManager.  It handles loading images, sounds, fonts, config files, and even svg files. The resource manager caches images based on their name and fonts based on their name/size pair. Example usage from the ScoreView class:
-`
-`	font # @mode.resource_manager.load_font 'Asimov.ttf', 30
-
-
-This snippet show us that our Actor wants to be updated on every gameloop and that it wants to be animated.  Gamebox favors convention over configuration. This means that there are default locations and setting for most things. They can be overridden but you are not required to do so. The animated behavior assumes that your animated images are in a directory structure based on the Actor's underscored name and its current action.
-
-	zapper/
-	`-- data
-	    `-- graphics
-	        `-- super_hero
-	            |-- flying
-	            |   |-- 1.png
-	            |   |-- 2.png
-	            |   |-- ...
-	            |   `-- 8.png
-	            |-- idle.png
-	            `-- walking
-	                |-- 1.png
-	                `-- 2.png
-	
-Here we can see that the SuperHere class has three actions (flying, walking, idle).  These actions will be set by calling action# on your Actor.
-
-  batman # create_actor :super_hero
-  batman.action # :flying
-
-The animation will cycle through all the numbered png files for the current action.  To stop animating you simple call stop_animating.
-
-  batman.stop_animating
-
-
-Animated and Updatable are just two behaviors available in Gamebox. Other include	graphical, audible, layered, and physical. You can easily add your own game specific behaviors by extending Behavior. (see Wanderer in rague example for a simple behavior).
+1. load paths
+2. fonts
+3. graphics (caching)
+4. sounds
 
 ## Stages
-
-A Stage is where all the magic happens. A Stage can be any gameplay mode in your game. The main menu has a different interactions than the _real_ game.  In Gamebox, each should have their own Stage. Stages are configured via the stage_config.yml file in config. Listing :demo there will create DemoStage for you.  Game.rb decides which stage to start on. 
-
-## StageManager
-
-So how do these actors end up on the screen? The StageManager. The stage manager handles contruction of new stages and drawing their actors too. Gamebox has built-in support for parallaxing. Parallax layers denote this distance from the audience an Actor should be.  The clouds in the sky that are really far away can be set to INFINITY to have them not move at all as the viewport moves.  Each parallax layer has layers to allow Actors to be on top of one another, but have the same distance from the audience.  The StageManager respects Actor's layered behaviors, if specified. If no layer is specified, the StageManager puts the Actor on parallax layer one of layer one. Example layered behavior:
-
-  has_behavior :layered #> {:parallax #> 30, :layer #> 2}
-
-This Actor will be 30 layers away from the audience, and will sit on top of anything in parallax layer 30 that has layer less than 2.
+1. configuring stages
+1. changing stages
 
 
-## Publisher
 ## Physics
-## SVG Levels
-
-
 ## Intra-Links
-
 [Link to the FAQ] (https://github.com/shawn42/gamebox/wiki/Frequently-Asked-Questions)
 
 ## LICENSE:
-
 (MIT)
 
 Copyright &copy; 2012 Shawn Anderson
