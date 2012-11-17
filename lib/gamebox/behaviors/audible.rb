@@ -1,7 +1,6 @@
 
 
-Behavior.define :audible do
-  
+define_behavior :audible do
   requires :sound_manager
   setup do
     reacts_with :play_sound, :stop_sound
