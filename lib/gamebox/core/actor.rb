@@ -8,6 +8,7 @@ class Actor
   can_fire_anything
   construct_with :this_object_context
   public :this_object_context
+  attr_accessor :actor_type
 
   def initialize
     has_attribute :alive, true
@@ -15,8 +16,8 @@ class Actor
   end
 
   def configure(opts={}) # :nodoc:
+    self.actor_type = opts.delete(:actor_type)
     has_attributes opts
-    self.actor_type = opts[:actor_type]
   end
 
   # Used by BehaviorFactory#add_behavior.
@@ -53,6 +54,11 @@ class Actor
     self.alive = false
     react_to :remove
     fire :remove_me
+  end
+
+  def input
+    # TODO conject should have a lazily loaded dependency mechanism
+    @input_mapper ||= this_object_context[:input_mapper]
   end
 
   def to_s

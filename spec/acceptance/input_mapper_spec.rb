@@ -1,47 +1,40 @@
 require 'helper'
 
-describe "Using input stater", acceptance: true do
-
+describe "Using input mapper", acceptance: true do
 
   define_actor :foxy do
-    has_behavior input_mapper: {
-      [KbLeft] => :move_left,
-      [KbRight, KbD] => :move_right
-    }
   end
 
   it 'sets actor state based on input' do
     game.stage do |stage| # instance of TestingStage
-      create_actor :foxy
+      foxy = create_actor :foxy
+      foxy.input.map_input 'left' => :move_left,
+                           'right' => :move_right,
+                           'd' => :move_right
     end
 
-    see_actor_attrs :foxy, 
-      move_left: false
-    see_actor_attrs :foxy, 
-      move_right: false
+    input = game.actor(:foxy).input
+    input.move_left?.should be_false
+    input.move_right?.should be_false
 
     press_key KbLeft
     press_key KbD
 
-    see_actor_attrs :foxy, 
-      move_left: true
-
-    see_actor_attrs :foxy, 
-      move_right: true
+    input.move_left?.should be_true
+    input.move_right?.should be_true
 
     release_key KbD
-    see_actor_attrs :foxy, 
-      move_right: false
+    input.move_left?.should be_true
+    input.move_right?.should be_false
+
 
     press_key KbRight
-
-    see_actor_attrs :foxy, 
-      move_right: true
+    input.move_left?.should be_true
+    input.move_right?.should be_true
 
     release_key KbRight
-
-    see_actor_attrs :foxy, 
-      move_right: false
+    input.move_left?.should be_true
+    input.move_right?.should be_false
   end
 
 end
