@@ -1,14 +1,10 @@
-class PlayStage < Stage
+define_stage :play do
 
-  # TODO make this work in conject
-  # construct_with :physics_manager
-  attr_accessor :physics_manager
+  requires :physics_manager
 
-  def setup
-    super
-    @physics_manager = this_object_context[:physics_manager]
-    @physics_manager.configure
-    @physics_manager.damping = 0.4
+  setup do
+    physics_manager.configure
+    physics_manager.damping = 0.4
 
     sound_manager.play_music :roids
 
@@ -33,8 +29,11 @@ class PlayStage < Stage
       fire :next_stage
     end
 
+    backstage[:level] ||= 0
+    backstage[:level] += 1
+
     @rocks = []
-    opts[:rocks].times do
+    rocks_per_level[backstage[:level] - 1].times do
       rock = create_actor :rock
       @rocks << rock
       x,y = rand(400)+200,rand(300)+200
@@ -48,7 +47,7 @@ class PlayStage < Stage
     @height = 768
 
     # ship rock collision
-    @physics_manager.add_collision_func(:rock, :ship) do |rock, ship|
+    physics_manager.add_collision_func(:rock, :ship) do |rock, ship|
       unless ship.invincible
         sound_manager.play_sound :implosion
 
@@ -62,7 +61,7 @@ class PlayStage < Stage
       end
     end
 
-    @physics_manager.add_collision_func(:rock, :bullet) do |rock, bullet|
+    physics_manager.add_collision_func(:rock, :bullet) do |rock, bullet|
       sound_manager.play_sound :implosion
 
       rock.when :remove_me do
@@ -92,29 +91,43 @@ class PlayStage < Stage
       curtain_up
     end
 
-    end
+    director.when :update do |time|
 
-  def curtain_up(*args)
-    @running = true
-  end
+      return unless running?
+      physics_manager.update_physics time
 
-  def running?
-    @running
-  end
-
-  def update(time)
-    super
-    return unless running?
-    @physics_manager.update_physics time
-
-    if @rocks.empty?
-      @ship.when :remove_me do
-        fire :next_stage
+      if @rocks.empty?
+        @ship.when :remove_me do
+          if last_level?
+            fire :change_stage, :credits
+          else
+            fire :restart_stage
+          end
+        end
+        @ship.remove
       end
-      @ship.remove
     end
+
   end
 
+  helpers do
+    def last_level?
+      backstage[:level] == (rocks_per_level.size)
+    end
+
+    def rocks_per_level
+      [4, 6, 9]
+    end
+
+    def curtain_up(*args)
+      @running = true
+    end
+
+    def running?
+      @running
+    end
+
+  end
 end
 
 

@@ -1,23 +1,19 @@
+define_stage :intro do
 
-class IntroStage < Stage
-  def curtain_up
-    # TODO change to use actor
-    @image = resource_manager.load_image 'intro.png'
-    i = input_manager
-    i.reg :down, KbSpace do
-      fire :next_stage
+  helpers do
+    def curtain_up
+      create_actor :icon, image: 'intro.png', x: viewport.width / 2, y: viewport.height / 2
+      input_manager.reg :down, KbSpace do
+        fire :next_stage
+      end
+
+      input_manager.reg :mouse_down do
+        fire :next_stage
+      end
     end
 
-    i.reg :mouse_down do
-      fire :next_stage
+    def curtain_down(*args)
+      fire :remove_me
     end
-  end
-
-  def curtain_down(*args)
-    fire :remove_me
-  end
-
-  def draw(target)
-    @image.draw 0, 0, 1 if @image
   end
 end

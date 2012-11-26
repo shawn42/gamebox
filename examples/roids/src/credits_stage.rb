@@ -1,19 +1,16 @@
-
-class CreditsStage < Stage
-  def curtain_up
-    @image = resource_manager.load_image 'credits.png'
-    i = input_manager
-    i.reg :down, KbSpace do
-      fire :next_stage
+define_stage :credits do
+  helpers do
+    def curtain_up
+      create_actor :icon, image: 'credits.png', x: viewport.width / 2, y: viewport.height / 2
+      timer_manager.add_timer "exit", 3000 do
+        input_manager.reg :down, KbSpace do
+          exit
+        end
+      end
     end
-  end
 
-  def curtain_down(*args)
-    # TODO change to use actor
-    fire :remove_me
-  end
-
-  def draw(target)
-    @image.draw 0,0,1 if @image
+    def curtain_down(*args)
+      fire :remove_me
+    end
   end
 end

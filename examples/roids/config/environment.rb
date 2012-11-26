@@ -17,14 +17,8 @@ Gamebox.configure do |config|
   config.gb_gfx_path = GAMEBOX_PATH + "data/graphics/"
   config.gb_fonts_path = GAMEBOX_PATH + "data/fonts"
 
-  # config.stages = [:demo]
-  config.stages = [
-    { intro: nil},
-    { play1: {class: :play, rocks: 3}},
-    { play2: {class: :play, rocks: 5}},
-    { play3: {class: :play, rocks: 7}},
-    { credits: nil},
-  ]
+  config.stages = [ :intro, :play, :credits ]
+
   config.game_name = "Roids"
 end
 

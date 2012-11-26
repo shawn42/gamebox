@@ -7,10 +7,14 @@ Behavior.define :graphical do
   requires_behaviors :layered
   requires :resource_manager
   setup do 
-    image = resource_manager.load_actor_image(actor)
-    scale = @opts[:scale] || 1,
-    actor.has_attributes( image: image,
-                          width: image.width,
+    image = actor.do_or_do_not(:image) || resource_manager.load_actor_image(actor)
+    image = resource_manager.load_image(image) if image.is_a? String
+    scale = @opts[:scale] || 1
+
+    actor.has_attribute :image
+    actor.image = image
+
+    actor.has_attributes( width: image.width,
                           height: image.height,
                           tiled: @opts[:tiled],
                           view: @opts[:view] || :graphical_actor_view,
