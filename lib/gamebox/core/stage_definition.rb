@@ -1,5 +1,5 @@
 class StageDefinition
-  attr_accessor :setup_block, :renderer,
+  attr_accessor :curtain_up_block, :curtain_down_block, :renderer,
     :helpers_block, :required_injections
 
   # Required objects that you need for your specific stage
@@ -13,15 +13,26 @@ class StageDefinition
     @required_injections = injections_needed
   end
 
-  # Define a setup block of code to run when your stage is created
+  # Define a block of code to run when your stage is and ready to play
   # example:
   # define_stage :main_menu do
-  #   setup do
+  #   curtain_up do
   #     @info = load_some_info
   #   end
   # end
-  def setup(&setup_block)
-    @setup_block = setup_block
+  def curtain_up(&curtain_up_block)
+    @curtain_up_block = curtain_up_block
+  end
+
+  # Define a block of code to run when your stage has been shutdown
+  # example:
+  # define_stage :main_menu do
+  #   curtain_down do
+  #     @info = load_some_info
+  #   end
+  # end
+  def curtain_down(&curtain_down_block)
+    @curtain_down_block = curtain_down_block
   end
 
   # Replaces the default renderer with your own.
@@ -35,7 +46,7 @@ class StageDefinition
   end
 
   # Define any helper methods / include modules here
-  # These will be available for setup / update / draw to use.
+  # These will be available for curtain_up / update / draw to use.
   # example:
   # define_stage :main_menu do
   #   include MinMaxHelpers

@@ -65,14 +65,6 @@ class Stage
     timer_manager.update time
   end
 
-  def curtain_raising(*args)
-    curtain_up *args
-  end
-
-  def curtain_dropping(*args)
-    curtain_down *args
-  end
-
   def curtain_up(*args)
   end
 

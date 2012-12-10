@@ -7,8 +7,8 @@ describe StageManager do
   class FooStage; end
   class BarStage; end
 
-  let(:foo_stage) { stub('foo stage', when: nil, curtain_raising: nil, curtain_dropping: nil) }
-  let(:bar_stage) { stub('bar stage', when: nil, curtain_raising: nil, curtain_dropping: nil) }
+  let(:foo_stage) { stub('foo stage', when: nil, curtain_up: nil, curtain_down: nil) }
+  let(:bar_stage) { stub('bar stage', when: nil, curtain_up: nil, curtain_down: nil) }
   let(:foo_stage_config) { {foo: {thing:1} } }
   let(:bar_stage_config) { {bar: {thing:2} } }
   let(:stages) { [foo_stage_config, bar_stage_config] }
@@ -52,12 +52,12 @@ describe StageManager do
     end
 
     it 'raises the curtain on the new stage' do
-      foo_stage.expects(:curtain_raising).with(:args)
+      foo_stage.expects(:curtain_up).with(:args)
       subject.switch_to_stage :foo, :args
     end
 
     it 'shuts down the current stage' do
-      foo_stage.expects(:curtain_dropping).with(:other_args)
+      foo_stage.expects(:curtain_down).with(:other_args)
       @input_manager.expects(:clear_hooks).with(foo_stage)
       subject.switch_to_stage :foo, :args
       subject.switch_to_stage :bar, :other_args
@@ -67,7 +67,7 @@ describe StageManager do
   describe '#prev_stage' do
     it 'goes to prev stage' do
       subject.switch_to_stage :bar
-      foo_stage.expects(:curtain_raising).with(:args)
+      foo_stage.expects(:curtain_up).with(:args)
 
       subject.prev_stage :args
       subject.current_stage.should == foo_stage
@@ -82,7 +82,7 @@ describe StageManager do
   describe '#next_stage' do
     it 'goes to next stage' do
       subject.switch_to_stage :foo
-      bar_stage.expects(:curtain_raising).with(:args)
+      bar_stage.expects(:curtain_up).with(:args)
 
       subject.next_stage :args
       subject.current_stage.should == bar_stage
@@ -98,7 +98,7 @@ describe StageManager do
     it 'restarts the current stage' do
       subject.switch_to_stage :foo, :args
 
-      foo_stage.expects(:curtain_raising).with(:other_args)
+      foo_stage.expects(:curtain_up).with(:other_args)
       subject.restart_stage :other_args
     end
   end

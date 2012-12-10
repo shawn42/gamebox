@@ -40,7 +40,8 @@ class StageFactory
           stage.configure(backstage, opts)
 
           # setup
-          stage.instance_eval &stage_definition.setup_block if stage_definition.setup_block
+          stage.define_singleton_method(:curtain_up, &stage_definition.curtain_up_block) if stage_definition.curtain_up_block
+          stage.define_singleton_method(:curtain_down, &stage_definition.curtain_down_block) if stage_definition.curtain_down_block
         end
 
       rescue Exception => e

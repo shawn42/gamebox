@@ -78,13 +78,13 @@ class StageManager
     @stage = stage_name
     @stage_args = args
     @stages[@stage] = create_stage(@stage, @stage_opts[@stage_names.index(@stage)])
-    @stages[@stage].curtain_raising *args
+    @stages[@stage].curtain_up *args
   end
 
   def shutdown_current_stage(*args)
     if @stage and @stages and @stages[@stage]
       current_stage = @stages[@stage]
-      current_stage.curtain_dropping *args
+      current_stage.curtain_down *args
       input_manager.clear_hooks(current_stage)
       @stages.delete @stage
       @stage = nil
