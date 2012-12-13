@@ -65,7 +65,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 A stage is where all the magic happens. Each new play type in your game will use a different stage. An example game may have a number of stages such as: `main_menu`, `play`, or `credits`.  A `demo_stage.rb` is created for you by using the `gamebox new` command.
 
         define_stage :demo do
-          setup do
+          curtain_up do
            ...
           end
         end
@@ -127,7 +127,7 @@ Actor views are the mechanism for drawing an actor in Gamebox. When an actor is 
 
 To get an actor on the stage, use the `create_actor` method on stage. This can be done directly from a stage or from a behavior that has required stage via `requires :stage`. 
 
-        setup do
+        curtain_up do
           @player = create_actor :label, x: 20, y: 30, text: "Hello World!"
         end
         
