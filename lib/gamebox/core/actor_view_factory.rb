@@ -35,7 +35,7 @@ class ActorViewFactory
       helpers = view_definition.helpers_block
       if helpers
         helpers_module = Module.new &helpers
-        behavior.extend helpers_module
+        view.extend helpers_module
       end
 
       behavior_factory.add_behavior(actor, :visible, view: view)
