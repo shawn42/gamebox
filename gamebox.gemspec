@@ -20,12 +20,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency "gosu"
   s.add_dependency "publisher"
-  s.add_dependency "conject", ">= 0.0.5"
+  s.add_dependency "conject", ">= 0.0.8"
   s.add_dependency "tween"
   s.add_dependency "i18n"
   s.add_dependency "thor", ">= 0.14.6"
   s.add_dependency "require_all"
-  s.add_dependency "kvo", ">= 0.0.2"
+  s.add_dependency "kvo", ">= 0.0.4"
   s.add_dependency "listen", ">= 0.5.3"
 
   s.add_development_dependency "pry", '~>0.9.7'
