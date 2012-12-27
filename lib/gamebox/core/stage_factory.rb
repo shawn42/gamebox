@@ -23,7 +23,7 @@ class StageFactory
 
           renderer_type = stage_definition.renderer || :renderer
           renderer = stage_context[renderer_type]
-          stage_context[:renderer] = renderer
+          stage_context[:renderer] = renderer unless renderer_type == :renderer
           stage.define_singleton_method :renderer do
             components[:renderer] 
           end
