@@ -142,6 +142,7 @@ class Stage
       raise "Stage [#{stage_name}] already defined at #{@definitions[stage_name].source}" if @definitions[stage_name]
 
       definition = StageDefinition.new
+      definition.source = caller.detect{|c|!c.match /core/}
       definition.instance_eval &blk if block_given?
       @definitions[stage_name] = definition
     end

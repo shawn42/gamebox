@@ -27,9 +27,9 @@ class ActorViewFactory
       end
 
       view.define_singleton_method :draw, &view_definition.draw_block if view_definition.draw_block
-      if view_definition.configure_block
-        view.define_singleton_method :configure, &view_definition.configure_block 
-        view.configure
+      if view_definition.setup_block
+        view.define_singleton_method :setup, &view_definition.setup_block 
+        view.setup
       end
 
       helpers = view_definition.helpers_block

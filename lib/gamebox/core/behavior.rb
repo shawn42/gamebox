@@ -37,6 +37,7 @@ class Behavior
     def define(behavior_type, &blk)
       @definitions ||= {}
       definition = BehaviorDefinition.new
+      definition.source = caller.detect{|c|!c.match /core/}
       definition.instance_eval &blk if block_given?
       @definitions[behavior_type] = definition
     end

@@ -1,11 +1,11 @@
 class ActorViewDefinition
-  attr_accessor :draw_block, :configure_block, :required_injections, :helpers_block
+  attr_accessor :draw_block, :setup_block, :required_injections, :helpers_block, :source
   def requires(*injections_needed)
     @required_injections = injections_needed
   end
 
-  def configure(&configure_block)
-    @configure_block = configure_block
+  def setup(&setup_block)
+    @setup_block = setup_block
   end
 
   def draw(&draw_block)

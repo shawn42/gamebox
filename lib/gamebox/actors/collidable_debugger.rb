@@ -1,8 +1,8 @@
-Actor.define :collidable_debugger do
+define_actor :collidable_debugger do
   has_behaviors :collider_container
 end
 
-Behavior.define :collider_container do
+define_behavior :collider_container do
   setup do
     actor.has_attributes collider: actor.opts[:collider]
     actor.collider.when :remove do
@@ -11,9 +11,9 @@ Behavior.define :collider_container do
   end
 end
 
-ActorView.define :collidable_debugger_view do
+define_actor_view :collidable_debugger_view do
 
-  configure do
+  setup do
     @color = Color::WHITE
   end
 

@@ -45,7 +45,7 @@ describe "The basic life cycle of an actor", acceptance: true do
 
   define_actor_view :mc_bane_view do
     requires :resource_manager # needs these injected
-    configure do
+    setup do
       @image = resource_manager.load_actor_image(actor)
     end
 

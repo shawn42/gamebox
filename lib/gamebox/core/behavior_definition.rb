@@ -1,6 +1,6 @@
 class BehaviorDefinition
   attr_accessor :setup_block, :required_injections, :react_to_block, :required_behaviors,
-    :helpers_block
+    :helpers_block, :source
 
   def requires(*injections_needed)
     @required_injections = injections_needed

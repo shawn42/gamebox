@@ -1,6 +1,6 @@
 class StageDefinition
   attr_accessor :curtain_up_block, :curtain_down_block, :renderer,
-    :helpers_block, :required_injections
+    :helpers_block, :required_injections, :source
 
   # Required objects that you need for your specific stage
   # The objects will be created for you.

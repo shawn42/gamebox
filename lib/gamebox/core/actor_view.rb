@@ -35,6 +35,7 @@ class ActorView
     def define(actor_view_type, &blk)
       @definitions ||= {}
       definition = ActorViewDefinition.new
+      definition.source = caller.detect{|c|!c.match /core/}
       definition.instance_eval &blk if block_given?
       @definitions[actor_view_type] = definition
     end
