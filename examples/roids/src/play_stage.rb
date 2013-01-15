@@ -2,7 +2,7 @@ define_stage :play do
 
   requires :physics_manager
 
-  setup do
+  curtain_up do
     physics_manager.configure
     physics_manager.damping = 0.4
 
@@ -84,16 +84,7 @@ define_stage :play do
     @stars = []
     20.times { @stars << vec2(rand(@width),rand(@height)) }
 
-    @curtain = create_actor :curtain, :dir => :up, 
-      :duration => 4000
-
-    @curtain.when :curtain_up do
-      curtain_up
-    end
-
     director.when :update do |time|
-
-      return unless running?
       physics_manager.update_physics time
 
       if @rocks.empty?
@@ -118,15 +109,6 @@ define_stage :play do
     def rocks_per_level
       [4, 6, 9]
     end
-
-    def curtain_up(*args)
-      @running = true
-    end
-
-    def running?
-      @running
-    end
-
   end
 end
 

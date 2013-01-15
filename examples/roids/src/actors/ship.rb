@@ -72,30 +72,30 @@ define_behavior :shiplike do
     end
 
     def move_right(time)
-      actor.body.t += 100.0 * time
+      actor.body.t += 50.0 * time
     end
 
     def move_left(time)
-      actor.body.t -= 100.0 * time
+      actor.body.t -= 50.0 * time
     end
 
     def move_forward(time)
       val = actor.body.a
       move_vec = CP::Vec2.new(Math::cos(val), Math::sin(val)) * time * @speed
 
-      actor.body.apply_force(move_vec, ZERO_VEC_2) 
+      actor.body.apply_force(move_vec, ZERO_VEC_2)
     end
   end
 end
 
 define_actor :ship do
 
-  has_behavior :shiplike, :audible, :animated, :physical => {:shape => :circle, 
+  has_behavior :shiplike, :audible, :animated, :physical => {:shape => :circle,
     :mass => 10,
     :friction => 1.7,
     :elasticity => 0.4,
     :radius => 10,
-    :moment => 150 
+    :moment => 150
   }
 
 end
