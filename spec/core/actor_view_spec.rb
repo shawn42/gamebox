@@ -5,7 +5,7 @@ describe ActorView do
   let!(:subcontext) do 
     it = nil
     Conject.default_object_context.in_subcontext{|ctx|it = ctx}; 
-    _mocks = create_mocks *(Actor.object_definition.component_names + ActorView.object_definition.component_names - [:actor])
+    _mocks = create_mocks *(Actor.object_definition.component_names + ActorView.object_definition.component_names - [:actor, :this_object_context])
     _mocks.each do |k,v|
       it[k] = v
     end
