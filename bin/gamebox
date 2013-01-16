@@ -2,6 +2,7 @@
 require 'rake'
 require 'thor'
 require 'gamebox'
+include Rake::DSL
 
 DIST_TYPES = %w(mac win linux)
 load File.expand_path(File.join(File.dirname(__FILE__), "..", "/lib/gamebox/tasks/gamebox_tasks.rake"))
@@ -10,12 +11,8 @@ def print_version
   puts "Gamebox #{Gamebox::VERSION::STRING}"
 end
 
-def run_rake_task(task_name)
-  unless Rake.application[task_name].nil?
-    Rake.application[task_name].invoke
-  else
-    puts "Cannot find task #{task_name}"
-  end
+def run_rake_task(*args)
+  sh "rake #{args.shift} #{args.join(' ')}"
 end
 
 if ARGV.include?('-v') || ARGV.include?('--version')
@@ -80,32 +77,11 @@ class GameboxThorCommand < Thor
 
   desc "generate [actor|behavior|stage]", "Gamebox generator, this will generate templated files for you for quicker development"
   def generate(*args)
-    send("generate_#{args.shift}", *args) rescue p "Undefined generator."
+    run_rake_task("generate:#{args.shift}", *args)
   end
   desc "g [actor|behavior|stage]", "Gamebox generator, this will generate templated files for you for quicker development"
   alias_method :g, :generate
 
-  private
-
-  def generate_actor(*args)
-    p "TODO (sorry generate_actor not implemented yet) actor name: #{args[0]}"
-    # create new file with filename of src/actors/[name]_actor.rb
-    # contents generated 'define_actor :[name] do ...'
-  end
-
-  def generate_behavior(*args)
-    p "TODO (sorry generate_behavior not implemented yet) behavior name: #{args[0]}"
-    # create new file with filename of src/behaviors/[name]_behavior.rb
-    # contents generated 'define_behavior :[name] do ...'
-  end
-
-  def generate_stage(*args)
-    p "TODO (sorry generate_stage not implemented yet) stage name: #{args[0]}"
-    # create new file with filename of src/[name]_stage.rb
-    #     possibly in the future add to src/stages/[name]_stage.rb
-    # contents generated 'define_stage :[name] do ...'
-    # add stage to the config.stages in config/environment.rb
-  end
 end
 
 GameboxThorCommand.start
