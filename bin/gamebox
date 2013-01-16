@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'rake'
 require 'thor'
-require 'yaml' #for some reason debug would not run without this
 require 'gamebox'
 
 DIST_TYPES = %w(mac win linux)
