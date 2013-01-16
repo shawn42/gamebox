@@ -75,11 +75,11 @@ class GameboxThorCommand < Thor
     end
   end
 
-  desc "generate [actor|behavior|stage]", "Gamebox generator, this will generate templated files for you for quicker development"
+  desc "generate [actor|behavior|stage] NAME", "Gamebox generator, this will generate templated files for you for quicker development"
   def generate(*args)
     run_rake_task("generate:#{args.shift}", *args)
   end
-  desc "g [actor|behavior|stage]", "Gamebox generator, this will generate templated files for you for quicker development"
+  desc "g [actor|behavior|stage] NAME", "Gamebox generator, this will generate templated files for you for quicker development"
   alias_method :g, :generate
 
 end
