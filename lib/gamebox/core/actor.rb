@@ -100,7 +100,6 @@ class Actor
       # TODO evaluate the perf of doing this
       definition.source = caller.detect{|c|!c.match /core/}
       definition.instance_eval &blk if block_given?
-      @definitions[actor_type] = definition
 
       view_blk = definition.view_blk
       if view_blk
@@ -112,6 +111,8 @@ class Actor
         Behavior.define actor_type, &behavior_blk
         definition.has_behavior actor_type
       end
+
+      @definitions[actor_type] = definition
     end
 
     def definitions

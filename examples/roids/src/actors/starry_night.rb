@@ -16,7 +16,7 @@ define_actor :starry_night do
   has_behavior :starfield, layered: -1
 
   view do
-    configure do
+    setup do
       @color = [255,255,255,255]
     end
     draw do |target, x_off, y_off, z|
