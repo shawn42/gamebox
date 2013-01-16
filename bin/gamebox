@@ -1,10 +1,22 @@
 #!/usr/bin/env ruby
-
+require 'rake'
 require 'thor'
+require 'yaml' #for some reason debug would not run without this
 require 'gamebox'
+
+DIST_TYPES = %w(mac win linux)
+load File.expand_path(File.join(File.dirname(__FILE__), "..", "/lib/gamebox/tasks/gamebox_tasks.rake"))
 
 def print_version
   puts "Gamebox #{Gamebox::VERSION::STRING}"
+end
+
+def run_rake_task(task_name)
+  unless Rake.application[task_name].nil?
+    Rake.application[task_name].invoke
+  else
+    puts "Cannot find task #{task_name}"
+  end
 end
 
 if ARGV.include?('-v') || ARGV.include?('--version')
@@ -31,10 +43,41 @@ class GameboxThorCommand < Thor
     end
 
     directory "app", "."
-
   end
-  
+  desc "n PATH", "Generates a new gamebox game at PATH."
+  alias_method :n, :new
 
+  desc "start", "starts the application"
+  def start
+    print_version
+    run_rake_task("run")
+  end
+
+  desc "s", "starts the application"
+  alias_method :s, :start
+
+  desc "debug", "starts the application in debug"
+  def debug
+    print_version
+    run_rake_task("debug")
+  end
+
+  desc "d", "starts the application in debug"
+  alias_method :d, :debug
+
+  desc "dist [mac|linux|win|all]", "Build an executable for your app"
+  def dist(*args)
+    dist_type = args[0]
+    if DIST_TYPES.include?(dist_type)
+      run_rake_task("dist:#{dist_type}")
+    elsif dist_type == "all"
+      DIST_TYPES.each do |type|
+        run_rake_task("dist:#{type}")
+      end
+    else
+      p "Unrecognized dist type"
+    end
+  end
 
 end
 
