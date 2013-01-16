@@ -12,7 +12,7 @@ def print_version
 end
 
 def run_rake_task(*args)
-  sh "rake #{args.shift} #{args.join(' ')}"
+  sh "rake #{args.shift}[#{args.join(',')}]"
 end
 
 if ARGV.include?('-v') || ARGV.include?('--version')

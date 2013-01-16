@@ -42,31 +42,18 @@ task :spec do
 end
 
 namespace :generate do
-  desc "generate a new actor in the actors folder"
-  task :actor do |t, *args|
-    File.open(File.join(File.dirname(__FILE__), "../../..", "/templates/actor_template.erb")) do |io|
-      template = ERB.new io.read
-      @actor_name = args[0]
-      File.open "#{APP_ROOT}src/actors/#{@actor_name}_actor.rb", "w" do |out|
-        out.puts template.result binding
+  #didnt't use pluralize in here because I didnt want to include all of active support just for pluralize
+  [:actor, :stage, :behavior].each do |generator_name|
+    desc "generate a new #{generator_name} in the #{ generator_name }s folder"
+    task generator_name, "#{generator_name}_name".to_sym do |t, args|
+      File.open(File.join(File.dirname(__FILE__), "../../..", "/templates/#{generator_name}_template.erb")) do |io|
+        template = ERB.new io.read
+        instance_variable_set("@#{generator_name}_name", args["#{generator_name}_name"])
+        File.open "#{APP_ROOT}src/#{ generator_name}s/#{args["#{generator_name}_name"]}_#{generator_name}.rb", "w" do |out|
+          out.puts template.result binding
+        end
       end
     end
-  end
-
-  desc "generate a new behavior in the behaviors folder"
-  task :behavior do |t, *args|
-    p "TODO (sorry generate_behavior not implemented yet) behavior name: #{args[0]}"
-    # create new file with filename of src/behaviors/[name]_behavior.rb
-    # contents generated 'define_behavior :[name] do ...'
-  end
-
-  desc "generate a new stage in the stages folder"
-  task :stage do |t, *args|
-    p "TODO (sorry generate_stage not implemented yet) stage name: #{args[0]}"
-    # create new file with filename of src/[name]_stage.rb
-    #     possibly in the future add to src/stages/[name]_stage.rb
-    # contents generated 'define_stage :[name] do ...'
-    # add stage to the config.stages in config/environment.rb
   end
 end
 
