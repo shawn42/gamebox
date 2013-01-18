@@ -1,1 +1,7 @@
+build
+dist
+fakeroot
+*.o
 *.swp
+crate_boot.h
+.bundle
