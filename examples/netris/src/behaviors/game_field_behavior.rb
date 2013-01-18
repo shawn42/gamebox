@@ -2,8 +2,7 @@ define_behavior :game_field do
   requires :director, :input_manager, :stage
 
   setup do
-    actor.has_attributes grid: Grid.new(10, 21),
-                         drop_after: 500,
+    actor.has_attributes drop_after: 500,
                          time_lapsed: 0
 
     actor.grid.when(:game_over) do
@@ -53,9 +52,15 @@ define_behavior :game_field do
         end
       end
     end
+
+    reacts_with :remove
   end
 
   helpers do
+    def remove
+      director.unsubscribe_all self
+      input_manager.unsubscribe_all self
+    end
 
   end
 end
