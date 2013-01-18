@@ -28,7 +28,7 @@ class ActorDefinition
       @attributes << att
     end
   end
-  alias has_behavior has_behaviors
+  alias has_attribute has_attributes
 
   def view(&blk)
     @view_blk = blk

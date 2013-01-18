@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
-$: << "#{File.dirname(__FILE__)}/../config"
 
+$: << File.join(File.dirname($0),"..","config")
 require 'environment'
 
-if $0 == __FILE__
-  GameboxApp.run ARGV, ENV
-end
+GameboxApp.run ARGV, ENV
