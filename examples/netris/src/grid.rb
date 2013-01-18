@@ -1,4 +1,3 @@
-require 'tetromino'
 require 'publisher'
 
 # This class handles the abstract representation of the Tetris grid
@@ -73,16 +72,13 @@ class Grid
 
   # Begin Tetris.
   # Give the block the x and y pixel values of the parent actor
-  def start_play(actor)
+  def start_play(actor, stage)
     @parent = actor
+    @stage = stage
     self.screen_x = @parent.x
     self.screen_y = @parent.y
 
-    @game_info = @parent.spawn :game_info
-    @game_info.x = self.screen_x + self.width + 40
-    @game_info.y = self.screen_y + 240
-    @game_info.score = 0
-    @game_info.current_level = 1
+    @game_info = stage.create_actor :game_info, x: self.screen_x + self.width + 40, y: self.screen_y + 240, score: 0, current_level: 1
 
     next_tetromino
     new_piece
@@ -131,9 +127,7 @@ class Grid
     @falling_piece = @waiting_piece
 
     type = TETROMINOS[rand(TETROMINOS.length)]
-    @waiting_piece = @parent.spawn(type)
-    @waiting_piece.x = self.screen_x + self.width + 80
-    @waiting_piece.y = self.screen_y + 40
+    @waiting_piece = @stage.create_actor type, x: self.screen_x + self.width + 80, y: self.screen_y + 40
 
     @waiting_piece
   end
@@ -202,14 +196,14 @@ class Grid
 
     # Now we need to see if the rotation caused a collision.
     # If so, unrotate it.
-    @falling_piece.rotate
-    @falling_piece.rotate_back if collides?
+    rotate
+    rotate_back if collides?
   end
 
   # Done with the piece, tell it to break apart into individual block actors, then
   # keep a reference to those blocks int he position they should be in
   def piece_finished
-    blocks = @falling_piece.build_blocks
+    blocks = build_blocks
     blocks.each do |block|
       @field[
         @falling_piece.grid_position.y + block.grid_offset_y
@@ -223,6 +217,38 @@ class Grid
   end
 
   private
+
+  # When the piece is done falling, build up block
+  def build_blocks
+    new_blocks = []
+    current_rotated_blocks.each do |block|
+      block_actor = @stage.create_actor :block,
+                                        x: block[0] * BLOCK_SIZE + @falling_piece.x,
+                                        y: block[1] * BLOCK_SIZE + @falling_piece.y,
+                                        grid_offset_x: block[0],
+                                        grid_offset_y: block[1],
+                                        image: @falling_piece.image
+
+      new_blocks << block_actor
+    end
+    # Destroy ourselves, leaving only the blocks behind
+    @falling_piece.remove
+
+    new_blocks
+  end
+
+  def current_rotated_blocks
+    @falling_piece.blocks[@falling_piece.current_rotation]
+  end
+
+  def rotate
+    @falling_piece.current_rotation = (@falling_piece.current_rotation + 1) % @falling_piece.blocks.length
+  end
+
+  # For undoing a rotation, for example in the case where a rotation causes a collision
+  def rotate_back
+    @falling_piece.current_rotation = (@falling_piece.current_rotation - 1) % @falling_piece.blocks.length
+  end
 
   # Look for complete rows, and remove them
   def check_row_removal
@@ -243,19 +269,19 @@ class Grid
     # Then we out the rows to remove
     to_remove.each do |row|
       @field[row].each_index do |col|
-        @field[row][col].remove_self if @field[row][col] != 1
+        @field[row][col].remove if @field[row][col] != 1
         @field[row][col] = nil
       end
     end
 
-    # And finally move rows above nulled rows down to 
+    # And finally move rows above nulled rows down to
     # collapse the field
     to_remove.each do |row|
       (1..row).to_a.reverse.each do |r|
         @field[r].length.times do |i|
           if @field[r-1][i].is_a?(Actor)
             @field[r][i] = @field[r-1][i]
-            @field[r][i].y += BLOCK_SIZE 
+            @field[r][i].y += BLOCK_SIZE
             @field[r-1][i] = nil
             @field[r][0] = 1
             @field[r][-1] = 1
@@ -296,9 +322,9 @@ class Grid
 
   def collides?
     hit = false
-    @falling_piece.blocks.each do |block|
-      row = @falling_piece.grid_position.y + block[1] 
-      col = @falling_piece.grid_position.x + block[0] 
+    current_rotated_blocks.each do |block|
+      row = @falling_piece.grid_position.y + block[1]
+      col = @falling_piece.grid_position.x + block[0]
       next if row < 0 # Don't collide up
 
       if !@field[row][col].nil?

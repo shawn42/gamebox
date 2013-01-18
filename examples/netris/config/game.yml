@@ -1,7 +1,8 @@
---- 
+---
+:title: Netris!
 :sound: true
-:auto_quit: :escape
+:auto_quit: KbEscape
 :fullscreen: false
-:screen_resolution: 
+:screen_resolution:
 - 500
 - 600
