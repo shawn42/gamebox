@@ -2,4 +2,5 @@ language: ruby
 rvm:
   - 1.9.3
 before_install:
+ - sudo apt-get update
  - sudo apt-get install build-essential freeglut3-dev libfreeimage-dev libgl1-mesa-dev libopenal-dev libpango1.0-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsndfile-dev libxinerama-dev
