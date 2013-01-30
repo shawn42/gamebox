@@ -24,6 +24,7 @@ define_actor :label do
         recalculate_size
       end
       actor.when :font_name_changed do
+        actor.font_style.name = actor.font_name
         actor.font_style.reload
         recalculate_size
       end

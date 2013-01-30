@@ -33,10 +33,63 @@ describe :label do
       subject.setup
     end
 
-    it 'listens for text changes'
-    it 'listens for font size changes'
-    it 'listens for font name changes'
-    it 'listens for font color changes'
+    it 'listens for text changes' do
+      subject.setup
+      @actor.stubs(text: "foo")
+
+      font_style = stub(height: 13)
+      font_style.stubs(:calc_width).with("foo").returns(73)
+      @actor.stubs(font_style: font_style)
+
+      @actor.expects(:width=).with(73)
+      @actor.expects(:height=).with(13)
+
+      @actor.fire :text_changed
+    end
+
+    it 'listens for font color changes' do
+      subject.setup
+      font_style = stub
+      font_style.expects(:color=).with(:red)
+      @actor.stubs(font_style: font_style, color: :red)
+
+      @actor.fire :color_changed
+    end
+
+    it 'listens for font name changes' do
+      subject.setup
+      @actor.stubs(text: "foo", font_name: "asimov.ttf")
+
+      font_style = stub(height: 13)
+      font_style.stubs(:calc_width).with("foo").returns(73)
+
+      font_style.expects(:name=).with("asimov.ttf")
+      font_style.expects(:reload)
+      @actor.expects(:width=).with(73)
+      @actor.expects(:height=).with(13)
+
+      @actor.stubs(font_style: font_style)
+
+      @actor.fire :font_name_changed
+    end
+
+    it 'listens for font size changes' do
+      subject.setup
+      @actor.stubs(text: "foo", font_size: 14)
+
+      font_style = stub(height: 13)
+      font_style.stubs(:calc_width).with("foo").returns(73)
+
+      font_style.expects(:size=).with(14)
+      font_style.expects(:reload)
+      @actor.expects(:width=).with(73)
+      @actor.expects(:height=).with(13)
+
+      @actor.stubs(font_style: font_style)
+
+      @actor.fire :font_size_changed
+    end
+
   end
 end
 
