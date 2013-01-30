@@ -7,9 +7,9 @@ define_actor :label do
     setup do
       # will define attributes and set their values if no one else has
       actor.has_attributes text:      "",
-                           font_size: 30,
-                           font_name: "Asimov.ttf",
-                           color:     [250,250,250,255],
+                           font_size: Gamebox.configuration.default_font_size,
+                           font_name: Gamebox.configuration.default_font_name,
+                           color:     Gamebox.configuration.default_font_color,
                            width:     0,
                            height:    0,
                            layer:     1

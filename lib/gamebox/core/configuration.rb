@@ -32,6 +32,10 @@ module Gamebox
 
     add_setting :stages, default: [:demo]
 
+    add_setting :default_font_size, default: 30
+    add_setting :default_font_name, default: "Asimov.ttf"
+    add_setting :default_font_color, default: [250,250,250,255]
+
     def settings
       @settings ||= {}
     end
