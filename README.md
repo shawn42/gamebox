@@ -24,7 +24,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 
  * gem install gamebox
  * or [tar](http://shawn42.github.com/gamebox)
- * or git clone git://github.com/shawn42/gamebox.git && bundle && rake install
+ * or `git clone git://github.com/shawn42/gamebox.git && cd gamebox && bundle && rake install`
 
 ## Game Creation
 
