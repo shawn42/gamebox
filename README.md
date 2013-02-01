@@ -22,14 +22,13 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 
 ## Installation
 
- * gem install gamebox
- * or [tar](http://shawn42.github.com/gamebox)
+ * `gem install gamebox`
  * or git clone git://github.com/shawn42/gamebox.git && bundle && rake install
 
 ## Game Creation
 
-1. gamebox new zapper
-1. this will create the directory structure and needed files to get a basic actor up on the screen:   
+1. `gamebox new zapper`
+2. this will create the directory structure and needed files to get a basic actor up on the screen:   
 
 
         zapper  
@@ -54,7 +53,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
             └── demo_stage.rb  
 
 
-1. you now have a runnable Gamebox game
+3. you now have a runnable Gamebox game
 
         cd zapper  
         bundle
