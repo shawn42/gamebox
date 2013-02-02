@@ -23,7 +23,6 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 ### Installation
 
 * `gem install gamebox`
-* [tar](http://shawn42.github.com/gamebox)
 * `git clone git://github.com/shawn42/gamebox.git && cd gamebox && bundle && rake install`
 
 ### Game Creation
