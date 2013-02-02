@@ -177,7 +177,6 @@ director.when :update do |t_ms, t_sec|
 end
 ```
 
-
 ### Sound and Music
 
 SoundManager handles the autoloading of sounds from `data/sounds` and `data/music`. The stage has direct access via `sound_manager`. To allow an actor to emit sounds or music, give them the `audible` behavior.  See Reactions below for usage from actors.
