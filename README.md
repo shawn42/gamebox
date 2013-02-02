@@ -66,7 +66,7 @@ bundle
 rake
 ```
 
-### Stages
+## Stages
 
 A stage is where all the magic happens. Each new play type in your game will use a different stage. An example game may have a number of stages such as: `main_menu`, `play`, or `credits`.  A `demo_stage.rb` is created for you by using the `gamebox new` command.
 
@@ -145,7 +145,7 @@ end
 stage.create_actor ..
 ```
 
-### Input
+## Input
 
 Input comes from the InputManager. The stage has direct access via the `input_manager` method. Behaviors can request that they get the `input_manager` via `requires :input_manager`. The preferred way of getting input to your actors is via the actor's `input` method. It returns an InputMapper that can be built with a hash of events. Behaviors then subscribe for those events from the actor's input, or ask for it during updates.
 
@@ -166,7 +166,7 @@ if actor.input.walk_left?
 end
 ```
 
-### Updates
+## Updates
 
 Updates all come from the Director. Again, the stage has direct access via `director` and behaviors must `requires :director`.
 
@@ -176,7 +176,7 @@ director.when :update do |t_ms, t_sec|
 end
 ```
 
-### Sound and Music
+## Sound and Music
 
 SoundManager handles the autoloading of sounds from `data/sounds` and `data/music`. The stage has direct access via `sound_manager`. To allow an actor to emit sounds or music, give them the `audible` behavior.  See Reactions below for usage from actors.
 
@@ -188,7 +188,7 @@ sound_manager.play_music :overworld
 sound_manager.play_sound :death
 ```
 
-### Reactions
+## Reactions
 
 To ask to react to something we use the `react_to` method. It sends your message to all of the actors behaviors, giving them a chance to (you guessed it), react.
 
