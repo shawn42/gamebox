@@ -24,12 +24,17 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 
 * `gem install gamebox`
 * [tar](http://shawn42.github.com/gamebox)
-* `git clone git://github.com/shawn42/gamebox.git && bundle && rake install`
+* `git clone git://github.com/shawn42/gamebox.git && cd gamebox && bundle && rake install`
 
 ### Game Creation
 
-1. `gamebox zapper`
-2. this will create the directory structure and needed files to get a basic actor up on the screen:
+To create a new Gamebox project run:
+
+```bash
+gamebox zapper
+```
+
+This will create the directory structure and needed files to get a basic actor up on the screen:
 
 ```
 zapper
@@ -54,9 +59,9 @@ zapper
     └── demo_stage.rb
 ```
 
-3. you now have a runnable Gamebox game
+To run your game:
 
-``` bash
+```bash
 cd zapper
 bundle
 rake
@@ -66,7 +71,7 @@ rake
 
 A stage is where all the magic happens. Each new play type in your game will use a different stage. An example game may have a number of stages such as: `main_menu`, `play`, or `credits`.  A `demo_stage.rb` is created for you by using the `gamebox new` command.
 
-``` ruby
+```ruby
 define_stage :demo do
   curtain_up do
    ...
@@ -78,7 +83,7 @@ end
 
 Actors are the basic building blocks of games in Gamebox. Everything in the game is an actor: the player, an alien, the bullet, even the score on the screen. Internally, actors are just named collections of behaviors and observable attributes.
 
-``` ruby
+```ruby
 define_actor :player do
   has_behaviors do
       shooter recharge_time: 4_000, shot_power: 15, kickback: 0.7
@@ -100,7 +105,7 @@ end
 
 Behaviors are what bring life to actors.  They interact interact with the actor's internal data, input, audio, etc.
 
-``` ruby
+```ruby
 define_behavior :projectile do
 
   requires :director
@@ -121,7 +126,7 @@ end
 
 Actor views are the mechanism for drawing an actor in Gamebox. When an actor is created, Gamebox will see if there is a matching actor view by name. It will register the view to be drawn by the renderer. The draw callback is called with the rendering target, the x and y offsets based on the viewport, and the z layer to be used for drawing this actor (see the section on parallax layers for more on z layers).
 
-```
+```ruby
 define_actor_view :label_view do
   draw do |target, x_off, y_off, z|
     target.print actor.text, actor.x, actor.y, z, actor.font_style
@@ -133,7 +138,7 @@ end
 
 To get an actor on the stage, use the `create_actor` method on stage. This can be done directly from a stage or from a behavior that has required stage via `requires :stage`.
 
-``` ruby
+```ruby
 curtain_up do
   @player = create_actor :label, x: 20, y: 30, text: "Hello World!"
 end
@@ -146,7 +151,7 @@ stage.create_actor ..
 
 Input comes from the InputManager. The stage has direct access via the `input_manager` method. Behaviors can request that they get the `input_manager` via `requires :input_manager`. The preferred way of getting input to your actors is via the actor's `input` method. It returns an InputMapper that can be built with a hash of events. Behaviors then subscribe for those events from the actor's input, or ask for it during updates.
 
-``` ruby
+```ruby
 actor.input.map_input '+space' => :shoot,
                       '+w' => :jump,
                       '+a' => :walk_left
@@ -167,7 +172,7 @@ end
 
 Updates all come from the Director. Again, the stage has direct access via `director` and behaviors must `requires :director`.
 
-``` ruby
+```ruby
 director.when :update do |t_ms, t_sec|
   # update something
 end
@@ -178,7 +183,7 @@ end
 
 SoundManager handles the autoloading of sounds from `data/sounds` and `data/music`. The stage has direct access via `sound_manager`. To allow an actor to emit sounds or music, give them the `audible` behavior.  See Reactions below for usage from actors.
 
-``` ruby
+```ruby
 # music
 sound_manager.play_music :overworld
 
@@ -190,13 +195,13 @@ sound_manager.play_sound :death
 
 To ask to react to something we use the `react_to` method. It sends your message to all of the actors behaviors, giving them a chance to (you guessed it), react.
 
-``` ruby
+```ruby
 actor.react_to :play_sound, :jump
 ```
 
 If the actor has an audible behavior listening, he'll play the jump sound. But what if something else wants to know about playing sounds. Maybe the actor triggers an effect by making sound. If the actor had a `noise_alert` behavior, it too would be notified of the `:play_sound` event.
 
-``` ruby
+```ruby
 define_behavior :noise_alert do
   setup do
     reacts_with :play_sound
