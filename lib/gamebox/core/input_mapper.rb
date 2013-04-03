@@ -53,7 +53,10 @@ class InputMapper
 
   private
   def register_key_pressed(key, actions)
-    input_manager.reg :down, BUTTON_SYM_TO_ID[key.to_sym] do |*args|
+    id = BUTTON_SYM_TO_ID[key.to_sym]
+    raise "unknown button id from #{key}" unless id
+
+    input_manager.reg :down, id do |*args|
       Array.wrap(actions).each do |action|
         fire action, *args
       end
@@ -62,7 +65,9 @@ class InputMapper
   end
 
   def register_key_released(key, actions)
-    input_manager.reg :up, BUTTON_SYM_TO_ID[key.to_sym] do |*args|
+    id = BUTTON_SYM_TO_ID[key.to_sym]
+    raise "unknown button id from #{key}" unless id
+    input_manager.reg :up, id do |*args|
       Array.wrap(actions).each do |action|
         fire action, *args
       end
