@@ -57,8 +57,6 @@ describe "Using animation", acceptance: true do
     draw
 
     see_image_drawn snelpling_jump_1_png
-
-    pending "add callback checks?"
   end
 
 end

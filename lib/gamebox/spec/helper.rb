@@ -375,7 +375,17 @@ module GameboxAcceptanceSpecHelpers
     def see_text_drawn(text, opts)
       font = opts[:in]
       font.calls.should_not be_empty
-      font.calls.first.first.should == :draw
+      first_call = font.calls.first
+
+      first_call[0].should == :draw
+      first_call[1].to_s.should == text
+      first_call[2].should == opts[:x] if opts[:x]
+      first_call[3].should == opts[:y] if opts[:y]
+      first_call[4].should == opts[:z] if opts[:z]
+      first_call[5].should == opts[:x_scale] if opts[:x_scale]
+      first_call[6].should == opts[:y_scale] if opts[:y_scale]
+      first_call[7].should == opts[:color] if opts[:color]
+
       font._reset!
     end
 
