@@ -52,10 +52,15 @@ Behavior.define :physical do
 
     warp(vec2(actor.x,actor.y))
 
-    reacts_with :warp
+    reacts_with :warp, :remove
   end
 
   helpers do
+    def remove
+       # TODO not sure what else needs to be cleaned up here
+      director.unsubscribe_all self
+    end
+
     def setup_friction
       @friction = @opts[:friction]
       @friction ||= 0.4

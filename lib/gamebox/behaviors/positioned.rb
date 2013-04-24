@@ -14,5 +14,13 @@ define_behavior :positioned do
     end
     actor.when :x_changed do @x_dirty = true end
     actor.when :y_changed do @y_dirty = true end
+
+    reacts_with :remove
+  end
+
+  helpers do
+    def remove
+      director.unsubscribe_all self
+    end
   end
 end

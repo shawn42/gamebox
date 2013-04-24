@@ -36,9 +36,15 @@ Behavior.define :animated do
         set_image
       end
     end
+
+    reacts_with :remove
   end
 
   helpers do
+    def remove
+      director.unsubscribe_all self
+    end
+
     def next_frame
       action_set = @images[actor.action]
       @frame_num = (@frame_num + 1) % action_set.size unless action_set.nil?

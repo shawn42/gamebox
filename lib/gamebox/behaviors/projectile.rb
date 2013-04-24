@@ -10,6 +10,14 @@ define_behavior :projectile do
       actor.x += (actor.vel_x * secs)
       actor.y += (actor.vel_y * secs)
     end
+
+    reacts_with :remove
+  end
+
+  helpers do
+    def remove
+      director.unsubscribe_all self
+    end
   end
 
 end
