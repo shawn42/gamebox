@@ -48,7 +48,7 @@ describe :collidable do
     it 'should recalculate_collidable_cache on position_changed' do
       subject
       actor.shape.expects(:recalculate_collidable_cache)
-      actor.react_to :position_changed
+      actor.send :emit, :position_changed
     end
 
     it 'should calculate center point for circle' do
@@ -109,18 +109,6 @@ describe :collidable do
 
       actor.x = 10
       actor.y = 5
-      actor.cw_world_points.should == [[0,0],[10,7],[20,10]]
-      actor.cw_world_lines.should == [
-        [[0,0],[10,7]],
-        [[10,7],[20,10]],
-        [[20,10],[0,0]]
-      ]
-      actor.cw_world_edge_normals.should == [
-        [-7,10], [-3,10], [10,-20]
-      ]
-
-      # triggers the recalc cache
-      director.fire :update, 4
 
       actor.cw_world_points.should == [[10,5],[20,12],[30,15]]
       actor.cw_world_lines.should == [

@@ -56,7 +56,7 @@ Behavior.define :collidable do
       stage.unregister_collidable actor
     end
 
-    reacts_with :position_changed
+    actor.when(:position_changed) { position_changed }
   end
 
   helpers do

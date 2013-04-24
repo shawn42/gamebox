@@ -25,13 +25,20 @@ describe :positioned do
     end
   end
 
-  it 'rolls up x and y changes to position_changed on update' do
+  it 'keeps position up to date w/ x and y' do
     subject
-    actor.x = 99
-
-    expects_event(actor, :position_changed) do
-      director.fire :update, 50
+    called = 0
+    actor.when(:position_changed) do
+      called += 1
     end
+    actor.x = 99
+    called.should == 1
+
+    actor.y = 8
+
+    called.should == 2
+    actor.position.x.should == 99
+    actor.position.y.should == 8
   end
 
   context "options passed in" do
