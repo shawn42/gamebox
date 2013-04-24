@@ -4,9 +4,13 @@ class PhysicsManager
   def_delegators( :@space,
                   :damping,            :damping=,
                   :gravity,            :gravity=,
-                  :iterations,         :iterations= )
+                  :iterations,         :iterations=,
+                  :on_post_step,       :add_post_step_callback
+                )
 
   attr_accessor :space
+  delegate 'add_post_step_callback' => '@space'
+
 
   # Time per physics step, in milliseconds (default 15). Small steps
   # make the simulation more stable than large steps, but if the step
