@@ -1,5 +1,29 @@
 module ObservableAttributes
 
+  # atomically update all attributes
+  # it updates all of the values; then triggers the events
+  # my_actor.update_attributes(x: 5, y: 7)
+  # will emit both x_changed and y_changed after setting _both_ values
+  def update_attributes(attributes)
+    # TODO put this in kvo gem; there is too much internal knowlege of where
+    # kvo stores stuff 
+    #
+    # self.kvo_set('x', new_val, silent: true)
+    # self.changed('x', old_val, new_val)
+    old_values = attributes.keys.inject({}) do |hash, attr_name|
+      hash[attr_name] = self.send(attr_name)
+      hash
+    end
+
+    attributes.each do |name, val|
+      self.instance_variable_set("@kvo_#{name}", val)
+    end
+
+    attributes.each do |name, val|
+      fire "#{name}_changed".to_sym, old_values[name], val
+    end
+  end
+
   def has_attributes(*names)
     if names.first.is_a? Hash
       names.first.each do |name, default|
