@@ -3,7 +3,7 @@ module Gamebox
     MAJOR = 0
     MINOR = 4
     TINY  = 0
-    RC    = 11
+    RC    = 0
 
     if RC > 0
       ARRAY = [MAJOR, MINOR, TINY, "rc#{RC}"]
