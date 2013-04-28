@@ -1,5 +1,6 @@
 APP_ROOT = "#{File.join(File.dirname(__FILE__),"..")}/"
 
+require 'yaml'
 require 'gamebox'
 
 Gamebox.configure do |config|
