@@ -9,6 +9,8 @@ class Director
 
   def clear_subscriptions
     @subscriptions = Hash[@update_slots.map { |slot| [slot, []] }]
+    @new_subscriptions = []
+    @unsubscriptions = []
   end
 
   def pause
@@ -24,27 +26,36 @@ class Director
   end
 
   def when(event=:update, &callback)
-    @subscriptions[event] ||= []
-    @subscriptions[event] << callback
+    @new_subscriptions << [event, callback]
   end
 
   def update(time)
-    time_in_seconds = time / 1000.to_f
-    @update_slots.each do |slot|
-      @subscriptions[slot].each do |callback|
-        callback.call time, time_in_seconds
-      end
+    @new_subscriptions.each do |(event, callback)|
+      @subscriptions[event] ||= []
+      @subscriptions[event] << callback
     end
-  end
+    @new_subscriptions.clear
 
-  def unsubscribe_all(listener)
-    if @subscriptions
+    @unsubscriptions.each do |listener|
       for slot in @subscriptions.keys
         @subscriptions[slot].delete_if do |block|
           eval('self',block.binding).equal?(listener)
         end
       end
     end
+    @unsubscriptions.clear
+
+    time_in_seconds = time / 1000.to_f
+    @update_slots.each do |slot|
+      @subscriptions[slot].each do |callback|
+        callback.call time, time_in_seconds
+      end
+    end
+
+  end
+
+  def unsubscribe_all(listener)
+    @unsubscriptions << listener
   end
 
 end

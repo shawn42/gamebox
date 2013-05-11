@@ -193,6 +193,7 @@ class Vector2
   # of error to compensate for floating point imprecision).
   # 
   def ==( vector )
+    return false if vector.nil?
     _nearly_equal?(@x, vector.at(0)) and _nearly_equal?(@y, vector.at(1))
   end
 
