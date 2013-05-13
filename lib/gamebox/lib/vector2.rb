@@ -202,23 +202,29 @@ class Vector2
   # [x,y] Array.
   # 
   def []( index )
-    [@x, @y][index]
+    case index
+    when 0
+      @x
+    when 1
+      @y
+    else
+      nil
+    end
   end
 
   alias :at :[]
 
 
   def hash # :nodoc:
-    @hash ||= (((@x - @x.modulo(1E-10)).hash << 2) +
-               ((@y - @y.modulo(1E-10)).hash << 1) +
-               self.class.hash)
+    @hash ||= [@x, @y, self.class].hash
   end
 
 
   # Iterates over this vector as if it were an [x,y] Array.
   # 
-  def each( &block )
-    [@x, @y].each( &block )
+  def each
+    yield @x
+    yield @y
   end
 
 
