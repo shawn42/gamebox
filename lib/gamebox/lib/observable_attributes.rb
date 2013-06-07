@@ -24,6 +24,17 @@ module ObservableAttributes
     end
   end
 
+  # Adds attributes that are not currently set. 
+  # Takes a list of symbols or a hash of symbols => default values
+  #
+  # examples:
+  #
+  # foo.has_attributes :x, :y
+  # # adds x, x=, y, y= methods
+  # #fires events x_changed, y_changed when the values change
+  #
+  # foo.has_attributes x: 5, y: 3
+  # # this form provides default values if these are new attributes
   def has_attributes(*names)
     if names.first.is_a? Hash
       names.first.each do |name, default|
@@ -36,6 +47,8 @@ module ObservableAttributes
     end
   end
 
+  # singular form of has_attributes
+  # takes the symbol name and an optional default value
   def has_attribute(name, value=nil)
     @evented_attributes ||= []
     unless has_attribute? name
@@ -48,10 +61,12 @@ module ObservableAttributes
     end
   end
 
+  # Returns true if the passed in symbol is an attr on this object
   def has_attribute?(name)
     @evented_attributes && @evented_attributes.include?(name)
   end
 
+  # Returns a new hash containing the attr keys and values
   def attributes
     {}.tap do |atts|
       if @evented_attributes
