@@ -2,74 +2,115 @@
 <html>
   <head>
     <title>Gamebox</title>
-    <link href='/stylesheets/bootstrap.min.css' rel='stylesheet'>
+    <link href='/stylesheets/bootstrap.css' rel='stylesheet'>
     <link href='/stylesheets/application.css' rel='stylesheet'>
     <link href='/stylesheets/syntax.css' rel='stylesheet'>
+    <script src='/javascript/jquery-1.10.1.min.js'></script>
+    <script src='/javascript/bootstrap.js'></script>
+    <script src='/javascript/application.js'></script>
   </head>
   <body>
     <div class='content'>
-      <header>
-  <div class='container'>
-    <h1>
-      <img src='images/logo.png'>
-      Gamebox!
-      <small>Game dev for rubyists</small>
-    </h1>
+      <div class='navbar-fixed-top navbar'>
+  <div class='navbar-inner'>
+    <div class='container pull-left'>
+      <div class='span4'>&nbsp;</div>
+      <h2>
+        <a class='pull-left' href='/'>
+          <img src='images/logo.png'>
+          <span style='color: #DDD;'>Gamebox</span>
+          <small>game dev for rubyists</small>
+        </a>
+        <a class='pull-right' href='https://github.com/shawn42/gamebox' title='Gamebox on Github'>
+          <img height='80' src='/images/octocat.png' width='80'>
+        </a>
+      </h2>
+    </div>
   </div>
-</header>
+</div>
 
       <div class='row'>
-        <div class='span3'>
-          <ul class='nav nav-tabs nav-stacked affix'>
-  <li>
-    <a href='#core'>Core</a>
+        <div class='span4'>
+          <ul class='aside nav nav-tabs nav-stacked affix span3' id='menu-tabs'>
+  <li class='hidden active'>
+    <a data-toggle='tab' href='#about'>
+      <strong>About</strong>
+      <p>About Gamebox</p>
+    </a>
   </li>
   <li>
-    <a href='#stages'>Stages</a>
+    <a data-toggle='tab' href='#core'>
+      <strong>Core</strong>
+      <p>Basic introduction</p>
+    </a>
   </li>
   <li>
-    <a href='#behaviors'>Behaviors</a>
+    <a data-toggle='tab' href='#stages'>
+      <strong>Stages</strong>
+      <p>Game mode management</p>
+    </a>
   </li>
   <li>
-    <a href='#actors'>Actors</a>
+    <a data-toggle='tab' href='#actors'>
+      <strong>Actors</strong>
+      <p>Entities of your game</p>
+    </a>
   </li>
   <li>
-    <a href='#tutorial'>Tutorial</a>
+    <a data-toggle='tab' href='#behaviors'>
+      <strong>Behaviors</strong>
+      <p>Logic for actors</p>
+    </a>
   </li>
   <li>
-    <a href='#examples'>Examples</a>
+    <a data-toggle='tab' href='#tutorial'>
+      <strong>Tutorial</strong>
+      <p>OMG Aliens</p>
+    </a>
   </li>
   <li>
-    <a href='#extras'>Extras</a>
+    <a data-toggle='tab' href='#examples'>
+      <strong>Examples</strong>
+      <p>See larger games</p>
+    </a>
+  </li>
+  <li>
+    <a data-toggle='tab' href='#extras'>
+      <strong>Extras</strong>
+      <p>Odds and ends</p>
+    </a>
   </li>
 </ul>
 
         </div>
-        <div class='span9'>
-          <h3>Why use Gamebox?</h3>
-<p>Gamebox was designed to spring board game development. It allows the developer to define business rules about a game very quickly without having to worry about resource loading, sound/music management, creating windows, or messing with viewports. Gamebox allows you to define a game's business rules within minutes, using the metaphor of a 5th grade play.</p>
-<p>The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.</p>
-<h3>Alien Actor from OMG Aliens</h3>
-<div class="highlight"><pre><code class="ruby"><span class="n">define_actor</span> <span class="ss">:alien</span> <span class="k">do</span>
-<span class="n">has_attributes</span> <span class="ss">action</span><span class="p">:</span> <span class="ss">:march</span><span class="p">,</span> <span class="ss">view</span><span class="p">:</span> <span class="ss">:graphical_actor_view</span>
-
-<span class="n">has_behaviors</span> <span class="k">do</span> 
-  <span class="n">animated</span>          <span class="n">frame_update_time</span><span class="p">:</span> <span class="mi">900</span>
-  <span class="n">collidable</span>        <span class="ss">shape</span><span class="p">:</span> <span class="ss">:polygon</span><span class="p">,</span> <span class="n">cw_local_points</span><span class="p">:</span> <span class="o">[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">44</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">44</span><span class="p">,</span><span class="mi">44</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">44</span><span class="o">]]</span>
-  <span class="n">projectile</span>        <span class="ss">speed</span><span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="mo">01</span><span class="p">,</span> <span class="ss">direction</span><span class="p">:</span> <span class="n">vec2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-  <span class="n">reversable_direction</span>
-  <span class="n">increasing_speed</span>  <span class="ss">accel</span><span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="mo">001</span>
-  <span class="n">drops</span>             <span class="n">fall_amount</span><span class="p">:</span> <span class="mi">25</span>
-  <span class="n">shooter</span>           <span class="ss">shoots</span><span class="p">:</span> <span class="ss">:alien_missile</span><span class="p">,</span> <span class="ss">direction</span><span class="p">:</span> <span class="n">vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<h3>License</h3>
-<p>The MIT License (MIT)</p>
-<p>Copyright &copy; 2013 Shawn Anderson</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        <div class='span8'>
+          <br>
+<div class='alert'>
+  <strong>Warning:</strong>
+  This documentation is horribly incomplete.
+</div>
+<div class='tab-content'>
+  <div class='tab-pane active' id='about'>
+    <h3>Purpose</h3>
+    <p>Gamebox was designed to spring board game development. It allows the developer to define business rules about a game very quickly without having to worry about resource loading, sound/music management, creating windows, or messing with viewports. Gamebox allows you to define a game's business rules within minutes, using the metaphor of a 5th grade play.</p>
+    <p>The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.</p>
+    <h3>Alien Actor from OMG Aliens</h3>
+    <h3>License</h3>
+    <p>The MIT License (MIT)</p>
+    <p>Copyright &copy; 2013 Shawn Anderson</p>
+    <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+    <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+    <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+  </div>
+  <div class='tab-pane' id='core'>
+    <h3>Core</h3>
+    <p>Info about core Gamebox</p>
+  </div>
+  <div class='tab-pane' id='stages'>
+    <h3>Stages</h3>
+    <p>Info about stages goes here..</p>
+  </div>
+</div>
 
         </div>
       </div>
