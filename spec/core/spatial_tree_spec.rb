@@ -1,7 +1,7 @@
 require 'helper'
 
-describe SpatialTreeStagehand do
-  subject { SpatialTreeStagehand.new :stage, {} }
+describe SpatialTree do
+  subject { SpatialTree.new :stage }
   let(:tree) { stub('tree') }
 
   before do

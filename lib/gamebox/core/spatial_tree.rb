@@ -1,10 +1,11 @@
-class SpatialTreeStagehand < Stagehand
+class SpatialTree
   extend Forwardable
   def_delegators :@tree, :calculate_bb, :to_s, :each, :collisions, :query, :valid?
 
-  attr_reader :moved_items
+  attr_reader :moved_items, :stage
 
-  def setup
+  def initialize(stage)
+    @stage
     @dead_actors = {}
     @moved_items = {}
     @tree = AABBTree.new

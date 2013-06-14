@@ -3,11 +3,15 @@ module Arbiter
   attr_reader :checks, :collisions
 
   def register_collidable(actor)
-    stagehand(:spatial_tree).add(actor)
+    aabb_tree.add(actor)
   end
 
   def unregister_collidable(actor)
-    stagehand(:spatial_tree).remove(actor)
+    aabb_tree.remove(actor)
+  end
+
+  def aabb_tree
+    @aabb_tree ||= SpatialTree.new(self)
   end
 
   def on_collision_of(first_objs, second_objs, &block)
@@ -59,7 +63,6 @@ module Arbiter
   end
 
   def find_collisions
-    aabb_tree = stagehand(:spatial_tree)
     collidable_actors = aabb_tree.moved_items.values
 
     collisions = {}

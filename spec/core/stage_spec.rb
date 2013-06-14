@@ -53,7 +53,6 @@ describe Stage do
       subject.update(:time)
     end
 
-    it 'updates stagehands'
     it 'checks for collisions'
   end
 

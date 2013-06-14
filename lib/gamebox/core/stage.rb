@@ -14,7 +14,6 @@ class Stage
   def configure(backstage, opts)
     viewport.reset
 
-    @stagehands = {}
     @backstage = backstage
     @opts = opts
     renderer.clear_drawables
@@ -58,9 +57,6 @@ class Stage
   def update(time)
     director.update time
     viewport.update time
-    @stagehands.each do |name, stagehand|
-      stagehand.update time 
-    end
     find_collisions
     timer_manager.update time
   end
@@ -107,10 +103,6 @@ class Stage
     @paused = true
   end
 
-  def stagehand(stagehand_sym, opts={})
-    @stagehands[stagehand_sym] ||= create_stagehand(stagehand_sym, opts)
-  end
-
   # pauses the current stage, creates an actor using args, unpauses on actor death
   #
   # Example:
@@ -129,11 +121,6 @@ class Stage
   end
 
   private
-  def create_stagehand(name, opts)
-    underscored_class = "#{name}_stagehand"
-    klass = ClassFinder.find underscored_class
-    klass.new self, opts
-  end
 
   class << self
 

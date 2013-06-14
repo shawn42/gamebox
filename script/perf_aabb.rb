@@ -27,7 +27,7 @@ end
 NUM = 1_000
 Benchmark.bm(60) do |b|
   b.report("full") do
-    tree = SpatialTreeStagehand.new :thing, :thing
+    tree = SpatialTree.new :thing
 
     thing = BoxedActor.new 1, 2, 3, 4
     tree.add thing
