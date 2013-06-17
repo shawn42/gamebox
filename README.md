@@ -31,7 +31,7 @@ The reason I wrote Gamebox is twofold: first, to aid in 48 hour game writing com
 To create a new Gamebox project run:
 
 ```
-$ gamebox zapper
+$ gamebox new zapper
 ```
 
 This will create the directory structure and needed files to get a basic actor up on the screen:
