@@ -6,10 +6,9 @@ class StageDefinition
   # The objects will be created for you.
   # example:
   # define_stage :main_menu do
-  #   require :magic_thinger
+  #   requires :magic_thinger
   # end
   def requires(*injections_needed)
-    # kid.construct_with *self.object_definition.component_names
     @required_injections = injections_needed
   end
 
@@ -49,9 +48,11 @@ class StageDefinition
   # These will be available for curtain_up / update / draw to use.
   # example:
   # define_stage :main_menu do
-  #   include MinMaxHelpers
-  #   def calculate_thinger
-  #     ...
+  #   helpers do
+  #     include MinMaxHelpers
+  #     def calculate_thinger
+  #       ...
+  #     end
   #   end
   # end
   def helpers(&helpers_block)
