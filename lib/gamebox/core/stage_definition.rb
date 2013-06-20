@@ -4,7 +4,7 @@ class StageDefinition
 
   # Required objects that you need for your specific stage
   # The objects will be created for you.
-  # example:
+  #
   # define_stage :main_menu do
   #   requires :magic_thinger
   # end
@@ -13,48 +13,48 @@ class StageDefinition
   end
 
   # Define a block of code to run when your stage is and ready to play
-  # example:
-  # define_stage :main_menu do
-  #   curtain_up do
-  #     @info = load_some_info
-  #   end
-  # end
+  # 
+  #  define_stage :main_menu do
+  #    curtain_up do
+  #      @info = load_some_info
+  #    end
+  #  end
   def curtain_up(&curtain_up_block)
     @curtain_up_block = curtain_up_block
   end
 
   # Define a block of code to run when your stage has been shutdown
-  # example:
-  # define_stage :main_menu do
-  #   curtain_down do
-  #     @info = load_some_info
-  #   end
-  # end
+  # 
+  #  define_stage :main_menu do
+  #    curtain_down do
+  #      @info = load_some_info
+  #    end
+  #  end
   def curtain_down(&curtain_down_block)
     @curtain_down_block = curtain_down_block
   end
 
   # Replaces the default renderer with your own.
-  # example:
-  #   define_stage :main_menu do
-  #     render_with :my_render
-  #     ...
-  #   end
+  # 
+  #  define_stage :main_menu do
+  #    render_with :my_render
+  #    ...
+  #  end
   def render_with(render_class_name)
     @renderer = render_class_name
   end
 
   # Define any helper methods / include modules here
   # These will be available for curtain_up / update / draw to use.
-  # example:
-  # define_stage :main_menu do
-  #   helpers do
-  #     include MinMaxHelpers
-  #     def calculate_thinger
-  #       ...
-  #     end
-  #   end
-  # end
+  #
+  #  define_stage :main_menu do
+  #    helpers do
+  #      include MinMaxHelpers
+  #      def calculate_thinger
+  #        ...
+  #      end
+  #    end
+  #  end
   def helpers(&helpers_block)
     @helpers_block = helpers_block
   end

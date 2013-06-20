@@ -2,8 +2,7 @@ module GameboxDSL
 
   # Defines a stage; a stage is a game mode. (ie :main_menu, :play, or :credits)
   #
-  #  will raise an erorr if the stage already exists
-  #  example:
+  # Raises an erorr if the stage already exists
   # 
   #  define_stage :main_menu do
   #    # injects your dependencies; will construct if needed
@@ -25,21 +24,21 @@ module GameboxDSL
   #  end
   #
   # @see StageDefinition
+  # @see Stage
   def define_stage(name, &blk)
     Stage.define name, &blk
   end
 
   # Defines a behavior type. (ie :jumper or :shooter)
   #
-  #  will raise an erorr if the behavior already exists
-  #  example:
+  # Raises an erorr if the behavior already exists
   # 
   #  define_behavior :jumper do
   #    # injects your dependencies; will construct if needed
   #    requires :input_manager, :timer_manager, :stage
   #
   #    # adds the required behaviors to your actor if not present
-  #    $ NOTE: no options can be passed to the added behavior
+  #    # NOTE: no options can be passed to the added behavior
   #    required_behaviors :positioned
   #
   #    # callback when your behavior has been added to an actor
@@ -57,20 +56,18 @@ module GameboxDSL
   #  end
   #
   # @see BehaviorDefinition
+  # @see Behavior
   def define_behavior(name, &blk)
     Behavior.define name, &blk
   end
 
-  # Defines an actor type, (ie :plumber)
-  # Optionally adding attributes, behaviors and a view.
+  # Defines an actor type, (ie :plumber). Optionally adding attributes, behaviors and a view.
   #
-  #  will raise an erorr if the actor already exists
-  #  example:
+  # Raises an erorr if the actor already exists
   # 
   #  define_actor :plumber do
   #    # define default attributes and values
-  #    has_attribute x: 5
-  #    has_attributes x: 7, y: 12
+  #    has_attribute(s) x: 7, y: 12
   #
   #    # define default behaviors and their options options can be
   #    #   - list of behavior names
@@ -97,17 +94,16 @@ module GameboxDSL
   #  end
   #
   # @see ActorDefinition
+  # @see Actor
   def define_actor(name, &blk)
     Actor.define name, &blk
   end
 
-  # Defines an actor view type. (ie :plumber_view)
+  # Defines an actor view type. (ie :plumber_view).
+  # Constructed when any actor with matching name is created
+  # ie: :ship_view will be created and shown for any actor :ship that is created
   #
-  #  will be constructed when any actor with matching name is created
-  #  ie: :ship_view will be created and shown for any actor :ship that is created
-  #
-  #  will raise an erorr if the actor view already exists
-  #  example:
+  # Raises an erorr if the actor view already exists
   # 
   #  define_actor :plumber_view do
   #    # injects your dependencies; will construct if needed
@@ -123,6 +119,7 @@ module GameboxDSL
   #  end
   #
   # @see ActorViewDefinition
+  # @see ActorView
   def define_actor_view(name, &blk)
     ActorView.define name, &blk
   end

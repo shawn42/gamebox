@@ -13,8 +13,8 @@ class Behavior
   end
 
   def reacts_with(*messages_with_methods)
-    # TODO do a merge here..
-    @message_handlers = messages_with_methods
+    @message_handlers ||= Set.new
+    @message_handlers.merge(messages_with_methods)
   end
 
   def react_to(message_type, *opts, &blk)
