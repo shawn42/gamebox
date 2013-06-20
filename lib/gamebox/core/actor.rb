@@ -20,18 +20,34 @@ class Actor
     has_attributes opts
   end
 
-  # Used by BehaviorFactory#add_behavior.
-  # That's probably what you want to use from within another behavior
+  # Adds the behavior object to the Actor. You should never use
+  # this method in your game.
   def add_behavior(name, behavior)
     @behaviors[name] = behavior
   end
   
+  # Removes the behavior object from the Actor. 
+  # Sends :remove reaction to the removed behavior.
+  # You should never use this method in your game.
   def remove_behavior(name)
     @behaviors.delete(name).tap do |behavior|
       behavior.react_to :remove if behavior
     end
   end
 
+  # Returns true if the Actor has the named behavior.
+  #
+  # This is mostly used internally by Gamebox. You should favor
+  # not knowing behaviors if possible and instead look at the
+  # Actor's attributes via #do_or_do_not
+  def has_behavior?(name)
+    @behaviors[name]
+  end
+
+  # Propogates the reaction to all behaviors of the Actor.
+  # Any behavior can react to these messages.
+  #
+  # @see Behavior#reacts_with
   def react_to(message, *opts, &blk)
     # TODO cache the values array?
     @behaviors.values.each do |behavior|
@@ -40,20 +56,18 @@ class Actor
     nil
   end
 
-  def has_behavior?(name)
-    @behaviors[name]
-  end
-
   def emit(event, *args)
     fire event, *args
   end
 
-  # Tells the actor's Director that he wants to be removed; and unsubscribes
-  # the actor from all input events.
+  # Sets the Actor to no longer being alive. 
+  # 
+  # Sends a :remove reaction to all the Actor's behaviors.
+  # Emits a :remove_me event.
   def remove
     self.alive = false
     react_to :remove
-    fire :remove_me
+    emit :remove_me
   end
 
   def input
