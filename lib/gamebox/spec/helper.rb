@@ -61,7 +61,7 @@ module GameboxSpecHelpers
           #     _add_behavior actor, beh unless actor.has_behavior?(beh)
           #   end
           # end
-          behavior.configure(opts)
+          behavior.opts = opts
           behavior.instance_eval &@behavior_definition.setup_block if @behavior_definition.setup_block
         end
       }

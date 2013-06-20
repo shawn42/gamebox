@@ -10,12 +10,12 @@ describe BehaviorFactory do
 
     object_context.stubs(:[]).with(:behavior).returns(some_behavior)
     object_context.stubs(:in_subcontext).yields(object_context)
-    some_behavior.stubs(:configure)
+    some_behavior.stubs(:opts=)
   end
 
   describe "#add_behavior" do
     it 'creates the behavior based on the actor and symbol behavior_def' do
-      some_behavior.expects(:configure).with({})
+      some_behavior.expects(:opts=).with({})
 
       subject.add_behavior some_actor, :shootable
     end
@@ -27,7 +27,7 @@ describe BehaviorFactory do
 
     it 'configures the behavior with the given opts' do
       opts = {some: 'opts'}
-      some_behavior.expects(:configure).with(opts)
+      some_behavior.expects(:opts=).with(opts)
 
       subject.add_behavior some_actor, :shootable, opts 
     end

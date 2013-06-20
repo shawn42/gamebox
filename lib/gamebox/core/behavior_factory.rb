@@ -44,7 +44,8 @@ class BehaviorFactory
             add_behavior actor, beh unless actor.has_behavior?(beh)
           end
         end
-        behavior.configure(opts)
+
+        behavior.opts = opts
         behavior.instance_eval &behavior_definition.setup_block if behavior_definition.setup_block
         actor.add_behavior behavior_name, behavior
       end

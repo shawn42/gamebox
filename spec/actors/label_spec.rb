@@ -30,11 +30,11 @@ describe :label do
       @font_style_factory.stubs(:build).with('fonty.ttf', 22, :red).returns(:stylish_font)
       @actor.expects(:has_attributes).with(font_style: :stylish_font)
      
-      subject.setup
+      subject
     end
 
     it 'listens for text changes' do
-      subject.setup
+      subject
       @actor.stubs(text: "foo")
 
       font_style = stub(height: 13)
@@ -48,7 +48,7 @@ describe :label do
     end
 
     it 'listens for font color changes' do
-      subject.setup
+      subject
       font_style = stub
       font_style.expects(:color=).with(:red)
       @actor.stubs(font_style: font_style, color: :red)
@@ -57,7 +57,7 @@ describe :label do
     end
 
     it 'listens for font name changes' do
-      subject.setup
+      subject
       @actor.stubs(text: "foo", font_name: "asimov.ttf")
 
       font_style = stub(height: 13)
@@ -74,7 +74,7 @@ describe :label do
     end
 
     it 'listens for font size changes' do
-      subject.setup
+      subject
       @actor.stubs(text: "foo", font_size: 14)
 
       font_style = stub(height: 13)
