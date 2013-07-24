@@ -4,10 +4,10 @@ describe BehaviorFactory do
   let(:some_behavior) { stub('some behavior', required_behaviors: []) }
   let(:object_context) { mock('object context') }
   let(:some_actor) { stub('some actor', add_behavior: nil, this_object_context: object_context) }
+  let(:some_block) { Proc.new }
 
   before do
     Behavior.define :shootable
-
     object_context.stubs(:[]).with(:behavior).returns(some_behavior)
     object_context.stubs(:in_subcontext).yields(object_context)
     some_behavior.stubs(:opts=)

@@ -47,6 +47,12 @@ class BehaviorFactory
 
         behavior.opts = opts
         behavior.instance_eval &behavior_definition.setup_block if behavior_definition.setup_block
+
+        if behavior_definition.remove_block
+          behavior.define_singleton_method :remove, behavior_definition.remove_block 
+          behavior.reacts_with :remove
+        end
+
         actor.add_behavior behavior_name, behavior
       end
     end

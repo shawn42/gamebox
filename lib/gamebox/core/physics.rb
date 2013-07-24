@@ -19,8 +19,8 @@ else
   end
 end
 
-ZERO_VEC_2 = vec2(0,0)
+ZERO_VEC_2 = vec2(0,0) unless defined? ZERO_VEC_2
 
 module Math
-  HALF_PI = PI / 2.0
+  HALF_PI = PI / 2.0 unless defined? HALF_PI
 end

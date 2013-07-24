@@ -33,6 +33,7 @@ module GameboxSpecHelpers
         @_req_mocks = create_mocks(*reqs)
       }
       let (:opts) { {} }
+      let (:actor) { @actor }
       subject { 
 
         # TODO so much duplication here from the *Factories

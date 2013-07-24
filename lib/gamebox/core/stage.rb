@@ -24,32 +24,6 @@ class Stage
   end
   alias :spawn :create_actor 
 
-  # extract all the params from a node that are needed to construct an actor
-  def create_actors_from_svg svg_doc
-    float_keys = ["x","y"]
-    dynamic_actors ||= {}
-    layer = svg_doc.find_group_by_label("actors")
-
-    unless layer.nil?
-      # each image in the layer is an actor
-      layer.images.each do |actor_def|
-        klass = actor_def.game_class.to_sym
-        handle = actor_def.game_handle
-        new_opts = {}
-        actor_def.node.attributes.each do |k,v|
-          v = v.to_f if float_keys.include? k
-          new_opts[k.to_sym] = v
-        end
-
-        actor = create_actor klass, new_opts
-        dynamic_actors[handle.to_sym] = actor if handle
-      end
-    end
-    alias :spawn_from_svg :create_actors_from_svg
-
-    dynamic_actors
-  end
-  
   def draw(target)
     renderer.draw target
   end

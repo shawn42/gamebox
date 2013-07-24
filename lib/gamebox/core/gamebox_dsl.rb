@@ -46,6 +46,9 @@ module GameboxDSL
   #    # addition 
   #    setup &block
   #
+  #    # callback when your behavior has been removed from an actor
+  #    remove &block
+  #
   #    # define a custom handler for reacting to your actor's messages
   #    # @see Behavior#reacts_with for recommended message dispatch
   #    react_to &block

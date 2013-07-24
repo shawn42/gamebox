@@ -1,5 +1,5 @@
 class BehaviorDefinition
-  attr_accessor :setup_block, :required_injections, :react_to_block, :required_behaviors,
+  attr_accessor :setup_block, :remove_block, :required_injections, :react_to_block, :required_behaviors,
     :helpers_block, :source
 
   # Sets the dependencies for this Behavior.
@@ -34,6 +34,17 @@ class BehaviorDefinition
   #  
   def setup(&setup_block)
     @setup_block = setup_block
+  end
+
+  # Remove callback that is called when the behavior is removed. The actor will
+  # still be available.
+  #
+  #  remove do
+  #    input_manager.unsubscribe_all self
+  #  end
+  #  
+  def remove(&remove_block)
+    @remove_block = remove_block
   end
 
   # Override the default react_to method of the behavior. You should probably not be doing this and should be calling #reacts_with in #setup.
