@@ -57,7 +57,7 @@
     </a>
   </li>
   <li>
-    <a data-toggle='tab' href='#actorviews'>
+    <a data-toggle='tab' href='#actor_views'>
       <strong>Actor Views</strong>
       <p></p>
     </a>
@@ -87,226 +87,332 @@
     </a>
   </li>
   <li>
-    <a data-toggle='tab' href='#extras'>
-      <strong>Extras</strong>
-      <p>Odds and ends</p>
+    <a data-toggle='tab' href='#advanced'>
+      <strong>Advanced</strong>
+      <p>Like a boss</p>
     </a>
   </li>
 </ul>
 
         </div>
         <div class='span8'>
-          <br>
-<div class='alert'>
-  <strong>Warning:</strong>
-  This documentation is horribly incomplete.
+          <br />
+
+<div class="alert">
+  <strong>Warning:</strong> This documentation is horribly incomplete.
 </div>
-<div class='tab-content'>
-  <div class='tab-pane active' id='about'>
+
+<div class="tab-content">
+
+  <div id="about" class="active tab-pane">
     <h3>Purpose</h3>
+
+<p>Gamebox was designed to spring board game development. It allows the developer to define business rules about a game very quickly without having to worry about resource loading, sound/music management, creating windows, or messing with viewports. Gamebox allows you to define a game's business rules within minutes, using the metaphor of a 5th grade play.</p>
+
+<p>[GRAPHIC: illustration of kids in costumes on a stage]</p>
+
+<p>The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.</p>
+
+<h3>Example</h3>
+
+<div class="highlight"><pre><code class="ruby">    <span class="sr">//</span> <span class="n">sample</span> <span class="n">of</span> <span class="n">defining</span> <span class="n">the</span> <span class="n">player</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">behaviors</span>
+    <span class="n">define_actor</span> <span class="ss">:player</span> <span class="k">do</span>
+      <span class="n">has_behaviors</span> <span class="k">do</span>
+        <span class="n">positioned</span>
+        <span class="n">audible</span>
     
-    <p>Gamebox was designed to spring board game development. It allows the developer to define business rules about a game very quickly without having to worry about resource loading, sound/music management, creating windows, or messing with viewports. Gamebox allows you to define a game&#39;s business rules within minutes, using the metaphor of a 5th grade play.</p>
+        <span class="n">grounded</span>
+        <span class="n">looker</span>
     
-    <p>[GRAPHIC: illustration of kids in costumes on a stage]</p>
+        <span class="n">mover</span>
+        <span class="n">gibify</span>
+        <span class="n">slicer</span>
+        <span class="n">shooter</span> <span class="n">recharge_time</span><span class="p">:</span> <span class="mi">4_000</span><span class="p">,</span> <span class="n">shot_power</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="ss">kickback</span><span class="p">:</span> <span class="mi">1</span><span class="o">.</span><span class="mi">4</span>
+        <span class="n">bomber</span> <span class="ss">kickback</span><span class="p">:</span> <span class="mi">1</span><span class="o">.</span><span class="mi">6</span>
     
-    <p>The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.</p>
+        <span class="n">die_by_sword</span>
+        <span class="n">die_by_bomb</span>
+        <span class="n">blasted_by_bomb</span>
+        <span class="n">disoriented_by_bombs</span>
+        <span class="n">die_by_bullet</span>
+        <span class="n">shielded</span>
     
-    <h3>Snippet of awesomeness</h3>
+        <span class="n">pulled_by_black_hole</span>
     
-    <h3>Screenshot ?</h3>
-    
-    <h3>Games made with Gamebox ?</h3>
-    
-    <h3>License</h3>
-    
-    <p>The MIT License (MIT)</p>
-    
-    <p>Copyright &copy; 2013 Shawn Anderson</p>
-    
-    <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-    
-    <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-    
-    <p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        <span class="n">jump</span> <span class="n">max_power</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="n">min_power</span><span class="p">:</span> <span class="mi">20</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+
+
+<h3>Games made with Gamebox</h3>
+
+<ul>
+<li><a href="https://github.com/shawn42/killbox">Killbox</a> - Local multiplayer gravity deathmatch.</li>
+<li><a href="http://www.ludumdare.com/compo/ludum-dare-22/?action=preview&amp;uid=571">Lonely Shepherd</a> - Ludum Dare 22 entry.</li>
+<li><a href="http://www.ludumdare.com/compo/ludum-dare-26/?action=preview&amp;uid=571">Seed Life</a> - Ludum Dare 26 entry</li>
+<li><a href="https://github.com/shawn42/omg_aliens">OMG Aliens</a> - Space invaders clone.</li>
+</ul>
+
+
+<h3>License</h3>
+
+<p>The MIT License (MIT)</p>
+
+<p>Copyright &copy; 2013 Shawn Anderson</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
   </div>
-  <div class='tab-pane' id='overview'>
+
+  <div id="overview" class="tab-pane">
     <h3>Overview</h3>
-    
-    <h4>Installation</h4>
-    
-    <ul>
-    <li><code>gem install gamebox</code></li>
-    <li><code>git clone git://github.com/shawn42/gamebox.git &amp;&amp; cd gamebox &amp;&amp; bundle &amp;&amp; rake install</code></li>
-    </ul>
-    
-    <h4>Game Creation</h4>
-    
-    <p>To create a new Gamebox project run:</p>
-    
-    <pre><code>$ gamebox zapper&#x000A;</code></pre>
-    
-    <p>To run your game:</p>
-    
-    <pre><code>$ cd zapper&#x000A;$ bundle&#x000A;$ rake&#x000A;</code></pre>
+
+<h4>Installation</h4>
+
+<ul>
+<li><code>gem install gamebox</code></li>
+<li><code>git clone git://github.com/shawn42/gamebox.git &amp;&amp; cd gamebox &amp;&amp; bundle &amp;&amp; rake install</code></li>
+</ul>
+
+
+<h4>Game Creation</h4>
+
+<p>To create a new Gamebox project run:</p>
+
+<pre><code>$ gamebox zapper
+</code></pre>
+
+<p>To run your game:</p>
+
+<pre><code>$ cd zapper
+$ bundle
+$ rake
+</code></pre>
+
   </div>
-  <div class='tab-pane' id='stages'>
+
+  <div id="stages" class="tab-pane">
     <h3>Stages</h3>
-    
-    <ul>
-    <li>what are they
-    
-    <ul>
-    <li>The place where actors interact and perform</li>
-    <li>different gameplay types / modes</li>
-    </ul></li>
-    </ul>
-    
-    <p>What is a stage?</p>
-    
-    <ul>
-    <li>Creates actors</li>
-    <li><p>Defines a gameplay mode</p>
-    
-    <ul>
-    <li>Multiple &quot;maps&quot; or &quot;levels&quot; might be the same stage.</li>
-    </ul>
-    
-    <p>[GRAPHIC: Screenshots of a main menu, a few gameplay levels, and a credits screen. Screenshots grouped into sections for what stage they are (main_menu, gameplay, credits)]</p></li>
-    <li><p>Examples:</p>
-    
-    <ul>
-    <li>Main menu</li>
-    <li>Overworld</li>
-    <li>Dungeon</li>
-    <li>Credits</li>
-    </ul></li>
-    </ul>
-    
-    <h4>Defining a stage</h4>
-    
-    <ul>
-    <li>curtain_up / curtain_down</li>
-    <li>pausing</li>
-    <li>backstage</li>
-    </ul>
+
+<ul>
+<li>what are they
+
+<ul>
+<li>The place where actors interact and perform</li>
+<li>different gameplay types / modes</li>
+</ul>
+</li>
+</ul>
+
+
+<p>What is a stage?</p>
+
+<ul>
+<li>Creates actors</li>
+<li><p>Defines a gameplay mode</p>
+
+<ul>
+<li>Multiple "maps" or "levels" might be the same stage.</li>
+</ul>
+
+
+<p>[GRAPHIC: Screenshots of a main menu, a few gameplay levels, and a credits screen. Screenshots grouped into sections for what stage they are (main_menu, gameplay, credits)]</p></li>
+<li><p>Examples:</p>
+
+<ul>
+<li>Main menu</li>
+<li>Overworld</li>
+<li>Dungeon</li>
+<li>Credits</li>
+</ul>
+</li>
+</ul>
+
+
+<h4>Defining a stage</h4>
+
+<ul>
+<li>curtain_up / curtain_down</li>
+<li>pausing</li>
+<li>backstage</li>
+</ul>
+
+
   </div>
-  <div class='tab-pane' id='actors'>
+
+  <div id="actors" class="tab-pane">
     <h3>Actors</h3>
-    
-    <h4>What they are</h4>
-    
-    <p>[GRAPHIC: An actor contains multiple attributes and multiple behaviors]</p>
-    
-    <p>Actors can be things that you see on the screen:</p>
-    
-    <ul>
-    <li>The player space ship</li>
-    <li>An alien</li>
-    <li>A bullet</li>
-    <li>The background</li>
-    <li>The score on the screen</li>
-    </ul>
-    
-    <p>[GRAPHIC: Screenshot with different actors circled and labelled]</p>
-    
-    <p>Actors can also be hidden things that interact with other actors.</p>
-    
-    <p>An actor is made up of two kinds of things: behaviors, and observable attributes.</p>
-    
-    <h5>Behaviors</h5>
-    
-    <ul>
-    <li>What are behaviors?</li>
-    </ul>
-    
-    <h5>Observable Attributes</h5>
-    
-    <ul>
-    <li>What are observable attributes?</li>
-    </ul>
-    
-    <h4>Defining an actor type</h4>
-    
-    <h4>Adding actors to the stage</h4>
-    
-    <p>To get an actor on the stage, use the <code>create_actor</code> method on stage. This can be done directly from a stage or from a behavior that has required stage via <code>requires :stage</code>.</p>
+
+<h4>What they are</h4>
+
+<p>[GRAPHIC: An actor contains multiple attributes and multiple behaviors]</p>
+
+<p>Actors can be things that you see on the screen:</p>
+
+<ul>
+<li>The player space ship</li>
+<li>An alien</li>
+<li>A bullet</li>
+<li>The background</li>
+<li>The score on the screen</li>
+</ul>
+
+
+<p>[GRAPHIC: Screenshot with different actors circled and labelled]</p>
+
+<p>Actors can also be hidden things that interact with other actors.</p>
+
+<p>An actor is made up of two kinds of things: behaviors, and observable attributes.</p>
+
+<h5>Behaviors</h5>
+
+<ul>
+<li>What are behaviors?</li>
+</ul>
+
+
+<h5>Observable Attributes</h5>
+
+<ul>
+<li>What are observable attributes?</li>
+</ul>
+
+
+<h4>Defining an actor type</h4>
+
+<h4>Adding actors to the stage</h4>
+
+<p>To get an actor on the stage, use the <code>create_actor</code> method on stage. This can be done directly from a stage or from a behavior that has required stage via <code>requires :stage</code>.</p>
+
   </div>
-  <div class='tab-pane' id='actorviews'>
+
+  <div id="actor_views" class="tab-pane">
     <h3>Actor Views</h3>
-    
-    <ul>
-    <li>rendering overview</li>
-    <li>layers &amp; parallax</li>
-    <li>defining actor views</li>
-    <li>setting view on an actor (non magic name)</li>
-    <li>custom renderer (here, stages, or advanced)</li>
-    </ul>
-    
-    <p>Actor views are the mechanism for drawing an actor in Gamebox. When an actor is created, Gamebox will see if there is a matching actor view by name. It will register the view to be drawn by the renderer. The draw callback is called with the rendering target, the x and y offsets based on the viewport, and the z layer to be used for drawing this actor (see the section on parallax layers for more on z layers).</p>
-    
-    <pre><code>define_actor_view :label_view do&#x000A;  draw do |target, x_off, y_off, z|&#x000A;    target.print actor.text, actor.x, actor.y, z, actor.font_style&#x000A;  end&#x000A;end&#x000A;</code></pre>
+
+<ul>
+<li>rendering overview</li>
+<li>layers &amp; parallax</li>
+<li>defining actor views</li>
+<li>setting view on an actor (non magic name)</li>
+<li>custom renderer (here, stages, or advanced)</li>
+</ul>
+
+
+<p>Actor views are the mechanism for drawing an actor in Gamebox. When an actor is created, Gamebox will see if there is a matching actor view by name. It will register the view to be drawn by the renderer. The draw callback is called with the rendering target, the x and y offsets based on the viewport, and the z layer to be used for drawing this actor (see the section on parallax layers for more on z layers).</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">define_actor_view</span> <span class="ss">:label_view</span> <span class="k">do</span>
+  <span class="n">draw</span> <span class="k">do</span> <span class="o">|</span><span class="n">target</span><span class="p">,</span> <span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">z</span><span class="o">|</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">print</span> <span class="n">actor</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">actor</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">actor</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">actor</span><span class="o">.</span><span class="n">font_style</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+
   </div>
-  <div class='tab-pane' id='behaviors'>
+
+  <div id="behaviors" class="tab-pane">
     <h3>Behaviors</h3>
-    
-    <ul>
-    <li>what are they</li>
-    <li>how to define them</li>
-    <li>how to inject dependencies with <code>requires</code></li>
-    </ul>
-    
-    <p>Behaviors are what bring life to actors.  They interact interact with the actor&#39;s internal data, input, audio, etc.</p>
-    
-    <p>Examples:</p>
+
+<ul>
+<li>what are they</li>
+<li>how to define them</li>
+<li>how to inject dependencies with <code>requires</code></li>
+</ul>
+
+
+<p>Behaviors are what bring life to actors.  They interact interact with the actor's internal data, input, audio, etc.</p>
+
+<p>Examples:</p>
+
   </div>
-  <div class='tab-pane' id='input'>
+
+  <div id="input" class="tab-pane">
     <h3>Input &amp; Updates</h3>
-    
-    <ul>
-    <li>input manager</li>
-    <li>director for updates</li>
-    </ul>
-    
-    <p>Input comes from the InputManager. The stage has direct access via the <code>input_manager</code> method. Behaviors can request that they get the <code>input_manager</code> via <code>requires :input_manager</code>. The preferred way of getting input to your actors is via the actor&#39;s <code>input</code> method. It returns an InputMapper that can be built with a hash of events. Behaviors then subscribe for those events from the actor&#39;s input, or ask for it during updates.</p>
-    
-    <pre><code>actor.input.map_input &#39;+space&#39; =&gt; :shoot,&#x000A;                      &#39;+w&#39; =&gt; :jump,&#x000A;                      &#39;+a&#39; =&gt; :walk_left&#x000A;                      &#39;+s&#39; =&gt; :duck&#x000A;                      &#39;+d&#39; =&gt; :walk_right&#x000A;&#x000A;actor.input.when :shoot do&#x000A;  # shoot code&#x000A;end&#x000A;&#x000A;# or&#x000A;if actor.input.walk_left?&#x000A;  # walk left&#x000A;end&#x000A;</code></pre>
+
+<ul>
+<li>input manager</li>
+<li>director for updates</li>
+</ul>
+
+
+<p>Input comes from the InputManager. The stage has direct access via the <code>input_manager</code> method. Behaviors can request that they get the <code>input_manager</code> via <code>requires :input_manager</code>. The preferred way of getting input to your actors is via the actor's <code>input</code> method. It returns an InputMapper that can be built with a hash of events. Behaviors then subscribe for those events from the actor's input, or ask for it during updates.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">actor</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">map_input</span> <span class="s1">&#39;+space&#39;</span> <span class="o">=&gt;</span> <span class="ss">:shoot</span><span class="p">,</span>
+                      <span class="s1">&#39;+w&#39;</span> <span class="o">=&gt;</span> <span class="ss">:jump</span><span class="p">,</span>
+                      <span class="s1">&#39;+a&#39;</span> <span class="o">=&gt;</span> <span class="ss">:walk_left</span>
+                      <span class="s1">&#39;+s&#39;</span> <span class="o">=&gt;</span> <span class="ss">:duck</span>
+                      <span class="s1">&#39;+d&#39;</span> <span class="o">=&gt;</span> <span class="ss">:walk_right</span>
+
+<span class="n">actor</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">when</span> <span class="ss">:shoot</span> <span class="k">do</span>
+  <span class="c1"># shoot code</span>
+<span class="k">end</span>
+
+<span class="c1"># or</span>
+<span class="k">if</span> <span class="n">actor</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">walk_left?</span>
+  <span class="c1"># walk left</span>
+<span class="k">end</span>
+</code></pre></div>
+
+
   </div>
-  <div class='tab-pane' id='audio'>
+
+  <div id="audio" class="tab-pane">
     <h3>Sound &amp; Music</h3>
-    
-    <p>SoundManager handles the autoloading of sounds from <code>data/sounds</code> and <code>data/music</code>. The stage has direct access via <code>sound_manager</code>. To allow an actor to emit sounds or music, give them the <code>audible</code> behavior.  See Reactions below for usage from actors.</p>
-    
-    <pre><code># music&#x000A;sound_manager.play_music :overworld&#x000A;&#x000A;# sounds&#x000A;sound_manager.play_sound :death&#x000A;</code></pre>
+
+<p>SoundManager handles the autoloading of sounds from <code>data/sounds</code> and <code>data/music</code>. The stage has direct access via <code>sound_manager</code>. To allow an actor to emit sounds or music, give them the <code>audible</code> behavior.  See Reactions below for usage from actors.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1"># music</span>
+<span class="n">sound_manager</span><span class="o">.</span><span class="n">play_music</span> <span class="ss">:overworld</span>
+
+<span class="c1"># sounds</span>
+<span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span> <span class="ss">:death</span>
+</code></pre></div>
+
+
   </div>
-  <div class='tab-pane' id='testing'>
+
+  <div id="testing" class="tab-pane">
     <h3>Testing</h3>
-    
-    <ul>
-    <li>unit
-    
-    <ul>
-    <li>actors</li>
-    <li>behaviors</li>
-    </ul></li>
-    <li>acceptance
-    
-    <ul>
-    <li>helpers</li>
-    <li>examples</li>
-    </ul></li>
-    </ul>
+
+<ul>
+<li>unit
+
+<ul>
+<li>actors</li>
+<li>behaviors</li>
+</ul>
+</li>
+<li>acceptance
+
+<ul>
+<li>helpers</li>
+<li>examples</li>
+</ul>
+</li>
+</ul>
+
+
   </div>
-  <div class='tab-pane' id='advanced'>
+
+  <div id="advanced" class="tab-pane">
     <h3>Advanced</h3>
-    
-    <ul>
-    <li>advanced viewport stuff</li>
-    <li>auto reloading</li>
-    <li>debug mode</li>
-    <li>remote pry</li>
-    <li>conject?</li>
-    </ul>
+
+<ul>
+<li>advanced viewport stuff</li>
+<li>auto reloading</li>
+<li>debug mode</li>
+<li>remote pry</li>
+<li>conject?</li>
+</ul>
+
+
   </div>
+
 </div>
 
         </div>
