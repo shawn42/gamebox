@@ -113,9 +113,7 @@
 
 <p>The driving idea behind Gamebox is to provide the ability to have as many of the basic common pieces of a 2D game at the developers disposal from the beginning.</p>
 
-<h3>Example</h3>
-
-<div class="highlight"><pre><code class="ruby">    <span class="sr">//</span> <span class="n">sample</span> <span class="n">of</span> <span class="n">defining</span> <span class="n">the</span> <span class="n">player</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">behaviors</span>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># sample of defining the player&#39;s behaviors</span>
     <span class="n">define_actor</span> <span class="ss">:player</span> <span class="k">do</span>
       <span class="n">has_behaviors</span> <span class="k">do</span>
         <span class="n">positioned</span>
@@ -318,16 +316,34 @@ $ rake
   <div id="behaviors" class="tab-pane">
     <h3>Behaviors</h3>
 
-<ul>
-<li>what are they</li>
-<li>how to define them</li>
-<li>how to inject dependencies with <code>requires</code></li>
-</ul>
+<p>Behaviors are what bring life to actors.  They interact interact with the actor's internal data, input, etc.</p>
 
+<div class="highlight"><pre><code class="ruby">    <span class="n">define_behavior</span> <span class="ss">:die_by_bullet</span> <span class="k">do</span>
+      <span class="n">requires</span> <span class="ss">:bullet_coordinator</span><span class="p">,</span> <span class="ss">:stage</span><span class="p">,</span> <span class="ss">:backstage</span><span class="p">,</span> <span class="ss">:score_keeper</span>
+    
+      <span class="n">setup</span> <span class="k">do</span>
+        <span class="n">bullet_coordinator</span><span class="o">.</span><span class="n">register_shootable</span> <span class="n">actor</span>
+    
+        <span class="n">reacts_with</span> <span class="ss">:shot</span>
+      <span class="k">end</span>
+    
+      <span class="n">remove</span> <span class="k">do</span>
+        <span class="n">bullet_coordinator</span><span class="o">.</span><span class="n">unregister_shootable</span> <span class="n">actor</span>
+      <span class="k">end</span>
+    
+      <span class="n">helpers</span> <span class="k">do</span>
+        <span class="k">def</span> <span class="nf">shot</span><span class="p">(</span><span class="n">bullet</span><span class="p">)</span>
+          <span class="n">actor</span><span class="o">.</span><span class="n">react_to</span> <span class="ss">:play_sound</span><span class="p">,</span> <span class="ss">:death</span>
+          <span class="n">actor</span><span class="o">.</span><span class="n">remove</span>
+    
+          <span class="n">actor</span><span class="o">.</span><span class="n">react_to</span> <span class="ss">:gibify</span><span class="p">,</span> <span class="ss">force</span><span class="p">:</span> <span class="p">(</span><span class="n">bullet</span><span class="o">.</span><span class="n">vel</span> <span class="o">*</span> <span class="mi">0</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+          <span class="n">score_keeper</span><span class="o">.</span><span class="n">player_score</span><span class="p">(</span><span class="n">bullet</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="k">unless</span> <span class="n">actor</span> <span class="o">==</span> <span class="n">bullet</span><span class="o">.</span><span class="n">player</span>
+        <span class="k">end</span>
+    
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
-<p>Behaviors are what bring life to actors.  They interact interact with the actor's internal data, input, audio, etc.</p>
-
-<p>Examples:</p>
 
   </div>
 
