@@ -13,11 +13,11 @@ class FontStyle
   end
   
   def calc_width(text)
-    @font.text_width text
+    @font.text_width text if @font
   end
   
   def height
-    @font.height
+    @font.height if @font
   end
   
   def reload

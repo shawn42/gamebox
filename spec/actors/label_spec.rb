@@ -12,10 +12,13 @@ describe :label do
   describe "#behavior" do
     subjectify_behavior(:label)
 
+    let(:stylish_font) { stub(calc_width: 22, height: 30) }
+
     before do
-      @actor.stubs(has_attributes: nil, font_name: "fonty.ttf",
-                   font_size: 22, color: :red)
+      @actor.stubs(has_attributes: nil, font_name: "fonty.ttf", text: "some text",
+                   font_size: 22, color: :red, :width= => nil, :height= => nil)
       @font_style_factory.stubs(:build)
+      @actor.stubs(:font_style).returns(stylish_font)
     end
 
     it 'sets up attributes on actor' do
@@ -27,8 +30,14 @@ describe :label do
         width:     0,
         height:    0,
         layer:     1)
-      @font_style_factory.stubs(:build).with('fonty.ttf', 22, :red).returns(:stylish_font)
-      @actor.expects(:has_attributes).with(font_style: :stylish_font)
+      @font_style_factory.stubs(:build).with('fonty.ttf', 22, :red).returns(stylish_font)
+      @actor.expects(:has_attributes).with(font_style: stylish_font)
+
+      stylish_font.stubs(:calc_width).with("some text").returns(:some_stylish_width)
+      stylish_font.stubs(:height).returns(:some_stylish_height)
+
+      @actor.expects(:width=).with(:some_stylish_width)
+      @actor.expects(:height=).with(:some_stylish_height)
      
       subject
     end

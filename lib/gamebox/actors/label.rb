@@ -35,6 +35,8 @@ define_actor :label do
         actor.font_style.color = actor.color
       end
 
+      recalculate_size
+
     end
 
     helpers do
