@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 # uncomment for chipmunk
 # gem 'chipmunk'
 gem 'require_all'
