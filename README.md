@@ -9,7 +9,7 @@
 * Quickly **generate a game** and have it **up and running**.
 * Provide **conventions and DSL** for building your game.
 * Facilitate quickly building **distributable artifacts**.
-* http://shawn42.github.com/gamebox/
+* http://gamebox.io/
 * see [gamebox on rubygems.org](https://rubygems.org/gems/gamebox) for the list of requirements
 
 ## Getting started with Gamebox
