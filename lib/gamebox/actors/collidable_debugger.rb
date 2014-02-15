@@ -4,7 +4,7 @@ end
 
 define_behavior :collider_container do
   setup do
-    actor.has_attributes collider: actor.opts[:collider]
+    raise "collider required" unless actor.do_or_do_not(:collider)
     actor.collider.when :remove do
       actor.remove
     end
@@ -14,13 +14,12 @@ end
 define_actor_view :collidable_debugger_view do
 
   setup do
-    @color = Color::WHITE
+    @color = actor.do_or_do_not(:color) || Color::WHITE
   end
 
   draw do |target,x_off,y_off,z|
     collider = actor.collider
-    case collider.shape_type
-    when :circle
+    if collider.shape_type == :circle
       target.draw_circle x_off+collider.center_x, y_off+collider.center_y, collider.radius, @color, z
     else
       collider.cw_world_lines.each do |line|

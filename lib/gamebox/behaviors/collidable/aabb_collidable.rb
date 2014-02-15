@@ -1,14 +1,13 @@
 
 
-class AaBbCollidable < CollidableShape
+class AabbCollidable < CollidableShape
   attr_accessor :cw_local_points
 
   def setup
     @shape_type = opts[:shape]
 
     @cw_local_points = opts[:cw_local_points]
-    @cw_local_points ||= opts[:points] || []
-    @cw_world_points ||= build_aabb
+    @cw_local_points ||= opts[:points] || build_aabb
 
     @radius = opts[:radius]
     @radius ||= calculate_radius

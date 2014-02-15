@@ -97,6 +97,8 @@ module Arbiter
 
 
 
+  # This reads terribly and violates open-closed principle,
+  # but does perform better than any dynamic lookup based on shape_types
   def collide?(object, other)
     case object.shape_type
     when :circle

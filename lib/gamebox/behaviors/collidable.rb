@@ -15,24 +15,16 @@ Behavior.define :collidable do
     y = (actor.do_or_do_not(:y) || 0) - hh
 
     actor.has_attributes( shape_type: shape_type,
-                          width: w,
-                          height: h,
                           x: x,
-                          y: y )
+                          y: y,
+                          width: w,
+                          height: h
+                        )
 
-    shape = 
-      case shape_type
-      when :circle
-        CircleCollidable.new actor, opts
-      when :aabb
-        AaBbCollidable.new actor, opts
-      when :polygon
-        PolygonCollidable.new actor, opts
-      end
+    shape_klass = shape_type.to_s.capitalize + "Collidable"
+    shape = Object.const_get(shape_klass).new actor, opts
     shape.setup
 
-    actor.width = shape.width
-    actor.height = shape.height
     bb = Rect.new
     bb.x = actor.x
     bb.y = actor.y

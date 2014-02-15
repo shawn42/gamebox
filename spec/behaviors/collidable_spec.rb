@@ -22,12 +22,12 @@ describe :collidable do
   let!(:actor) { subcontext[:actor] }
 
   before do
-    @stage.stubs(:register_collidable)
+    @stage.stubs :register_collidable
   end
 
   describe "aabb shape" do
     let(:opts) do
-      {:shape => :aabb,
+      {shape: :aabb,
         :cw_world_points => [
           [-15,10],[15,10],
           [15,-10], [-15,10]
