@@ -23,6 +23,7 @@ module GameboxSpecHelpers
       before { 
         @_beh_mock_names = Behavior.object_definition.component_names
         @actor = evented_stub(mock("actor_for_#{behavior_name}"))
+        @actor.stubs(has_attribute: nil)
         @_mocks_created = create_mocks *(@_beh_mock_names - [:actor])
         @_mocks_created[:actor] = @actor
 
@@ -206,9 +207,7 @@ class EventedStub
   def method_missing(name, *args)
     @inner_stub.send name, *args
   end
-  def fire(*args)
-    super
-  end
+  public :fire
 end
 
 module GameboxAcceptanceSpecHelpers
