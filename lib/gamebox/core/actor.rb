@@ -70,7 +70,7 @@ class Actor
     emit :remove_me
   end
 
-  def input
+  def controller
     # TODO conject should have a lazily loaded dependency mechanism
     @input_mapper ||= this_object_context[:input_mapper]
   end

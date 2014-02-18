@@ -8,33 +8,33 @@ describe "Using input mapper", acceptance: true do
   it 'sets actor state based on input' do
     game.stage do |stage| # instance of TestingStage
       foxy = create_actor :foxy
-      foxy.input.map_input 'left' => :move_left,
-                           'right' => :move_right,
-                           'd' => :move_right
+      foxy.controller.map_controls 'left'  => :move_left,
+                                   'right' => :move_right,
+                                   'd'     => :move_right
     end
 
-    input = game.actor(:foxy).input
-    input.move_left?.should be_false
-    input.move_right?.should be_false
+    controller = game.actor(:foxy).controller
+    controller.move_left?.should be_false
+    controller.move_right?.should be_false
 
     press_key KbLeft
     press_key KbD
 
-    input.move_left?.should be_true
-    input.move_right?.should be_true
+    controller.move_left?.should be_true
+    controller.move_right?.should be_true
 
     release_key KbD
-    input.move_left?.should be_true
-    input.move_right?.should be_false
+    controller.move_left?.should be_true
+    controller.move_right?.should be_false
 
 
     press_key KbRight
-    input.move_left?.should be_true
-    input.move_right?.should be_true
+    controller.move_left?.should be_true
+    controller.move_right?.should be_true
 
     release_key KbRight
-    input.move_left?.should be_true
-    input.move_right?.should be_false
+    controller.move_left?.should be_true
+    controller.move_right?.should be_false
   end
 
 end

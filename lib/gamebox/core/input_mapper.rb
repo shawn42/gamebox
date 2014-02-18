@@ -10,7 +10,7 @@ class InputMapper
   # map_input is to be setup outside of an actor and passed in at construction
   # time ie:
   #
-  # mapper.map_input {
+  # mapper.map_controls {
   #  '+a' => :jump,   # emit jump when 'a' is _pressed_
   #  '-b' => :duck,   # emit duck when 'b' is _released_
   #  'c'  => :block   # emit block when 'c' is _pressed_ AND _released_
@@ -20,7 +20,7 @@ class InputMapper
   # create_actor :fighter, input: mapper
   # 
   # all of the actor's behaviors can / should use the input mapper instead of raw key bindings
-  def map_input(input_hash)
+  def map_controls(input_hash)
     input_hash.each do |input, actions|
       if input.start_with? '-'
         register_key_released(input[1..-1], actions)

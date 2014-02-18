@@ -48,10 +48,10 @@ describe Actor do
     end
   end
 
-  describe "#input" do
+  describe "#controller" do
     it 'pulls an input mapper from the context' do
       @this_object_context.stubs(:[]).with(:input_mapper).returns(:mapz)
-      subject.input.should == :mapz
+      subject.controller.should == :mapz
     end
   end
 
