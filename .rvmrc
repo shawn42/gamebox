@@ -1,5 +1,0 @@
-rvm use 1.9.3
-
-alias be='bundle exec'
-alias sp='bundle exec rspec'
-

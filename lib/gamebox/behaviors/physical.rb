@@ -188,7 +188,7 @@ Behavior.define :physical do
 
     def warp(new_p)
       actor.body.p = new_p
-      physics_manager.space.rehash_static if opts[:fixed]
+      physics_manager.space.reindex_static if opts[:fixed]
     end
 
     # TODO use react_to to handle these requests?
