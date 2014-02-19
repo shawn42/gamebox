@@ -6,3 +6,4 @@ gem "gamebox", '<%= @gamebox_version %>'
 gem "conject"
 gem "rspec"
 gem "releasy"
+gem "rake"
