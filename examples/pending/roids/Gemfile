@@ -3,7 +3,7 @@ gem 'require_all'
 gem 'tmx'
 gem 'pry'
 gem 'pry-remote'
-gem "gamebox", '>= 0.4.0.rc10'
+gem "gamebox", '>= 0.5.0'
 gem "conject"
 gem 'chipmunk'
 
