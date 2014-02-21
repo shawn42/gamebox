@@ -29,7 +29,8 @@ Releasy::Project.new do
   # Create a variety of releases, for all platforms.
   add_build :osx_app do
     url "io.gamebox.my_game"
-    wrapper "#{ENV['GOSU_DOWNLOADS']}/gosu-mac-wrapper-0.7.47.tar.gz" 
+    gosu_downloads = ENV['GOSU_DOWNLOADS'] || "#{ENV['HOME']}/tmp"
+    wrapper "#{gosu_downloads}/gosu-mac-wrapper-0.7.47.tar.gz" 
     add_package :tar_gz
   end
 
