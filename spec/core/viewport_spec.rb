@@ -251,8 +251,8 @@ describe Viewport do
       bounds = subject.bounds
       bounds.left.should == 10
       bounds.top.should == 100
-      bounds.width.should == 810
-      bounds.height.should == 700
+      bounds.width.should == 800
+      bounds.height.should == 600
     end
   end
 

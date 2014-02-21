@@ -99,7 +99,8 @@ class Viewport
   def bounds
     left = -@x_offset
     top = -@y_offset
-    Rect.new left, top, left + @width, top + @height
+    # Rect.new left, top, left + @width, top + @height
+    Rect.new left, top, @width, @height
   end
 
   private
