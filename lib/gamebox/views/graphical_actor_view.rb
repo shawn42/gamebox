@@ -38,12 +38,8 @@ define_actor_view :graphical_actor_view do
         end
       end
     else
-      rot = actor.do_or_do_not :rotation
-      if rot
-        img.draw_rot offset_x, offset_y, z, rot, anchor_x, anchor_y, x_scale, y_scale, color
-      else
-        img.draw offset_x, offset_y, z, x_scale, y_scale, color
-      end
+      rot = actor.do_or_do_not(:rotation) || 0
+      img.draw_rot offset_x, offset_y, z, rot, anchor_x, anchor_y, x_scale, y_scale, color
     end
   end
 

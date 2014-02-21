@@ -34,6 +34,9 @@ describe :graphical_actor_view do
 
       it 'creates the color with the correct alpha' do
         image.stubs(draw: nil)
+        image.expects(:draw_rot).with(anything, anything, anything, 
+                                      anything, anything, anything, anything, anything, 
+                                      :full_color)
         Color.expects(:new).with(0xFF, 0xFF, 0xFF, 0xFF).returns(:full_color)
         subject.draw(:target, 0, 0, 0)
       end
@@ -45,7 +48,7 @@ describe :graphical_actor_view do
       end
 
       it 'handles draw correctly for plain actors w/o rotation' do
-        image.expects(:draw).with(2, 3, 1, 1, 1, :color)
+        image.expects(:draw_rot).with(anything,anything,anything, 0, anything, anything, anything, anything, anything)
         subject.draw(:target, 0, 0, 1)
       end
 
