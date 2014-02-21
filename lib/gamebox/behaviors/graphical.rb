@@ -4,7 +4,7 @@
 # data/graphics/classname.png
 Behavior.define :graphical do
 
-  requires_behaviors :layered
+  requires_behaviors :layered, :positioned
   requires :resource_manager
   setup do 
     image = actor.do_or_do_not(:image) || resource_manager.load_actor_image(actor)
