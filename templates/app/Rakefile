@@ -16,7 +16,7 @@ STATS_DIRECTORIES = [
 
 
 # more info on releasy here: https://github.com/Spooner/releasy
-Releasy::Builders::OsxApp::SOURCE_GEMS_TO_REMOVE = %w(chingu chingu.rb chipmunk.bundle chipmunk.rb)
+Releasy::Builders::OsxApp::SOURCE_GEMS_TO_REMOVE.concat %w(chingu chingu.rb chipmunk.bundle chipmunk.rb)
 
 Releasy::Project.new do
   name Gamebox.configuration.game_name.gsub(' ','')
