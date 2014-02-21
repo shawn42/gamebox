@@ -23,6 +23,7 @@ Behavior.define :graphical do
                           scale: scale,
                           x_scale: @opts[:x_scale] || scale,
                           y_scale: @opts[:y_scale] || scale,
+                          anchor: @opts[:anchor] || :center,
                           rotation: 0.0 )
 
     actor.when :image_changed do |old, new|
