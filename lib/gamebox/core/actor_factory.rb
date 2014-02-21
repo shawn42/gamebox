@@ -22,6 +22,8 @@ class ActorFactory
           model.has_attributes attr
         end
 
+        model.has_attributes(view: "#{actor}_view") if actor_definition.view_blk
+
         actor_definition.behaviors.each do |behavior|
           beh_opts = {}
           beh_key = behavior
