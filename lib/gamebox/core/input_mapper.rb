@@ -7,7 +7,7 @@ class InputMapper
     @action_ids = {}
   end
 
-  # map_input is to be setup outside of an actor and passed in at construction
+  # map_controls is to be setup outside of an actor and passed in at construction
   # time ie:
   #
   # mapper.map_controls {
@@ -35,7 +35,7 @@ class InputMapper
 
   # unsubscribes for all input
   def clear
-    input_manager.unsubscribe_all
+    input_manager.unsubscribe_all self
   end
 
   def method_missing(name, *args)
