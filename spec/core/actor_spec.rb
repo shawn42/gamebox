@@ -155,6 +155,23 @@ describe Actor do
         subject.remove
       end
     end
+
+    describe "#to_s" do
+      it 'prints meta data about the actor' do
+        subject.to_s.should include(subject.object_id.to_s)
+      end
+
+      it 'prints the attributes' do
+        subject.has_attribute :foo, :bar
+        subject.to_s.should include('foo')
+        subject.to_s.should include('bar')
+      end
+
+      it 'prints the behaviors' do
+        subject.add_behavior :foo, :bar
+        subject.to_s.should include('foo')
+      end
+    end
   end
 
 

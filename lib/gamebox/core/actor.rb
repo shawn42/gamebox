@@ -76,24 +76,19 @@ class Actor
   end
 
   def to_s
-    attrs = []
-    attributes.keys.sort.each do |name|
-      attrs << "#{name}: #{printable_value(attributes[name])}"
-    end
     """
     #{actor_type}:#{self.object_id}
     Behaviors:
     #{@behaviors.keys.sort}
     Attributes:
-    #{attrs.join("\n")}
-    """
+    #{attributes.map{|name, val| "#{name}: #{printable_value(val)}"}.join("\n")} """
   end
   alias pretty_inspect to_s
 
   private
   def printable_value(value)
     case value
-    when String, Float, Fixnum, TrueClass, FalseClass, Vector2
+    when String, Float, Fixnum, TrueClass, FalseClass, Vector2, Symbol
       value
     when Array
       value.map do |pv|

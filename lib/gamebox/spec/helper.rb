@@ -483,6 +483,14 @@ module GameboxAcceptanceSpecHelpers
           actor.send(key).should == val
         end
       end
+
+      failure_message_for_should do |actual|
+        "#{actual} was not #{expected}"
+      end
+
+      failure_message_for_should_not do |actual|
+        "#{actual} was #{expected}"
+      end
     end
 
     RSpec::Matchers.define :have_no_attrs do |expected_attributes|
@@ -490,6 +498,14 @@ module GameboxAcceptanceSpecHelpers
         expected_attributes.each do |name|
           actor.has_attribute?(name).should be_false
         end
+      end
+
+      failure_message_for_should do |actual|
+        "#{actual} was not #{expected}"
+      end
+
+      failure_message_for_should_not do |actual|
+        "#{actual} was #{expected}"
       end
     end
   end
