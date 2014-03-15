@@ -12,6 +12,19 @@ class Gosu::Window
   end
 end
 
+class Hash
+  def symbolize_keys
+    inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+  end
+
+  def slice(*keys)
+    keys = keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true)
+    hash = self.class.new
+    keys.each { |k| hash[k] = self[k] if has_key?(k) }
+    hash
+  end
+end
+
 module GameboxSpecHelpers
   module ClassMethods
     def inject_mocks(*mock_names_array)
@@ -477,19 +490,21 @@ module GameboxAcceptanceSpecHelpers
       end
     end
 
+
     RSpec::Matchers.define :have_attrs do |expected_attributes|
       match do |actor|
-        expected_attributes.each do |key, val|
-          actor.send(key).should == val
-        end
+        relevant_attrs = actual.attributes.slice(*expected[0].keys)
+        relevant_attrs.should == expected_attributes
       end
 
       failure_message_for_should do |actual|
-        "#{actual} was not #{expected}"
+        relevant_attrs = actual.attributes.slice(*expected[0].keys)
+        "#{relevant_attrs} did not match #{expected[0]}"
       end
 
       failure_message_for_should_not do |actual|
-        "#{actual} was #{expected}"
+        relevant_attrs = actual.attributes.slice(*expected[0].keys)
+        "#{relevant_attrs} matched #{expected[0]}"
       end
     end
 
@@ -501,12 +516,15 @@ module GameboxAcceptanceSpecHelpers
       end
 
       failure_message_for_should do |actual|
-        "#{actual} was not #{expected}"
+        relevant_attrs = actual.attributes.slice(*expected[0].keys)
+        "#{relevant_attrs} matched #{expected[0]}"
       end
 
       failure_message_for_should_not do |actual|
-        "#{actual} was #{expected}"
+        relevant_attrs = actual.attributes.slice(*expected[0].keys)
+        "#{relevant_attrs} matched but should not have #{expected[0]}"
       end
+
     end
   end
 end

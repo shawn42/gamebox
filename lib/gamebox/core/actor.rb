@@ -81,23 +81,11 @@ class Actor
     Behaviors:
     #{@behaviors.keys.sort}
     Attributes:
-    #{attributes.map{|name, val| "#{name}: #{printable_value(val)}"}.join("\n")} """
+    #{attributes.map{|name, val| "#{name}: #{val}"}.join("\n")} """
   end
   alias pretty_inspect to_s
 
   private
-  def printable_value(value)
-    case value
-    when String, Float, Fixnum, TrueClass, FalseClass, Vector2, Symbol
-      value
-    when Array
-      value.map do |pv|
-        printable_value(pv)
-      end
-    else
-      value.class
-    end
-  end
 
   class << self
 
