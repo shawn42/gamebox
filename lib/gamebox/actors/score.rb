@@ -1,5 +1,5 @@
 define_behavior :score_keeper do
-  requires :backstage, :stage
+  requires :stage
 
   setup do
     # TODO helper for "attached subactor"

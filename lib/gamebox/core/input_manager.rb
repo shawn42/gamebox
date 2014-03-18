@@ -1,5 +1,3 @@
-require 'publisher'
-
 # InputManager handles the pumping for events and distributing of said events.
 # You can gain access to these events by registering for all events, 
 # or just the ones you care about.
@@ -31,6 +29,7 @@ class InputManager
     @hooks = {}
     @non_id_hooks = {}
     @down_ids = {}
+    @block_self_lookup = {}
 
     setup
   end
@@ -87,6 +86,7 @@ class InputManager
     event_class = :up if UP_EVENTS.include? event_class
     return unless block_given?
     listener = eval("self", block.binding) 
+    @block_self_lookup[block] = listener
     _register_hook listener, event_class, *event_ids, &block
   end
   alias reg register_hook
@@ -138,7 +138,8 @@ class InputManager
       for event_klass, id_listeners in @hooks
         for key in id_listeners.keys.dup
           id_listeners[key].delete_if do |block|
-            eval('self',block.binding).equal?(listener)
+            block_self = @block_self_lookup.delete block
+            block_self.equal?(listener)
           end
         end
       end
