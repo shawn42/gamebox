@@ -292,6 +292,12 @@ class Vector2
   end
 
 
+  # Returns the cross product between this vector and the other vector.
+  def cross( vector )
+    (@x * vector.y) - (@y * vector.x);
+  end
+
+
   # Returns the magnitude (distance) of this vector.
   def magnitude
     Math.hypot( @x, @y )
