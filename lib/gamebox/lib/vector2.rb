@@ -25,9 +25,12 @@
 # 
 class Vector2
   include Enumerable
+  include MinMaxHelpers
 
   RAD_TO_DEG = 180.0 / Math::PI
   DEG_TO_RAD = Math::PI / 180.0
+  MAX_DOT_PRODUCT = 1.0
+  MIN_DOT_PRODUCT = -1.0
 
   class << self
 
@@ -284,7 +287,8 @@ class Vector2
 
   # Returns the dot product between this vector and the other vector.
   def dot( vector )
-    (@x * vector.at(0)) + (@y * vector.at(1))
+    unclamped_dot = (@x * vector.at(0)) + (@y * vector.at(1))
+    max(min(unclamped_dot, MAX_DOT_PRODUCT), MIN_DOT_PRODUCT)
   end
 
 
