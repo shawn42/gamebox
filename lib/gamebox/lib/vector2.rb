@@ -294,7 +294,7 @@ class Vector2
 
   # Returns the cross product between this vector and the other vector.
   def cross( vector )
-    (@x * vector.y) - (@y * vector.x);
+    (@x * vector.y) - (@y * vector.x)
   end
 
 
