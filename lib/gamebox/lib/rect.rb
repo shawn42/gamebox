@@ -498,10 +498,9 @@ class Rect < Array
 
   # True if the caller and the given Rect overlap (or touch) at all.
   def collide_rect?(rect)
-    nself = self #.normalize
-    rect  = Rect.new_from_object(rect)#.normalize!
-    return ((nself.l >= rect.l && nself.l <= rect.r) or (rect.l >= nself.l && rect.l <= nself.r)) &&
-           ((nself.t >= rect.t && nself.t <= rect.b) or (rect.t >= nself.t && rect.t <= nself.b))
+    rect = Rect.new_from_object(rect)
+    ((l >= rect.l && l <= rect.r) or (rect.l >= l && rect.l <= r)) &&
+    ((t >= rect.t && t <= rect.b) or (rect.t >= t && rect.t <= b))
   end
 
   # True if the given Rect is totally within the caller. Borders may
