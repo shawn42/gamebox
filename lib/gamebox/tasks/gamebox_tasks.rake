@@ -22,7 +22,12 @@ end
 desc "Bundle in all required gems"
 task :bundle do |t|
   sh "bundle package"
-  sh "bundle install vendor/bundle --disable-shared-gems"
+
+  if Bundler::VERSION =~ /^0/
+    sh "bundle install vendor/bundle --disable-shared-gems"
+  else
+    sh "bundle install --deployment"
+  end
 end
 
 desc "Run specs"
