@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "pry", '~>0.9.7'
   s.add_development_dependency "pry-remote"
-  s.add_development_dependency "rspec-core"
+  s.add_development_dependency "rspec-core", '~>2.13.0'
   s.add_development_dependency "rspec-mocks"
   s.add_development_dependency "rspec-expectations"
   s.add_development_dependency "mocha"
