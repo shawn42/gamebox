@@ -29,8 +29,8 @@ class Vector2
 
   RAD_TO_DEG = 180.0 / Math::PI
   DEG_TO_RAD = Math::PI / 180.0
-  MAX_DOT_PRODUCT = 1.0
-  MIN_DOT_PRODUCT = -1.0
+  MAX_UDOT_PRODUCT = 1.0
+  MIN_UDOT_PRODUCT = -1.0
 
   class << self
 
@@ -256,7 +256,7 @@ class Vector2
   # in radians. Use #angle_deg_with for degrees.
   # 
   def angle_with( vector )
-    Math.acos( udot(vector) )
+    Math.acos( max(min(udot(vector),MAX_UDOT_PRODUCT), MIN_UDOT_PRODUCT) )
   end
 
 
@@ -287,8 +287,7 @@ class Vector2
 
   # Returns the dot product between this vector and the other vector.
   def dot( vector )
-    unclamped_dot = (@x * vector.at(0)) + (@y * vector.at(1))
-    max(min(unclamped_dot, MAX_DOT_PRODUCT), MIN_DOT_PRODUCT)
+    (@x * vector.at(0)) + (@y * vector.at(1))
   end
 
 
@@ -324,16 +323,17 @@ class Vector2
     self.class.new( -@y, @x )
   end
 
-
   # Sets this vector to the vector projection (aka vector resolute)
   # of this vector onto the other vector. See also #projected_onto.
   # 
   def project_onto!( vector )
     raise "can't modify frozen object" if frozen?
-    @x, @y = *(vector * vector.dot(self) * (1/vector.magnitude**2))
+    b = vector.unit
+    @x, @y = *(b.scale(self.dot(b)))
     @hash = nil
     self
   end
+
 
   # Like #project_onto!, but returns a new vector.
   def projected_onto( vector )
