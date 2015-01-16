@@ -383,6 +383,31 @@ $ bundle exec rake
 </code></pre></div>
 
 
+<p>The stage has access to the InputManager via the input_manager object that is in scope.  For example, if we explicitly wanted to make the ESC key fire the pause menu stage, we could do this:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">define_stage</span> <span class="ss">:flying</span> <span class="k">do</span>
+
+  <span class="n">curtain_up</span> <span class="k">do</span>
+    <span class="c1"># ...</span>
+    <span class="n">input_manager</span><span class="o">.</span><span class="n">reg</span> <span class="ss">:down</span><span class="p">,</span> <span class="no">K_ESCAPE</span> <span class="k">do</span>
+      <span class="n">fire</span> <span class="ss">:change_stage</span><span class="p">,</span> <span class="ss">:pause_menu</span>
+      <span class="c1"># be sure to explicitly list your stages in config/environment.rb</span>
+      <span class="c1"># so gamebox knows what :pause_menu is</span>
+    <span class="k">end</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+
+<p>The listing of key input constants is in <code>gamebox/lib/gamebox/constants.rb</code> but here are a few to give you an idea:</p>
+
+<div class="highlight"><pre><code class="text">K_RETURN  K_A  K_B  K_C  K_ESCAPE  K_SPACE  K_RSHIFT  K_LSHIFT
+</code></pre></div>
+
+
+<p>In order to use these shorthand K_ constants, <code>require 'gamebox/constants'</code> in <code>config/environment.rb</code>.</p>
+
   </div>
 
   <div id="audio" class="tab-pane">
@@ -397,6 +422,43 @@ $ bundle exec rake
 <span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span> <span class="ss">:death</span>
 </code></pre></div>
 
+
+<p>Music will continue playing when scenes transition.  You could explicitly stop / start / change the music by calling <code>.stop_music :overworld</code>.  For example, let's say you wanted to have music in the main gameplay stage but then play pause menu music when the player presses ESC.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">define_stage</span> <span class="ss">:demo</span> <span class="k">do</span>
+  <span class="n">curtain_up</span> <span class="k">do</span>
+    <span class="n">sound_manager</span><span class="o">.</span><span class="n">play_music</span> <span class="ss">:game_music</span>
+    <span class="c1"># ...</span>
+    <span class="c1"># register key events or something that changes stages</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">define_stage</span> <span class="ss">:pause_menu</span> <span class="k">do</span>
+  <span class="n">curtain_up</span> <span class="k">do</span>
+    <span class="n">sound_manager</span><span class="o">.</span><span class="n">stop_music</span> <span class="ss">:game_music</span>
+    <span class="n">sound_manager</span><span class="o">.</span><span class="n">play_music</span> <span class="ss">:pause_music</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+
+<p>Sounds are placed in <code>data/sounds</code>.  Audio is handled by gosu and gosu supports ogg/wav/mp3 file formats as well as others.  Filenames are converted to symbols without the file extension.  For example:</p>
+
+<div class="highlight"><pre><code class="text">data/music/ambient.mp3
+</code></pre></div>
+
+
+<p>The file <code>ambient.mp3</code> would be played with <code>sound_manager.play_music :ambient</code>.  Files are accessed in alphabetical order.  If you have two files that have the same name, gamebox will use the first one.</p>
+
+<div class="highlight"><pre><code class="text">data/music/ambient.mp3
+data/music/ambient.ogg
+</code></pre></div>
+
+
+<p>In this case with two files, <code>sound_manager.play_music :ambient</code> plays <code>ambient.mp3</code> only (because "m" in mp3 comes before "o" in ogg).  So name your files uniquely without relying on the file extension.  This is true of all gamebox assets.</p>
+
+<p>Music files can only be played one at a time.  They won't mix.  If music is playing with the same name, playing it again won't restart it.  If you want to restart music, you can just stop/start it explicitly.</p>
 
   </div>
 
