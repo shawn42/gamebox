@@ -2,7 +2,7 @@ module Gamebox
   module VERSION #:nodoc:
     MAJOR = 0
     MINOR = 5
-    TINY  = 4
+    TINY  = 5
     RC    = 0
 
     if RC > 0

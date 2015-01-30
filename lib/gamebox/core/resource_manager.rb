@@ -75,7 +75,7 @@ class ResourceManager
     action_imgs
   end
 
-  def load_image(file_name)
+  def load_image(file_name, tileable=false)
     cached_img = @loaded_images[file_name]
     if cached_img.nil?
       begin
@@ -84,7 +84,7 @@ class ResourceManager
           #check global gamebox location
           full_name = Gamebox.configuration.gb_gfx_path + file_name
         end
-        cached_img = Image.new(@window, full_name)
+        cached_img = Image.new(@window, full_name, tileable)
       rescue Exception => ex
         # log "Cannot load image #{file_name}", :warn
       end
