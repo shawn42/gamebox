@@ -12,23 +12,17 @@ matrix:
   allow_failures:
    - rvm: ruby-head
 
-  include:
-    # Ubuntu 14.04 Trusty Tahr
-    - os: linux
-      dist: trusty
-      sudo: required
-      compiler: gcc
+os: linux
+dist: trusty
+sudo: required
+compiler: gcc
 
 
 addons:
   apt:
     packages:
-      - libsdl2-dev
-      - libsdl2-ttf-dev
-      - libpango1.0-dev
-      - libgl1-mesa-dev
-      - libopenal-dev
-      - libsndfile1-dev
-      # For Ruby
-      - ruby-dev
-      - rake
+
+before_install:
+	- sudo add-apt-repository -y ppa:team-xbmc/ppa
+	- sudo apt-get -qq update
+	- sudo apt-get install -y libsdl2-dev libsdl2-ttf-dev libpango1.0-dev libgl1-mesa-dev libopenal-dev libsndfile1-dev ruby-dev rake
