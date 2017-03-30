@@ -1,6 +1,6 @@
 language: ruby
+
 rvm:
- - 2.3.3
  - 2.4.1
  - ruby-head
 
@@ -11,6 +11,14 @@ matrix:
   fast_finish: true
   allow_failures:
    - rvm: ruby-head
+
+  include:
+    # Ubuntu 14.04 Trusty Tahr
+    - os: linux
+      dist: trusty
+      sudo: required
+			compiler: gcc
+
 
 addons:
   apt:
