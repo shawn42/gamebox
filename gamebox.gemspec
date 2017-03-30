@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "gosu"
+  s.add_dependency "rake"
   s.add_dependency "publisher"
   s.add_dependency "conject", ">= 0.0.8"
   s.add_dependency "tween"
