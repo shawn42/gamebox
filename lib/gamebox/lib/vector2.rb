@@ -439,11 +439,66 @@ class Vector2
 
   alias :normalized :unit
 
+  # Checks whether it is a vector or not.Useful for debugging
+  def self.expect(vector)
+    raise "expected type of Vector2, got #{vector.inspect}" unless vector.is_a?(Vector2)
+    vector
+  end
 
-  private
+  # Check whether vectors are same according to toleranceRate
+  def self.vector_nearly_same?(first_vector,second_vector,toleranceRate)
+    return magnitude_nearly_equal? and angle_nearly_equal?
+  end
 
-  def _nearly_equal?( a, b, threshold=1E-10 ) # :nodoc:
-    (a - b).abs <= threshold
+  # Check whether vectors' magnitude are same according to toleranceRate
+  def self.magnitude_nearly_equal?(first_vector,second_vector,toleranceRate)
+    return (first_vector-second_vector).magnitude <= toleranceRate
+  end
+
+  # Check whether vectors' angle are same according to toleranceRate
+  def self.angle_nearly_equal?(first_vector,second_vector,toleranceRate)
+    return (first_vector-second_vector).angle <= toleranceRate
+  end
+
+  # Returns distance between 2 vectors
+  def distance(vector)
+    Math.sqrt((@x - vector.x)**2 + (@y - vector.y)**2)
+  end
+
+  # Returns  copy of this vector
+  def copy
+    self.class.new(@x,@y)
+  end
+
+  # Limits vector's magnitude by a maximum value
+  def limit(maximum)
+    mag_squared = magnitude ** 2
+    return copy if mag_squared <= maximum**2
+    return unit! * maximum
+  end
+
+  #Linearly interpolates a value between a and b with respect to T
+  def self.lerp(a, b, t)
+    a + (b- a) * t
+  end
+
+  #Linearly interpolates a value between old vector values and selected vector values with respect to T and returns new vector
+  def lerp_vector(vector, t)
+    self.class.new(Vector2.lerp(@x, vector.x, t),
+                   Vector2.lerp(@y, vector.y, t))
+  end
+
+  #Clamps a value between min and max
+  def self.clamp(value, min, max)
+    return min if value <= min
+    return max if value >= max
+    return input
+  end
+
+  #Clamps vectors values with respect to minimum vector and maximum vector and returns a new vector
+  def clamp_vector(min_vector, max_vector)
+    self.class.new(Vector2.clamp(@x, min_vector.x, max_vector.x),
+                   Vector2.clamp(@y, min_vector.y, max_vector.y))
   end
 
 end
