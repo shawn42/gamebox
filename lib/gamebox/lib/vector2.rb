@@ -447,7 +447,7 @@ class Vector2
 
   # Check whether vectors are same according to toleranceRate
   def self.vector_nearly_same?(first_vector,second_vector,toleranceRate)
-    return magnitude_nearly_equal? and angle_nearly_equal?
+    return (magnitude_nearly_equal? and angle_nearly_equal?)
   end
 
   # Check whether vectors' magnitude are same according to toleranceRate
@@ -474,7 +474,7 @@ class Vector2
   def limit(maximum)
     mag_squared = magnitude ** 2
     return copy if mag_squared <= maximum**2
-    return unit! * maximum
+    return (unit! * maximum)
   end
 
   #Linearly interpolates a value between a and b with respect to T
