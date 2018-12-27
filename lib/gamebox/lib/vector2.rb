@@ -197,7 +197,7 @@ class Vector2
   # 
   def ==( vector )
     return false if vector.nil?
-    Vector2.vector_nearly_equal?(@x, vector.at(0)) and Vector2.vector_nearly_equal?(@y, vector.at(1))
+    Vector2.vector_nearly_equal?(self, vector)
   end
 
 
