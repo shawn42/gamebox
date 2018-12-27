@@ -25,6 +25,7 @@
 # 
 class Vector2
   include Enumerable
+  include MinMaxHelpers
 
   RAD_TO_DEG = 180.0 / Math::PI
   DEG_TO_RAD = Math::PI / 180.0
