@@ -2,9 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/gamebox.svg)](http://badge.fury.io/rb/gamebox)
 [![Gamebox Build Status](https://secure.travis-ci.org/shawn42/gamebox.png)](http://travis-ci.org/shawn42/gamebox)
-[![Gamebox Deps Status](https://gemnasium.com/shawn42/gamebox.png)](https://gemnasium.com/shawn42/gamebox)
 [![Code Climate](https://codeclimate.com/github/shawn42/gamebox.png)](https://codeclimate.com/github/shawn42/gamebox)
-[![Stories in Ready](https://badge.waffle.io/shawn42/gamebox.png)](http://waffle.io/shawn42/gamebox) 
 
 * A **game template** for building and distributing Gosu games.
 * Quickly **generate a game** and have it **up and running**.
