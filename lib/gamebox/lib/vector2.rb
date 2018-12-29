@@ -197,7 +197,7 @@ class Vector2
   # 
   def ==( vector )
     return false if vector.nil?
-    _nearly_equal?(@x, vector.at(0)) and _nearly_equal?(@y, vector.at(1))
+    Vector2.vector_nearly_equal?(self, vector)
   end
 
 
@@ -445,9 +445,10 @@ class Vector2
     vector
   end
 
-  # Check whether vectors are same according to toleranceRate
-  def self.vector_nearly_same?(first_vector,second_vector,toleranceRate)
-    return (magnitude_nearly_equal? and angle_nearly_equal?)
+  # Check whether vectors are same according to toleranceRate.By default tolerances are set to 10 ** -10 = 0.0000000001
+  def self.vector_nearly_equal?(first_vector,second_vector,toleranceRateForMagnitude = 1E-10,toleranceRateForAngle = 1E-10)
+    return (magnitude_nearly_equal?(first_vector,second_vector,toleranceRateForMagnitude) and
+            angle_nearly_equal?(first_vector,second_vector,toleranceRateForAngle))
   end
 
   # Check whether vectors' magnitude are same according to toleranceRate
@@ -457,7 +458,7 @@ class Vector2
 
   # Check whether vectors' angle are same according to toleranceRate
   def self.angle_nearly_equal?(first_vector,second_vector,toleranceRate)
-    return (first_vector-second_vector).angle <= toleranceRate
+    return (first_vector-second_vector).angle.abs <= toleranceRate
   end
 
   # Returns distance between 2 vectors
